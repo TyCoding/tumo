@@ -30,7 +30,7 @@
                         <!-- 功能按钮 -->
                         <div>
                             <el-row>
-                                <a href="/admin/article/publish">
+                                <a th:href="@{/admin/article/publish}">
                                     <el-button type="primary" icon="el-icon-plus">新增</el-button>
                                 </a>
                                 <el-button type="primary" plain icon="el-icon-edit">编辑</el-button>
@@ -133,10 +133,10 @@
                                             type="danger"
                                             @click="handleDelete(scope.row.id)">删除
                                     </el-button>
-                                    <a :href="'/admin/article/' + scope.row.id + '/edit'">
+                                    <a :href="'/admin/article/edit/' + scope.row.id">
                                         <el-button size="mini" icon="el-icon-edit" type="warning">编辑</el-button>
                                     </a>
-                                    <a :href="'/site/article/' + scope.row.id" target="_blank">
+                                    <a :href="'/article/' + scope.row.id" target="_blank">
                                         <el-button size="mini" icon="el-icon-view" type="primary">预览</el-button>
                                     </a>
                                 </template>

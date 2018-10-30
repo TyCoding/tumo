@@ -6,7 +6,7 @@
 </head>
 <body>
 
-<el-header th:fragment="header"  :class="{handleCloseHeader:config.isCollapse,handleOpenHeader:!config.isCollapse}">
+<el-header th:fragment="header" :class="{handleCloseHeader:config.isCollapse,handleOpenHeader:!config.isCollapse}">
     <el-menu
             class="el-menu-demo"
             mode="horizontal"
@@ -18,7 +18,7 @@
         <!--<el-menu-item index="1"><i class="fa fa-heart-o fa-fw"></i>&nbsp;&nbsp;<a href="home.html">首页</a></el-menu-item>-->
         <!--<el-menu-item index="3"><i class="el-icon-news"></i>消息中心</el-menu-item>-->
         <el-menu-item id="author" index="8">
-            <img class="el-tooltip" src="http://tycoding.cn/author/avatar.png"/>
+            <img class="el-tooltip" th:src="@{/admin/img/author.jpg}"/>
             <el-dropdown>
                   <span class="el-dropdown-link">
                     TyCoding<i class="el-icon-arrow-down el-icon--right"></i>

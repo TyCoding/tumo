@@ -1,5 +1,5 @@
 //设置全局表单提交格式
-// Vue.http.options.emulateJSON = true;
+Vue.http.options.emulateJSON = true;
 
 //Vue实例
 new Vue({
@@ -13,8 +13,22 @@ new Vue({
                 talkDialog: false, //对话的dialog框
                 talkId: '', //点击查看对话者ID
                 talkPId: '', //对话ID
+                commentsCount: '', //评论量
             },
             entity: {
+                article: {
+                    id: '',
+                    title: '',
+                    titlePic: '',
+                    category: '',
+                    tags: [],
+                    author: '',
+                    content: '',
+                    state: '',
+                    publishTime: '',
+                    editTime: '',
+                    createTime: ''
+                },
                 comments: [{
                     id: '',
                     parentId: '',
@@ -99,8 +113,8 @@ new Vue({
         },
         //条件查询
         search(pageCode, pageSize) {
-            this.$http.post('/comments/findByPageForFilter?pageSize=' + pageSize + '&pageCode=' + pageCode + '&articleId=' + this.$refs.articleId.value).then(result => {
-                console.log(result);
+            var id = window.location.href.substring(window.location.href.lastIndexOf('/') + 1);
+            this.$http.post('/comments/findByPageForFilter?pageSize=' + pageSize + '&pageCode=' + pageCode + '&articleId=' + id).then(result => {
                 this.entity.comments = result.body.rows;
                 this.pageConf.totalPage = result.body.total;
             });
@@ -117,7 +131,7 @@ new Vue({
         },
 
         //点击回复按钮
-        replay(name, id){
+        replay(name, id) {
             this.editor.comments.parentId = '#' + id;
             this.editor.comments.authorId = '@' + name + ':';
             this.config.holder = '回复' + name;
@@ -125,7 +139,7 @@ new Vue({
         },
 
         //对话列表
-        talkBtn(parentId, id){
+        talkBtn(parentId, id) {
             this.config.talkPId = parentId;
             this.config.talkId = id;
             this.config.talkDialog = true;
@@ -134,7 +148,12 @@ new Vue({
         /**
          * 一些初始化数据
          */
-        init(){
+        init(id) {
+            //从url中获取参数查询当前文章信息
+            this.$http.post('/article/findById', {id: id}).then(result => {
+                this.entity.article = result.body;
+                this.entity.article.tags = JSON.parse(result.body.tags);
+            });
             //最新文章
             this.$http.get('/article/findAll').then(result => {
                 this.entity.newArticle = result.body;
@@ -143,12 +162,21 @@ new Vue({
             this.$http.get('/comments/findAll').then(result => {
                 this.entity.newComments = result.body;
             });
+
+            this.search(this.pageConf.pageCode, this.pageConf.pageSize);
+
+            //当前文章评论量
+            this.$http.post('/comments/findCountByArticleId', {articleId: id}).then(result => {
+                this.config.commentsCount = result.body;
+            })
+
+            //当前文章浏览量
+
         },
     },
     // 生命周期函数
-    mounted(){
-        this.search(this.pageConf.pageCode, this.pageConf.pageSize);
-        this.init();
+    created() {
+        this.init(window.location.href.substring(window.location.href.lastIndexOf('/') + 1));
     },
 
 });

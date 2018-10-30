@@ -14,7 +14,7 @@ new Vue({
                     tags: '',
                     author: '',
                     content: '',
-                    origin: window.origin + '/site/article/',
+                    origin: '',
                 },
                 category: [{
                     id: '',
@@ -24,7 +24,7 @@ new Vue({
 
             //一些额外的配置属性
             config: {
-                defaultActive: '2',
+                defaultActive: '3',
 
                 multipleSelection: [], //checkbox选择的行中所有数据，将会放入multipartSelection数组中
                 selectIds: [], //被checkbox选择的id值，用于批量删除
@@ -35,9 +35,6 @@ new Vue({
                 name: '',
                 isCollapse: false,
                 side_close_flag: true,
-
-                //条件查询单独封装的对象
-                searchEntity: {},
 
                 //tags
                 dynamicTags: [],
@@ -58,8 +55,8 @@ new Vue({
             this.entity.article.content = window.markdownContent.getMarkdown(); //给content赋值
             this.entity.article.tags = JSON.stringify(this.config.dynamicTags); //给tags字段赋值
 
-            this.$http.post('/article/save', JSON.stringify(this.entity.article)).then(result => {
-                window.location.reload();
+            this.$http.post('/article/update', JSON.stringify(this.entity.article)).then(result => {
+                window.location.href = '/admin/article';
                 if (result.body.success) {
                     this.$message({
                         showClose: true,
@@ -78,29 +75,9 @@ new Vue({
         },
         //点击发布文章
         publishBtn(state) {
-            if (state == 0) {
-                //存入草稿
-                this.entity.article.state = '存入草稿';
-            }
-            if (state == 1) {
-                //发布文章
-                this.entity.state = '发布文章';
-            }
+            this.entity.article.state = state; //0:存入草稿；1:发布
             this.save();
         },
-
-        //得到所有的分类列表
-        findAllCategory() {
-            this.$http.post('/category/findAll').then(result => {
-                this.config.options = [];
-                result.body.forEach(row => {
-                    if (row.cName != null) {
-                        this.config.options.push({value: row.cName.toString(), label: row.cName});
-                    }
-                });
-            });
-        },
-
 
         //===============标签==================
         handleCloseTag(tag) {
@@ -153,17 +130,30 @@ new Vue({
             }, 2000);
         },
 
-        getHash() {
-            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
-            var r = window.location.search.substr(1).match(reg);
-            if (r != null) return unescape(r[2]);
-            return null;
-        },
+        init(id) {
+            //从url中获取参数查询文章数据
+            this.$http.post('/article/findById', {id: id}).then(result => {
+                this.entity.article = result.body;
+            });
+
+            //从url中获取参数查询文章的标签数据
+            this.$http.post('/article/findTags', {id: id}).then(result => {
+                this.config.dynamicTags = result.body;
+            });
+
+            //得到所有的分类列表
+            this.$http.post('/category/findAll').then(result => {
+                result.body.forEach(row => {
+                    if (row.cName != null) {
+                        this.config.options.push({value: row.cName.toString(), label: row.cName});
+                    }
+                });
+            });
+        }
     },
     created() {
         this.loadings(); //加载动画
-        this.findAllCategory();
-        console.log(this.getHash(window.location.href));
+        this.init(window.location.href.substring(window.location.href.lastIndexOf('/') + 1));
     },
     //页面没有渲染前
     beforeMount() {

@@ -93,7 +93,6 @@ var vm = new Vue({
         search(pageCode, pageSize) {
             this.loadings();
             this.$http.post('/article/findByPage?pageSize=' + pageSize + '&pageCode=' + pageCode, this.searchEntity).then(result => {
-                console.log(result);
                 this.entity.article = result.body.rows;
                 this.pageConf.totalPage = result.body.total;
                 this.config.loading.close(); //数据更新成功就手动关闭动画
@@ -188,13 +187,6 @@ var vm = new Vue({
                 this.$refs.article.clearSelection();
             }
         },
-
-        getHash() {
-            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
-            var r = window.location.search.substr(1).match(reg);
-            if (r != null) return unescape(r[2]);
-            return null;
-        },
     },
     //页面没有渲染前
     beforeMount() {
@@ -204,8 +196,6 @@ var vm = new Vue({
     created() {
         this.search(this.pageConf.pageCode, this.pageConf.pageSize);
         this.loadings(); //加载动画
-
-        console.log(this.getHash(window.location.hash));
     },
 
 });

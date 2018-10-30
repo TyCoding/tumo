@@ -10,12 +10,20 @@ import cn.tycoding.admin.entity.Comments;
 public interface CommentsService extends BaseService<Comments> {
 
     /**
-     * 分页查询，过滤留言信息
+     * 分页查询并过滤留言数据
      *
-     * @param pageCode
-     * @param pageSize
-     * @param articleId
+     * @param pageCode  当前页
+     * @param pageSize  每页显示的记录数
+     * @param articleId 当前访问的文章ID
      * @return
      */
     PageBean findByPageForFilter(int pageCode, int pageSize, int articleId);
+
+    /**
+     * 查询指定文章下的评论量
+     *
+     * @param articleId
+     * @return
+     */
+    Long findCountByArticle(long articleId);
 }

@@ -45,8 +45,7 @@ var vm = new Vue({
 
         //过滤HTML标签并截取指定长度
         delMarkdedTag(str){
-            var text =  str.replace(/[\\\`\*\_\[\]\#\+\-\!\>]/g);
-            return text.replace(/\s+/g, "").substring(0, 49) + ' ...';
+            return str.replace(/[\\\`\*\_\[\]\#\+\-\!\>]/g, "").substring(0, 49) + ' ...';
         },
 
         //刷新列表
@@ -55,8 +54,7 @@ var vm = new Vue({
         },
         //条件查询
         search(pageCode, pageSize) {
-            this.$http.post('/article/findByPage?pageSize=' + pageSize + '&pageCode=' + pageCode, this.searchEntity).then(result => {
-                console.log(result);
+            this.$http.post('/article/findByPageByFilter?pageSize=' + pageSize + '&pageCode=' + pageCode, this.searchEntity).then(result => {
                 this.entity.article = result.body.rows;
                 this.pageConf.totalPage = result.body.total;
             });

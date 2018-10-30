@@ -13,19 +13,73 @@ import java.util.List;
 @Mapper
 public interface CommentsMapper {
 
+    /**
+     * 查询所有
+     *
+     * @return
+     */
     List<Comments> findAll();
 
+    /**
+     * 分页查询（条件）
+     *
+     * @param comments
+     * @return
+     */
     Page<Comments> findByPage(Comments comments);
 
+    /**
+     * 分页查询指定文章的评论数据
+     *
+     * @param articleId
+     * @return
+     */
     Page<Comments> findByPageForFilter(int articleId);
 
+    /**
+     * 根据ID查询
+     *
+     * @param id
+     * @return
+     */
     Comments findById(long id);
 
+    /**
+     * 新增
+     *
+     * @param comments
+     * @return
+     */
     int save(Comments comments);
 
+    /**
+     * 更新
+     *
+     * @param comments
+     * @return
+     */
     int update(Comments comments);
 
+    /**
+     * 删除
+     *
+     * @param id
+     * @return
+     */
     int delete(long id);
 
+    /**
+     * 查询总数量
+     *
+     * @return
+     */
     Long findAllCount();
+
+    /**
+     * 查询指定文章下的评论量
+     *
+     * @param articleId
+     * @return
+     */
+    Long findCountByArticleId(long articleId);
 }

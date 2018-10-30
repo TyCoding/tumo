@@ -20,19 +20,19 @@
     <div style="flex: 1;">
         <div class="archive-index">
             <div class="archive-container">
-                <h3 class="archive-title"><i class=""></i>分类： <b th:text="${category}"></b></h3>
+                <h3 class="archive-title"><i class=""></i>分类： <b v-text="entity.article.category"></b></h3>
             </div>
-            <div class="Card-archive" data-version="" th:each="entity : ${categoryArticleList}">
+            <div class="Card-archive" data-version="" v-for="item in entity.article">
                 <div class="Card-body">
                     <h3 class="Card-title">
-                        <a th:href="'/article/' + ${entity.id}" th:text="${entity.title}"></a>
+                        <a :href="'/article/' + item.id" v-text="item.title"></a>
                     </h3>
                     <div class="Card-meta">
                         <ul>
                             <li>
                                 <a th:href="@{/archives}">
                                     <span>发布于: </span>
-                                    <span th:text="${#dates.format(entity.publishTime,'yyyy-MM-dd')}"></span>
+                                    <span v-text="item.publishTime"></span>
                                 </a>
                             </li>
                         </ul>

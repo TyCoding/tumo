@@ -6,7 +6,8 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- *  用于封装Article表按时间归档的DTO
+ * 用于封装Article表按时间归档的DTO
+ *
  * @auther TyCoding
  * @date 2018/10/28
  */

@@ -24,6 +24,17 @@
         ORDER BY id DESC
     </select>
 
+    <!-- 前台条件查询=过滤查询 -->
+    <select id="findByPageByFilter" parameterType="cn.tycoding.admin.entity.Article"
+            resultType="cn.tycoding.admin.entity.Article">
+        SELECT * FROM tb_article WHERE 1=1
+        <if test="author != null">
+            AND author LIKE CONCAT('%', #{author}, '%')
+        </if>
+        AND state = '1'
+        ORDER BY id DESC
+    </select>
+
     <!-- 根据ID查询 -->
     <select id="findById" parameterType="Long" resultType="cn.tycoding.admin.entity.Article">
         SELECT * FROM tb_article WHERE id = #{id}

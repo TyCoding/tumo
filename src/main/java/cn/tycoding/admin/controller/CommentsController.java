@@ -7,11 +7,7 @@ import cn.tycoding.admin.enums.ModifyEnums;
 import cn.tycoding.admin.service.CommentsService;
 import org.apache.shiro.authz.annotation.RequiresUser;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,7 +15,7 @@ import java.util.List;
  * @auther TyCoding
  * @date 2018/10/17
  */
-@Controller
+@RestController
 @SuppressWarnings("all")
 @RequestMapping("/comments")
 public class CommentsController {
@@ -27,63 +23,52 @@ public class CommentsController {
     @Autowired
     private CommentsService commentsService;
 
-    @ResponseBody
     @RequestMapping("/findAllCount")
-    public Long findAllCount(){
+    public Long findAllCount() {
         return commentsService.findAllCount();
     }
 
-    /**
-     * 查询所有
-     *
-     * @return
-     */
-    @ResponseBody
     @RequestMapping("/findAll")
     public List<Comments> findAll() {
         return commentsService.findAll();
     }
 
-
-    /**
-     * 分页查询
-     *
-     * @param comments  查询条件
-     * @param pageCode 当前页
-     * @param pageSize 每页显示的记录数
-     * @return
-     */
     @RequiresUser
-    @ResponseBody
     @RequestMapping("/findByPage")
     public PageBean findByPage(Comments comments,
-                                  @RequestParam(value = "pageCode", required = false) Integer pageCode,
-                                  @RequestParam(value = "pageSize", required = false) Integer pageSize) {
+                               @RequestParam(value = "pageCode", required = false) Integer pageCode,
+                               @RequestParam(value = "pageSize", required = false) Integer pageSize) {
         return commentsService.findByPage(comments, pageCode, pageSize);
     }
 
-    /**
-     * 分页查询并过滤留言数据
-     *
-     * @param pageCode 当前页
-     * @param pageSize 每页显示的记录数
-     * @param articleId 当前访问的文章ID
-     * @return
-     */
-    @ResponseBody
     @RequestMapping("/findByPageForFilter")
     public PageBean findByPageForFilter(
-                                        @RequestParam(value = "pageCode", required = false) Integer pageCode,
-                                        @RequestParam(value = "pageSize", required = false) Integer pageSize,
-                                        @RequestParam(value = "articleId", required = false) Integer articleId) {
-        return commentsService.findByPageForFilter(pageCode, pageSize, articleId);
+            @RequestParam(value = "pageCode", required = false) Integer pageCode,
+            @RequestParam(value = "pageSize", required = false) Integer pageSize,
+            @RequestParam(value = "articleId", required = false) Integer articleId) {
+        if (pageCode != null && pageSize != null && articleId != null && articleId != 0) {
+            return commentsService.findByPageForFilter(pageCode, pageSize, articleId);
+        } else {
+            return null;
+        }
     }
 
-    @RequiresUser
+    @RequestMapping("/findCountByArticleId")
+    public Long findCountByArticleId(@RequestParam("articleId") Long articleId){
+        if (articleId != null && articleId != 0){
+            return commentsService.findCountByArticle(articleId);
+        }
+        return null;
+    }
+
     @ResponseBody
     @RequestMapping("/findById")
     public Comments findById(@RequestParam("id") Long id) {
-        return commentsService.findById(id);
+        if (id != null && id != 0) {
+            return commentsService.findById(id);
+        } else {
+            return null;
+        }
     }
 
     @ResponseBody

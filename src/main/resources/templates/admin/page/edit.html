@@ -2,7 +2,8 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>发布文章</title>
+    <title>编辑文章</title>
+    <link rel="icon" th:href="@{../../../public/favicon-icon.png}" type="image/png">
     <link rel="stylesheet" th:href="@{../../../lib/element-ui/lib/theme-chalk/index.css}"/>
     <link rel="stylesheet" th:href="@{../../../lib/font/css/font-awesome.min.css}"/>
     <link rel="stylesheet" th:href="@{../../../lib/editormd/editormd.min.css}">
@@ -25,7 +26,7 @@
             <!-- main -->
             <el-main>
                 <el-card>
-                    <h2>发布文章</h2>
+                    <h2>编辑文章</h2>
                     <div style="margin-bottom: 6px;">
                         <el-row :gutter="100">
                             <el-col :span="12">
@@ -85,7 +86,7 @@
                     </div>
                     <div>
                         <div id="article">
-                            <textarea id="article-editor-md" ref="articleEditorMd" name="article-editor-md"></textarea>
+                            <textarea id="article-editor-md" ref="articleEditorMd" name="article-editor-md">{{entity.article.content}}</textarea>
                         </div>
                     </div>
                     <div>

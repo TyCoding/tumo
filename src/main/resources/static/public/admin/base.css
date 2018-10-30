@@ -35,6 +35,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .pull-height {
+    width: 100%;
     height: 100%;
     overflow: hidden;
     -webkit-animation-duration: 1s;
@@ -141,8 +142,8 @@ a {
     width: 280px;
     height: auto;
     overflow-y: auto;
-    background-color: rgb(84, 92, 100);
-    transition: width .6s;
+    /*background-color: rgb(84, 92, 100);*/
+    /*transition: width .6s;*/
     height: -webkit-fill-available;
     position: fixed;
     top: 0;
@@ -152,7 +153,7 @@ a {
 .el-aside > .el-menu {
     border: none;
     /*height: -webkit-fill-available;*/
-    height: auto;
+    height: 100%;
 }
 
 /*side-end*/
@@ -161,8 +162,17 @@ a {
 /*定义侧边栏打开关闭的样式*/
 .handleClose {
     width: 64px !important;
-    transition: 0.3s !important;
+    /*transition: 0.3s !important;*/
 }
+
+/*
+.handleClose{
+    animation-name: fadeInRight;
+    animation-duration: 1s;
+    animation-fill-mode: both;
+    animation-delay: 0.3s;
+}
+*/
 
 .handleOpen {
     transition: 0.3s !important;
@@ -170,6 +180,13 @@ a {
 
 .handleCloseHeader{
     width: 97% !important;
+}
+
+.handleCloseHeader{
+    animation-name: fadeInRight;
+    animation-duration: 1s;
+    animation-fill-mode: both;
+    animation-delay: 0.3s;
 }
 
 .handleOpenHeader{

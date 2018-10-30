@@ -111,4 +111,9 @@
         DELETE FROM tb_comments WHERE id = #{id}
     </delete>
 
+    <!-- 查询文章评论量 -->
+    <select id="findCountByArticleId" resultType="Long">
+        SELECT COUNT(*) FROM tb_comments WHERE article_id = #{articleId}
+    </select>
+
 </mapper>

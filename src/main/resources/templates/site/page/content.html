@@ -30,24 +30,24 @@
                             <div>
                                 <div class="post-header">
                                     <h1 class="post-title article-header article-title" itemprop="name headline">
-                                        <a th:href="'/article/' + ${article.id}" th:text="${article.title}"></a>
+                                        <a :href="'/article/' + entity.article.id" v-text="entity.article.title"></a>
                                     </h1>
                                     <div class="post-data">
                                         <time itemprop="datePublished">发布于 <b
-                                                th:text="${#dates.format(article.publishTime,'yyyy-MM-dd')}"></b>
+                                                v-text="entity.article.publishTime"></b>
                                         </time>
-                                        / <a th:href="'/category/' + ${article.category}" th:text="${article.category}"></a> / <a
-                                            href="#comments"><b th:text="12"></b> 条评论</a> /
-                                        <b th:text="12"></b> 浏览
+                                        / <a :href="'/category/' + entity.article.category" v-text="entity.article.category"></a> / <a
+                                            href="#comments"><b v-text="config.commentsCount"></b> 条评论</a> /
+                                        <b v-text="12"></b> 浏览
                                     </div>
                                 </div>
                                 <div class="post-content">
-                                    <p class="post-tags" th:each="tag : ${article.tags}"><a href="/" th:text="${tag}"></a></p>
+                                    <p class="post-tags"><a href="#" v-for="tag in entity.article.tags" v-text="tag"></a></p>
                                 </div>
                             </div>
                             <!-- 用于显示md编辑器的md格式 -->
                             <div id="doc-content">
-                                <textarea style="display: none;" th:utext="${article.content}"></textarea>
+                                <textarea style="display: none;" v-html="entity.article.content"></textarea>
                             </div>
                         </el-card>
 
@@ -55,8 +55,8 @@
                         <div class="comments-form" ref="comments" id="comments">
                             <el-card shadow="always" style="margin-top: 50px;">
                                 <el-form :inline="true" :model="editor.comments" ref="editor">
-                                    <input hidden="hidden" th:value="${article.id}" ref="articleId"/>
-                                    <input hidden="hidden" th:value="${article.title}" ref="articleTitle"/>
+                                    <input hidden="hidden" :value="entity.article.id" ref="articleId"/>
+                                    <input hidden="hidden" :value="entity.article.title" ref="articleTitle"/>
                                     <el-form-item required prop="author" :rules="[{ required: true, message: '请输入姓名'}]">
                                         <el-input v-model="editor.comments.author" placeholder="姓名（*）"></el-input>
                                     </el-form-item>
@@ -81,7 +81,7 @@
                             <div class="comments-info" v-for="item in entity.comments">
                                 <el-card shadow="always" :id="item.id">
                                     <div class="comment-author">
-                                        <img class="el-tooltip" src="http://tycoding.cn/author/avatar.png"/>
+                                        <img class="el-tooltip" th:src="@{/public/author.jpg}"/>
                                         <span>{{item.author}}</span>
                                     </div>
                                     <div class="comment-meta">
@@ -129,7 +129,7 @@
                         <div v-if="config.talkId == item.parentId.substring(1)">
                             <el-card shadow="always" :id="item.id">
                                 <div class="comment-author">
-                                    <img class="el-tooltip" src="http://tycoding.cn/author/avatar.png"/>
+                                    <img class="el-tooltip" th:src="@{/public/author.jpg}"/>
                                     <span v-text="item.author"></span>
                                 </div>
                                 <div class="comment-meta">
@@ -146,7 +146,7 @@
                         <div v-if="config.talkId == item.id">
                             <el-card shadow="always" :id="item.id">
                                 <div class="comment-author">
-                                    <img class="el-tooltip" src="http://tycoding.cn/author/avatar.png"/>
+                                    <img class="el-tooltip" th:src="@{/public/author.jpg}"/>
                                     <span v-text="item.author"></span>
                                 </div>
                                 <div class="comment-meta">
@@ -162,7 +162,7 @@
                         <div v-else-if="config.talkPId.substring(1) == item.id">
                             <el-card shadow="always" :id="item.id">
                                 <div class="comment-author">
-                                    <img class="el-tooltip" src="http://tycoding.cn/author/avatar.png"/>
+                                    <img class="el-tooltip" th:src="@{/public/author.jpg}"/>
                                     <span v-text="item.author"></span>
                                 </div>
                                 <div class="comment-meta">

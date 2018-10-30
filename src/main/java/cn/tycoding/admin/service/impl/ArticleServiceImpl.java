@@ -57,6 +57,13 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
+    public PageBean findByPageByFilter(Article article, Integer pageCode, Integer pageSize) {
+        PageHelper.startPage(pageCode, pageSize);
+        Page<Article> page = articleMapper.findByPageByFilter(article);
+        return new PageBean(page.getTotal(), page.getResult());
+    }
+
+    @Override
     public Article findById(long id) {
         return articleMapper.findById(id);
     }

@@ -78,14 +78,7 @@ new Vue({
         },
         //点击发布文章
         publishBtn(state) {
-            if (state == 0){
-                //存入草稿
-                this.entity.article.state = '存入草稿';
-            }
-            if (state == 1) {
-                //发布文章
-                this.entity.state = '发布文章';
-            }
+            this.entity.article.state = state; //0:存入草稿；1:发布
             this.save();
         },
 

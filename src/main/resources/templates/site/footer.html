@@ -23,7 +23,7 @@
                 <div class="meta-item meta-copyright">
                     <div class="meta-copyright-info">
                         <a href="/" class="info-logo">
-                            <img th:src="@{../../public/favicon.png}" alt="Tumo Blog">
+                            <img th:src="@{/public/favicon.png}" alt="Tumo Blog">
                         </a>
                         <div class="info-text">
                             <p>银河街角，时光路口.</p>
@@ -55,26 +55,25 @@
             <div class="nav-item" id="nav-item-archive">
                 <div class="nav-icon">
                     <a href="/archives/" title="Archives">
-                        <img th:src="@{../../plugins/images/icons/blue-shadow/archive.svg}" alt="">
+                        <img th:src="@{/plugins/images/icons/blue-shadow/archive.svg}" alt="">
                     </a>
                 </div>
             </div>
             <div class="nav-item" id="nav-item-search">
                 <div class="nav-icon">
                     <a href="search/" title="Search">
-                        <img th:src="@{../../plugins/images/icons/blue-shadow/search.svg}" alt="">
+                        <img th:src="@{/plugins/images/icons/blue-shadow/search.svg}" alt="">
                     </a>
                 </div>
             </div>
             <div class="nav-item" id="nav-item-more">
                 <div class="nav-icon">
-                    <a href="#" onclick="onClickMenuIcon(event);" ontouchstart="onClickMenuIcon(event);">
-                        <img th:src="@{../../plugins/images/icons/blue-shadow/menu.svg}" alt="">
+                    <a href="#">
+                        <img th:src="@{/plugins/images/icons/blue-shadow/menu.svg}" alt="">
                     </a>
                 </div>
                 <div class="nav-more-menu">
-                    <i class="far fa-times-circle" id="nav-more-menu-close" onclick="onClickNavMenuClose(event);"
-                       ontouchstart="onClickNavMenuClose(event);"></i>
+                    <i class="far fa-times-circle" id="nav-more-menu-close"></i>
                 </div>
             </div>
         </nav>

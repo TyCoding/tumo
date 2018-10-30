@@ -2563,9 +2563,10 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 .Card-archive .Card-meta {
-  margin-top: 0.5em;
+  margin-top: 2.5em;
   font-size: 0.8em;
   color: #aaa;
+  font-weight: 500;
 }
 .Card-archive .Card-meta a:link {
   text-decoration: none;

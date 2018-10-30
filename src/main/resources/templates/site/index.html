@@ -33,7 +33,7 @@
                         <div class="item-slant"></div>
                         <div class="Card-excerpt">
                             <!-- 文章缩略信息 -->
-                            <p><a :href="'/article/' + item.id" v-html="delMarkdedTag(item.content)"></a></p>
+                            <p><a :href="'/article/' + item.id" v-text="delMarkdedTag(item.content)"></a></p>
                         </div>
                         <div class="Card-meta">
                             <div class="item-title">

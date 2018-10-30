@@ -7,6 +7,13 @@ var vm = new Vue({
     data() {
         return {
             entity: {
+                article: [{
+                    id: '',
+                    title: '',
+                    category: '',
+                    publishTime: '',
+                }],
+                category: '', //查询分类名称
                 newArticle: [{
                     id: '',
                     title: '',
@@ -24,7 +31,12 @@ var vm = new Vue({
         /**
          * 一些初始化数据
          */
-        init(){
+        init(name){
+            //从url从获取参数查询分类数据
+            this.$http.post('/article/findArchivesByCategory', {name: name}).then(result => {
+                this.entity.article = result.body;
+                this.entity.category = decodeURI(decodeURI(window.location.href.substring(window.location.href.lastIndexOf('/') + 1)));
+            });
             //最新文章
             this.$http.get('/article/findAll').then(result => {
                 this.entity.newArticle = result.body;
@@ -39,7 +51,7 @@ var vm = new Vue({
     },
     // 生命周期函数
     created() {
-        this.init();
+        this.init(decodeURI(decodeURI(window.location.href.substring(window.location.href.lastIndexOf('/') + 1))));
     },
 
 });

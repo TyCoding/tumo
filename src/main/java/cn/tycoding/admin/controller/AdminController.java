@@ -3,7 +3,6 @@ package cn.tycoding.admin.controller;
 import cn.tycoding.admin.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,14 +32,15 @@ public class AdminController {
      * 跳转到文件编辑页
      *
      * @param id
-     * @param model
      * @return
      */
-    @RequestMapping(value = {"/article/{id}/edit"})
-    public String edit(@PathVariable("id") Long id, Model model) {
-//        Article article = articleService.findById(id);
-//        model.addAttribute("edit", article); //把查询到的文章信息放到域对象中
-        return "admin/page/edit";
+    @RequestMapping(value = {"/article/edit/{id}"})
+    public String edit(@PathVariable("id") Long id) {
+        if (id == null || id == 0){
+            return "admin/page/article";
+        } else {
+            return "admin/page/edit";
+        }
     }
 
     /**

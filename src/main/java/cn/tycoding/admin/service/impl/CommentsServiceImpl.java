@@ -36,7 +36,6 @@ public class CommentsServiceImpl implements CommentsService {
 
     @Override
     public PageBean findByPage(Comments comments, int pageCode, int pageSize) {
-        //Mybatis分页插件
         PageHelper.startPage(pageCode, pageSize);
 
         Page<Comments> page = commentsMapper.findByPage(comments);
@@ -45,11 +44,15 @@ public class CommentsServiceImpl implements CommentsService {
 
     @Override
     public PageBean findByPageForFilter(int pageCode, int pageSize, int articleId) {
-        //Mybatis分页插件
         PageHelper.startPage(pageCode, pageSize);
 
         Page<Comments> page = commentsMapper.findByPageForFilter(articleId);
         return new PageBean(page.getTotal(), page.getResult());
+    }
+
+    @Override
+    public Long findCountByArticle(long articleId) {
+        return commentsMapper.findCountByArticleId(articleId);
     }
 
     @Override

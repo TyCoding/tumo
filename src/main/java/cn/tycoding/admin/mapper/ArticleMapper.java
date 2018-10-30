@@ -17,6 +17,8 @@ public interface ArticleMapper {
 
     Page<Article> findByPage(Article article);
 
+    Page<Article> findByPageByFilter(Article article);
+
     Article findById(long id);
 
     int save(Article article);
