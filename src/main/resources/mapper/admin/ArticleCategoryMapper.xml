@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.tycoding.admin.mapper.ArticleCategoryMapper">
+
+    <!-- 保存 -->
+    <insert id="save" parameterType="ArticleCategory">
+        INSERT  INTO
+        tb_article_category(
+          article_id,
+          category_id
+        )
+        VALUES(
+          #{articleId},
+          #{categoryId}
+        )
+    </insert>
+
+    <!-- 查询是否存在 -->
+    <select id="exists" resultType="Boolean">
+        SELECT COUNT(1) FROM tb_article_category WHERE article_id = #{articleId} AND category_id = #{categoryId}
+    </select>
+
+    <!-- 删除 -->
+    <delete id="delete" parameterType="Long">
+        DELETE FROM tb_article_category WHERE category_id = #{id}
+    </delete>
+
+
+</mapper>

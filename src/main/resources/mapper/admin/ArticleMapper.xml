@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.tycoding.admin.mapper.ArticleMapper">
+
+    <!-- 查询总数量 -->
+    <select id="findAllCount" resultType="Long">
+        SELECT COUNT(*) FROM tb_article
+    </select>
+
+    <!-- 查询所有 -->
+    <select id="findAll" resultType="Article">
+        SELECT * FROM tb_article ORDER BY id DESC LIMIT 0,8
+    </select>
+
+    <!-- 条件查询 -->
+    <select id="findByPage" parameterType="cn.tycoding.admin.entity.Article"
+            resultType="cn.tycoding.admin.entity.Article">
+        SELECT * FROM tb_article WHERE 1=1
+        <if test="author != null">
+            AND author LIKE CONCAT('%', #{author}, '%')
+        </if>
+        ORDER BY id DESC
+    </select>
+
+    <!-- 根据ID查询 -->
+    <select id="findById" parameterType="Long" resultType="cn.tycoding.admin.entity.Article">
+        SELECT * FROM tb_article WHERE id = #{id}
+    </select>
+
+    <!-- 保存 -->
+    <insert id="save" parameterType="cn.tycoding.admin.entity.Article">
+        INSERT ignore INTO
+        tb_article(
+          title,
+          title_pic,
+          category,
+          author,
+          content,
+          origin,
+          state,
+          publish_time,
+          edit_time,
+          create_time
+        )
+        VALUES(
+          #{title},
+          #{titlePic},
+          #{category},
+          #{author},
+          #{content},
+          #{origin},
+          #{state},
+          #{publishTime},
+          #{editTime},
+          #{createTime}
+        )
+    </insert>
+
+    <!-- 更新 -->
+    <update id="update" parameterType="cn.tycoding.admin.entity.Article">
+        UPDATE tb_article
+        <set>
+            <if test="title != null">
+                title = #{title},
+            </if>
+            <if test="titlePic != null">
+                title_pic = #{titlePic},
+            </if>
+            <if test="category != null">
+                category = #{category},
+            </if>
+            <if test="author != null">
+                author = #{author},
+            </if>
+            <if test="content != null">
+                content = #{content},
+            </if>
+            <if test="origin != null">
+                origin = #{origin},
+            </if>
+            <if test="state != null">
+                state = #{state},
+            </if>
+            <if test="publishTime != null">
+                publish_time = #{publishTime},
+            </if>
+            <if test="editTime != null">
+                edit_time = #{editTime},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime}
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <!-- 删除 -->
+    <delete id="delete" parameterType="Long">
+        DELETE FROM tb_article WHERE id = #{id}
+    </delete>
+
+    <!-- 查询最后一条记录的ID值 -->
+    <select id="getLastId" resultType="Long">
+        SELECT id FROM tb_article ORDER BY id DESC LIMIT 1;
+    </select>
+
+    <!-- find linked for category -->
+    <select id="findByCategory" resultType="Article">
+        SELECT * FROM tb_article WHERE category = #{category}
+    </select>
+
+    <!-- find distinct date -->
+    <select id="findArchivesDates" resultType="String">
+        SELECT DISTINCT DATE_FORMAT(publish_time, '%Y-%m') FROM tb_article ORDER BY DATE_FORMAT(publish_time, '%Y-%m') DESC;
+    </select>
+
+    <!-- find article list by date -->
+    <select id="findArchivesByDate" resultType="Article">
+        SELECT id, title, publish_time FROM tb_article WHERE publish_time LIKE CONCAT ('%', #{date} ,'%')
+    </select>
+
+    <!-- find article archives by title or category or other -->
+    <select id="findArchivesByArticle" resultType="Article" parameterType="Article">
+        SELECT id, title, publish_time FROM tb_article WHERE 1=1
+        <if test="category != null">
+            AND category = #{category}
+        </if>
+        <if test="title != null">
+            AND title = #{title}
+        </if>
+        <if test="publishTime != null">
+            AND publish_time = #{publishTime}
+        </if>
+    </select>
+
+</mapper>

@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>分类/标签</title>
+    <link rel="icon" th:href="@{../../../public/favicon-icon.png}" type="image/png">
+    <link rel="stylesheet" th:href="@{../../../lib/element-ui/lib/theme-chalk/index.css}"/>
+    <link rel="stylesheet" th:href="@{../../../lib/font/css/font-awesome.min.css}"/>
+    <link rel="stylesheet" th:href="@{../../../public/admin/base.css}">
+    <link rel="stylesheet" th:href="@{../../../admin/css/category.css}">
+</head>
+<body>
+<!-- vue入口 -->
+<div id="app">
+    <!-- 布局容器 -->
+    <div class="pull-height">
+        <!-- aside -->
+        <div th:replace="admin/side :: side"></div>
+
+        <!-- container -->
+        <el-container id="main" :class="{main_close:config.isCollapse}">
+            <!-- header -->
+            <div style="background-color: rgb(84, 92, 100);" th:replace="admin/header :: header"></div>
+            <!-- main -->
+            <el-main>
+                <el-card>
+                    <h2>分类/标签管理</h2>
+                    <div>
+                        <el-row :gutter="40">
+                            <el-col :span="12">
+                                <el-card class="card-category">
+                                    <div slot="header">
+                                        <span>分类列表</span>
+                                        <el-button type="info" @click="saveBtn"
+                                                   style="float: right;padding: 7px 1pc 6px 17px;color:#fff">添加
+                                        </el-button>
+                                    </div>
+                                    <!-- 列表 -->
+                                    <el-table
+                                            ref="category"
+                                            :data="entity.category"
+                                            border
+                                            tooltip-effect="dark"
+                                            style="width: 100%"
+                                            @selection-change="selectChange">
+                                        <el-table-column
+                                                ref="selection"
+                                                align="center"
+                                                type="selection"
+                                                width="55">
+                                        </el-table-column>
+                                        <el-table-column
+                                                prop="id"
+                                                align="center"
+                                                sortable
+                                                fixed
+                                                label="编号"
+                                                show-overflow-tooltip
+                                                width="80">
+                                        </el-table-column>
+                                        <el-table-column
+                                                align="center"
+                                                prop="cName"
+                                                label="分类名称"
+                                                width="200"
+                                                show-overflow-tooltip>
+                                        </el-table-column>
+                                        <el-table-column label="操作" align="center" fixed="right">
+                                            <template slot-scope="scope">
+                                                <el-button
+                                                        icon="el-icon-delete"
+                                                        size="mini"
+                                                        type="danger"
+                                                        @click="handleDelete(scope.row.id)">删除
+                                                </el-button>
+                                                <el-button size="mini" icon="el-icon-edit" type="warning" @click="handleEdit(scope.row.id)">编辑</el-button>
+                                            </template>
+                                        </el-table-column>
+                                    </el-table>
+
+                                    <!-- 分页 -->
+                                    <div class="pagination">
+                                        <el-pagination
+                                                background
+                                                @size-change="handleSizeChange"
+                                                @current-change="handleCurrentChange"
+                                                :current-page="pageConf.pageCode"
+                                                :page-sizes="pageConf.pageOption"
+                                                :page-size="pageConf.pageSize"
+                                                layout="total, sizes, prev, pager, next, jumper"
+                                                :total="pageConf.totalPage">
+                                        </el-pagination>
+                                    </div>
+                                </el-card>
+                            </el-col>
+                            <el-col :span="12">
+                                <el-card class="card-tags">
+                                    <div slot="header">
+                                        <span>标签列表</span>
+                                        <el-button type="info" @click="saveBtn_t"
+                                                   style="float: right;padding: 7px 1pc 6px 17px;color:#fff;">添加
+                                        </el-button>
+                                    </div>
+                                    <!-- 列表 -->
+                                    <el-table
+                                            ref="tags"
+                                            :data="entity.tags"
+                                            border
+                                            tooltip-effect="dark"
+                                            style="width: 100%"
+                                            @selection-change="selectChange_t">
+                                        <el-table-column
+                                                ref="selection"
+                                                align="center"
+                                                type="selection"
+                                                width="55">
+                                        </el-table-column>
+                                        <el-table-column
+                                                prop="id"
+                                                align="center"
+                                                sortable
+                                                fixed
+                                                label="编号"
+                                                show-overflow-tooltip
+                                                width="80">
+                                        </el-table-column>
+                                        <el-table-column
+                                                align="center"
+                                                prop="tName"
+                                                label="标签名称"
+                                                width="200"
+                                                show-overflow-tooltip>
+                                            <template slot-scope="scope">
+                                                <el-tag disable-transitions>
+                                                    {{scope.row.tName}}
+                                                </el-tag>
+                                            </template>
+                                        </el-table-column>
+                                        <el-table-column label="操作" align="center" fixed="right">
+                                            <template slot-scope="scope">
+                                                <el-button
+                                                        icon="el-icon-delete"
+                                                        size="mini"
+                                                        type="danger"
+                                                        @click="handleDelete_t(scope.row.id)">删除
+                                                </el-button>
+                                                <el-button size="mini" icon="el-icon-edit" type="warning" @click="handleEdit_t(scope.row.id)">编辑</el-button>
+                                            </template>
+                                        </el-table-column>
+                                    </el-table>
+                                    <!-- 分页 -->
+                                    <div class="pagination">
+                                        <el-pagination
+                                                background
+                                                @size-change="handleSizeChange_t"
+                                                @current-change="handleCurrentChange_t"
+                                                :current-page="pageConf.pageCode_t"
+                                                :page-sizes="pageConf.pageOption_t"
+                                                :page-size="pageConf.pageSize_t"
+                                                layout="total, sizes, prev, pager, next, jumper"
+                                                :total="pageConf.totalPage_t">
+                                        </el-pagination>
+                                    </div>
+                                </el-card>
+                            </el-col>
+                        </el-row>
+                    </div>
+                </el-card>
+            </el-main>
+        </el-container>
+    </div>
+    <!-- 分类添加 -->
+    <el-dialog
+            title="分类添加"
+            :visible.sync="config.saveDialog"
+            width="30%"
+            :before-close="handleClose">
+        <span>
+            <el-input placeholder="请输入分类名称" v-model="editor.category.cName">
+                <template slot="prepend">分类名称</template>
+            </el-input>
+        </span>
+        <span slot="footer" class="dialog-footer">
+            <el-button @click="config.saveDialog = false">取 消</el-button>
+            <el-button type="primary" @click="save">确 定</el-button>
+        </span>
+    </el-dialog>
+    <!-- 标签添加 -->
+    <el-dialog
+            title="标签添加"
+            :visible.sync="config.saveDialog_t"
+            width="30%"
+            :before-close="handleClose">
+        <span>
+            <el-input placeholder="请输入标签名称" v-model="editor.tags.tName">
+                <template slot="prepend">标签名称</template>
+            </el-input>
+        </span>
+        <span slot="footer" class="dialog-footer">
+            <el-button @click="config.saveDialog_t = false">取 消</el-button>
+            <el-button type="primary" @click="save_t">确 定</el-button>
+        </span>
+    </el-dialog>
+
+    <!-- 分类编辑 -->
+    <el-dialog
+            title="分类编辑"
+            :visible.sync="config.editDialog"
+            width="30%"
+            :before-close="handleClose">
+        <span>
+            <el-input placeholder="请输入分类名称" v-model="editor.category.cName">
+                <template slot="prepend">分类名称</template>
+            </el-input>
+        </span>
+        <span slot="footer" class="dialog-footer">
+            <el-button @click="config.editDialog = false">取 消</el-button>
+            <el-button type="primary" @click="edit">确 定</el-button>
+        </span>
+    </el-dialog>
+    <!-- 标签编辑 -->
+    <el-dialog
+            title="标签编辑"
+            :visible.sync="config.editDialog_t"
+            width="30%"
+            :before-close="handleClose">
+        <span>
+            <el-input placeholder="请输入标签名称" v-model="editor.tags.tName">
+                <template slot="prepend">标签名称</template>
+            </el-input>
+        </span>
+        <span slot="footer" class="dialog-footer">
+            <el-button @click="config.editDialog_t = false">取 消</el-button>
+            <el-button type="primary" @click="edit_t">确 定</el-button>
+        </span>
+    </el-dialog>
+
+</div>
+</body>
+<!--<script type="text/javascript" th:src="@{../../../lib/vue/vue.js}"></script>-->
+<script th:src="@{https://cdn.jsdelivr.net/npm/vue/dist/vue.js}"></script>
+<script type="text/javascript" th:src="@{../../../lib/element-ui/lib/index.js}"></script>
+<script type="text/javascript" th:src="@{../../../lib/vue/vue-resource.js}"></script>
+<script type="text/javascript" th:src="@{../../../admin/js/category.js}"></script>
+</html>

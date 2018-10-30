@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.tycoding.admin.mapper.TagsMapper">
+
+    <!-- 查询总数量 -->
+    <select id="findAllCount" resultType="Long">
+        SELECT COUNT(*) FROM tb_tags
+    </select>
+
+    <!-- 查询所有 -->
+    <select id="findAll" resultType="Tags">
+        SELECT * FROM tb_tags
+    </select>
+
+    <!-- 条件查询 -->
+    <select id="findByPage" parameterType="Tags" resultType="Tags">
+        SELECT * FROM tb_tags
+        <!--WHERE 1=1-->
+        <!--<if test="author != null">-->
+        <!--AND author LIKE CONCAT('%', #{author}, '%')-->
+        <!--</if>-->
+    </select>
+
+    <!-- 根据ID查询 -->
+    <select id="findById" parameterType="Long" resultType="Tags">
+        SELECT * FROM tb_tags WHERE id = #{id}
+    </select>
+
+    <!-- 保存 -->
+    <insert id="save" parameterType="Tags">
+        INSERT  INTO
+        tb_tags(
+          t_name
+        )
+        VALUES(
+          #{tName}
+        )
+    </insert>
+
+    <!-- 查询是否存在 -->
+    <select id="exists" resultType="Boolean">
+        SELECT COUNT(1) FROM tb_tags WHERE t_name = #{name}
+    </select>
+
+    <!-- 更新 -->
+    <update id="update" parameterType="Tags">
+        UPDATE ignore tb_tags
+        <set>
+            <if test="tName != null">
+                t_name = #{tName}
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <!-- 删除 -->
+    <delete id="delete" parameterType="Long">
+        DELETE FROM tb_tags WHERE id = #{id}
+    </delete>
+
+    <select id="findByName" resultType="Tags">
+        SELECT * FROM tb_tags WHERE t_name = #{name}
+    </select>
+
+    <!-- find by articleId or tagsId -->
+    <select id="findByArticleTagsId" resultType="Tags">
+        SELECT * FROM tb_article_tags WHERE 1=1
+        <if test="articleId != null and articleId != 0">
+            AND article_id = #{articleId}
+        </if>
+        <if test="tagsId != null and tagsId != 0">
+            AND tags_id = #{tagsId}
+        </if>
+    </select>
+
+</mapper>

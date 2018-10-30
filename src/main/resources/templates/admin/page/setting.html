@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>系统设置</title>
+    <link rel="icon" th:href="@{../../../public/favicon-icon.png}" type="image/png">
+    <link rel="stylesheet" th:href="@{../../../lib/element-ui/lib/theme-chalk/index.css}"/>
+    <link rel="stylesheet" th:href="@{../../../lib/font/css/font-awesome.min.css}"/>
+    <link rel="stylesheet" th:href="@{../../../public/admin/base.css}">
+    <link rel="stylesheet" th:href="@{../../../admin/css/setting.css}">
+</head>
+<body>
+<!-- vue入口 -->
+<div id="app">
+    <!-- 布局容器 -->
+    <div class="pull-height">
+        <!-- aside -->
+        <div th:replace="admin/side :: side"></div>
+
+        <!-- container -->
+        <el-container id="main" :class="{main_close:config.isCollapse}">
+            <!-- header -->
+            <div style="background-color: rgb(84, 92, 100);" th:replace="admin/header :: header"></div>
+
+            <!-- main -->
+            <el-main>
+                <el-card>
+                    <h2>系统设置</h2>
+                    <div>
+                        <!--<el-row :gutter="40">
+                            <el-col :span="12">
+                                <el-card class="card-category">
+                                    <div slot="header">
+                                        <span>全局设置</span>
+                                    </div>
+                                    <div>
+                                        <el-form label-width="80px">
+                                            <el-form-item required prop="old_password" :rules="[{ required: true, message: '请输入站点名称'}]" label="账号">
+                                                <el-input placeholder="请输入站点名称"></el-input>
+                                            </el-form-item>
+                                            <el-form-item>
+                                                <el-button type="primary" style="float:right;">保存设置</el-button>
+                                            </el-form-item>
+                                        </el-form>
+                                    </div>
+                                </el-card>
+                            </el-col>
+                            <el-col :span="12">
+                                <el-card class="card-tags">
+                                    <div slot="header">
+                                        <span>个性化设置</span>
+                                    </div>
+                                    <div>
+                                        <el-form label-width="100px">
+                                            <el-form-item required prop="zhihu" :rules="[{ required: true, message: '请输入知乎账号'}]" label="输入旧密码">
+                                                <el-input placeholder="请输入知乎账号"></el-input>
+                                            </el-form-item>
+                                            <el-form-item required prop="github" :rules="[{ required: true, message: '请输入Github账号'}]" label="输入新密码">
+                                                <el-input placeholder="请输入Github账号"></el-input>
+                                            </el-form-item>
+                                            <el-form-item>
+                                                <el-button type="danger" style="float:right;">保存设置</el-button>
+                                            </el-form-item>
+                                        </el-form>
+                                    </div>
+                                </el-card>
+                            </el-col>
+                        </el-row>-->
+
+                        <el-row :gutter="40">
+                            <el-col :span="18">
+                                <el-card class="card-category">
+                                    <div slot="header">
+                                        <span>全局设置</span>
+                                    </div>
+                                    <div>
+                                        <h3>该模块暂未开发</h3>
+                                    </div>
+                                </el-card>
+                            </el-col>
+                        </el-row>
+                    </div>
+                </el-card>
+            </el-main>
+        </el-container>
+    </div>
+</div>
+</body>
+<!--<script type="text/javascript" th:src="@{../../../lib/vue/vue.js}"></script>-->
+<script th:src="@{https://cdn.jsdelivr.net/npm/vue/dist/vue.js}"></script>
+<script type="text/javascript" th:src="@{../../../lib/element-ui/lib/index.js}"></script>
+<script type="text/javascript" th:src="@{../../../lib/vue/vue-resource.js}"></script>
+<script type="text/javascript" th:src="@{../../../admin/js/setting.js}"></script>
+</html>

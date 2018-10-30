@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>后台首页</title>
+    <link rel="icon" th:href="@{../../public/favicon-icon.png}" type="image/png">
+    <!--<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0">-->
+    <link rel="stylesheet" th:href="@{../../lib/element-ui/lib/theme-chalk/index.css}"/>
+    <link rel="stylesheet" th:href="@{../../lib/font/css/font-awesome.min.css}"/>
+    <link rel="stylesheet" th:href="@{../../lib/font/icon/iconfont.css}"/>
+    <link rel="stylesheet" th:href="@{../../public/admin/base.css}">
+    <link rel="stylesheet" th:href="@{../../admin/css/index.css}">
+</head>
+<body>
+<!--<body>-->
+<!-- vue入口 -->
+<div id="app">
+    <!-- 布局容器 -->
+    <div class="pull-height">
+        <!-- aside -->
+        <div th:replace="admin/side :: side"></div>
+
+        <!-- container -->
+        <el-container id="main" :class="{main_close:config.isCollapse}">
+            <!-- header -->
+            <div style="background-color: rgb(84, 92, 100);" th:replace="admin/header :: header"></div>
+
+            <!-- main -->
+            <el-main>
+                <!-- 卡片 -->
+                <h2>仪表盘</h2>
+                <div id="cards">
+                    <el-card role="1">
+                        <span style="float:left">
+                            <h1><i class="icon fa fa-pencil-square-o"></i></h1>
+                        </span>
+                        <span style="float:right">
+                            <span class="font">发表了</span>
+                            <span class="num" v-text="config.article_count"></span>
+                            <span class="font">篇文章</span>
+                        </span>
+                    </el-card>
+                    <el-card role="2">
+                        <span style="float:left">
+                            <h1><i class="icon fa fa-comments"></i></h1>
+                        </span>
+                        <span style="float:right">
+                            <span class="font">收到了</span>
+                            <span class="num" v-text="config.comments_count"></span>
+                            <span class="font">条评论</span>
+                        </span>
+                    </el-card>
+                    <el-card role="3">
+                        <span style="float:left">
+                            <h1><i class="icon fa fa-tags"></i></h1>
+                        </span>
+                        <span style="float:right">
+                            <span class="font">添加了</span>
+                            <span class="num" v-text="config.tags_count"></span>
+                            <span class="font">个标签</span>
+                        </span>
+                    </el-card>
+                    <el-card role="4">
+                        <span style="float:left">
+                            <h1><i class="icon fa fa-link"></i></h1>
+                        </span>
+                        <span style="float:right">
+                            <span class="font">友链了</span>
+                            <span class="num" v-text="config.links_count"></span>
+                            <span class="font">个好友</span>
+                        </span>
+                    </el-card>
+                </div>
+
+            </el-main>
+        </el-container>
+    </div>
+</div>
+
+</body>
+<script th:src="@{https://cdn.jsdelivr.net/npm/vue/dist/vue.js}"></script>
+<script type="text/javascript" th:src="@{../../lib/element-ui/lib/index.js}"></script>
+<script type="text/javascript" th:src="@{../../lib/vue/vue-resource.js}"></script>
+<script type="text/javascript" th:src="@{../../admin/js/index.js}"></script>
+</html>

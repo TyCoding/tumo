@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.tycoding.admin.mapper.LinksMapper">
+
+    <!-- 查询总数量 -->
+    <select id="findAllCount" resultType="Long">
+        SELECT COUNT(*) FROM tb_links
+    </select>
+
+    <!-- 查询所有 -->
+    <select id="findAll" resultType="Links">
+        SELECT * FROM tb_links
+    </select>
+
+    <!-- 条件查询 -->
+    <select id="findByPage" parameterType="Links" resultType="Links">
+        SELECT * FROM tb_links
+        <!--WHERE 1=1-->
+        <!--<if test="author != null">-->
+        <!--AND author LIKE CONCAT('%', #{author}, '%')-->
+        <!--</if>-->
+    </select>
+
+    <!-- 根据ID查询 -->
+    <select id="findById" parameterType="Long" resultType="Links">
+        SELECT * FROM tb_links WHERE id = #{id}
+    </select>
+
+    <!-- 保存 -->
+    <insert id="save" parameterType="Links">
+        INSERT  INTO
+        tb_links(
+          l_name,
+          url
+        )
+        VALUES(
+          #{lName},
+          #{url}
+        )
+    </insert>
+
+    <!-- 更新 -->
+    <update id="update" parameterType="Links">
+        UPDATE ignore tb_links
+        <set>
+            <if test="lName != null">
+                l_name = #{lName},
+            </if>
+            <if test="url != null">
+                url = #{url}
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <!-- 删除 -->
+    <delete id="delete" parameterType="Long">
+        DELETE FROM tb_links WHERE id = #{id}
+    </delete>
+
+</mapper>

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>文章管理</title>
+    <link rel="icon" th:href="@{../../../public/favicon-icon.png}" type="image/png">
+    <link rel="stylesheet" th:href="@{../../../lib/element-ui/lib/theme-chalk/index.css}"/>
+    <link rel="stylesheet" th:href="@{../../../lib/font/css/font-awesome.min.css}"/>
+    <link rel="stylesheet" th:href="@{../../../public/admin/base.css}">
+    <link rel="stylesheet" th:href="@{../../../admin/css/article.css}">
+</head>
+<body>
+<!-- vue入口 -->
+<div id="app">
+    <!-- 布局容器 -->
+    <div class="pull-height">
+        <!-- aside -->
+        <div th:replace="admin/side :: side"></div>
+
+        <!-- container -->
+        <el-container id="main" :class="{main_close:config.isCollapse}">
+            <!-- header -->
+            <div style="background-color: rgb(84, 92, 100);" th:replace="admin/header :: header"></div>
+
+            <!-- main -->
+            <el-main>
+                <el-card>
+                    <h2>文章管理</h2>
+                    <div>
+                        <!-- 功能按钮 -->
+                        <div>
+                            <el-row>
+                                <a href="/admin/article/publish">
+                                    <el-button type="primary" icon="el-icon-plus">新增</el-button>
+                                </a>
+                                <el-button type="primary" plain icon="el-icon-edit">编辑</el-button>
+                                <el-button type="danger" plain icon="el-icon-delete"
+                                           @click="deleteSelect(config.multipleSelection)">删除
+                                </el-button>
+                                <el-button icon="el-icon-refresh"
+                                           @click="search(pageConf.pageCode,pageConf.pageSize)">刷新
+                                </el-button>
+                            </el-row>
+                            <span id="tag" class="el-tag avue-tip">
+                                <i class="el-icon-info"></i>
+                                <span class="name">
+                                    当前表格已选择<span class="count" v-text="config.count"></span>项
+                                </span>
+                                <span @click.prevent="clearSelect()" style="cursor:pointer">&nbsp;&nbsp;清空</span>
+                            </span>
+                        </div>
+                        <!-- 列表 -->
+                        <el-table
+                                ref="article"
+                                :data="entity.article"
+                                border
+                                tooltip-effect="dark"
+                                style="width: 100%"
+                                @selection-change="selectChange">
+                            <el-table-column
+                                    ref="selection"
+                                    align="center"
+                                    type="selection"
+                                    width="55">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="id"
+                                    align="center"
+                                    sortable
+                                    fixed
+                                    show-overflow-tooltip
+                                    label="编号"
+                                    width="80">
+                            </el-table-column>
+                            <el-table-column
+                                    align="center"
+                                    prop="title"
+                                    label="文章标题"
+                                    width="260"
+                                    show-overflow-tooltip>
+                            </el-table-column>
+                            <el-table-column
+                                    align="center"
+                                    prop="author"
+                                    sortable
+                                    show-overflow-tooltip
+                                    label="文章作者"
+                                    width="120">
+                            </el-table-column>
+                            <el-table-column
+                                    align="center"
+                                    prop="createTime"
+                                    sortable
+                                    label="创建时间"
+                                    width="170">
+                            </el-table-column>
+                            <el-table-column
+                                    align="center"
+                                    prop="editTime"
+                                    sortable
+                                    label="最后编辑时间"
+                                    width="170">
+                            </el-table-column>
+                            <el-table-column
+                                    align="center"
+                                    prop="publishTime"
+                                    sortable
+                                    label="发布时间"
+                                    width="170">
+                            </el-table-column>
+                            <el-table-column
+                                    align="center"
+                                    prop="category"
+                                    show-overflow-tooltip
+                                    label="文章分类"
+                                    width="130">
+                            </el-table-column>
+                            <el-table-column
+                                    align="center"
+                                    prop="state"
+                                    sortable
+                                    label="状态"
+                                    width="120">
+                                <template slot-scope="scope">
+                                    <el-tag>{{scope.row.state}}</el-tag>
+                                </template>
+                            </el-table-column>
+                            <el-table-column label="操作" align="center" fixed="right">
+                                <template slot-scope="scope">
+                                    <el-button
+                                            icon="el-icon-delete"
+                                            size="mini"
+                                            type="danger"
+                                            @click="handleDelete(scope.row.id)">删除
+                                    </el-button>
+                                    <a :href="'/admin/article/' + scope.row.id + '/edit'">
+                                        <el-button size="mini" icon="el-icon-edit" type="warning">编辑</el-button>
+                                    </a>
+                                    <a :href="'/site/article/' + scope.row.id" target="_blank">
+                                        <el-button size="mini" icon="el-icon-view" type="primary">预览</el-button>
+                                    </a>
+                                </template>
+                            </el-table-column>
+                        </el-table>
+
+                        <!-- 分页 -->
+                        <div class="pagination">
+                            <el-pagination
+                                    background
+                                    @size-change="handleSizeChange"
+                                    @current-change="handleCurrentChange"
+                                    :current-page="pageConf.pageCode"
+                                    :page-sizes="pageConf.pageOption"
+                                    :page-size="pageConf.pageSize"
+                                    layout="total, sizes, prev, pager, next, jumper"
+                                    :total="pageConf.totalPage">
+                            </el-pagination>
+                        </div>
+                        <br/>
+                    </div>
+                </el-card>
+            </el-main>
+        </el-container>
+    </div>
+</div>
+</body>
+<!--<script type="text/javascript" th:src="@{../../../lib/vue/vue.js}"></script>-->
+<script th:src="@{https://cdn.jsdelivr.net/npm/vue/dist/vue.js}"></script>
+<script type="text/javascript" th:src="@{../../../lib/element-ui/lib/index.js}"></script>
+<script type="text/javascript" th:src="@{../../../lib/vue/vue-resource.js}"></script>
+<script type="text/javascript" th:src="@{../../../admin/js/article.js}"></script>
+</html>

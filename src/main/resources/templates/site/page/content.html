@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>文章详情 - Tumo Blog</title>
+    <link rel="icon" th:href="@{../../public/favicon-icon.png}" type="image/png">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" th:href="@{../../../plugins/css/taurus.css}">
+
+    <link rel="stylesheet" th:href="@{../../../lib/element-ui/lib/theme-chalk/index.css}"/>
+    <link rel="stylesheet" th:href="@{../../../lib/editormd/editormd.min.css}"/>
+    <link rel="stylesheet" th:href="@{../../../site/css/content.css}"/>
+    <link rel="stylesheet" th:href="@{../../../public/site/base.css}"/>
+</head>
+<body style="display: flex; flex-direction: column; min-height: 100vh;">
+
+<!-- header -->
+<div th:replace="site/header :: header"></div>
+
+<!-- main -->
+<div id="app">
+    <div style="flex: 1;">
+        <article class="article" data-version="">
+            <div id="main">
+                <el-row :gutter="30">
+                    <el-col :span="14" :offset="5" id="left">
+                        <!-- article -->
+                        <el-card shadow="always">
+                            <!-- 文章信息 -->
+                            <div>
+                                <div class="post-header">
+                                    <h1 class="post-title article-header article-title" itemprop="name headline">
+                                        <a th:href="'/article/' + ${article.id}" th:text="${article.title}"></a>
+                                    </h1>
+                                    <div class="post-data">
+                                        <time itemprop="datePublished">发布于 <b
+                                                th:text="${#dates.format(article.publishTime,'yyyy-MM-dd')}"></b>
+                                        </time>
+                                        / <a th:href="'/category/' + ${article.category}" th:text="${article.category}"></a> / <a
+                                            href="#comments"><b th:text="12"></b> 条评论</a> /
+                                        <b th:text="12"></b> 浏览
+                                    </div>
+                                </div>
+                                <div class="post-content">
+                                    <p class="post-tags" th:each="tag : ${article.tags}"><a href="/" th:text="${tag}"></a></p>
+                                </div>
+                            </div>
+                            <!-- 用于显示md编辑器的md格式 -->
+                            <div id="doc-content">
+                                <textarea style="display: none;" th:utext="${article.content}"></textarea>
+                            </div>
+                        </el-card>
+
+                        <!-- comments-form -->
+                        <div class="comments-form" ref="comments" id="comments">
+                            <el-card shadow="always" style="margin-top: 50px;">
+                                <el-form :inline="true" :model="editor.comments" ref="editor">
+                                    <input hidden="hidden" th:value="${article.id}" ref="articleId"/>
+                                    <input hidden="hidden" th:value="${article.title}" ref="articleTitle"/>
+                                    <el-form-item required prop="author" :rules="[{ required: true, message: '请输入姓名'}]">
+                                        <el-input v-model="editor.comments.author" placeholder="姓名（*）"></el-input>
+                                    </el-form-item>
+                                    <el-form-item required prop="email" :rules="[{ required: true, message: '请输入邮箱'}]">
+                                        <el-input v-model="editor.comments.email" placeholder="邮箱（*）"></el-input>
+                                    </el-form-item>
+                                    <el-form-item>
+                                        <el-input v-model="editor.comments.url" placeholder="网址（http://）"></el-input>
+                                    </el-form-item>
+                                </el-form>
+                                <div>
+                                    <el-input :placeholder="config.holder" ref="content" v-model="editor.comments.content" type="textarea"></el-input>
+                                    <div class="submit">
+                                        <el-button size="mini" round @click="submit">提交</el-button>
+                                    </div>
+                                </div>
+                            </el-card>
+                        </div>
+
+                        <div v-if="entity.comments.length > 0">
+                            <!-- comments-info -->
+                            <div class="comments-info" v-for="item in entity.comments">
+                                <el-card shadow="always" :id="item.id">
+                                    <div class="comment-author">
+                                        <img class="el-tooltip" src="http://tycoding.cn/author/avatar.png"/>
+                                        <span>{{item.author}}</span>
+                                    </div>
+                                    <div class="comment-meta">
+                                        <div class="comment-content">
+                                            <span><a :href="item.parentId" v-text="item.authorId"></a></span>
+                                            <span v-text="item.content"></span>
+                                        </div>
+                                        <div class="comment-time">
+                                            <b v-text="item.time"></b>
+                                            <span class="talk" v-if="item.parentId != null" @click="talkBtn(item.parentId, item.id)"><b class="fa fa-comments fa-fw"></b>查看对话</span>
+                                            <span class="comment-replay">
+                                        <b @click="replay(item.author, item.id)">回复</b>
+                                    </span>
+                                        </div>
+                                    </div>
+                                </el-card>
+                            </div>
+                            <br/>
+                            <!-- 分页 -->
+                            <div class="pagination">
+                                <el-pagination
+                                        background
+                                        @current-change="handleCurrentChange"
+                                        :current-page="pageConf.pageCode"
+                                        :page-size="pageConf.pageSize"
+                                        layout="prev, pager, next"
+                                        :total="pageConf.totalPage">
+                                </el-pagination>
+                            </div>
+                        </div>
+                    </el-col>
+                </el-row>
+            </div>
+
+            <!-- 对话展示框 -->
+            <el-dialog
+                    title="查看对话"
+                    :modal-append-to-body='false'
+                    :visible.sync="config.talkDialog"
+                    width="30%">
+                <span>
+                    <div v-for="item in entity.comments">
+                        <div v-if="item.parentId != null">
+                                            <!-- talk==子级 -->
+                        <div v-if="config.talkId == item.parentId.substring(1)">
+                            <el-card shadow="always" :id="item.id">
+                                <div class="comment-author">
+                                    <img class="el-tooltip" src="http://tycoding.cn/author/avatar.png"/>
+                                    <span v-text="item.author"></span>
+                                </div>
+                                <div class="comment-meta">
+                                    <div class="comment-content">
+                                        <span><a :href="item.parentId" v-text="item.authorId"></a></span>
+                                        <span v-text="item.content"></span>
+                                    </div>
+                                    <div class="comment-time" v-text="item.time">
+                                    </div>
+                                </div>
+                            </el-card>
+                        </div>
+                            <!-- talk==自己 -->
+                        <div v-if="config.talkId == item.id">
+                            <el-card shadow="always" :id="item.id">
+                                <div class="comment-author">
+                                    <img class="el-tooltip" src="http://tycoding.cn/author/avatar.png"/>
+                                    <span v-text="item.author"></span>
+                                </div>
+                                <div class="comment-meta">
+                                    <div class="comment-content">
+                                        <span><a :href="item.parentId" v-text="item.authorId"></a></span>
+                                        <span v-text="item.content"></span>
+                                    </div>
+                                    <div class="comment-time" v-text="item.time">
+                                    </div>
+                                </div>
+                            </el-card>
+                        </div>
+                        <div v-else-if="config.talkPId.substring(1) == item.id">
+                            <el-card shadow="always" :id="item.id">
+                                <div class="comment-author">
+                                    <img class="el-tooltip" src="http://tycoding.cn/author/avatar.png"/>
+                                    <span v-text="item.author"></span>
+                                </div>
+                                <div class="comment-meta">
+                                    <div class="comment-content">
+                                        <span><a :href="item.parentId" v-text="item.authorId"></a></span>
+                                        <span v-text="item.content"></span>
+                                    </div>
+                                    <div class="comment-time" v-text="item.time">
+                                    </div>
+                                </div>
+                            </el-card>
+                        </div>
+                        </div>
+
+                    </div>
+                </span>
+                <span slot="footer" class="dialog-footer">
+                    <el-button @click="config.talkDialog = false">关闭</el-button>
+                </span>
+            </el-dialog>
+        </article>
+    </div>
+
+    <!-- footer -->
+    <div th:replace="site/footer :: footer"></div>
+</div>
+</body>
+<script th:src="@{https://cdn.jsdelivr.net/npm/vue/dist/vue.js}"></script>
+<script type="text/javascript" th:src="@{../../../lib/element-ui/lib/index.js}"></script>
+<script type="text/javascript" th:src="@{../../../lib/vue/vue-resource.js}"></script>
+<script type="text/javascript" th:src="@{../../site/js/content.js }"></script>
+
+<!-- markdown -->
+<script type="text/javascript" th:src="@{../../../lib/editormd/jquery-3.3.1.min.js}"></script>
+<script type="text/javascript" th:src="@{../../../lib/editormd/lib/marked.min.js}"></script>
+<script type="text/javascript" th:src="@{../../../lib/editormd/lib/prettify.min.js}"></script>
+<script type="text/javascript" th:src="@{../../../lib/editormd/lib/raphael.min.js}"></script>
+<script type="text/javascript" th:src="@{../../../lib/editormd/lib/underscore.min.js}"></script>
+<script type="text/javascript" th:src="@{../../../lib/editormd/lib/sequence-diagram.min.js}"></script>
+<script type="text/javascript" th:src="@{../../../lib/editormd/lib/flowchart.min.js}"></script>
+<script type="text/javascript" th:src="@{../../../lib/editormd/lib/jquery.flowchart.min.js}"></script>
+<script type="text/javascript" th:src="@{../../../lib/editormd/editormd.min.js}"></script>
+<script type="text/javascript">
+    var testEditor;
+    $(function () {
+        testEditor = editormd.markdownToHTML("doc-content", {//注意：这里是上面DIV的id
+            htmlDecode: true, // Decode all html tags & attributes
+            // htmlDecode : "style,script,iframe,sub,sup|on*",  // Filter tags, and all on* attributes
+            emoji: true,
+            taskList: true,
+            tex: true, // 默认不解析
+            flowChart: true, // 默认不解析
+            sequenceDiagram: true, // 默认不解析
+            codeFold: true
+        });
+    });
+</script>
+
+</html>

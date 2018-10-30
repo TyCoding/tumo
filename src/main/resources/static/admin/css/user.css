@@ -1,0 +1,11 @@
+.card-category > .el-card__header {
+    background-color: #409EFF;
+    font-size: 15px;
+    color: #fff;
+}
+
+.card-tags > .el-card__header {
+    background-color: #F56C6C;
+    font-size: 15px;
+    color: #fff;
+}

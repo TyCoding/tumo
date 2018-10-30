@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.tycoding.admin.mapper.ArticleTagsMapper">
+
+    <!-- 保存 -->
+    <insert id="save" parameterType="ArticleTags">
+        INSERT  INTO
+        tb_article_tags(
+          article_id,
+          tags_id
+        )
+        VALUES(
+          #{articleId},
+          #{tagsId}
+        )
+    </insert>
+
+    <!-- 查询是否存在 -->
+    <select id="exists" resultType="Boolean">
+        SELECT COUNT(1) FROM tb_article_tags WHERE article_id = #{articleId} AND tags_id = #{tagsId}
+    </select>
+
+    <!-- 删除 -->
+    <delete id="delete" parameterType="Long">
+        DELETE FROM tb_article_tags WHERE tags_id = #{id}
+    </delete>
+
+    <!-- find by articleId -->
+    <select id="findByArticleId" resultType="Tags">
+        SELECT t.t_name
+        FROM tb_article_tags at,
+             tb_tags t
+        WHERE at.article_id = #{articleId}
+          AND t.id = at.tags_id;
+    </select>
+
+
+</mapper>

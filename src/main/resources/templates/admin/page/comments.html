@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>评论管理</title>
+    <link rel="icon" th:href="@{../../../public/favicon-icon.png}" type="image/png">
+    <link rel="stylesheet" th:href="@{../../../lib/element-ui/lib/theme-chalk/index.css}"/>
+    <link rel="stylesheet" th:href="@{../../../lib/font/css/font-awesome.min.css}"/>
+    <link rel="stylesheet" th:href="@{../../../lib/font/icon/iconfont.css}"/>
+    <link rel="stylesheet" th:href="@{../../../public/admin/base.css}">
+    <link rel="stylesheet" th:href="@{../../../admin/css/comments.css}">
+</head>
+<body>
+<!-- vue入口 -->
+<div id="app">
+    <!-- 布局容器 -->
+    <div class="pull-height">
+        <!-- aside -->
+        <div th:replace="admin/side :: side"></div>
+
+        <!-- container -->
+        <el-container id="main" :class="{main_close:config.isCollapse}">
+            <!-- header -->
+            <div style="background-color: rgb(84, 92, 100);" th:replace="admin/header :: header"></div>
+
+            <!-- main -->
+            <el-main>
+                <el-card>
+                    <h2>评论管理页</h2>
+                    <div>
+                        <!-- 功能按钮 -->
+                        <div>
+                            <el-row>
+                                <el-button type="primary" plain icon="el-icon-edit">编辑</el-button>
+                                <el-button type="danger" plain icon="el-icon-delete"
+                                           @click="deleteSelect(multipleSelection)">删除
+                                </el-button>
+                                <el-button icon="el-icon-refresh"
+                                           @click="search(pageConf.pageCode,pageConf.pageSize)">刷新
+                                </el-button>
+                            </el-row>
+                            <span id="tag" class="el-tag avue-tip">
+                                <i class="el-icon-info"></i>
+                                <span class="name">
+                                    当前表格已选择<span class="count" v-text="config.count"></span>项
+                                </span>
+                                <span @click.prevent="clearSelect()" style="cursor:pointer">&nbsp;&nbsp;清空</span>
+                            </span>
+                        </div>
+                        <!-- 列表 -->
+                        <el-table
+                                ref="comments"
+                                :data="entity.comments"
+                                border
+                                tooltip-effect="dark"
+                                style="width: 100%"
+                                @selection-change="selectChange">
+                            <el-table-column
+                                    ref="selection"
+                                    align="center"
+                                    type="selection"
+                                    width="55">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="id"
+                                    align="center"
+                                    sortable
+                                    fixed
+                                    label="编号"
+                                    show-overflow-tooltip
+                                    width="80">
+                            </el-table-column>
+                            <el-table-column
+                                    align="center"
+                                    prop="content"
+                                    label="留言内容"
+                                    width="180"
+                                    show-overflow-tooltip>
+                            </el-table-column>
+                            <el-table-column
+                                    align="center"
+                                    prop="articleTitle"
+                                    label="文章标题"
+                                    width="180"
+                                    show-overflow-tooltip>
+                            </el-table-column>
+                            <el-table-column
+                                    align="center"
+                                    prop="author"
+                                    show-overflow-tooltip
+                                    label="留言人"
+                                    width="100">
+                            </el-table-column>
+                            <el-table-column
+                                    align="center"
+                                    prop="authorId"
+                                    show-overflow-tooltip
+                                    label="给谁留言"
+                                    width="100">
+                            </el-table-column>
+                            <el-table-column
+                                    align="center"
+                                    prop="time"
+                                    sortable
+                                    show-overflow-tooltip
+                                    label="留言时间"
+                                    width="170">
+                            </el-table-column>
+                            <el-table-column
+                                    align="center"
+                                    prop="email"
+                                    sortable
+                                    show-overflow-tooltip
+                                    label="留言人邮箱"
+                                    width="150">
+                            </el-table-column>
+                            <el-table-column
+                                    align="center"
+                                    prop="ip"
+                                    sortable
+                                    label="留言人IP地址"
+                                    show-overflow-tooltip
+                                    width="150">
+                            </el-table-column>
+                            <el-table-column
+                                    align="center"
+                                    prop="url"
+                                    sortable
+                                    label="留言人URL"
+                                    show-overflow-tooltip
+                                    width="150">
+                            </el-table-column>
+                            <el-table-column
+                                    align="center"
+                                    prop="state"
+                                    sortable
+                                    label="状态"
+                                    width="100">
+                                <template slot-scope="scope">
+                                    <el-tag>{{scope.row.state}}</el-tag>
+                                </template>
+                            </el-table-column>
+                            <el-table-column label="操作" align="center" fixed="right">
+                                <template slot-scope="scope">
+                                    <el-button
+                                            icon="el-icon-delete"
+                                            size="mini"
+                                            type="danger"
+                                            @click="handleDelete(scope.row.id)">删除
+                                    </el-button>
+                                    <a :href="'/admin/article/' + scope.row.id + '/edit'">
+                                        <el-button size="mini" icon="el-icon-edit" type="warning">编辑</el-button>
+                                    </a>
+                                </template>
+                            </el-table-column>
+                        </el-table>
+
+                        <!-- 分页 -->
+                        <div class="pagination">
+                            <el-pagination
+                                    background
+                                    @size-change="handleSizeChange"
+                                    @current-change="handleCurrentChange"
+                                    :current-page="pageConf.pageCode"
+                                    :page-sizes="pageConf.pageOption"
+                                    :page-size="pageConf.pageSize"
+                                    layout="total, sizes, prev, pager, next, jumper"
+                                    :total="pageConf.totalPage">
+                            </el-pagination>
+                        </div>
+                        <br/>
+                    </div>
+                </el-card>
+            </el-main>
+        </el-container>
+    </div>
+</div>
+</body>
+<!--<script type="text/javascript" th:src="@{../../../lib/vue/vue.js}"></script>-->
+<script th:src="@{https://cdn.jsdelivr.net/npm/vue/dist/vue.js}"></script>
+<script type="text/javascript" th:src="@{../../../lib/element-ui/lib/index.js}"></script>
+<script type="text/javascript" th:src="@{../../../lib/vue/vue-resource.js}"></script>
+<script type="text/javascript" th:src="@{../../../admin/js/comments.js}"></script>
+</html>

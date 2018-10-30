@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.tycoding.admin.mapper.CommentsMapper">
+
+    <!-- 查询总数量 -->
+    <select id="findAllCount" resultType="Long">
+        SELECT COUNT(*) FROM tb_comments
+    </select>
+
+    <!-- 查询所有 -->
+    <select id="findAll" resultType="Comments">
+        SELECT * FROM tb_comments ORDER BY id DESC LIMIT 0, 8
+    </select>
+
+    <!-- 条件查询 -->
+    <select id="findByPage" parameterType="Comments" resultType="Comments">
+        SELECT * FROM tb_comments
+        <!--WHERE 1=1-->
+        <!--<if test="author != null">-->
+        <!--AND author LIKE CONCAT('%', #{author}, '%')-->
+        <!--</if>-->
+    </select>
+
+    <!-- 条件查询并过滤留言数据 -->
+    <select id="findByPageForFilter" resultType="Comments">
+        SELECT * FROM tb_comments
+        WHERE article_id = #{articleId}
+    </select>
+
+    <!-- 根据ID查询 -->
+    <select id="findById" parameterType="Long" resultType="Comments">
+        SELECT * FROM tb_comments WHERE id = #{id}
+    </select>
+
+    <!-- 保存 -->
+    <insert id="save" parameterType="Comments">
+        INSERT  INTO
+        tb_comments(
+          parent_id,
+          article_title,
+          article_id,
+          author,
+          author_id,
+          email,
+          content,
+          time,
+          ip,
+          url,
+          state
+        )
+        VALUES(
+          #{parentId},
+          #{articleTitle},
+          #{articleId},
+          #{author},
+          #{authorId},
+          #{email},
+          #{content},
+          #{time},
+          #{ip},
+          #{url},
+          #{state}
+        )
+    </insert>
+
+    <!-- 更新 -->
+    <update id="update" parameterType="Comments">
+        UPDATE ignore tb_comments
+        <set>
+            <if test="parentId != null">
+                parent_id = #{parentId},
+            </if>
+            <if test="articleTitle != null">
+                article_title = #{articleTitle},
+            </if>
+            <if test="articleId != null and articleId != 0">
+                article_id = #{articleId},
+            </if>
+            <if test="author != null">
+                author = #{author},
+            </if>
+            <if test="authorId != null">
+                authorId = #{authorId},
+            </if>
+            <if test="email != null">
+                email = #{email},
+            </if>
+            <if test="content != null">
+                content = #{content},
+            </if>
+            <if test="time != null">
+                time = #{time},
+            </if>
+            <if test="ip != null">
+                ip = #{ip},
+            </if>
+            <if test="url != null">
+                url = #{url},
+            </if>
+            <if test="state != null">
+                state = #{state}
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <!-- 删除 -->
+    <delete id="delete" parameterType="Long">
+        DELETE FROM tb_comments WHERE id = #{id}
+    </delete>
+
+</mapper>

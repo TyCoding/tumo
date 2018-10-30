@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>文章归档 - Tumo Blog</title>
+    <link rel="icon" th:href="@{../../public/favicon-icon.png}" type="image/png">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" th:href="@{../../../plugins/css/taurus.css}">
+
+    <link rel="stylesheet" th:href="@{../../../lib/element-ui/lib/theme-chalk/index.css}"/>
+    <link rel="stylesheet" th:href="@{../../../site/css/category.css}"/>
+</head>
+<body style="display: flex; flex-direction: column; min-height: 100vh;">
+
+<!-- header -->
+<div th:replace="site/header :: header"></div>
+
+<!-- main -->
+<div id="app">
+    <div style="flex: 1;">
+        <div class="archive-index">
+            <div class="archive-container">
+                <h3 class="archive-title"><i class=""></i>分类： <b th:text="${category}"></b></h3>
+            </div>
+            <div class="Card-archive" data-version="" th:each="entity : ${categoryArticleList}">
+                <div class="Card-body">
+                    <h3 class="Card-title">
+                        <a th:href="'/article/' + ${entity.id}" th:text="${entity.title}"></a>
+                    </h3>
+                    <div class="Card-meta">
+                        <ul>
+                            <li>
+                                <a th:href="@{/archives}">
+                                    <span>发布于: </span>
+                                    <span th:text="${#dates.format(entity.publishTime,'yyyy-MM-dd')}"></span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- footer -->
+    <div th:replace="site/footer :: footer"></div>
+</div>
+
+</body>
+<script type="text/javascript" th:src="@{https://cdn.jsdelivr.net/npm/vue/dist/vue.js}"></script>
+<script type="text/javascript" th:src="@{../../../lib/element-ui/lib/index.js}"></script>
+<script type="text/javascript" th:src="@{../../../lib/vue/vue-resource.js}"></script>
+<script type="text/javascript" th:src="@{../../../site/js/category.js}"></script>
+</html>

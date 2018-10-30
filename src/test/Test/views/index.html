@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="element-ui/lib/theme-chalk/index.css"/>
+    <link rel="stylesheet" lang="scss" href="index.css"/>
+</head>
+<body>
+<div id="app">
+    <el-scrollbar wrapClass="scrollbar-wrapper">
+        <el-menu mode="vertical" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b"
+                 :collapse="isCollapse">
+            <div class="menu-item-wrapper">
+                <template>
+                    <el-submenu>
+                        <template slot="title"><i class="fa fa-bath" aria-hidden="true"></i> <span
+                        ></span></template>
+                        <template>
+                            <el-menu-item><i class="fa fa-bath"
+                                             aria-hidden="true"></i> <span
+                                    slot="title">{{child.meta.title}}</span>
+                            </el-menu-item>
+                        </template>
+                    </el-submenu>
+                    <el-menu-item :index="item.path" class="submenu-title-noDropdown"><i class="fa fa-bath"
+                                                                                         aria-hidden="true"></i>
+                        <span v-if="item.meta&&item.meta.title" slot="title">{{item.meta.title}}</span>
+                    </el-menu-item>
+                </template>
+            </div>
+
+        </el-menu>
+    </el-scrollbar>
+
+</body>
+<script type="text/javascript" src="vue.js"></script>
+<script type="text/javascript" src="element-ui/lib/index.js"></script>
+<script type="text/javascript">
+    new Vue({
+        el: '#app',
+        data() {
+            return {
+                sidebar: '',
+            }
+        },
+        methods: {
+            isCollapse() {
+                // return !this.barEffect.open
+            }
+
+        },
+        //声明周期钩子函数-->在data和methods渲染结束后执行
+        created() {
+        }
+    });
+</script>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>关于博客 - Tumo Blog</title>
+    <link rel="icon" th:href="@{../../public/favicon-icon.png}" type="image/png">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" th:href="@{../../../plugins/css/taurus.css}">
+
+    <link rel="stylesheet" th:href="@{../../lib/element-ui/lib/theme-chalk/index.css}"/>
+    <link rel="stylesheet" th:href="@{../../public/site/base.css}"/>
+    <link rel="stylesheet" th:href="@{../../site/css/about.css}"/>
+</head>
+<body>
+
+<!-- header -->
+<div th:replace="site/header :: header"></div>
+
+<div id="app">
+    <!-- main -->
+    <div id="main">
+        <el-row>
+            <el-col :span="14" :offset="5">
+                <!-- article -->
+                <el-card shadow="always">
+                    <article role="pge-title-content">
+                        <header>
+                            <h2><span>Hi! </span> My name is TyCoding.</h2>
+                        </header>
+                        <label>I’m a Java Developer with an enduring interest in Coding and Write Blog.</label>
+                        <br/>
+                        <br/>
+                        <h1>About</h1>
+                        <p style="margin-bottom: 10px;">Hi! 你好，我是TyCoding, 专注Java开发， 喜欢代码艺术， 关注新技术</p>
+                        <p>喜欢运动， 音乐</p>
+                        <br/>
+                        <br/>
+                        <h1>Works</h1>
+                        <ul>
+                            <li><a href="https://github.com/TyCoding/ssm">ssm:</a> Spring、SpringMVC、Mybatis框架详细整合Demo
+                            </li>
+                            <li><a href="https://github.com/TyCoding/ssm-redis-solr">ssm-redis-solr:</a>
+                                基于SSM、Shiro、Redis、Solr框架简单实现电商项目中搜索功能
+                            </li>
+                        </ul>
+                        <br/>
+                        <br/>
+                        <h1>Concat</h1>
+                        <img th:src="@{../../../site/img/qq.png}">
+                    </article>
+                </el-card>
+            </el-col>
+        </el-row>
+    </div>
+
+    <!-- footer -->
+    <div th:replace="site/footer :: footer"></div>
+</div>
+
+</body>
+<script th:src="@{https://cdn.jsdelivr.net/npm/vue/dist/vue.js}"></script>
+<script type="text/javascript" th:src="@{../../lib/element-ui/lib/index.js}"></script>
+<script type="text/javascript" th:src="@{../../lib/vue/vue-resource.js}"></script>
+<script type="text/javascript" th:src="@{../../site/js/about.js}"></script>
+
+</html>

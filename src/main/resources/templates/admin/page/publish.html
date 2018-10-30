@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>发布文章</title>
+    <link rel="icon" th:href="@{../../../public/favicon-icon.png}" type="image/png">
+    <link rel="stylesheet" th:href="@{../../../lib/element-ui/lib/theme-chalk/index.css}"/>
+    <link rel="stylesheet" th:href="@{../../../lib/font/css/font-awesome.min.css}"/>
+    <link rel="stylesheet" th:href="@{../../../lib/editormd/editormd.min.css}">
+    <link rel="stylesheet" th:href="@{../../../public/admin/base.css}">
+    <link rel="stylesheet" th:href="@{../../../admin/css/publish.css}">
+</head>
+<body>
+<!-- vue入口 -->
+<div id="app">
+    <!-- 布局容器 -->
+    <div class="pull-height">
+        <!-- aside -->
+        <div th:replace="admin/side :: side"></div>
+
+        <!-- container -->
+        <el-container id="main" :class="{main_close:config.isCollapse}">
+            <!-- header -->
+            <div style="background-color: rgb(84, 92, 100);" th:replace="admin/header :: header"></div>
+
+            <!-- main -->
+            <el-main>
+                <el-card>
+                    <h2>发布文章</h2>
+                    <div style="margin-bottom: 6px;">
+                        <el-row :gutter="100">
+                            <el-col :span="12">
+                                <el-input v-model="entity.article.title" placeholder="请输入文章标题">
+                                    <template slot="prepend">文章标题</template>
+                                </el-input>
+                            </el-col>
+                            <el-col :span="12">
+                                <el-input v-model="entity.article.author" placeholder="请输入文章作者">
+                                    <template slot="prepend">文章作者</template>
+                                </el-input>
+                            </el-col>
+                        </el-row>
+                        <br/>
+                        <el-row :gutter="100">
+                            <el-col :span="4" class="category">
+                                <el-tooltip class="item" effect="dark" content="下拉框中没有？可直接键入" placement="top-start">
+                                    <el-select v-model="entity.article.category" allow-create filterable placeholder="请选择文章分类">
+                                        <el-option
+                                                v-for="item in config.options"
+                                                :key="item.value"
+                                                :label="item.label"
+                                                :value="item.value">
+                                        </el-option>
+                                    </el-select>
+                                </el-tooltip>
+                            </el-col>
+                            <el-col :span="8" class="tags">
+                                <div>
+                                    <el-tag
+                                            :key="tag"
+                                            v-for="tag in config.dynamicTags"
+                                            closable
+                                            :disable-transitions="false"
+                                            @close="handleCloseTag(tag)" v-text="tag">
+                                    </el-tag>
+                                    <el-input
+                                            class="input-new-tag"
+                                            v-if="config.inputVisible"
+                                            v-model="entity.article.tags"
+                                            ref="saveTagInput"
+                                            size="small"
+                                            @keyup.enter.native="handleInputConfirm"
+                                            @blur="handleInputConfirm"></el-input>
+                                    <el-button v-else class="button-new-tag" size="small" @click="showInput">+文章标签
+                                    </el-button>
+                                </div>
+                            </el-col>
+                            <el-col :span="12">
+                                <el-input v-model="entity.article.origin" placeholder="请输入文章来源，默认来自本系统">
+                                    <template slot="prepend">文章来源</template>
+                                    <span v-text="entity.article.origin"></span>
+                                </el-input>
+                            </el-col>
+                        </el-row>
+                    </div>
+                    <div>
+                        <div id="article">
+                            <textarea id="article-editor-md" ref="articleEditorMd" name="article-editor-md"></textarea>
+                        </div>
+                    </div>
+                    <div>
+                        <el-row :gutter="20">
+                            <el-col :span="12" :offset="20">
+                                <el-button type="primary" @click="publishBtn(0)">存入草稿</el-button>
+                                <el-button type="warning" @click="publishBtn(1)">发布文章</el-button>
+                            </el-col>
+                        </el-row>
+                    </div>
+                </el-card>
+            </el-main>
+        </el-container>
+    </div>
+</div>
+</body>
+<!--<script type="text/javascript" th:src="@{../../../lib/vue/vue.js}"></script>-->
+<script th:src="@{https://cdn.jsdelivr.net/npm/vue/dist/vue.js}"></script>
+<script type="text/javascript" th:src="@{../../../lib/element-ui/lib/index.js}"></script>
+<script type="text/javascript" th:src="@{../../../lib/vue/vue-resource.js}"></script>
+<script type="text/javascript" th:src="@{../../../lib/editormd/jquery-3.3.1.min.js}"></script>
+<script type="text/javascript" th:src="@{../../../lib/editormd/editormd.min.js}"></script>
+<script type="text/javascript" th:src="@{../../../admin/js/publish.js}"></script>
+<script type="text/javascript" th:inline="javascript">
+    var markdownContent = editormd('article', {
+        htmlDecode : true, // Decode all html tags & attributes
+        // htmlDecode : "style,script,iframe,sub,sup|on*",  // Filter tags, and all on* attributes
+        width: '100%',
+        height: 540,
+        syncScrolling: "single",
+        path: '../../../lib/editormd/lib/',
+        saveHTMLToTextarea: true,
+
+        emoji: true,
+        watch: false,
+        codeFold: true,
+        taskList: true,
+        tex: true, // 默认不解析
+        flowChart: true, // 默认不解析
+        sequenceDiagram: true, // 默认不解析
+
+        toolbarIcons: function () {
+            return ["undo", "redo", "bold", "del", "italic", "quote", "ucwords", "uppercase", "lowercase", "|", "h1", "h2", "h3", "|", "list-ul", "list-ol", "|", "link", "reference-link", "image", "code", "preformatted-text", "table", "datetime", "emoji", "html-entities", "goto-line", "|", "preview", "fullscreen", "", "||", "watch"];
+        },
+    })
+</script>
+</html>

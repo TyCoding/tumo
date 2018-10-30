@@ -1,0 +1,53 @@
+
+/*main-begin*/
+#cards span {
+    display: block;
+    color: #fff;
+    margin-left: 30px;
+}
+
+.icon {
+    font-size: 45px;
+}
+
+.num {
+    font-size: 30px;
+}
+
+#cards [role="1"] {
+    background: #1E9FFF;
+    display: inline-block;
+    width: 24%;
+    height: 135px;
+    margin: 0 5px 0 0;
+}
+
+#cards [role="2"] {
+    background: #FF5722;
+    display: inline-block;
+    width: 24%;
+    height: 135px;
+    margin: 0 5px;
+}
+
+#cards [role="3"] {
+    background: #009688;
+    display: inline-block;
+    width: 24%;
+    height: 135px;
+    margin: 0 6px;
+}
+
+#cards [role="4"] {
+    background: #2F4056;
+    display: inline-block;
+    width: 24%;
+    height: 135px;
+    margin: 0 6px;
+}
+
+.font {
+    font-size: 15px !important;
+}
+
+/*main-end*/

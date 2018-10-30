@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<el-aside style="width:280px;" th:fragment="side" :class="{handleClose:config.isCollapse,handleOpen:!config.isCollapse}">
+    <el-menu
+            class="el-menu-vertical-demo"
+            @open="handleOpen"
+            unique-opened
+            @select="handleSideSelect"
+            :default-active="config.defaultActive"
+            :collapse="config.isCollapse"
+            @close="handleClose"
+            background-color="#545c64"
+            text-color="#fff">
+        <div class="logo">
+            <span class="fa fa-code fa-fw"></span>
+            <span v-if="!config.isCollapse" style="animation-duration: 0s;-webkit-animation-duration:0s">Tumo Blog</span>
+        </div>
+        <a href="/admin">
+            <el-menu-item index="1">
+                <i class="fa fa-home fa-fw"></i>
+                <span slot="title">首页</span>
+            </el-menu-item>
+        </a>
+        <a href="/admin/article/publish">
+            <el-menu-item index="2">
+                <i class="fa fa-pencil-square-o fa-fw"></i>
+                <span slot="title">发布文章</span>
+            </el-menu-item>
+        </a>
+        <a href="/admin/article">
+            <el-menu-item index="3">
+                <i class="fa fa-list fa-fw"></i>
+                <span slot="title">文章管理</span>
+            </el-menu-item>
+        </a>
+        <a href="/admin/comments">
+            <el-menu-item index="4">
+                <i class="fa fa-comments fa-fw"></i>
+                <span slot="title">评论管理</span>
+            </el-menu-item>
+        </a>
+        <a href="/admin/category">
+            <el-menu-item index="5">
+                <i class="fa fa-tags fa-fw"></i>
+                <span slot="title">分类/标签</span>
+            </el-menu-item>
+        </a>
+        <a href="/admin/cover">
+            <el-menu-item index="7">
+                <i class="fa fa-paper-plane fa-fw"></i>
+                <span slot="title">封面管理</span>
+            </el-menu-item>
+        </a>
+        <a href="/admin/links">
+            <el-menu-item index="8">
+                <i class="fa fa-link fa-fw"></i>
+                <span slot="title">友链管理</span>
+            </el-menu-item>
+        </a>
+        <a href="/admin/user">
+            <el-menu-item index="9">
+                <i class="fa fa-user fa-fw"></i>
+                <span slot="title">个人信息</span>
+            </el-menu-item>
+        </a>
+        <a href="/admin/setting">
+            <el-menu-item index="10">
+                <i class="fa fa-cog fa-fw"></i>
+                <span slot="title">系统设置</span>
+            </el-menu-item>
+        </a>
+    </el-menu>
+</el-aside>
+
+</body>
+</html>

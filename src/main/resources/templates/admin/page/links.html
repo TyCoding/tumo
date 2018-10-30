@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>友链管理</title>
+    <link rel="icon" th:href="@{../../../public/favicon-icon.png}" type="image/png">
+    <link rel="stylesheet" th:href="@{../../../lib/element-ui/lib/theme-chalk/index.css}"/>
+    <link rel="stylesheet" th:href="@{../../../lib/font/css/font-awesome.min.css}"/>
+    <link rel="stylesheet" th:href="@{../../../public/admin/base.css}">
+    <link rel="stylesheet" th:href="@{../../../admin/css/links.css}">
+</head>
+<body>
+<!-- vue入口 -->
+<div id="app">
+    <!-- 布局容器 -->
+    <div class="pull-height">
+        <!-- aside -->
+        <div th:replace="admin/side :: side"></div>
+
+        <!-- container -->
+        <el-container id="main" :class="{main_close:config.isCollapse}">
+            <!-- header -->
+            <div style="background-color: rgb(84, 92, 100);" th:replace="admin/header :: header"></div>
+
+            <!-- main -->
+            <el-main>
+                <el-card>
+                    <h2>友链管理</h2>
+
+                    <!-- 添加框 -->
+                    <el-card class="card-category">
+                        <div slot="header">
+                            <span>保存友链</span>
+                        </div>
+                        <div>
+                            <el-form :inline="true" :model="editor.links" class="demo-form-inline">
+                                <el-form-item required prop="lName" :rules="[{ required: true, message: '请输入友链名称'}]" label="友链名称">
+                                    <el-input style="width: 300px" v-model="editor.links.lName" placeholder="请输入友链名称"></el-input>
+                                </el-form-item>
+                                <el-form-item required prop="url" :rules="[{ required: true, message: '请输入链接地址'}]" label="链接地址">
+                                    <el-input style="width: 300px" v-model="editor.links.url" placeholder="请输入链接地址"></el-input>
+                                </el-form-item>
+                                <el-form-item>
+                                    <el-button type="success" @click="save">保存友链</el-button>
+                                </el-form-item>
+                            </el-form>
+                        </div>
+                    </el-card>
+
+                    <!-- 列表 -->
+                    <el-table
+                            ref="links"
+                            :data="entity.links"
+                            border
+                            tooltip-effect="dark"
+                            style="width: 100%"
+                            @selection-change="selectChange">
+                        <el-table-column
+                                ref="selection"
+                                align="center"
+                                type="selection"
+                                width="55">
+                        </el-table-column>
+                        <el-table-column
+                                prop="id"
+                                align="center"
+                                sortable
+                                fixed
+                                label="编号"
+                                show-overflow-tooltip
+                                width="200">
+                        </el-table-column>
+                        <el-table-column
+                                align="center"
+                                prop="lName"
+                                label="友链名称"
+                                width="300"
+                                show-overflow-tooltip>
+                        </el-table-column>
+                        <el-table-column
+                                align="center"
+                                prop="url"
+                                label="链接地址"
+                                width="300"
+                                show-overflow-tooltip>
+                        </el-table-column>
+                        <el-table-column label="操作" align="center" fixed="right">
+                            <template slot-scope="scope">
+                                <el-button
+                                        icon="el-icon-delete"
+                                        size="mini"
+                                        type="danger"
+                                        @click="handleDelete(scope.row.id)">删除
+                                </el-button>
+                                <el-button size="mini" icon="el-icon-edit" type="warning"
+                                           @click="handleEdit(scope.row.id)">编辑
+                                </el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+
+                    <!-- 分页 -->
+                    <div class="pagination">
+                        <el-pagination
+                                background
+                                @size-change="handleSizeChange"
+                                @current-change="handleCurrentChange"
+                                :current-page="pageConf.pageCode"
+                                :page-sizes="pageConf.pageOption"
+                                :page-size="pageConf.pageSize"
+                                layout="total, sizes, prev, pager, next, jumper"
+                                :total="pageConf.totalPage">
+                        </el-pagination>
+                    </div>
+                </el-card>
+            </el-main>
+        </el-container>
+    </div>
+
+    <!-- 编辑 -->
+    <el-dialog
+            title="编辑友链信息"
+            :visible.sync="config.editDialog"
+            width="30%"
+            :before-close="handleClose">
+        <span>
+            <el-form :inline="true" :model="editor.links_edit" class="demo-form-inline">
+                <el-form-item required prop="lName" :rules="[{ required: true, message: '请输入友链名称'}]" label="友链名称">
+                    <el-input style="width: 300px" v-model="editor.links_edit.lName" placeholder="请输入友链名称"></el-input>
+                </el-form-item>
+                <el-form-item required prop="url" :rules="[{ required: true, message: '请输入链接地址'}]" label="链接地址">
+                    <el-input style="width: 300px" v-model="editor.links_edit.url" placeholder="请输入链接地址"></el-input>
+                </el-form-item>
+            </el-form>
+        </span>
+        <span slot="footer" class="dialog-footer">
+            <el-button @click="config.editDialog = false">取 消</el-button>
+            <el-button type="primary" @click="edit">确 定</el-button>
+        </span>
+    </el-dialog>
+</div>
+</body>
+<!--<script type="text/javascript" th:src="@{../../../lib/vue/vue.js}"></script>-->
+<script th:src="@{https://cdn.jsdelivr.net/npm/vue/dist/vue.js}"></script>
+<script type="text/javascript" th:src="@{../../../lib/element-ui/lib/index.js}"></script>
+<script type="text/javascript" th:src="@{../../../lib/vue/vue-resource.js}"></script>
+<script type="text/javascript" th:src="@{../../../admin/js/links.js}"></script>
+</html>

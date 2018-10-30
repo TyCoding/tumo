@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:fragment="header">
+    <header id="header" class="header">
+        <div class="header-title">
+            <div class="header-logo">
+                <a href="/">
+                    <img th:src="@{../../plugins/images/resume.svg}">
+                </a>
+            </div>
+            <div class="header-text">
+                <h1>
+                    <a href="/">Tumo Blog</a>
+                </h1>
+            </div>
+        </div>
+        <div id="header-nav">
+            <nav id="nav">
+                <div class="nav-item" id="nav-item-archive">
+                    <div class="nav-icon">
+                        <a th:href="@{/archives}" title="Archives">
+                            <img th:src="@{../../plugins/images/icons/blue-shadow/archive.svg}" alt="">
+                        </a>
+                    </div>
+                </div>
+                <div class="nav-item" id="nav-item-more">
+                    <div class="nav-icon">
+                        <a th:href="@{/about}" title="About">
+                            <img th:src="@{../../plugins/images/icons/blue-shadow/menu.svg}" alt="">
+                        </a>
+                    </div>
+                </div>
+                <div class="nav-item" id="nav-item-search">
+                    <div class="nav-icon">
+                        <a href="/" title="Search">
+                            <img th:src="@{../../plugins/images/icons/blue-shadow/search.svg}" alt="">
+                        </a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+</div>
+
+</body>
+</html>

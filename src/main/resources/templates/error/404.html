@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta name="generator" content="Hexo 3.8.0">
+    <!-- Basic Page Needs
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <meta charset="utf-8">
+    <title>404 找不到 -- Tumo Blog</title>
+    <link rel="icon" th:href="@{../../public/favicon-icon.png}" type="image/png">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" th:href="@{../../plugins/css/taurus.css}">
+    <link rel="stylesheet" th:href="@{../../public/error.css}">
+</head>
+<body style="display: flex; flex-direction: column; min-height: 100vh;">
+
+<!-- header -->
+<div th:replace="site/header :: header"></div>
+
+<div style="flex: 1;text-align: center">
+    <div class="article" style="margin-top: 11%;margin-bottom: 4%;">
+        <div class="article-content">
+            <blockquote>
+                <img th:src="@{../../plugins/images/404.gif}" alt="404">
+                <footer>
+                    <strong>Collect UI</strong>
+                    <cite><a href="https://medium.com/@CollectUI/404-page-design-inspiration-march-2017-f6d9f7efd054">404
+                        Page Design Inspiration</a></cite>
+                </footer>
+            </blockquote>
+        </div>
+    </div>
+</div>
+
+<!-- footer -->
+<div id="app">
+    <div th:replace="site/footer :: footer"></div>
+</div>
+
+</body>
+<script th:src="@{https://cdn.jsdelivr.net/npm/vue/dist/vue.js}"></script>
+<script type="text/javascript" th:src="@{../../lib/element-ui/lib/index.js}"></script>
+<script type="text/javascript" th:src="@{../../lib/vue/vue-resource.js}"></script>
+<script type="text/javascript" th:src="@{../../site/js/about.js}"></script>
+</html>

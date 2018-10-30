@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>个人信息</title>
+    <link rel="icon" th:href="@{../../../public/favicon-icon.png}" type="image/png">
+    <link rel="stylesheet" th:href="@{../../../lib/element-ui/lib/theme-chalk/index.css}"/>
+    <link rel="stylesheet" th:href="@{../../../lib/font/css/font-awesome.min.css}"/>
+    <link rel="stylesheet" th:href="@{../../../public/admin/base.css}">
+    <link rel="stylesheet" th:href="@{../../../admin/css/user.css}">
+</head>
+<body>
+<!-- vue入口 -->
+<div id="app">
+    <!-- 布局容器 -->
+    <div class="pull-height">
+        <!-- aside -->
+        <div th:replace="admin/side :: side"></div>
+
+        <!-- container -->
+        <el-container id="main" :class="{main_close:config.isCollapse}">
+            <!-- header -->
+            <div style="background-color: rgb(84, 92, 100);" th:replace="admin/header :: header"></div>
+
+            <!-- main -->
+            <el-main>
+                <el-card>
+                    <h2>个人设置</h2>
+                    <div>
+                        <el-row :gutter="40">
+                            <el-col :span="12">
+                                <el-card class="card-category">
+                                    <div slot="header">
+                                        <span>个人信息</span>
+                                    </div>
+                                    <div>
+                                        <el-form label-width="80px" :model="entity.user" ref="user">
+                                            <el-form-item required prop="username" :rules="[{ required: true, message: '请输入用户账号'}]" label="账号">
+                                                <el-input placeholder="请输入用户账号" v-model="entity.user.username"></el-input>
+                                            </el-form-item>
+                                            <el-form-item required prop="nickname" :rules="[{ required: true, message: '请输入用户昵称'}]" label="昵称">
+                                                <el-input placeholder="请输入用户昵称" v-model="entity.user.nickname"></el-input>
+                                            </el-form-item>
+                                            <el-form-item required prop="email" :rules="[{ required: true, message: '请输入用户邮箱'}]" label="邮箱">
+                                                <el-input placeholder="请输入用户邮箱" v-model="entity.user.email"></el-input>
+                                            </el-form-item>
+                                            <el-form-item>
+                                                <el-button type="primary" @click="save" style="float:right;">保存信息</el-button>
+                                            </el-form-item>
+                                        </el-form>
+                                    </div>
+                                </el-card>
+                            </el-col>
+                            <el-col :span="12">
+                                <el-card class="card-tags">
+                                    <div slot="header">
+                                        <span>修改密码</span>
+                                    </div>
+                                    <div>
+                                        <el-form label-width="100px" ref="pass" :model="entity.pass">
+                                            <el-form-item required prop="checkPass" :rules="[{ required: true, message: '请输入旧密码'}]" label="输入旧密码">
+                                                <el-input placeholder="请输入旧密码" v-model="entity.pass.checkPass" type="password"></el-input>
+                                            </el-form-item>
+                                            <el-form-item required prop="password" :rules="[{ required: true, message: '请输入新密码'}]" label="输入新密码">
+                                                <el-input placeholder="请输入新密码,密码长度在6位及以上" v-model="entity.pass.password" type="password"></el-input>
+                                            </el-form-item>
+                                            <el-form-item required prop="repassword" :rules="[{ required: true, message: '确认新密码'}]" label="确认新密码">
+                                                <el-input placeholder="确认新密码" v-model="entity.pass.repassword" type="password"></el-input>
+                                            </el-form-item>
+                                            <el-form-item>
+                                                <el-button type="danger" @click="changePassword" style="float:right;">修改密码</el-button>
+                                            </el-form-item>
+                                        </el-form>
+                                    </div>
+                                </el-card>
+                            </el-col>
+                        </el-row>
+                    </div>
+                </el-card>
+            </el-main>
+        </el-container>
+    </div>
+</div>
+</body>
+<!--<script type="text/javascript" th:src="@{../../../lib/vue/vue.js}"></script>-->
+<script th:src="@{https://cdn.jsdelivr.net/npm/vue/dist/vue.js}"></script>
+<script type="text/javascript" th:src="@{../../../lib/element-ui/lib/index.js}"></script>
+<script type="text/javascript" th:src="@{../../../lib/vue/vue-resource.js}"></script>
+<script type="text/javascript" th:src="@{../../../admin/js/user.js}"></script>
+</html>

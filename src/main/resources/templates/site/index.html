@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Tumo Blog</title>
+    <link rel="icon" th:href="@{../../public/favicon-icon.png}" type="image/png">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" th:href="@{../../plugins/css/taurus.css}">
+
+    <link rel="stylesheet" th:href="@{../../../lib/element-ui/lib/theme-chalk/index.css}"/>
+    <link rel="stylesheet" th:href="@{../../../site/css/index.css}">
+</head>
+<body style="display: flex; flex-direction: column; min-height: 100vh;">
+
+<!-- header -->
+<div th:replace="site/header :: header"></div>
+
+<div id="app">
+    <div style="flex: 1;">
+        <div class="index-container" id="/index.html" data-name="index" data-version="2.1.1">
+            <div class="grid-equalHeight index-cards" v-for="item in entity.article">
+                <div class="Card Card-archive Card-hover">
+                    <div class="Card-body">
+                        <div class="Card-title">
+                            <div class="Card-figure">
+                                <!-- 文章缩略图 -->
+                                <a :href="'/article/' + item.id">
+                                    <img class="grow" :src="item.titlePic" :alt="item.title">
+                                </a>
+                            </div>
+                        </div>
+                        <div class="item-slant reverse-slant bg-deepgrey"></div>
+                        <div class="item-slant"></div>
+                        <div class="Card-excerpt">
+                            <!-- 文章缩略信息 -->
+                            <p><a :href="'/article/' + item.id" v-html="delMarkdedTag(item.content)"></a></p>
+                        </div>
+                        <div class="Card-meta">
+                            <div class="item-title">
+                                <a :href="'/article/' + item.id" v-text="item.title"></a>
+                            </div>
+                            <div class="Card-tags">
+                                <div class="tags">
+                                    <!-- 文章分类 -->
+                                    <label>
+                                        <a :href="'/category/' + item.category" v-text="item.category"></a>
+                                    </label>
+                                    <div class="tags-imgs"></div>
+                                </div>
+                            </div>
+                            <ul>
+                                <li>
+                                    <!-- 发表时间 -->
+                                    <a :href="'/article/' + item.id">
+                                        {{item.publishTime}}
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 分页 -->
+    <div class="pagination">
+        <el-pagination
+                background
+                @current-change="handleCurrentChange"
+                :current-page="pageConf.pageCode"
+                :page-size="pageConf.pageSize"
+                layout="prev, pager, next"
+                :total="pageConf.totalPage">
+        </el-pagination>
+    </div>
+
+    <!-- footer -->
+    <div th:replace="site/footer :: footer"></div>
+</div>
+
+<script th:src="@{https://cdn.jsdelivr.net/npm/vue/dist/vue.js}"></script>
+<script type="text/javascript" th:src="@{../../lib/element-ui/lib/index.js}"></script>
+<script type="text/javascript" th:src="@{../../lib/vue/vue-resource.js}"></script>
+<script type="text/javascript" th:src="@{../../site/js/index.js}"></script>
+</body>
+</html>

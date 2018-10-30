@@ -1,0 +1,78 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    name: springboot
+    type: com.alibaba.druid.pool.DruidDataSource
+    #druid相关配置
+    druid:
+      #监控统计拦截的filters
+      filter: stat
+      #mysql驱动
+      driver-class-name: com.mysql.jdbc.Driver
+      #基本属性
+      url: jdbc:mysql://127.0.0.1:3306/my_blog?useUnicode=true&characterEncoding=UTF-8
+      username: root
+      password: root
+      #配置初始化大小/最小/最大
+      initial-size: 1
+      min-idle: 1
+      max-active: 20
+      #获取连接等待超时时间
+      max-wait: 60000
+      #间隔多久进行一次检测，检测需要关闭的空闲连接
+      time-between-eviction-runs-millis: 60000
+
+  #thymeleaf模板引擎
+  thymeleaf:
+    prefix: classpath:/templates/
+    check-template-location: true
+    suffix: .html
+    encoding: UTF-8
+    mode: LEGACYHTML5
+    cache: false
+
+    #devtools插件
+  devtools:
+    livereload:
+      enabled: true #是否支持livereload
+      port: 35729
+    restart:
+      enabled: true #是否支持热部署
+
+    #文件上传相关设置
+  servlet:
+    multipart:
+      max-file-size: 10Mb
+      max-request-size: 100Mb
+
+#  resources:
+#    #强调springboot的配置文件位置
+#    static-locations: classpath:static/,file:static/
+
+#mybatis配置
+mybatis:
+  mapper-locations: classpath:mapper/**/*.xml
+  type-aliases-package: cn.tycoding.admin.entity
+  configuration:
+    # 使用jdbc的getGeneratedKeys 可以获取数据库自增主键值
+    use-generated-keys: true
+    # 使用列别名替换列名，默认true。如：select name as title from table
+    use-column-label: true
+    # 开启驼峰命名转换，如：Table(create_time) -> Entity(createTime)。不需要我们关心怎么进行字段匹配，mybatis会自动识别`大写字母与下划线`
+    map-underscore-to-camel-case: true
+
+#mybaatis分页插件pagehelper设置
+pagehelper:
+  pagehelperDialect: mysql
+  reasonable: true
+  support-methods-arguments: true
+  #params: count=countSql
+
+
+# 打印sql
+logging:
+  level:
+    cn.tycoding.admin.mapper: DEBUG
+
