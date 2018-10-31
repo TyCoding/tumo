@@ -6,7 +6,7 @@
     <groupId>cn.tycoding</groupId>
     <artifactId>tumo</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>jar</packaging>
+    <packaging>war</packaging>
 
     <name>tumo</name>
     <description>tumo</description>
@@ -114,6 +114,13 @@
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
             <version>1.2.46</version>
+        </dependency>
+
+        <!-- tomcat，设置provided，在打包的时候不会包含这个jar -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+            <scope>provided</scope>
         </dependency>
 
     </dependencies>
