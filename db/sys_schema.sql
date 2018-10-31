@@ -3,7 +3,7 @@
  */
 
 -- 创建数据库
--- CREATE DATABASE my_blog DEFAULT CHARACTER SET utf8;
+-- CREATE DATABASE tumo DEFAULT CHARACTER SET utf8;
 
 -- 文章表
 DROP TABLE IF EXISTS `tb_article`;
@@ -97,17 +97,6 @@ CREATE TABLE `tb_article_tags`(
   PRIMARY KEY (`id`)
 ) CHARSET=utf8 ENGINE=InnoDB COMMENT '文章&&标签关联表';
 
--- 系统setting表
-
-DROP TABLE IF EXISTS `tb_setting`;
-CREATE TABLE tb_setting(
-  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '编号',
-  `pic` VARCHAR(200) DEFAULT NULL COMMENT '个人头像',
-  `url` VARCHAR(200) DEFAULT NULL COMMENT '个人链接',
-  `github` VARCHAR(200) DEFAULT NULL COMMENT 'Github地址',
-  `zhihu` VARCHAR(200) DEFAULT NULL COMMENT '知乎地址',
-  `qq` VARCHAR(200)
-);
 
 
 
