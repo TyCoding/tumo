@@ -2804,7 +2804,7 @@ h1, h2, h3, h4, h5, h6 {
   animation-delay: 1.3s;
 }*/
 #main{
-  animation-name: fadeInUp;
+  animation-name: fadeInDown;
   animation-duration: 1s;
   animation-fill-mode: both;
   animation-delay: 1.3s;

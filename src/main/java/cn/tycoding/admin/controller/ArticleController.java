@@ -138,23 +138,6 @@ public class ArticleController {
         }
     }
 
-//    @RequestMapping("/article")
-//    public String generate(@PathVariable("id") Long id, Model model) {
-//        Article article = articleService.findById(id);
-//        if (article.getId() != 0) {
-//            List<String> tags = new ArrayList<String>();
-//            List<Tags> tagsList = articleTagsService.findByArticleId(article.getId());
-//            for (Tags t : tagsList) {
-//                tags.add(t.gettName());
-//            }
-//            article.setTags(JSON.toJSONString(tags));
-//        } else {
-//            return null;
-//        }
-//        model.addAttribute("article", article);
-//        return "site/page/content";
-//    }
-
     @RequestMapping("/findArchivesByCategory")
     public List<Article> findArchivesByCategory(@RequestParam("name") String name) {
         if (name != null || !name.equals("")) {
@@ -172,20 +155,4 @@ public class ArticleController {
         }
         return null;
     }
-
-//    @RequestMapping("/category/{name}")
-//    public String findArchivesByCategory(@PathVariable("name") String name, Model model) {
-//        List<Article> categoryArticleList = articleService.findArchivesByArticle(new Article(null, name));
-//        model.addAttribute("category", name);
-//        model.addAttribute("categoryArticleList", categoryArticleList);
-//        return "/site/page/category";
-//    }
-
-//    @RequestMapping("/search/{name}")
-//    public String findArchivesByTitle(@PathVariable("name") String name, Model model) {
-//        List<Article> categoryArticleList = articleService.findArchivesByArticle(new Article(null, name));
-//        model.addAttribute("title", name);
-//        model.addAttribute("categoryArticleList", categoryArticleList);
-//        return "/site/page/search";
-//    }
 }

@@ -7,7 +7,6 @@
     <link rel="stylesheet" th:href="@{../../../lib/element-ui/lib/theme-chalk/index.css}"/>
     <link rel="stylesheet" th:href="@{../../../lib/font/css/font-awesome.min.css}"/>
     <link rel="stylesheet" th:href="@{../../../public/admin/base.css}">
-    <link rel="stylesheet" th:href="@{../../../admin/css/article.css}">
 </head>
 <body>
 <!-- vue入口 -->
@@ -122,7 +121,7 @@
                                     label="状态"
                                     width="120">
                                 <template slot-scope="scope">
-                                    <el-tag>{{scope.row.state}}</el-tag>
+                                    <el-tag>{{scope.row.state == '1' ? '已发布':'存入草稿'}}</el-tag>
                                 </template>
                             </el-table-column>
                             <el-table-column label="操作" align="center" fixed="right">

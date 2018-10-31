@@ -1,6 +1,7 @@
 package cn.tycoding.admin.service;
 
 import cn.tycoding.admin.dto.PageBean;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 
 import java.util.List;
 
@@ -47,6 +48,7 @@ public interface BaseService<T> {
      *
      * @param t
      */
+    @RequiresRoles("admin")
     void save(T t);
 
     /**
@@ -54,6 +56,7 @@ public interface BaseService<T> {
      *
      * @param t
      */
+    @RequiresRoles("admin")
     void update(T t);
 
     /**
@@ -61,6 +64,7 @@ public interface BaseService<T> {
      *
      * @param ids
      */
+    @RequiresRoles("admin")
     void delete(Long... ids);
 
 

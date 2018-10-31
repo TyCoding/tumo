@@ -14,6 +14,8 @@ body {
     line-height: 1.42857143;
     color: #353535;
     background-color: #f6f6f6;
+    bottom: 0 !important;
+    min-height: 970px !important;
 }
 h1, h2, h3, h4, h5, h6 {
     font-weight: 500;
@@ -35,6 +37,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .pull-height {
+    bottom: 0 !important;
+    min-height: 970px !important;
     width: 100%;
     height: 100%;
     overflow: hidden;
@@ -138,7 +142,13 @@ a {
     font-weight: 500;
 }
 
+.el-menu-item span{
+    transition: -0.9s !important;
+}
+
 .el-aside {
+    /*transition: 0.7s !important;*/
+    background-color: #f6f6f6;
     width: 280px;
     height: auto;
     overflow-y: auto;
@@ -151,6 +161,7 @@ a {
 }
 
 .el-aside > .el-menu {
+    background-color: #f6f6f6;
     border: none;
     /*height: -webkit-fill-available;*/
     height: 100%;
@@ -158,11 +169,16 @@ a {
 
 /*side-end*/
 
+#main{
+    transition: 0.4s !important;
+    background-color: #f6f6f6;
+}
 
 /*定义侧边栏打开关闭的样式*/
 .handleClose {
+    transition: 1s !important;
     width: 64px !important;
-    /*transition: 0.3s !important;*/
+    background-color: #f6f6f6;
 }
 
 /*
@@ -180,14 +196,17 @@ a {
 
 .handleCloseHeader{
     width: 97% !important;
+    background-color: #f6f6f6;
 }
 
+/*
 .handleCloseHeader{
     animation-name: fadeInRight;
     animation-duration: 1s;
     animation-fill-mode: both;
     animation-delay: 0.3s;
 }
+*/
 
 .handleOpenHeader{
     width: 86% !important;
