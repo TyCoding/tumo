@@ -6,6 +6,7 @@ new Vue({
     el: '#app',
     data() {
         return {
+            basePath: window.location.href,
             config: {
                 name: '',
                 activeIndex: '8',
@@ -168,7 +169,7 @@ new Vue({
             //当前文章评论量
             this.$http.post('/comments/findCountByArticleId', {articleId: id}).then(result => {
                 this.config.commentsCount = result.body;
-            })
+            });
 
             //当前文章浏览量
 
@@ -176,7 +177,15 @@ new Vue({
     },
     // 生命周期函数
     created() {
-        this.init(window.location.href.substring(window.location.href.lastIndexOf('/') + 1));
+        var hash = '';
+        if (window.location.hash.length) {
+            //包含 `#` hash值
+            hash = window.location.href.substring(window.location.href.lastIndexOf('/') + 1, window.location.href.indexOf('#'));
+        } else {
+            hash = window.location.href.substring(window.location.href.lastIndexOf('/') + 1);
+        }
+        this.init(hash);
     },
 
 });
+

@@ -1,11 +1,26 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="Cache-Control" content="no-transform"/>
+    <meta http-equiv="Cache-Control" content="no-siteapp"/>
+    <link rel="shortcut icon" href="https://tale.biezhi.me/templates/themes/default/static/img/favicon.png"/>
+    <link rel="apple-touch-icon" href="https://tale.biezhi.me/templates/themes/default/static/img/apple-touch-icon.png"/>
     <title>文章归档 - Tumo Blog</title>
-    <link rel="icon" th:href="@{../../public/favicon-icon.png}" type="image/png">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" th:href="@{../../../plugins/css/taurus.css}">
+    <link rel="stylesheet" th:href="@{/plugins/css/default.min.css}"/>
+    <link rel="stylesheet" th:href="@{../../../site/css/index.css}">
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+
+    <script th:inline="javascript" th:src="@{/plugins/js/highlight.min.js}"></script>
+    <script th:inline="javascript" th:src="@{/plugins/js/instantclick.min.js}"></script>
+    <!--[if lt IE 9]>
+    <script src="//cdn.bootcss.com/html5shiv/r29/html5.min.js"></script>
+    <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!--<link rel="stylesheet" th:href="@{../../../plugins/css/taurus.css}">-->
 
     <link rel="stylesheet" th:href="@{../../../lib/element-ui/lib/theme-chalk/index.css}"/>
     <link rel="stylesheet" th:href="@{../../../site/css/archives.css}"/>
@@ -51,4 +66,26 @@
 <script type="text/javascript" th:src="@{../../../lib/element-ui/lib/index.js}"></script>
 <script type="text/javascript" th:src="@{../../../lib/vue/vue-resource.js}"></script>
 <script type="text/javascript" th:src="@{../../../site/js/archives.js}"></script>
+<script type="text/javascript" th:src="@{https://npmcdn.com/headroom.js@0.9.4/dist/headroom.js}"></script>
+<script type="text/javascript">
+    var header = new Headroom(document.getElementById("header"), {
+        tolerance: 10,
+        offset : 80,
+        classes: {
+            initial: "animated",
+            pinned: "slideDown",
+            unpinned: "slideUp"
+        }
+    });
+    header.init();
+    $('#search-inp').keypress(function (e) {
+        var key = e.which; //e.which是按键的值
+        if (key === 13) {
+            var q = $(this).val();
+            if (q && q !== '') {
+                window.location.href = '/search/' + q;
+            }
+        }
+    });
+</script>
 </html>

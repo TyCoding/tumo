@@ -6,6 +6,7 @@ var vm = new Vue({
     el: '#app',
     data() {
         return {
+            basePath: window.location.href,
             entity: {
                 article: [{
                     id: '',

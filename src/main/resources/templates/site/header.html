@@ -5,47 +5,35 @@
     <title>Title</title>
 </head>
 <body>
-<div th:fragment="header">
-    <header id="header" class="header">
-        <div class="header-title">
-            <div class="header-logo">
-                <a href="/">
-                    <img th:src="@{/plugins/images/resume.svg}">
-                </a>
-            </div>
-            <div class="header-text">
-                <h1>
-                    <a href="/">Tumo Blog</a>
-                </h1>
-            </div>
+<header id="header" class="header bg-white" th:fragment="header">
+    <div class="navbar-container">
+        <a href="/" class="navbar-logo">
+            <img th:src="@{/public/logo.png}" alt="Tumo Blog"/>
+        </a>
+        <div class="navbar-menu">
+            <a th:href="@{/archives}">归档</a>
+            <a th:href="@{/links}">友链</a>
+            <a th:href="@{/about}">关于</a>
         </div>
-        <div id="header-nav">
-            <nav id="nav">
-                <div class="nav-item" id="nav-item-archive">
-                    <div class="nav-icon">
-                        <a th:href="@{/archives}" title="Archives">
-                            <img th:src="@{/plugins/images/icons/blue-shadow/archive.svg}" alt="">
-                        </a>
-                    </div>
-                </div>
-                <div class="nav-item" id="nav-item-more">
-                    <div class="nav-icon">
-                        <a th:href="@{/about}" title="About">
-                            <img th:src="@{/plugins/images/icons/blue-shadow/menu.svg}" alt="">
-                        </a>
-                    </div>
-                </div>
-                <div class="nav-item" id="nav-item-search">
-                    <div class="nav-icon">
-                        <a href="/" title="Search">
-                            <img th:src="@{/plugins/images/icons/blue-shadow/search.svg}" alt="">
-                        </a>
-                    </div>
-                </div>
-            </nav>
+        <div class="navbar-search" onclick="">
+            <span class="icon-search"></span>
+            <form role="search" onsubmit="return false;">
+                <span class="search-box">
+                    <input type="text" id="search-inp" class="input" placeholder="搜索..." maxlength="30"
+                           autocomplete="off">
+                </span>
+            </form>
         </div>
-    </header>
-</div>
+        <div class="navbar-mobile-menu" onclick="">
+            <span class="icon-menu cross"><span class="middle"></span></span>
+            <ul>
+                <li><a th:href="@{/achieves}">归档</a></li>
+                <li><a th:href="@{/links}">友链</a></li>
+                <li><a th:href="@{/about}">关于</a></li>
+            </ul>
+        </div>
+    </div>
+</header>
 
 </body>
 </html>

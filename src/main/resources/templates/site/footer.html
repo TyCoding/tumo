@@ -6,15 +6,21 @@
 </head>
 <body>
 <div th:fragment="footer" style="clear: both">
-    <footer id="footer">
+    <footer id="footer" class="footer bg-white">
         <div class="footer-social">
             <div class="footer-container clearfix">
                 <div class="social-list">
-                    <a class="social weibo" target="blank" href="http://www.tycoding.cn">博客</a>
-                    <a class="social zhihu" target="blank" href="https://www.zhihu.com/people/tomo-83-82/activities">知乎</a>
-                    <a class="social github" target="blank" href="https://github.com/TyCoding">Github</a>
-                    <a class="social rss" target="blank" href="https://www.jianshu.com/u/5d9842cdf684">简书</a>
-                    <a class="social twitter" target="blank" href="https://twitter.com/">Twitter</a>
+                    <a class="social weibo" target="blank" href="http://weibo.com/biezhi">微博</a>
+
+                    <a class="social zhihu" target="blank"
+                       href="https://www.zhihu.com/people/biezhi">知乎</a>
+
+                    <a class="social rss" target="blank" href="/feed">RSS</a>
+
+                    <a class="social github" target="blank"
+                       href="https://github.com/biezhi">Github</a>
+
+                    <a class="social twitter" target="blank" href="https://twitter.com/biezhii">Twitter</a>
                 </div>
             </div>
         </div>
@@ -22,24 +28,25 @@
             <div class="footer-container">
                 <div class="meta-item meta-copyright">
                     <div class="meta-copyright-info">
-                        <a href="/" class="info-logo">
-                            <img th:src="@{/public/favicon.png}" alt="Tumo Blog">
+                        <a href="https://tale.biezhi.me" class="info-logo">
+                            <img th:src="@{/public/logo.png}" alt="Tumo Blog">
                         </a>
                         <div class="info-text">
                             <p>银河街角，时光路口.</p>
-                            <p>Powered by <a href="/" target="_blank" rel="nofollow">Tumo</a>
+                            <p>Powered by <a href="#" target="_blank" rel="nofollow">Tumo</a>
                             </p>
-                            <p>© 2017 <a href="/">tycoding</a></p>
+                            <p>&copy; 2018 <a href="#">TyCoding</a></p>
                         </div>
                     </div>
                 </div>
+
                 <div class="meta-item meta-posts">
                     <h3 class="meta-title">最新文章</h3>
                     <li v-for="item in entity.newArticle">
                         <a href="/" v-text="item.title"></a>
                     </li>
-
                 </div>
+
                 <div class="meta-item meta-comments">
                     <h3 class="meta-title">最新评论</h3>
                     <li v-for="item in entity.newComments">
@@ -49,35 +56,6 @@
             </div>
         </div>
     </footer>
-    <br>
-    <div id="footer-nav" class='footer-nav'>
-        <nav id="nav">
-            <div class="nav-item" id="nav-item-archive">
-                <div class="nav-icon">
-                    <a href="/archives/" title="Archives">
-                        <img th:src="@{/plugins/images/icons/blue-shadow/archive.svg}" alt="">
-                    </a>
-                </div>
-            </div>
-            <div class="nav-item" id="nav-item-search">
-                <div class="nav-icon">
-                    <a href="search/" title="Search">
-                        <img th:src="@{/plugins/images/icons/blue-shadow/search.svg}" alt="">
-                    </a>
-                </div>
-            </div>
-            <div class="nav-item" id="nav-item-more">
-                <div class="nav-icon">
-                    <a href="#">
-                        <img th:src="@{/plugins/images/icons/blue-shadow/menu.svg}" alt="">
-                    </a>
-                </div>
-                <div class="nav-more-menu">
-                    <i class="far fa-times-circle" id="nav-more-menu-close"></i>
-                </div>
-            </div>
-        </nav>
-    </div>
 </div>
 
 </body>

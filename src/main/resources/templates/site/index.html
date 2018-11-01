@@ -2,86 +2,99 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="Cache-Control" content="no-transform"/>
+    <meta http-equiv="Cache-Control" content="no-siteapp"/>
     <title>Tumo Blog</title>
-    <link rel="icon" th:href="@{../../public/favicon-icon.png}" type="image/png">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" th:href="@{../../plugins/css/taurus.css}">
-
-    <link rel="stylesheet" th:href="@{../../../lib/element-ui/lib/theme-chalk/index.css}"/>
+    <link rel="icon" th:href="@{/public/favicon.png}" type="image/png">
     <link rel="stylesheet" th:href="@{../../../site/css/index.css}">
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <!--[if lt IE 9]>
+    <script src="//cdn.bootcss.com/html5shiv/r29/html5.min.js"></script>
+    <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
 </head>
-<body style="display: flex; flex-direction: column; min-height: 100vh;">
+<body  class="bg-grey"  gtools_scp_screen_capture_injected="true">
 
 <!-- header -->
 <div th:replace="site/header :: header"></div>
 
 <div id="app">
-    <div style="flex: 1;">
-        <div class="index-container" id="/index.html" data-name="index" data-version="2.1.1">
-            <div class="grid-equalHeight index-cards" v-for="item in entity.article">
-                <div class="Card Card-archive Card-hover">
-                    <div class="Card-body">
-                        <div class="Card-title">
-                            <div class="Card-figure">
-                                <!-- 文章缩略图 -->
-                                <a :href="'/article/' + item.id">
-                                    <img class="grow" :src="item.titlePic" :alt="item.title">
-                                </a>
+
+    <div class="main-content index-page clearfix" v-if="entity.article.length > 0">
+        <div class="post-lists">
+            <div class="post-lists-body">
+                <div class="post-list-item" v-for="item in entity.article">
+                    <div class="post-list-item-container">
+                        <div class="item-thumb bg-deepgrey" :style="'background-image:url(' + item.titlePic + ');'"></div>
+                        <a :href="basePath + 'article/' + item.id">
+                            <div class="item-desc">
+                                <p v-text="delMarkdedTag(item.content)"></p>
                             </div>
-                        </div>
+                        </a>
                         <div class="item-slant reverse-slant bg-deepgrey"></div>
                         <div class="item-slant"></div>
-                        <div class="Card-excerpt">
-                            <!-- 文章缩略信息 -->
-                            <p><a :href="'/article/' + item.id" v-text="delMarkdedTag(item.content)"></a></p>
-                        </div>
-                        <div class="Card-meta">
-                            <div class="item-title">
-                                <a :href="'/article/' + item.id" v-text="item.title"></a>
+                        <div class="item-label">
+                            <div class="item-title"><a :href="basePath + 'article/' + item.id" v-text="item.title"></a>
                             </div>
-                            <div class="Card-tags">
-                                <div class="tags">
-                                    <!-- 文章分类 -->
-                                    <label>
-                                        <a :href="'/category/' + item.category" v-text="item.category"></a>
-                                    </label>
-                                    <div class="tags-imgs"></div>
+                            <div class="item-meta clearfix">
+                                <div class="item-meta-ico bg-ico-note"
+                                     style="background: url(/public/bg-ico.png) no-repeat;background-size: 40px auto;"></div>
+                                <div class="item-meta-cat">
+                                    <a :href="basePath + '/category/' + item.category" v-text="item.category"></a>
                                 </div>
                             </div>
-                            <ul>
-                                <li>
-                                    <!-- 发表时间 -->
-                                    <a :href="'/article/' + item.id">
-                                        {{item.publishTime}}
-                                    </a>
-                                </li>
-                            </ul>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-
-    <!-- 分页 -->
-    <div class="pagination">
-        <el-pagination
-                background
-                @current-change="handleCurrentChange"
-                :current-page="pageConf.pageCode"
-                :page-size="pageConf.pageSize"
-                layout="prev, pager, next"
-                :total="pageConf.totalPage">
-        </el-pagination>
+        <div class="lists-navigator clearfix">
+            <!-- 分页 -->
+            <div class="page-navigator">
+                <el-pagination
+                        background
+                        @current-change="handleCurrentChange"
+                        :current-page="pageConf.pageCode"
+                        :page-size="pageConf.pageSize"
+                        layout="prev, pager, next"
+                        :total="pageConf.totalPage">
+                </el-pagination>
+            </div>
+        </div>
     </div>
 
     <!-- footer -->
     <div th:replace="site/footer :: footer"></div>
 </div>
 
-<script th:src="@{https://cdn.jsdelivr.net/npm/vue/dist/vue.js}"></script>
+<script type="text/javascript" th:src="@{https://cdn.jsdelivr.net/npm/vue/dist/vue.js}"></script>
 <script type="text/javascript" th:src="@{../../lib/element-ui/lib/index.js}"></script>
 <script type="text/javascript" th:src="@{../../lib/vue/vue-resource.js}"></script>
 <script type="text/javascript" th:src="@{../../site/js/index.js}"></script>
+<script type="text/javascript" th:src="@{https://npmcdn.com/headroom.js@0.9.4/dist/headroom.js}"></script>
+<script type="text/javascript">
+    var header = new Headroom(document.getElementById("header"), {
+        tolerance: 10,
+        offset : 80,
+        classes: {
+            initial: "animated",
+            pinned: "slideDown",
+            unpinned: "slideUp"
+        }
+    });
+    header.init();
+    $('#search-inp').keypress(function (e) {
+        var key = e.which; //e.which是按键的值
+        if (key === 13) {
+            var q = $(this).val();
+            if (q && q !== '') {
+                window.location.href = '/search/' + q;
+            }
+        }
+    });
+</script>
 </body>
 </html>

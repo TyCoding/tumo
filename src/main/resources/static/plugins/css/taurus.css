@@ -990,14 +990,39 @@ html {
 
 .footer-meta {
   padding: 50px 0 0;
-  list-style: none;
 }
 .footer-meta .footer-container {
-  width: 100%;
+  /*width: 100%;*/
   max-width: 960px;
   height: 250px;
   margin: 0 30%;
   padding: 0 80px;
+}
+.footer-meta .footer-container .meta-copyright-info{
+  padding-left:48%;
+}
+@media only screen and (min-width: 1000px) and (max-width: 1350px) {
+  .footer-meta .footer-container {
+    width: auto;
+    max-width: none;
+    height: auto;
+    margin: auto;
+    padding: auto;
+  }
+  .footer-meta .footer-container{
+    list-style: none;
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    flex-flow: row wrap;
+  }
+  .footer-meta .footer-container .meta-copyright-info{
+    padding-left:48%;
+  }
+}
+@media only screen and (min-width: 600px) and (max-width: 1000px) {
+
 }
 .footer-meta .meta-item {
   position: relative;
@@ -1071,7 +1096,7 @@ li {
 .footer-meta .meta-item {
   position: relative;
   float: left;
-  width: 26.3333333%;
+  width: 33.3333333%;
   min-height: 1px;
   padding: 0 30px;
 }
@@ -2198,12 +2223,22 @@ li {
   overflow-y: auto;
 }
 .index-container {
-  width: 60%;
-  margin: 0 auto;
-  margin-top: 11em;
-  text-align: center;
+  /*width: 60%;*/
+  /*margin: 0 auto;*/
+  /*margin-top: 11em;*/
+  /*text-align: center;*/
   margin-bottom: 5em;
-  margin-left: 14%;
+  /*margin-left: 14%;*/
+}
+@media only screen and (min-width: 860px) and (max-width: 1000px) {
+  .index-container {
+    margin-left: 21.7%;
+  }
+  .index-container{
+    padding-left: 50px;
+    padding-right: 50px;
+  }
+
 }
 @media only screen and (min-width: 360px) and (max-width: 400px) {
   .index-container {
@@ -2215,21 +2250,29 @@ li {
   .index-container {
     margin-top: 6em;
     margin-left: 6px;
+    box-sizing: content-box;
   }
 }
 .index-cards {
   margin: 0 auto;
   margin-top: 3em;
-  max-width: 299px;
+  /*max-width: 299px;*/
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-direction: row;
   flex-wrap: wrap;
   height: 410px;
-  width: 299px;
+  /*width: 299px;*/
   float: left;
-  padding: 0 184px;
+  /*padding: 0 184px;*/
+  /*padding-left: 214px;*/
+  /*padding-right: 158px;*/
+  /*box-sizing: border-box;*/
+
+}
+@media only screen and (min-width: 2400px) and (max-width: 2550px) {
+
 }
 @media only screen and (min-width: 601px) and (max-width: 800px) {
   .index-cards {
@@ -2280,7 +2323,7 @@ body {
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
-  margin: 0 0.5em 0.5em 0.5em;
+  /*margin: 0 0.5em 0.5em 0.5em;*/
   display: block;
 }
 .Card .Card-body a:link,
