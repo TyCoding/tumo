@@ -44,7 +44,8 @@ CREATE TABLE tb_tags(
 DROP TABLE IF EXISTS `tb_comments`;
 CREATE TABLE tb_comments(
   `id` bigint NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `parent_id` VARCHAR(200) DEFAULT NULL COMMENT '父级ID',
+  `p_id` bigint DEFAULT 0 COMMENT '父级ID，给哪个留言进行回复',
+  `c_id` bigint DEFAULT 0 COMMENT '子级ID，给哪个留言下的回复进行评论',
   `article_title` VARCHAR(200) DEFAULT NULL COMMENT '文章标题',
   `article_id` bigint DEFAULT NULL COMMENT '文章ID',
   `author` VARCHAR(200) DEFAULT NULL COMMENT '留言人',
@@ -52,7 +53,6 @@ CREATE TABLE tb_comments(
   `email` VARCHAR(100) DEFAULT NULL COMMENT '留言邮箱',
   `content` TEXT DEFAULT NULL COMMENT '留言内容',
   `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '留言时间',
-  `ip` VARCHAR(200) DEFAULT NULL COMMENT 'IP',
   `url` VARCHAR(200) DEFAULT NULL COMMENT '链接',
   `state` VARCHAR(100) DEFAULT '正常' COMMENT '状态',
   PRIMARY KEY (`id`)

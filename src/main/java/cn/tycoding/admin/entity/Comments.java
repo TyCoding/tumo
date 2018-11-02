@@ -13,7 +13,8 @@ import java.util.Date;
 public class Comments implements Serializable {
 
     private long id; //编号
-    private String parentId; //父级ID
+    private long pId; //父级ID，给哪个留言回复
+    private long cId; //子级ID，给哪个留言评论
     private String articleTitle; //文章标题
     private long articleId; //文章ID
     private String author; //留言人
@@ -25,8 +26,7 @@ public class Comments implements Serializable {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date time; //留言日期
 
-    private String ip; //IP
-    private String url; //连接URL
+    private String url; //链接URL
     private String state; //状态
 
     public long getId() {
@@ -37,12 +37,20 @@ public class Comments implements Serializable {
         this.id = id;
     }
 
-    public String getParentId() {
-        return parentId;
+    public long getpId() {
+        return pId;
     }
 
-    public void setParentId(String parentId) {
-        this.parentId = parentId;
+    public void setpId(long pId) {
+        this.pId = pId;
+    }
+
+    public long getcId() {
+        return cId;
+    }
+
+    public void setcId(long cId) {
+        this.cId = cId;
     }
 
     public String getArticleTitle() {
@@ -101,14 +109,6 @@ public class Comments implements Serializable {
         this.time = time;
     }
 
-    public String getIp() {
-        return ip;
-    }
-
-    public void setIp(String ip) {
-        this.ip = ip;
-    }
-
     public String getUrl() {
         return url;
     }
@@ -129,14 +129,15 @@ public class Comments implements Serializable {
     public String toString() {
         return "Comments{" +
                 "id=" + id +
-                ", parentId=" + parentId +
+                ", pId=" + pId +
+                ", cId=" + cId +
                 ", articleTitle='" + articleTitle + '\'' +
                 ", articleId=" + articleId +
                 ", author='" + author + '\'' +
-                ", email=" + email +
+                ", authorId='" + authorId + '\'' +
+                ", email='" + email + '\'' +
                 ", content='" + content + '\'' +
                 ", time=" + time +
-                ", ip='" + ip + '\'' +
                 ", url='" + url + '\'' +
                 ", state='" + state + '\'' +
                 '}';

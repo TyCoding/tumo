@@ -124,14 +124,13 @@
         <div id="comments" class="clearfix">
             <span class="response"></span>
             <form method="post" id="comment-form" class="comment-form">
-                <input type="hidden" name="coid" id="coid"/>
-                <input type="hidden" name="cid" id="cid" value="5"/>
-                <input type="hidden" name="csrf_token" value=""/>
-                <input name="author" maxlength="12" id="author" class="form-control input-control clearfix" placeholder="姓名 (*)" value="" required/>
-                <input type="email" name="mail" id="mail" class="form-control input-control clearfix" placeholder="邮箱 (*)" value="" required/>
-                <input type="url" name="url" id="url" class="form-control input-control clearfix" placeholder="网址 (http://)" value=""/>
-                <textarea name="content" id="textarea" class="form-control" placeholder="基佬，留下你的评论." required minlength="5" maxlength="2000"></textarea>
-                <button class="submit" id="misubmit">提交</button>
+                <input hidden="hidden" :value="entity.article.id" ref="articleId"/>
+                <input hidden="hidden" :value="entity.article.title" ref="articleTitle"/>
+                <input v-model="editor.comments.author" maxlength="12" id="author" class="form-control input-control clearfix" placeholder="姓名 (*)" value="" required/>
+                <input type="email" v-model="editor.comments.email" id="mail" class="form-control input-control clearfix" placeholder="邮箱 (*)" value="" required/>
+                <input type="url" v-model="editor.comments.url" id="url" class="form-control input-control clearfix" placeholder="网址 (http://)" value=""/>
+                <textarea v-model="editor.comments.content" id="textarea" class="form-control" placeholder="基佬，留下你的评论." required minlength="5" maxlength="2000"></textarea>
+                <button class="submit" id="misubmit" @click="submit">提交</button>
             </form>
 
             <ol class="comment-list">
@@ -139,9 +138,7 @@
                     <div id="comment-82">
                         <div class="comment-view" onclick="">
                             <div class="comment-header">
-                                <img class="avatar"
-                                     src="https://cn.gravatar.com/avatar/e40d491a5b8182e55f5dc8db37a51333?s=80&r=G&d="
-                                     title="哦买嘎的"
+                                <img class="avatar" src="https://cn.gravatar.com/avatar/e40d491a5b8182e55f5dc8db37a51333?s=80&r=G&d=" title="哦买嘎的"
                                      width="80" height="80">
                                 <span class="comment-author">
                                 <a href="http://www.163.com" target="_blank" rel="external nofollow">哦买嘎的</a>
@@ -149,8 +146,7 @@
                             </div>
                             <div class="comment-content">
                                 <span class="comment-author-at"></span>
-                                <p>
-                                <p>赞下群主，给力</p>
+                                <p><p>赞下群主，给力</p>
                                 </p>
                             </div>
                             <div class="comment-meta">
@@ -168,20 +164,16 @@
                                 <div id="comment-148">
                                     <div class="comment-view">
                                         <div class="comment-header">
-                                            <img class="avatar"
-                                                 src="https://cn.gravatar.com/avatar/377ed2391fea7e52a7dd4def8fb8f6af?s=80&r=G&d="
-                                                 title="阿斯" width="80" height="80">
+                                            <img class="avatar" src="https://cn.gravatar.com/avatar/377ed2391fea7e52a7dd4def8fb8f6af?s=80&r=G&d=" title="阿斯" width="80" height="80">
                                             <span class="comment-author comment-by-author">
-                                            <a href="http://club.xywy.com/static" target="_blank"
-                                               rel="external nofollow">阿斯</a>
+                                            <a href="http://club.xywy.com/static" target="_blank" rel="external nofollow">阿斯</a>
                                         </span>
                                         </div>
                                         <div class="comment-content">
                                         <span class="comment-author-at">
                                             <a href="#comment-82">@哦买嘎的</a>
                                         </span>
-                                            <p>
-                                            <p>asdfsadfasdfsa</p>
+                                            <p><p>asdfsadfasdfsa</p>
                                             </p>
                                         </div>
                                         <div class="comment-meta">
@@ -194,6 +186,30 @@
                                 </div>
                             </li>
                         </ol>
+                    </div>
+                </li>
+                <li id="li-comment-10" class="comment-body comment-parent comment-odd">
+                    <div id="comment-10">
+                        <div class="comment-view" onclick="">
+                            <div class="comment-header">
+                                <img class="avatar" src="https://cn.gravatar.com/avatar/c77f77d09f3049b27303e1c2e4593660?s=80&r=G&d=" title="樊鹏飞"
+                                     width="80" height="80">
+                                <span class="comment-author">
+                                <a href="http://www.xingfly.com" target="_blank" rel="external nofollow">樊鹏飞</a>
+                            </span>
+                            </div>
+                            <div class="comment-content">
+                                <span class="comment-author-at"></span>
+                                <p><p>群主这个太赞了。</p>
+                                </p>
+                            </div>
+                            <div class="comment-meta">
+                                <time class="comment-time">2017-02-25</time>
+                                <span class="comment-reply">
+                                <a rel="nofollow" onclick="TaleComment.reply('10');">回复</a>
+                            </span>
+                            </div>
+                        </div>
                     </div>
                 </li>
             </ol>

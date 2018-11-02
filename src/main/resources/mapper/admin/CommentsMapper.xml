@@ -17,10 +17,6 @@
     <!-- 条件查询 -->
     <select id="findByPage" parameterType="Comments" resultType="Comments">
         SELECT * FROM tb_comments
-        <!--WHERE 1=1-->
-        <!--<if test="author != null">-->
-        <!--AND author LIKE CONCAT('%', #{author}, '%')-->
-        <!--</if>-->
     </select>
 
     <!-- 条件查询并过滤留言数据 -->
@@ -34,11 +30,27 @@
         SELECT * FROM tb_comments WHERE id = #{id}
     </select>
 
+    <!-- 查询所有父级文章留言信息 -->
+    <select id="findAllId" resultType="Comments">
+        SELECT * FROM tb_comments WHERE p_id = 0 AND c_id = 0
+    </select>
+
+    <!-- 查询所有对父级留言的回复信息 -->
+    <select id="findAllPid" resultType="Comments">
+        SELECT * FROM tb_comments WHERE p_id != 0 AND c_id = 0
+    </select>
+
+    <!-- 查询所有对父级留言回复的评论信息 -->
+    <select id="findAllCid" resultType="Comments">
+        SELECT * FROM tb_comments WHERE p_id != 0 AND c_id != 0
+    </select>
+
     <!-- 保存 -->
     <insert id="save" parameterType="Comments">
         INSERT  INTO
         tb_comments(
-          parent_id,
+          p_id,
+          c_id,
           article_title,
           article_id,
           author,
@@ -46,12 +58,12 @@
           email,
           content,
           time,
-          ip,
           url,
           state
         )
         VALUES(
-          #{parentId},
+          #{pId},
+          #{cId},
           #{articleTitle},
           #{articleId},
           #{author},
@@ -59,7 +71,6 @@
           #{email},
           #{content},
           #{time},
-          #{ip},
           #{url},
           #{state}
         )
@@ -69,8 +80,11 @@
     <update id="update" parameterType="Comments">
         UPDATE ignore tb_comments
         <set>
-            <if test="parentId != null">
-                parent_id = #{parentId},
+            <if test="pId != null">
+                p_id = #{pId},
+            </if>
+            <if test="cId != null">
+                c_id = #{cId},
             </if>
             <if test="articleTitle != null">
                 article_title = #{articleTitle},
@@ -92,9 +106,6 @@
             </if>
             <if test="time != null">
                 time = #{time},
-            </if>
-            <if test="ip != null">
-                ip = #{ip},
             </if>
             <if test="url != null">
                 url = #{url},

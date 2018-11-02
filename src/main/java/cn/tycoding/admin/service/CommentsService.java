@@ -26,4 +26,6 @@ public interface CommentsService extends BaseService<Comments> {
      * @return
      */
     Long findCountByArticle(long articleId);
+
+    PageBean findCommentsList(int pageCode, int pageSize);
 }

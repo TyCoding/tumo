@@ -51,6 +51,15 @@ public class CommentsServiceImpl implements CommentsService {
     }
 
     @Override
+    public PageBean findCommentsList(int pageCode, int pageSize) {
+        PageHelper.startPage(pageCode, pageSize);
+
+//        Page<Comments> page = commentsMapper;
+//        return new PageBean(page.getTotal(), page.getResult());
+        return null;
+    }
+
+    @Override
     public Long findCountByArticle(long articleId) {
         return commentsMapper.findCountByArticleId(articleId);
     }
