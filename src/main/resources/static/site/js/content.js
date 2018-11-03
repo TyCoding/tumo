@@ -31,16 +31,30 @@ new Vue({
                     createTime: ''
                 },
                 comments: [{
-                    id: '',
-                    parentId: '',
-                    email: '',
-                    author: '',
-                    authorId: '',
-                    content: '',
-                    time: '',
-                    ip: '',
-                    url: '',
-                    state: ''
+                    parent: {
+                        id: '',
+                        pId: '',
+                        cId: '',
+                        email: '',
+                        author: '',
+                        authorId: '',
+                        content: '',
+                        time: '',
+                        url: '',
+                        state: ''
+                    },
+                    childrenList: [{
+                        id: '',
+                        pId: '',
+                        cId: '',
+                        email: '',
+                        author: '',
+                        authorId: '',
+                        content: '',
+                        time: '',
+                        url: '',
+                        state: ''
+                    }]
                 }],
                 newArticle: [{
                     id: '',
@@ -68,7 +82,7 @@ new Vue({
             pageConf: {
                 //设置一些初始值(会被覆盖)
                 pageCode: 1, //当前页
-                pageSize: 6, //每页显示的记录数
+                pageSize: 4, //每页显示的记录数
                 totalPage: 12, //总记录数
                 pageOption: [6, 10, 20], //分页选项
             },
@@ -115,7 +129,7 @@ new Vue({
         //条件查询
         search(pageCode, pageSize) {
             var id = window.location.href.substring(window.location.href.lastIndexOf('/') + 1);
-            this.$http.post('/comments/findByPageForFilter?pageSize=' + pageSize + '&pageCode=' + pageCode + '&articleId=' + id).then(result => {
+            this.$http.post('/comments/findCommentsList?pageSize=' + pageSize + '&pageCode=' + pageCode).then(result => {
                 this.entity.comments = result.body.rows;
                 this.pageConf.totalPage = result.body.total;
             });
@@ -175,6 +189,13 @@ new Vue({
 
 
         },
+
+        QueryUrl(name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null) return unescape(r[2]);
+            return null;
+        }
     },
     // 生命周期函数
     created() {
@@ -185,7 +206,17 @@ new Vue({
         } else {
             hash = window.location.href.substring(window.location.href.lastIndexOf('/') + 1);
         }
+        var path = window.location.href;
+        if (path.indexOf('?') > path.indexOf('#')) {
+            //说明 ？在 # 前
+            path.substring(path.lastIndexOf('/') + 1, path.indexOf('?'));
+        } else {
+            path.substring(path.lastIndexOf('/') + 1, path.indexOf('#'));
+        }
+
         this.init(hash);
+
+        console.log(this.QueryUrl('#'));
     },
 
 });
@@ -217,10 +248,6 @@ var postDirectoryBuild = function () {
                 levelArr, root, level,
                 currentList, list, li, link, i, len;
             levelArr = (function (article, contentArr, titleId) {
-                console.log('============');
-                console.log(article);
-                console.log(article.childNodes);
-                console.log('============');
                 var titleElem = postChildren(article.childNodes, /^h\d$/),
                     levelArr = [],
                     lastNum = 1,
@@ -281,9 +308,6 @@ var postDirectoryBuild = function () {
                 li.appendChild(link);
                 currentList.appendChild(li);
             }
-            console.log('---------');
-            console.log(root);
-            console.log('---------');
             directory.appendChild(root);
         };
     createPostDirectory(document.getElementById('post-content'), document.getElementById('directory'), true);

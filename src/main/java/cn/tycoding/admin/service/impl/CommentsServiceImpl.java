@@ -1,5 +1,6 @@
 package cn.tycoding.admin.service.impl;
 
+import cn.tycoding.admin.dto.CommentsDTO;
 import cn.tycoding.admin.dto.PageBean;
 import cn.tycoding.admin.entity.Comments;
 import cn.tycoding.admin.enums.ModifyEnums;
@@ -11,6 +12,7 @@ import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -54,9 +56,32 @@ public class CommentsServiceImpl implements CommentsService {
     public PageBean findCommentsList(int pageCode, int pageSize) {
         PageHelper.startPage(pageCode, pageSize);
 
-//        Page<Comments> page = commentsMapper;
-//        return new PageBean(page.getTotal(), page.getResult());
-        return null;
+        Page<Comments> page = commentsMapper.findAllId();
+
+        List<Comments> list = commentsMapper.findCommentsList();
+
+        List<CommentsDTO> commentsDTOS = new ArrayList<CommentsDTO>();
+
+        /**
+         * 封装结果类型结构：
+         *      [{{Comments-Parent}, [{Comments-Children}, {Comments-Children}...]}, {{}, [{}, {}, {}...]}]
+         */
+        for (Comments comments : list) {
+            List<Comments> commentsList = new ArrayList<Comments>();
+            if (comments.getpId() == 0 && comments.getcId() == 0) {
+                //说明是顶层的文章留言信息
+                for (Comments parent : list) {
+                    if (parent.getpId() != 0) {
+                        if (parent.getpId() == comments.getId()) {
+                            //说明属于当前父节点
+                            commentsList.add(parent);
+                        }
+                    }
+                }
+                commentsDTOS.add(new CommentsDTO(comments, commentsList));
+            }
+        }
+        return new PageBean(page.getTotal(), commentsDTOS.subList((pageCode - 1) * pageSize, (pageCode * pageSize) - 1));
     }
 
     @Override
@@ -86,7 +111,7 @@ public class CommentsServiceImpl implements CommentsService {
     public void update(Comments comments) {
         try {
             int updateCount = commentsMapper.update(comments);
-            if (updateCount <= 0){
+            if (updateCount <= 0) {
                 throw new ModifyException(ModifyEnums.INNER_ERROR);
             }
         } catch (Exception e) {
@@ -97,14 +122,14 @@ public class CommentsServiceImpl implements CommentsService {
 
     @Override
     public void delete(Long... ids) {
-        try{
-            for (long id : ids){
+        try {
+            for (long id : ids) {
                 int deleteCount = commentsMapper.delete(id);
-                if (deleteCount <= 0){
+                if (deleteCount <= 0) {
                     throw new ModifyException(ModifyEnums.INNER_ERROR);
                 }
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             throw new ModifyException(ModifyEnums.ERROR);
         }

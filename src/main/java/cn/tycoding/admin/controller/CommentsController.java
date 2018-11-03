@@ -54,11 +54,21 @@ public class CommentsController {
     }
 
     @RequestMapping("/findCountByArticleId")
-    public Long findCountByArticleId(@RequestParam("articleId") Long articleId){
-        if (articleId != null && articleId != 0){
+    public Long findCountByArticleId(@RequestParam("articleId") Long articleId) {
+        if (articleId != null && articleId != 0) {
             return commentsService.findCountByArticle(articleId);
         }
         return null;
+    }
+
+    @RequestMapping("/findCommentsList")
+    public PageBean findCommentsList(@RequestParam(value = "pageCode", required = false) Integer pageCode,
+                                     @RequestParam(value = "pageSize", required = false) Integer pageSize) {
+        if (pageCode != null && pageSize != null) {
+            return commentsService.findCommentsList(pageCode, pageSize);
+        } else {
+            return null;
+        }
     }
 
     @ResponseBody

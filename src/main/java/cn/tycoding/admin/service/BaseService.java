@@ -48,7 +48,6 @@ public interface BaseService<T> {
      *
      * @param t
      */
-    @RequiresRoles("admin")
     void save(T t);
 
     /**

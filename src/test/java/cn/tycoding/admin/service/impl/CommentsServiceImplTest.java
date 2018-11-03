@@ -43,7 +43,6 @@ public class CommentsServiceImplTest {
         comments.setAuthor("涂陌");
         comments.setArticleId(1);
         comments.setContent("测试留言");
-        comments.setIp("123.45.23");
         comments.setUrl("www.tycoding.cn");
 
         try {

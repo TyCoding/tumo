@@ -82,4 +82,8 @@ public interface CommentsMapper {
      * @return
      */
     Long findCountByArticleId(long articleId);
+
+    Page<Comments> findAllId();
+
+    Page<Comments> findCommentsList();
 }

@@ -104,25 +104,13 @@
                 </div>
             </el-card>
         </div>
-        <br/>
-        &lt;!&ndash; 分页 &ndash;&gt;
-        <div class="pagination">
-            <el-pagination
-                    background
-                    @size-change="handleSizeChange"
-                    @current-change="handleCurrentChange"
-                    :current-page="pageConf.pageCode"
-                    :page-sizes="pageConf.pageOption"
-                    :page-size="pageConf.pageSize"
-                    layout="total, sizes, prev, pager, next, jumper"
-                    :total="pageConf.totalPage">
-            </el-pagination>
-        </div>
     </div>-->
 
+    <!-- 留言信息 -->
     <div id="5" class="comment-container">
         <div id="comments" class="clearfix">
             <span class="response"></span>
+            <!-- 表单 -->
             <form method="post" id="comment-form" class="comment-form">
                 <input hidden="hidden" :value="entity.article.id" ref="articleId"/>
                 <input hidden="hidden" :value="entity.article.title" ref="articleTitle"/>
@@ -132,54 +120,51 @@
                 <textarea v-model="editor.comments.content" id="textarea" class="form-control" placeholder="基佬，留下你的评论." required minlength="5" maxlength="2000"></textarea>
                 <button class="submit" id="misubmit" @click="submit">提交</button>
             </form>
-
-            <ol class="comment-list">
-                <li id="li-comment-82" class="comment-body comment-parent comment-odd">
-                    <div id="comment-82">
-                        <div class="comment-view" onclick="">
+            <!-- 列表 -->
+            <ol class="comment-list" v-if="entity.comments.length > 0">
+                <li v-for="comment in entity.comments" :id="'li-comment-' + comment.parent.id" class="comment-body comment-parent comment-odd">
+                    <div :id="'comment-' + comment.parent.id">
+                        <div class="comment-view">
                             <div class="comment-header">
-                                <img class="avatar" src="https://cn.gravatar.com/avatar/e40d491a5b8182e55f5dc8db37a51333?s=80&r=G&d=" title="哦买嘎的"
-                                     width="80" height="80">
+                                <img class="avatar" src="http://phfvf87ik.bkt.clouddn.com/author.jpg" :title="comment.parent.url" width="80" height="80">
                                 <span class="comment-author">
-                                <a href="http://www.163.com" target="_blank" rel="external nofollow">哦买嘎的</a>
-                            </span>
+                                    <a :href="comment.parent.url" target="_blank" rel="external nofollow" v-text="comment.parent.author"></a>
+                                </span>
                             </div>
                             <div class="comment-content">
                                 <span class="comment-author-at"></span>
-                                <p><p>赞下群主，给力</p>
-                                </p>
+                                <p><p v-text="comment.parent.content"></p></p>
                             </div>
                             <div class="comment-meta">
-                                <time class="comment-time">2017-02-28</time>
+                                <time class="comment-time" v-text="comment.parent.time"></time>
                                 <span class="comment-reply">
-                                <a rel="nofollow" onclick="TaleComment.reply('82');">回复</a>
-                            </span>
+                                    <a rel="nofollow">回复</a>
+                                </span>
                             </div>
                         </div>
                     </div>
-                    <div class="comment-children">
+                    <div v-if="comment.childrenList.length > 0" class="comment-children">
                         <ol class="comment-list">
-                            <li id="li-comment-148"
-                                class="comment-body comment-child comment-level-odd comment-odd">
-                                <div id="comment-148">
+                            <li v-for="item in comment.childrenList" :id="'li-comment-' + item.id" class="comment-body comment-child comment-level-odd comment-odd">
+                                <div :id="'comment-' + item.id">
                                     <div class="comment-view">
                                         <div class="comment-header">
-                                            <img class="avatar" src="https://cn.gravatar.com/avatar/377ed2391fea7e52a7dd4def8fb8f6af?s=80&r=G&d=" title="阿斯" width="80" height="80">
+                                            <img class="avatar" src="http://phfvf87ik.bkt.clouddn.com/author.jpg" :title="item.url" width="80" height="80">
                                             <span class="comment-author comment-by-author">
-                                            <a href="http://club.xywy.com/static" target="_blank" rel="external nofollow">阿斯</a>
-                                        </span>
+                                                <a :href="item.url" target="_blank" rel="external nofollow" v-text="item.author"></a>
+                                            </span>
                                         </div>
                                         <div class="comment-content">
                                         <span class="comment-author-at">
-                                            <a href="#comment-82">@哦买嘎的</a>
+                                            <a v-if="item.cId == '' || item.cId == null" :href="'#comment-' + item.pId" v-text="item.authorId"></a>
+                                            <a v-else :href="'#comment-' + item.cId" v-text="item.authorId"></a>
                                         </span>
-                                            <p><p>asdfsadfasdfsa</p>
-                                            </p>
+                                            <p><p v-text="item.content"></p></p>
                                         </div>
                                         <div class="comment-meta">
-                                            <time class="comment-time">2017-03-19</time>
+                                            <time class="comment-time" v-text="item.time"></time>
                                             <span class="comment-reply">
-                                            <a rel="nofollow" onclick="TaleComment.reply('148');">回复</a>
+                                            <a rel="nofollow">回复</a>
                                         </span>
                                         </div>
                                     </div>
@@ -188,36 +173,20 @@
                         </ol>
                     </div>
                 </li>
-                <li id="li-comment-10" class="comment-body comment-parent comment-odd">
-                    <div id="comment-10">
-                        <div class="comment-view" onclick="">
-                            <div class="comment-header">
-                                <img class="avatar" src="https://cn.gravatar.com/avatar/c77f77d09f3049b27303e1c2e4593660?s=80&r=G&d=" title="樊鹏飞"
-                                     width="80" height="80">
-                                <span class="comment-author">
-                                <a href="http://www.xingfly.com" target="_blank" rel="external nofollow">樊鹏飞</a>
-                            </span>
-                            </div>
-                            <div class="comment-content">
-                                <span class="comment-author-at"></span>
-                                <p><p>群主这个太赞了。</p>
-                                </p>
-                            </div>
-                            <div class="comment-meta">
-                                <time class="comment-time">2017-02-25</time>
-                                <span class="comment-reply">
-                                <a rel="nofollow" onclick="TaleComment.reply('10');">回复</a>
-                            </span>
-                            </div>
-                        </div>
-                    </div>
-                </li>
             </ol>
             <div class="lists-navigator clearfix">
                 <ol class="page-navigator">
-                    <!--<li  class="current" ><a href="/page/1">1</a></li>
+                    <li  class="current" ><a href="?cp=1#comments">1</a></li>
+                    <li ><a href="?cp=2#comments">2</a></li>
+                    <li class="next"><a href="?cp=2#comments">→</a></li>
+                </ol>
+
+            </div>
+            <!--<div class="lists-navigator clearfix">
+                <ol class="page-navigator">
+                    &lt;!&ndash;<li  class="current" ><a href="/page/1">1</a></li>
                     <li ><a href="/page/2">2</a></li>
-                    <li class="next"><a href="/page/2">→</a></li>-->
+                    <li class="next"><a href="/page/2">→</a></li>&ndash;&gt;
 
                     <el-pagination
                             background
@@ -228,76 +197,9 @@
                             :total="pageConf.totalPage">
                     </el-pagination>
                 </ol>
-            </div>
+            </div>-->
         </div>
     </div>
-
-    <!-- 对话展示框 -->
-    <el-dialog
-            title="查看对话"
-            :visible.sync="config.talkDialog"
-            width="30%">
-        <span>
-            <div v-for="item in entity.comments">
-                <div v-if="item.parentId != null">
-                                    <!-- talk==子级 -->
-                <div v-if="config.talkId == item.parentId.substring(1)">
-                    <el-card shadow="always" :id="item.id">
-                        <div class="comment-author">
-                            <img class="el-tooltip" src="http://tycoding.cn/author/avatar.png"/>
-                            <span v-text="item.author"></span>
-                        </div>
-                        <div class="comment-meta">
-                            <div class="comment-content">
-                                <span><a :href="item.parentId" v-text="item.authorId"></a></span>
-                                <span v-text="item.content"></span>
-                            </div>
-                            <div class="comment-time" v-text="item.time">
-                            </div>
-                        </div>
-                    </el-card>
-                </div>
-                    <!-- talk==自己 -->
-                <div v-if="config.talkId == item.id">
-                    <el-card shadow="always" :id="item.id">
-                        <div class="comment-author">
-                            <img class="el-tooltip" src="http://tycoding.cn/author/avatar.png"/>
-                            <span v-text="item.author"></span>
-                        </div>
-                        <div class="comment-meta">
-                            <div class="comment-content">
-                                <span><a :href="item.parentId" v-text="item.authorId"></a></span>
-                                <span v-text="item.content"></span>
-                            </div>
-                            <div class="comment-time" v-text="item.time">
-                            </div>
-                        </div>
-                    </el-card>
-                </div>
-                <div v-else-if="config.talkPId.substring(1) == item.id">
-                    <el-card shadow="always" :id="item.id">
-                        <div class="comment-author">
-                            <img class="el-tooltip" src="http://tycoding.cn/author/avatar.png"/>
-                            <span v-text="item.author"></span>
-                        </div>
-                        <div class="comment-meta">
-                            <div class="comment-content">
-                                <span><a :href="item.parentId" v-text="item.authorId"></a></span>
-                                <span v-text="item.content"></span>
-                            </div>
-                            <div class="comment-time" v-text="item.time">
-                            </div>
-                        </div>
-                    </el-card>
-                </div>
-                </div>
-
-            </div>
-        </span>
-        <span slot="footer" class="dialog-footer">
-            <el-button @click="config.talkDialog = false">关闭</el-button>
-        </span>
-    </el-dialog>
 
     <!-- footer -->
     <div th:replace="site/footer :: footer"></div>
