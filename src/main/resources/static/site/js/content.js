@@ -195,28 +195,35 @@ new Vue({
             var r = window.location.search.substr(1).match(reg);
             if (r != null) return unescape(r[2]);
             return null;
-        }
+        },
+
+        getUrlParam(){
+            var hash = '';
+            var path = window.location.href;
+            if (path.indexOf(('?') == -1) && path.indexOf('#') == -1){
+                hash = path.lastIndexOf('/') + 1;
+            }
+            if (path.indexOf('?') == -1 || path.indexOf('#') == -1) {
+                if (path.indexOf('?') > path.indexOf('#')) {
+                    //说明 ？在 # 前
+                    hash = path.substring(path.lastIndexOf('/') + 1, path.indexOf('?'));
+                } else {
+                    hash = path.substring(path.lastIndexOf('/') + 1, path.indexOf('#'));
+                }
+            } else {
+                if (path.indexOf('?') > path.indexOf('#')) {
+                    //说明 ？在 # 前
+                    hash = path.substring(path.lastIndexOf('/') + 1, path.indexOf('#'));
+                } else {
+                    hash = path.substring(path.lastIndexOf('/') + 1, path.indexOf('?'));
+                }
+            }
+            return hash;
+        },
     },
     // 生命周期函数
     created() {
-        var hash = '';
-        if (window.location.hash.length) {
-            //包含 `#` hash值
-            hash = window.location.href.substring(window.location.href.lastIndexOf('/') + 1, window.location.href.indexOf('#'));
-        } else {
-            hash = window.location.href.substring(window.location.href.lastIndexOf('/') + 1);
-        }
-        var path = window.location.href;
-        if (path.indexOf('?') > path.indexOf('#')) {
-            //说明 ？在 # 前
-            path.substring(path.lastIndexOf('/') + 1, path.indexOf('?'));
-        } else {
-            path.substring(path.lastIndexOf('/') + 1, path.indexOf('#'));
-        }
-
-        this.init(hash);
-
-        console.log(this.QueryUrl('#'));
+        this.init(this.getUrlParam());
     },
 
 });

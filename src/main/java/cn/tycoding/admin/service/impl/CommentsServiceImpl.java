@@ -81,7 +81,11 @@ public class CommentsServiceImpl implements CommentsService {
                 commentsDTOS.add(new CommentsDTO(comments, commentsList));
             }
         }
-        return new PageBean(page.getTotal(), commentsDTOS.subList((pageCode - 1) * pageSize, (pageCode * pageSize) - 1));
+        if (page.getTotal() < (pageCode * pageSize) - 1) {
+            return new PageBean(page.getTotal(), commentsDTOS.subList((pageCode - 1) * pageSize, commentsDTOS.size()));
+        } else {
+            return new PageBean(page.getTotal(), commentsDTOS.subList((pageCode - 1) * pageSize, (pageCode * pageSize) - 1));
+        }
     }
 
     @Override

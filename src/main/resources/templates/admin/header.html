@@ -6,7 +6,7 @@
 </head>
 <body>
 
-<el-header th:fragment="header" :class="{handleCloseHeader:config.isCollapse,handleOpenHeader:!config.isCollapse}">
+<el-header id="header" th:fragment="header" :class="{handleCloseHeader:config.isCollapse,handleOpenHeader:!config.isCollapse}">
     <el-menu
             class="el-menu-demo"
             mode="horizontal"
@@ -15,8 +15,6 @@
             <i class="fa fa-bars fa-fw" v-if="config.isCollapse"></i>
             <i v-if="!config.isCollapse" class="fa fa-th-large fa-fw"></i>
         </el-menu-item>
-        <!--<el-menu-item index="1"><i class="fa fa-heart-o fa-fw"></i>&nbsp;&nbsp;<a href="home.html">首页</a></el-menu-item>-->
-        <!--<el-menu-item index="3"><i class="el-icon-news"></i>消息中心</el-menu-item>-->
         <el-menu-item id="author" index="8">
             <img class="el-tooltip" th:src="@{/public/author.jpg}"/>
             <el-dropdown>

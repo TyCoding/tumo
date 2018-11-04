@@ -4,8 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
     <meta name="renderer" content="webkit">
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta http-equiv="Cache-Control" content="no-transform"/>
     <meta http-equiv="Cache-Control" content="no-siteapp"/>
     <link rel="icon" th:href="@{/public/favicon.png}" type="image/png">
@@ -55,56 +54,6 @@
     <div id="directory-content" class="directory-content">
         <div id="directory"></div>
     </div>
-
-    <!-- comments-form -->
-    <!--<div class="comments-form" ref="comments" id="comments">
-        <el-card shadow="always" style="margin-top: 50px;">
-            <el-form :inline="true" :model="editor.comments" ref="editor">
-                <input hidden="hidden" :value="entity.article.id" ref="articleId"/>
-                <input hidden="hidden" :value="entity.article.title" ref="articleTitle"/>
-                <el-form-item required prop="author" :rules="[{ required: true, message: '请输入姓名'}]">
-                    <el-input v-model="editor.comments.author" placeholder="姓名（*）"></el-input>
-                </el-form-item>
-                <el-form-item required prop="email" :rules="[{ required: true, message: '请输入邮箱'}]">
-                    <el-input v-model="editor.comments.email" placeholder="邮箱（*）"></el-input>
-                </el-form-item>
-                <el-form-item>
-                    <el-input v-model="editor.comments.url" placeholder="网址（http://）"></el-input>
-                </el-form-item>
-            </el-form>
-            <div>
-                <el-input :placeholder="config.holder" ref="content" v-model="editor.comments.content" type="textarea"></el-input>
-                <div class="submit">
-                    <el-button size="mini" round @click="submit">提交</el-button>
-                </div>
-            </div>
-        </el-card>
-    </div>
-
-    <div v-if="entity.comments.length > 0">
-        &lt;!&ndash; comments-info &ndash;&gt;
-        <div class="comments-info" v-for="item in entity.comments">
-            <el-card shadow="always" :id="item.id">
-                <div class="comment-author">
-                    <img class="el-tooltip" src="http://tycoding.cn/author/avatar.png"/>
-                    <span>{{item.author}}</span>
-                </div>
-                <div class="comment-meta">
-                    <div class="comment-content">
-                        <span><a :href="item.parentId" v-text="item.authorId"></a></span>
-                        <span v-text="item.content"></span>
-                    </div>
-                    <div class="comment-time">
-                        <b v-text="item.time"></b>
-                        <span class="talk" v-if="item.parentId != null" @click="talkBtn(item.parentId, item.id)"><b class="fa fa-comments fa-fw"></b>查看对话</span>
-                        <span class="comment-replay">
-                                        <b @click="replay(item.author, item.id)">回复</b>
-                                    </span>
-                    </div>
-                </div>
-            </el-card>
-        </div>
-    </div>-->
 
     <!-- 留言信息 -->
     <div id="5" class="comment-container">
@@ -174,20 +123,15 @@
                     </div>
                 </li>
             </ol>
-            <div class="lists-navigator clearfix">
+           <!-- <div class="lists-navigator clearfix">
                 <ol class="page-navigator">
-                    <li  class="current" ><a href="?cp=1#comments">1</a></li>
+                    <li class="current"><a href="?cp=1#comments">1</a></li>
                     <li ><a href="?cp=2#comments">2</a></li>
                     <li class="next"><a href="?cp=2#comments">→</a></li>
                 </ol>
-
-            </div>
-            <!--<div class="lists-navigator clearfix">
+            </div>-->
+            <div class="lists-navigator clearfix">
                 <ol class="page-navigator">
-                    &lt;!&ndash;<li  class="current" ><a href="/page/1">1</a></li>
-                    <li ><a href="/page/2">2</a></li>
-                    <li class="next"><a href="/page/2">→</a></li>&ndash;&gt;
-
                     <el-pagination
                             background
                             @current-change="handleCurrentChange"
@@ -197,7 +141,7 @@
                             :total="pageConf.totalPage">
                     </el-pagination>
                 </ol>
-            </div>-->
+            </div>
         </div>
     </div>
 
