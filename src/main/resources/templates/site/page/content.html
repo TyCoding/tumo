@@ -57,20 +57,20 @@
 
     <!-- 留言信息 -->
     <div id="5" class="comment-container">
-        <div id="comments" class="clearfix">
+        <div id="comments" ref="comments" class="clearfix">
             <span class="response"></span>
             <!-- 表单 -->
-            <form method="post" id="comment-form" class="comment-form">
+            <div id="comment-form" class="comment-form">
                 <input hidden="hidden" :value="entity.article.id" ref="articleId"/>
                 <input hidden="hidden" :value="entity.article.title" ref="articleTitle"/>
                 <input v-model="editor.comments.author" maxlength="12" id="author" class="form-control input-control clearfix" placeholder="姓名 (*)" value="" required/>
                 <input type="email" v-model="editor.comments.email" id="mail" class="form-control input-control clearfix" placeholder="邮箱 (*)" value="" required/>
                 <input type="url" v-model="editor.comments.url" id="url" class="form-control input-control clearfix" placeholder="网址 (http://)" value=""/>
-                <textarea v-model="editor.comments.content" id="textarea" class="form-control" placeholder="基佬，留下你的评论." required minlength="5" maxlength="2000"></textarea>
+                <textarea v-model="editor.comments.content" id="textarea" class="form-control" :placeholder="config.holder" required minlength="5" maxlength="2000"></textarea>
                 <button class="submit" id="misubmit" @click="submit">提交</button>
-            </form>
+            </div>
             <!-- 列表 -->
-            <ol class="comment-list" v-if="entity.comments.length > 0">
+            <ol class="comment-list" v-if="entity.comments != null && entity.comments.length >= 1">
                 <li v-for="comment in entity.comments" :id="'li-comment-' + comment.parent.id" class="comment-body comment-parent comment-odd">
                     <div :id="'comment-' + comment.parent.id">
                         <div class="comment-view">
@@ -87,12 +87,12 @@
                             <div class="comment-meta">
                                 <time class="comment-time" v-text="comment.parent.time"></time>
                                 <span class="comment-reply">
-                                    <a rel="nofollow">回复</a>
+                                    <a rel="nofollow" @click="replay(comment.parent.author, comment.parent.id)">回复</a>
                                 </span>
                             </div>
                         </div>
                     </div>
-                    <div v-if="comment.childrenList.length > 0" class="comment-children">
+                    <div v-if="comment.childrenList != null && comment.childrenList.length > 1" class="comment-children">
                         <ol class="comment-list">
                             <li v-for="item in comment.childrenList" :id="'li-comment-' + item.id" class="comment-body comment-child comment-level-odd comment-odd">
                                 <div :id="'comment-' + item.id">
@@ -113,7 +113,7 @@
                                         <div class="comment-meta">
                                             <time class="comment-time" v-text="item.time"></time>
                                             <span class="comment-reply">
-                                            <a rel="nofollow">回复</a>
+                                            <a rel="nofollow" @click="replay(item.author, item.pId, item.id)">回复</a>
                                         </span>
                                         </div>
                                     </div>
@@ -123,13 +123,6 @@
                     </div>
                 </li>
             </ol>
-           <!-- <div class="lists-navigator clearfix">
-                <ol class="page-navigator">
-                    <li class="current"><a href="?cp=1#comments">1</a></li>
-                    <li ><a href="?cp=2#comments">2</a></li>
-                    <li class="next"><a href="?cp=2#comments">→</a></li>
-                </ol>
-            </div>-->
             <div class="lists-navigator clearfix">
                 <ol class="page-navigator">
                     <el-pagination
@@ -142,6 +135,13 @@
                     </el-pagination>
                 </ol>
             </div>
+           <!-- <div class="lists-navigator clearfix">
+                <ol class="page-navigator">
+                    <li class="current"><a href="?cp=1#comments">1</a></li>
+                    <li ><a href="?cp=2#comments">2</a></li>
+                    <li class="next"><a href="?cp=2#comments">→</a></li>
+                </ol>
+            </div>-->
         </div>
     </div>
 

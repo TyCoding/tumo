@@ -38,7 +38,6 @@ var vm = new Vue({
             config: {
                 defaultActive: '7',
 
-                loading: {},
                 //===========侧边栏===========
                 name: '',
                 isCollapse: false,
@@ -55,19 +54,6 @@ var vm = new Vue({
         }
     },
     methods: {
-        /**
-         * loading加载动画
-         */
-        loadings() {
-            this.config.loading = this.$loading({
-                lock: true,
-                text: '拼命加载中',
-                spinner: 'el-icon-loading',
-            });
-            setTimeout(() => {
-                this.config.loading.close();
-            }, 2000);
-        },
 
         //===============侧边栏&&顶栏================
         //顶栏触发事件
@@ -84,7 +70,6 @@ var vm = new Vue({
         },
         //侧边栏触发事件
         handleSideSelect(key, keyPath) {
-            this.loadings(); //打开动画
         },
 
         /**
@@ -96,12 +81,10 @@ var vm = new Vue({
         },
         //条件查询
         search(pageCode, pageSize) {
-            this.loadings();
             this.$http.post('/article/findByPage?pageSize=' + pageSize + '&pageCode=' + pageCode).then(result => {
                 console.log(result);
                 this.entity.article = result.body.rows;
                 this.pageConf.totalPage = result.body.total;
-                this.config.loading.close(); //数据更新成功就手动关闭动画
             });
 
         },
@@ -215,14 +198,9 @@ var vm = new Vue({
             return (isJPG || isBMP || isGIF || isPNG) && isLt2M;
         },
     },
-    //页面没有渲染前
-    beforeMount() {
-        this.config.loading.close();//关闭动画
-    },
     // 生命周期函数
     created() {
         this.search(this.pageConf.pageCode, this.pageConf.pageSize);
-        this.loadings(); //加载动画
     },
 
 });

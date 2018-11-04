@@ -67,20 +67,7 @@
 <!-- 核心js代码 -->
 <script type="text/javascript" th:src="@{../../admin/js/login.js}"></script>
 
-<script th:src="@{/plugins/js/headroom.min.js}" type="text/javascript"></script>
 <script th:src="@{/plugins/js/instantclick.min.js}" type="text/javascript"></script>
-<script type="text/javascript">
-    var header = new Headroom(document.getElementById("header"), {
-        tolerance: 10,
-        offset: 80,
-        classes: {
-            initial: "animated",
-            pinned: "slideDown",
-            unpinned: "slideUp"
-        }
-    });
-    header.init();
-</script>
 <script data-no-instant type="text/javascript">
     InstantClick.on('change', function (isInitialLoad) {
         var blocks = document.querySelectorAll('pre code');

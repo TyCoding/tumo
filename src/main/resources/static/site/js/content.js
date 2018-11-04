@@ -68,12 +68,12 @@ new Vue({
             },
             editor: {
                 comments: {
+                    pId: '',
+                    cId: '',
                     articleId: '',
                     author: '',
                     email: '',
                     content: '',
-                    time: '',
-                    ip: '',
                     url: ''
                 }
             },
@@ -104,8 +104,6 @@ new Vue({
                     this.reloadList();
                     if (result.body.success) {
                         this.editor.comments = {};
-                        //移除element-ui表单校验残留
-                        this.$refs['editor'].resetFields();
                         this.$message({
                             showClose: true,
                             message: result.body.info,
@@ -128,12 +126,12 @@ new Vue({
         },
         //条件查询
         search(pageCode, pageSize) {
-            var id = window.location.href.substring(window.location.href.lastIndexOf('/') + 1);
-            this.$http.post('/comments/findCommentsList?pageSize=' + pageSize + '&pageCode=' + pageCode).then(result => {
-                this.entity.comments = result.body.rows;
-                this.pageConf.totalPage = result.body.total;
+            this.$http.post('/comments/findCommentsList?pageSize=' + pageSize + '&pageCode=' + pageCode + '&articleId=' + this.getUrlParam()).then(result => {
+                if (result.body.rows != null){
+                    this.entity.comments = result.body.rows;
+                    this.pageConf.totalPage = result.body.total;
+                }
             });
-
         },
         //pageSize改变时触发的函数
         handleSizeChange(val) {
@@ -146,18 +144,16 @@ new Vue({
         },
 
         //点击回复按钮
-        replay(name, id) {
-            this.editor.comments.parentId = '#' + id;
-            this.editor.comments.authorId = '@' + name + ':';
-            this.config.holder = '回复' + name;
+        replay(name, pId, cId) {
+            if (cId != null || cId != undefined){
+                //三层回复
+                this.editor.comments.cId = cId;
+            }
+            this.editor.comments.pId = pId;
+            this.editor.comments.authorId = '@' + name;
+            this.config.holder = '回复 ' + name;
             this.$refs.comments.scrollIntoView(); //页面元素跳转
-        },
-
-        //对话列表
-        talkBtn(parentId, id) {
-            this.config.talkPId = parentId;
-            this.config.talkId = id;
-            this.config.talkDialog = true;
+            console.log(this.editor.comments);
         },
 
         /**
@@ -187,7 +183,6 @@ new Vue({
 
             //当前文章浏览量
 
-
         },
 
         QueryUrl(name) {
@@ -200,22 +195,23 @@ new Vue({
         getUrlParam(){
             var hash = '';
             var path = window.location.href;
-            if (path.indexOf(('?') == -1) && path.indexOf('#') == -1){
-                hash = path.lastIndexOf('/') + 1;
-            }
-            if (path.indexOf('?') == -1 || path.indexOf('#') == -1) {
-                if (path.indexOf('?') > path.indexOf('#')) {
-                    //说明 ？在 # 前
-                    hash = path.substring(path.lastIndexOf('/') + 1, path.indexOf('?'));
+            if (path.indexOf('?') == -1 && path.indexOf('#') == -1){
+                hash = path.substring(path.lastIndexOf('/') + 1);
+            }else{
+                if (path.indexOf('?') == -1 || path.indexOf('#') == -1) {
+                    if (path.indexOf('?') > path.indexOf('#')) {
+                        //说明 ？在 # 前
+                        hash = path.substring(path.lastIndexOf('/') + 1, path.indexOf('?'));
+                    } else {
+                        hash = path.substring(path.lastIndexOf('/') + 1, path.indexOf('#'));
+                    }
                 } else {
-                    hash = path.substring(path.lastIndexOf('/') + 1, path.indexOf('#'));
-                }
-            } else {
-                if (path.indexOf('?') > path.indexOf('#')) {
-                    //说明 ？在 # 前
-                    hash = path.substring(path.lastIndexOf('/') + 1, path.indexOf('#'));
-                } else {
-                    hash = path.substring(path.lastIndexOf('/') + 1, path.indexOf('?'));
+                    if (path.indexOf('?') > path.indexOf('#')) {
+                        //说明 ？在 # 前
+                        hash = path.substring(path.lastIndexOf('/') + 1, path.indexOf('#'));
+                    } else {
+                        hash = path.substring(path.lastIndexOf('/') + 1, path.indexOf('?'));
+                    }
                 }
             }
             return hash;

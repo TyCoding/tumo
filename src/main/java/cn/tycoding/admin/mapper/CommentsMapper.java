@@ -21,12 +21,12 @@ public interface CommentsMapper {
     List<Comments> findAll();
 
     /**
-     * 分页查询（条件）
+     * 分页查询
      *
      * @param comments
      * @return
      */
-    Page<Comments> findByPage(Comments comments);
+    Page findByPage(Comments comments);
 
     /**
      * 分页查询指定文章的评论数据
@@ -34,7 +34,7 @@ public interface CommentsMapper {
      * @param articleId
      * @return
      */
-    Page<Comments> findByPageForFilter(int articleId);
+    Page<Comments> findCommentsList(int articleId);
 
     /**
      * 根据ID查询
@@ -83,7 +83,12 @@ public interface CommentsMapper {
      */
     Long findCountByArticleId(long articleId);
 
-    Page<Comments> findAllId();
+    /**
+     * 查询所有评论数据，用于从中筛选实现分页
+     *
+     * @param articleId
+     * @return
+     */
+    Page<Comments> findAllId(int articleId);
 
-    Page<Comments> findCommentsList();
 }

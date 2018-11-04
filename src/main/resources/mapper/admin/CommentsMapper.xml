@@ -17,12 +17,10 @@
     <!-- 条件查询 -->
     <select id="findByPage" parameterType="Comments" resultType="Comments">
         SELECT * FROM tb_comments
-    </select>
-
-    <!-- 条件查询并过滤留言数据 -->
-    <select id="findByPageForFilter" resultType="Comments">
-        SELECT * FROM tb_comments
-        WHERE article_id = #{articleId}
+        <!--WHERE 1=1-->
+        <!--<if test="author != null">-->
+        <!--AND author LIKE CONCAT('%', #{author}, '%')-->
+        <!--</if>-->
     </select>
 
     <!-- 根据ID查询 -->
@@ -37,22 +35,12 @@
 
     <!-- 查询所有评论信息列表 -->
     <select id="findCommentsList" resultType="Comments">
-        SELECT * FROM tb_comments
+        SELECT * FROM tb_comments WHERE article_id = #{articleId}
     </select>
 
     <!-- 查询所有父级文章留言信息 -->
     <select id="findAllId" resultType="Comments">
-        SELECT * FROM tb_comments WHERE p_id = 0 AND c_id = 0
-    </select>
-
-    <!-- 查询所有对父级留言的回复信息 -->
-    <select id="findAllPid" resultType="Comments">
-        SELECT * FROM tb_comments WHERE p_id != 0 AND c_id = 0
-    </select>
-
-    <!-- 查询所有对父级留言回复的评论信息 -->
-    <select id="findAllCid" resultType="Comments">
-        SELECT * FROM tb_comments WHERE p_id != 0 AND c_id != 0
+        SELECT * FROM tb_comments WHERE p_id = 0 AND c_id = 0 AND article_id = #{articleId}
     </select>
 
     <!-- 保存 -->

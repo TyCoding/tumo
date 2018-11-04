@@ -33,24 +33,12 @@ public class CommentsController {
         return commentsService.findAll();
     }
 
-    @RequiresUser
+    @ResponseBody
     @RequestMapping("/findByPage")
     public PageBean findByPage(Comments comments,
                                @RequestParam(value = "pageCode", required = false) Integer pageCode,
                                @RequestParam(value = "pageSize", required = false) Integer pageSize) {
         return commentsService.findByPage(comments, pageCode, pageSize);
-    }
-
-    @RequestMapping("/findByPageForFilter")
-    public PageBean findByPageForFilter(
-            @RequestParam(value = "pageCode", required = false) Integer pageCode,
-            @RequestParam(value = "pageSize", required = false) Integer pageSize,
-            @RequestParam(value = "articleId", required = false) Integer articleId) {
-        if (pageCode != null && pageSize != null && articleId != null && articleId != 0) {
-            return commentsService.findByPageForFilter(pageCode, pageSize, articleId);
-        } else {
-            return null;
-        }
     }
 
     @RequestMapping("/findCountByArticleId")
@@ -63,15 +51,15 @@ public class CommentsController {
 
     @RequestMapping("/findCommentsList")
     public PageBean findCommentsList(@RequestParam(value = "pageCode", required = false) Integer pageCode,
-                                     @RequestParam(value = "pageSize", required = false) Integer pageSize) {
-        if (pageCode != null && pageSize != null) {
-            return commentsService.findCommentsList(pageCode, pageSize);
+                                     @RequestParam(value = "pageSize", required = false) Integer pageSize,
+                                     @RequestParam(value = "articleId", required = false) Integer articleId) {
+        if (pageCode != null && pageSize != null && articleId != null && articleId != 0) {
+            return commentsService.findCommentsList(pageCode, pageSize, articleId);
         } else {
             return null;
         }
     }
 
-    @ResponseBody
     @RequestMapping("/findById")
     public Comments findById(@RequestParam("id") Long id) {
         if (id != null && id != 0) {
@@ -81,7 +69,6 @@ public class CommentsController {
         }
     }
 
-    @ResponseBody
     @RequestMapping("/save")
     public ModifyResult save(@RequestBody Comments comments) {
         try {
@@ -94,7 +81,6 @@ public class CommentsController {
     }
 
     @RequiresUser
-    @ResponseBody
     @RequestMapping("/update")
     public ModifyResult update(@RequestBody Comments comments) {
         try {
@@ -107,7 +93,6 @@ public class CommentsController {
     }
 
     @RequiresUser
-    @ResponseBody
     @RequestMapping("/delete")
     public ModifyResult delete(@RequestBody Long... ids) {
         try {

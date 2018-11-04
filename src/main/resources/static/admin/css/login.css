@@ -85,25 +85,7 @@ body {
     animation-fill-mode: both;
     animation-delay: 0.3s;
 }
-.login-card{
-    transition: all 0.3s ease-in-out;
-    animation-name: fadeInLittleLeft;
-    animation-duration: 1s;
-    animation-fill-mode: both;
-    animation-delay: 0.3s;
-}
-.header {
-    animation-name: fadeInUp;
-    animation-duration: 1s;
-    animation-fill-mode: both;
-    animation-delay: 0.3s;
-}
-#form {
-    animation-name: fadeInUp;
-    animation-duration: 1s;
-    animation-fill-mode: both;
-    animation-delay: 0.3s;
-}
+
 @-moz-keyframes fadeInDown {
     from {
         opacity: 0;

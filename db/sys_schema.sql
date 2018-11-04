@@ -13,7 +13,7 @@ CREATE TABLE tb_article(
   `title_pic` VARCHAR(200) DEFAULT NULL COMMENT '封面图片',
   `category` VARCHAR(100) DEFAULT NULL COMMENT '分类',
   `author` varchar(100) NOT NULL COMMENT '作者',
-  `content` TEXT DEFAULT NULL COMMENT '内容',
+  `content` MEDIUMTEXT DEFAULT NULL COMMENT '内容',
   `origin` VARCHAR(100) DEFAULT NULL COMMENT '来源',
   `state` VARCHAR(100) NOT NULL DEFAULT '0' COMMENT '状态,-1:失效，0:存入草稿，1:发布',
   `view_cou` bigint DEFAULT 0 COMMENT '浏览次数',

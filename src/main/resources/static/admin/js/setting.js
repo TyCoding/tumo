@@ -28,7 +28,6 @@ var vm = new Vue({
             config: {
                 defaultActive: '10',
 
-                loading: {},
                 //===========侧边栏===========
                 name: '',
                 isCollapse: false,
@@ -37,19 +36,6 @@ var vm = new Vue({
         }
     },
     methods: {
-        /**
-         * loading加载动画
-         */
-        loadings() {
-            this.config.loading = this.$loading({
-                lock: true,
-                text: '拼命加载中',
-                spinner: 'el-icon-loading',
-            });
-            setTimeout(() => {
-                this.config.loading.close();
-            }, 2000);
-        },
 
         //===============侧边栏&&顶栏================
         //顶栏触发事件
@@ -66,18 +52,12 @@ var vm = new Vue({
         },
         //侧边栏触发事件
         handleSideSelect(key, keyPath){
-            this.loadings(); //打开动画
         },
 
 
 
     },
-    //页面没有渲染前
-    beforeMount() {
-        this.config.loading.close();//关闭动画
-    },
     // 生命周期函数
     created() {
-        this.loadings(); //加载动画
     },
 });

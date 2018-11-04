@@ -8,7 +8,9 @@
 
 Tumo Blog draw on many open source work's design elements. Blog web ui a lot of reference to the design elements of [@pinghsu](https://github.com/chakhsu/pinghsu), because pinghsu source is PHP, so i can't use it. But very thanks [@pinghsu](https://github.com/chakhsu/pinghsu) author. Of course, Tumo Blog as a based on SpringBoot-2.x framework's blog system, it's also owns beautiful Java manage page. So, lets go start Tumo Blog.
 
- 
+# Doc
+
+Loading...
 
 # Preview 
 

@@ -30,7 +30,6 @@ new Vue({
                 selectIds: [], //被checkbox选择的id值，用于批量删除
                 count: 0, //tag栏，此项那是checkbox选择了几行
 
-                loading: {},
                 //===========侧边栏===========
                 name: '',
                 isCollapse: false,
@@ -113,21 +112,6 @@ new Vue({
         },
         //侧边栏触发事件
         handleSideSelect(key, keyPath) {
-            this.loadings(); //打开动画
-        },
-
-        /**
-         * loading加载动画
-         */
-        loadings() {
-            this.config.loading = this.$loading({
-                lock: true,
-                text: '拼命加载中',
-                spinner: 'el-icon-loading',
-            });
-            setTimeout(() => {
-                this.config.loading.close();
-            }, 2000);
         },
 
         init(id) {
@@ -152,12 +136,7 @@ new Vue({
         }
     },
     created() {
-        this.loadings(); //加载动画
         this.init(window.location.href.substring(window.location.href.lastIndexOf('/') + 1));
-    },
-    //页面没有渲染前
-    beforeMount() {
-        this.config.loading.close();//关闭动画
     },
 });
 

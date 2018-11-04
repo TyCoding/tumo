@@ -17,7 +17,7 @@ public interface CommentsService extends BaseService<Comments> {
      * @param articleId 当前访问的文章ID
      * @return
      */
-    PageBean findByPageForFilter(int pageCode, int pageSize, int articleId);
+    PageBean findCommentsList(int pageCode, int pageSize, int articleId);
 
     /**
      * 查询指定文章下的评论量
@@ -27,5 +27,4 @@ public interface CommentsService extends BaseService<Comments> {
      */
     Long findCountByArticle(long articleId);
 
-    PageBean findCommentsList(int pageCode, int pageSize);
 }

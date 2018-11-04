@@ -46,7 +46,6 @@ var vm = new Vue({
             config: {
                 defaultActive: '5',
 
-                loading: {},
                 //===========侧边栏===========
                 name: '',
                 isCollapse: false,
@@ -61,19 +60,6 @@ var vm = new Vue({
         }
     },
     methods: {
-        /**
-         * loading加载动画
-         */
-        loadings() {
-            this.config.loading = this.$loading({
-                lock: true,
-                text: '拼命加载中',
-                spinner: 'el-icon-loading',
-            });
-            setTimeout(() => {
-                this.config.loading.close();
-            }, 2000);
-        },
 
         //===============侧边栏&&顶栏================
         //顶栏触发事件
@@ -90,7 +76,6 @@ var vm = new Vue({
         },
         //侧边栏触发事件
         handleSideSelect(key, keyPath){
-            this.loadings(); //打开动画
         },
 
         /**
@@ -105,7 +90,6 @@ var vm = new Vue({
         },
         //条件查询
         search(pageCode, pageSize) {
-            this.loadings();
             this.$http.post('/category/findByPage?pageSize=' + pageSize + '&pageCode=' + pageCode).then(result => {
                 console.log(result);
                 this.entity.category = result.body.rows;
@@ -113,7 +97,6 @@ var vm = new Vue({
             });
         },
         search_t(pageCode_t, pageSize_t){
-            this.loadings();
             this.$http.post('/tags/findByPage?pageSize=' + pageSize_t + '&pageCode=' + pageCode_t).then(result => {
                 console.log(result);
                 this.entity.tags = result.body.rows;
@@ -360,13 +343,8 @@ var vm = new Vue({
         },
 
     },
-    //页面没有渲染前
-    beforeMount() {
-        this.config.loading.close();//关闭动画
-    },
     // 生命周期函数
     created() {
-        this.loadings(); //加载动画
         this.search(this.pageConf.pageCode, this.pageConf.pageSize);
         this.search_t(this.pageConf.pageCode_t, this.pageConf.pageSize_t);
     },
