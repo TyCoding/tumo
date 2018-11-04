@@ -19,6 +19,7 @@ public class Article implements Serializable {
     private String tags; //标签
     private String author; //作者
     private String content; //内容
+    private String contentMd; //留言内容-Markdown格式
     private String origin; //来源
     private String state; //状态
 
@@ -107,6 +108,14 @@ public class Article implements Serializable {
         this.content = content;
     }
 
+    public String getContentMd() {
+        return contentMd;
+    }
+
+    public void setContentMd(String contentMd) {
+        this.contentMd = contentMd;
+    }
+
     public String getState() {
         return state;
     }
@@ -157,6 +166,7 @@ public class Article implements Serializable {
                 ", tags='" + tags + '\'' +
                 ", author='" + author + '\'' +
                 ", content='" + content + '\'' +
+                ", contentMd='" + contentMd + '\'' +
                 ", origin='" + origin + '\'' +
                 ", state='" + state + '\'' +
                 ", publishTime=" + publishTime +

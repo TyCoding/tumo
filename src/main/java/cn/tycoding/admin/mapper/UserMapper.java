@@ -3,7 +3,6 @@ package cn.tycoding.admin.mapper;
 import cn.tycoding.admin.entity.User;
 import com.github.pagehelper.Page;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.shiro.authz.annotation.RequiresRoles;
 
 /**
  * @auther TyCoding
@@ -16,7 +15,7 @@ public interface UserMapper {
 
     User findById(long id);
 
-    @RequiresRoles("admin")
+//    @RequiresRoles("admin")
     int save(User user);
 
     int update(User user);

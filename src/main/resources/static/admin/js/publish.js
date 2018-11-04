@@ -14,7 +14,8 @@ new Vue({
                     tags: '',
                     author: '',
                     content: '',
-                    origin: window.origin + '/site/article/',
+                    contentMd: '',
+                    origin: 'http://tycoding.cn',
                 },
                 category: [{
                     id: '',
@@ -55,6 +56,7 @@ new Vue({
         //点击存入草稿
         save() {
             this.entity.article.content = window.markdownContent.getHTML(); //给content赋值
+            this.entity.article.contentMd = window.markdownContent.getMarkdown(); //给contentMd赋值
             this.entity.article.tags = JSON.stringify(this.config.dynamicTags); //给tags字段赋值
 
             this.$http.post('/article/save', JSON.stringify(this.entity.article)).then(result => {

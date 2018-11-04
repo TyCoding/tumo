@@ -3,7 +3,6 @@ package cn.tycoding.admin.mapper;
 import cn.tycoding.admin.entity.Links;
 import com.github.pagehelper.Page;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.shiro.authz.annotation.RequiresRoles;
 
 import java.util.List;
 
@@ -20,7 +19,7 @@ public interface LinksMapper {
 
     Links findById(long id);
 
-    @RequiresRoles("admin")
+//    @RequiresRoles("admin")
     int save(Links links);
 
     int update(Links links);

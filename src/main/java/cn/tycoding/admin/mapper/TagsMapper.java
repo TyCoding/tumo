@@ -3,7 +3,6 @@ package cn.tycoding.admin.mapper;
 import cn.tycoding.admin.entity.Tags;
 import com.github.pagehelper.Page;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.shiro.authz.annotation.RequiresRoles;
 
 import java.util.List;
 
@@ -20,7 +19,7 @@ public interface TagsMapper {
 
     Tags findById(long id);
 
-    @RequiresRoles("admin")
+//    @RequiresRoles("admin")
     int save(Tags tags);
 
     int update(Tags tags);

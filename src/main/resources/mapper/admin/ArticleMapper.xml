@@ -49,6 +49,7 @@
           category,
           author,
           content,
+          content_md,
           origin,
           state,
           publish_time,
@@ -61,6 +62,7 @@
           #{category},
           #{author},
           #{content},
+          #{contentMd},
           #{origin},
           #{state},
           #{publishTime},
@@ -87,6 +89,9 @@
             </if>
             <if test="content != null">
                 content = #{content},
+            </if>
+            <if test="contentMd != null">
+                content_md = #{contentMd},
             </if>
             <if test="origin != null">
                 origin = #{origin},

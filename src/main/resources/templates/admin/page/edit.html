@@ -8,12 +8,12 @@
     <meta http-equiv="Cache-Control" content="no-transform"/>
     <meta http-equiv="Cache-Control" content="no-siteapp"/>
     <title>编辑文章</title>
-    <link rel="icon" th:href="@{../../../public/favicon-icon.png}" type="image/png">
-    <link rel="stylesheet" th:href="@{../../../lib/element-ui/lib/theme-chalk/index.css}"/>
-    <link rel="stylesheet" th:href="@{../../../lib/font/css/font-awesome.min.css}"/>
-    <link rel="stylesheet" th:href="@{../../../lib/editormd/editormd.min.css}">
-    <link rel="stylesheet" th:href="@{../../../public/admin/base.css}">
-    <link rel="stylesheet" th:href="@{../../../admin/css/publish.css}">
+    <link rel="icon" th:href="@{/public/favicon-icon.png}" type="image/png">
+    <link rel="stylesheet" th:href="@{/lib/element-ui/lib/theme-chalk/index.css}"/>
+    <link rel="stylesheet" th:href="@{/lib/font/css/font-awesome.min.css}"/>
+    <link rel="stylesheet" th:href="@{/lib/editormd/editormd.min.css}">
+    <link rel="stylesheet" th:href="@{/public/admin/base.css}">
+    <link rel="stylesheet" th:href="@{/admin/css/publish.css}">
 
     <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
     <script th:inline="javascript" th:src="@{/plugins/js/instantclick.min.js}"></script>
@@ -99,7 +99,7 @@
                     </div>
                     <div>
                         <div id="article">
-                            <textarea id="article-editor-md" ref="articleEditorMd" name="article-editor-md">{{entity.article.content}}</textarea>
+                            <textarea id="article-editor-md" ref="articleEditorMd" name="article-editor-md">{{entity.article.contentMd}}</textarea>
                         </div>
                     </div>
                     <div>
@@ -118,13 +118,14 @@
 </body>
 <!--<script type="text/javascript" th:src="@{../../../lib/vue/vue.js}"></script>-->
 <script th:src="@{https://cdn.jsdelivr.net/npm/vue/dist/vue.js}"></script>
-<script type="text/javascript" th:src="@{../../../lib/element-ui/lib/index.js}"></script>
-<script type="text/javascript" th:src="@{../../../lib/vue/vue-resource.js}"></script>
-<script type="text/javascript" th:src="@{../../../lib/editormd/jquery-3.3.1.min.js}"></script>
-<script type="text/javascript" th:src="@{../../../lib/editormd/editormd.min.js}"></script>
-<script type="text/javascript" th:src="@{../../../admin/js/edit.js}"></script>
+<script type="text/javascript" th:src="@{/lib/element-ui/lib/index.js}"></script>
+<script type="text/javascript" th:src="@{/lib/vue/vue-resource.js}"></script>
+<script type="text/javascript" th:src="@{/lib/editormd/jquery-3.3.1.min.js}"></script>
+<script type="text/javascript" th:src="@{/lib/editormd/editormd.min.js}"></script>
+<script type="text/javascript" th:src="@{/admin/js/edit.js}"></script>
 <script type="text/javascript" th:inline="javascript">
     var markdownContent = editormd('article', {
+        htmlDecode : true, // Decode all html tags & attributes
         width: '100%',
         height: 540,
         syncScrolling: "single",

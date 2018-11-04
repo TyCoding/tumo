@@ -14,6 +14,7 @@ new Vue({
                     tags: '',
                     author: '',
                     content: '',
+                    contentMd: '',
                     origin: '',
                 },
                 category: [{
@@ -51,7 +52,8 @@ new Vue({
 
         //点击存入草稿
         save() {
-            this.entity.article.content = window.markdownContent.getMarkdown(); //给content赋值
+            this.entity.article.content = window.markdownContent.getHTML(); //给content赋值
+            this.entity.article.contentMd = window.markdownContent.getMarkdown(); //给contentMd赋值
             this.entity.article.tags = JSON.stringify(this.config.dynamicTags); //给tags字段赋值
 
             this.$http.post('/article/update', JSON.stringify(this.entity.article)).then(result => {
@@ -133,10 +135,35 @@ new Vue({
                     }
                 });
             });
-        }
+        },
+
+        getUrlParam(){
+            var hash = '';
+            var path = window.location.href;
+            if (path.indexOf('?') == -1 && path.indexOf('#') == -1){
+                hash = path.substring(path.lastIndexOf('/') + 1);
+            }else{
+                if (path.indexOf('?') == -1 || path.indexOf('#') == -1) {
+                    if (path.indexOf('?') > path.indexOf('#')) {
+                        //说明 ？在 # 前
+                        hash = path.substring(path.lastIndexOf('/') + 1, path.indexOf('?'));
+                    } else {
+                        hash = path.substring(path.lastIndexOf('/') + 1, path.indexOf('#'));
+                    }
+                } else {
+                    if (path.indexOf('?') > path.indexOf('#')) {
+                        //说明 ？在 # 前
+                        hash = path.substring(path.lastIndexOf('/') + 1, path.indexOf('#'));
+                    } else {
+                        hash = path.substring(path.lastIndexOf('/') + 1, path.indexOf('?'));
+                    }
+                }
+            }
+            return hash;
+        },
     },
     created() {
-        this.init(window.location.href.substring(window.location.href.lastIndexOf('/') + 1));
+        this.init(this.getUrlParam());
     },
 });
 
