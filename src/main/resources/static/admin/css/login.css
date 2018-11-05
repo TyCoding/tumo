@@ -577,3 +577,8 @@ body {
         margin-top: 45% !important;
     }
 }
+@media only screen and (max-width: 768px){
+    #main{
+        margin-top: 29% !important;
+    }
+}

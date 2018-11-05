@@ -10,12 +10,9 @@
     <link rel="icon" th:href="@{/public/favicon.png}" type="image/png">
     <link rel="apple-touch-icon" th:href="@{/public/favicon.png}"/>
     <title>404 找不到 -- Tumo Blog</title>
-    <link rel="stylesheet" th:href="@{/plugins/css/default.min.css}"/>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/highlight.js/9.12.0/styles/default.min.css"/>
     <link rel="stylesheet" th:href="@{../../../site/css/index.css}">
-    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
 
-    <script th:inline="javascript" th:src="@{/plugins/js/highlight.min.js}"></script>
-    <script th:inline="javascript" th:src="@{/plugins/js/instantclick.min.js}"></script>
     <!--[if lt IE 9]>
     <script src="//cdn.bootcss.com/html5shiv/r29/html5.min.js"></script>
     <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
@@ -49,11 +46,13 @@
 </div>
 
 </body>
-<script th:src="@{https://cdn.jsdelivr.net/npm/vue/dist/vue.js}"></script>
-<script type="text/javascript" th:src="@{/lib/element-ui/lib/index.js}"></script>
-<script type="text/javascript" th:src="@{/lib/vue/vue-resource.js}"></script>
+<script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.4.7/index.js"></script>
+<script type="text/javascript" src="https://cdn.bootcss.com/vue-resource/1.5.1/vue-resource.js"></script>
+<script type="text/javascript" src="https://cdn.bootcss.com/headroom/0.9.4/headroom.min.js"></script>
+<script type="text/javascript" src="https://cdn.bootcss.com/instantclick/3.0.1/instantclick.min.js"></script>
 <script type="text/javascript" th:src="@{/site/js/about.js}"></script>
-<script type="text/javascript" th:src="@{https://npmcdn.com/headroom.js@0.9.4/dist/headroom.js}"></script>
 <script type="text/javascript">
     var header = new Headroom(document.getElementById("header"), {
         tolerance: 10,

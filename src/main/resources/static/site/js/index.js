@@ -44,11 +44,6 @@ var vm = new Vue({
     },
     methods: {
 
-        //过滤HTML标签并截取指定长度
-        delMarkdedTag(str){
-            return str.replace(/[\\\`\*\_\[\]\#\+\-\!\>]/g, "").substring(0, 49) + ' ...';
-        },
-
         //刷新列表
         reloadList() {
             this.search(this.pageConf.pageCode, this.pageConf.pageSize);
@@ -74,7 +69,7 @@ var vm = new Vue({
         /**
          * 一些初始化数据
          */
-        init(){
+        init() {
             //最新文章
             this.$http.get('/article/findAll').then(result => {
                 this.entity.newArticle = result.body;
@@ -84,7 +79,15 @@ var vm = new Vue({
                 this.entity.newComments = result.body;
             });
         },
+        //去掉所有的html标记
+        delHtmlTag(str) {
+            return str.replace(/<[^>]+>/g, "").substring(0, 49) + ' ...';
+        },
 
+        //过滤HTML标签并截取指定长度
+        delMarkdedTag(str) {
+            return str.replace(/[\\\`\*\_\[\]\#\+\-\!\>]/g, "").substring(0, 49) + ' ...';
+        },
 
     },
     // 生命周期函数

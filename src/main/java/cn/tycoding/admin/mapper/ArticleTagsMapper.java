@@ -4,6 +4,7 @@ import cn.tycoding.admin.entity.ArticleTags;
 import cn.tycoding.admin.entity.Tags;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 
 import java.util.List;
 
@@ -14,7 +15,6 @@ import java.util.List;
 @Mapper
 public interface ArticleTagsMapper {
 
-//    @RequiresRoles("admin")
     int save(ArticleTags articleTags);
 
     boolean exists(@Param("articleId") long articleId, @Param("tagsId") long tagsId);

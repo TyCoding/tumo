@@ -11,8 +11,9 @@
     <link rel="icon" th:href="@{/public/favicon.png}" type="image/png">
     <link rel="apple-touch-icon" th:href="@{/public/favicon.png}"/>
     <link rel="stylesheet" th:href="@{../../../site/css/index.css}">
-    <link rel="stylesheet" th:href="@{../../../lib/element-ui/lib/theme-chalk/index.css}">
-    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.4.7/theme-chalk/index.css">
+
     <!--[if lt IE 9]>
     <script src="//cdn.bootcss.com/html5shiv/r29/html5.min.js"></script>
     <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
@@ -39,7 +40,7 @@
                         <div class="item-thumb bg-deepgrey" :style="'background-image:url(' + item.titlePic + ');'"></div>
                         <a :href="basePath + 'article/' + item.id">
                             <div class="item-desc">
-                                <p v-text="delMarkdedTag(item.content)"></p>
+                                <p v-text="delHtmlTag(item.content)"></p>
                             </div>
                         </a>
                         <div class="item-slant reverse-slant bg-deepgrey"></div>
@@ -93,12 +94,13 @@
     <!-- footer -->
     <div th:replace="site/footer :: footer"></div>
 </div>
-
-<script type="text/javascript" th:src="@{https://cdn.jsdelivr.net/npm/vue/dist/vue.js}"></script>
-<script type="text/javascript" th:src="@{../../lib/element-ui/lib/index.js}"></script>
-<script type="text/javascript" th:src="@{../../lib/vue/vue-resource.js}"></script>
+<script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.4.7/index.js"></script>
+<script type="text/javascript" src="https://cdn.bootcss.com/vue-resource/1.5.1/vue-resource.js"></script>
+<script type="text/javascript" src="https://cdn.bootcss.com/headroom/0.9.4/headroom.min.js"></script>
+<script type="text/javascript" src="https://cdn.bootcss.com/instantclick/3.0.1/instantclick.min.js"></script>
 <script type="text/javascript" th:src="@{../../site/js/index.js}"></script>
-<script th:src="@{/plugins/js/headroom.min.js}" type="text/javascript"></script>
 <script type="text/javascript">
     var header = new Headroom(document.getElementById("header"), {
         tolerance: 10,
@@ -120,7 +122,6 @@
         }
     });
 </script>
-<script th:src="@{/plugins/js/instantclick.min.js}" type="text/javascript"></script>
 <script data-no-instant type="text/javascript">
     InstantClick.on('change', function (isInitialLoad) {
         var blocks = document.querySelectorAll('pre code');

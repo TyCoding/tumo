@@ -21,7 +21,6 @@ public interface ArticleMapper {
 
     Article findById(long id);
 
-//    @RequiresRoles("admin")
     int save(Article article);
 
     int update(Article article);

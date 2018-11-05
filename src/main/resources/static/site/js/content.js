@@ -1,6 +1,15 @@
 //设置全局表单提交格式
 Vue.http.options.emulateJSON = true;
 
+//高亮代码的指令
+Vue.directive('highlight', function (el) {
+    let blocks = el.querySelectorAll('pre code');
+    blocks.forEach((block) => {
+        hljs.highlightBlock(block)
+    })
+});
+
+
 //Vue实例
 new Vue({
     el: '#app',
@@ -127,7 +136,7 @@ new Vue({
         //条件查询
         search(pageCode, pageSize) {
             this.$http.post('/comments/findCommentsList?pageSize=' + pageSize + '&pageCode=' + pageCode + '&articleId=' + this.getUrlParam()).then(result => {
-                if (result.body.rows != null){
+                if (result.body.rows != null) {
                     this.entity.comments = result.body.rows;
                     this.pageConf.totalPage = result.body.total;
                 }
@@ -145,7 +154,7 @@ new Vue({
 
         //点击回复按钮
         replay(name, pId, cId) {
-            if (cId != null || cId != undefined){
+            if (cId != null || cId != undefined) {
                 //三层回复
                 this.editor.comments.cId = cId;
             }
@@ -192,12 +201,12 @@ new Vue({
             return null;
         },
 
-        getUrlParam(){
+        getUrlParam() {
             var hash = '';
             var path = window.location.href;
-            if (path.indexOf('?') == -1 && path.indexOf('#') == -1){
+            if (path.indexOf('?') == -1 && path.indexOf('#') == -1) {
                 hash = path.substring(path.lastIndexOf('/') + 1);
-            }else{
+            } else {
                 if (path.indexOf('?') == -1 || path.indexOf('#') == -1) {
                     if (path.indexOf('?') > path.indexOf('#')) {
                         //说明 ？在 # 前

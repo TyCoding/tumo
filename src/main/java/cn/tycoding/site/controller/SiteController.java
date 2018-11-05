@@ -52,6 +52,16 @@ public class SiteController {
         return "site/page/archives";
     }
 
+    /**
+     * 友情链接
+     *
+     * @return
+     */
+    @GetMapping("/link")
+    public String link() {
+        return "site/page/link";
+    }
+
     @RequestMapping("/article/{id}")
     public String generate(@PathVariable("id") Long id) {
         if (id == null || id == 0) {
