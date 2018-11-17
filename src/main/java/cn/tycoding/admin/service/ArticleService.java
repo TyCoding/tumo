@@ -13,14 +13,13 @@ import java.util.List;
 public interface ArticleService extends BaseService<Article> {
 
     /**
-     * 分页查询，过滤未发表的文章
+     * 分页查询（为博客前端服务）
      *
-     * @param article
      * @param pageCode
      * @param pageSize
      * @return
      */
-    PageBean findByPageByFilter(Article article, Integer pageCode, Integer pageSize);
+    PageBean findByPageForSite(Integer pageCode, Integer pageSize);
 
     /**
      * 根据分类名称查询文章数据
@@ -39,11 +38,10 @@ public interface ArticleService extends BaseService<Article> {
     List<ArticleArchives> findArchives();
 
     /**
-     * 通过条件查询文章归档信息（比如：分类，标签...）
-     * 和上面不同，这里的查询父级只有一个（分类、标签...），得到的是文章的List集合，所以并不需要封装进ArticleArchives文章归档DTO中
+     * 模糊查询，为前端搜索框服务
      *
-     * @param article
+     * @param title
      * @return
      */
-    List<Article> findArchivesByArticle(Article article);
+    List<Article> findFuzzyByTitle(String title);
 }

@@ -87,4 +87,10 @@ public class ArticleServiceImplTest {
         PageBean pageBean = articleService.findByPage(new Article(), 1, 3);
         logger.info("list={}", pageBean.getRows());
     }
+
+    @Test
+    public void findFuzzyByTitle(){
+        List<Article> list = articleService.findFuzzyByTitle("haha");
+        logger.info("list={}", list);
+    }
 }

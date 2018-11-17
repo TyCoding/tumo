@@ -12,6 +12,7 @@ import cn.tycoding.admin.service.CategoryService;
 import com.alibaba.fastjson.JSON;
 import org.apache.shiro.authz.annotation.RequiresUser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -56,15 +57,8 @@ public class ArticleController {
         return articleService.findByPage(article, pageCode, pageSize);
     }
 
-    @RequestMapping("/findByPageByFilter")
-    public PageBean findByPageByFilter(Article article,
-                                       @RequestParam(value = "pageCode", required = false) Integer pageCode,
-                                       @RequestParam(value = "pageSize", required = false) Integer pageSize) {
-        return articleService.findByPageByFilter(article, pageCode, pageSize);
-    }
-
     @RequestMapping("/findById")
-    public Article findById(@RequestParam("id") Long id) {
+    public Article findById(@RequestParam("id") Long id, Model model) {
         if (id == null || id == 0) {
             return null;
         } else {
@@ -136,23 +130,5 @@ public class ArticleController {
             e.printStackTrace();
             return new ModifyResult(false, e.getMessage());
         }
-    }
-
-    @RequestMapping("/findArchivesByCategory")
-    public List<Article> findArchivesByCategory(@RequestParam("name") String name) {
-        if (name != null || !name.equals("")) {
-            List<Article> categoryArticleList = articleService.findArchivesByArticle(new Article(null, name));
-            return categoryArticleList;
-        }
-        return null;
-    }
-
-    @RequestMapping("/findArchivesByTitle")
-    public List<Article> findArchivesByTitle(@RequestParam("name") String name) {
-        if (name != null || !name.equals("")){
-            List<Article> categoryArticleList = articleService.findArchivesByArticle(new Article(null, name));
-            return categoryArticleList;
-        }
-        return null;
     }
 }

@@ -5,8 +5,8 @@
     <title>Title</title>
 </head>
 <body>
-<div th:fragment="footer">
-    <footer id="footer" class="footer bg-white">
+<footer class="bg-white" th:fragment="footer">
+    <div class="footer">
         <div class="footer-social">
             <div class="footer-container clearfix">
                 <div class="social-list">
@@ -36,33 +36,34 @@
 
                 <div class="meta-item meta-posts">
                     <h3 class="meta-title">最新文章</h3>
-                    <li v-for="item in entity.newArticle">
-                        <a href="/" v-text="item.title"></a>
+                    <li th:each="item : ${articleList}">
+                        <a href="#" th:text="${item.title}"></a>
                     </li>
                 </div>
 
                 <div class="meta-item meta-comments">
                     <h3 class="meta-title">最新评论</h3>
-                    <li v-for="item in entity.newComments">
-                        <a href="/" v-text="item.author + ':  ' + item.content"></a>
+                    <li th:each="item : ${commentsList}">
+                        <a href="#" th:text="${item.author} + ':  ' + ${item.content}"></a>
                     </li>
                 </div>
             </div>
         </div>
-    </footer>
+    </div>
 
-    <div id="post-bottom-bar" class="post-bottom-bar">
-        <div class="bottom-bar-inner">
-            <div class="bottom-bar-items social-share left">
-                <span class="bottom-bar-item">Share : </span>
-                <span class="bottom-bar-item bottom-bar-facebook"><a :href="'https://www.facebook.com/sharer/sharer.php?'" target="_blank" rel="nofollow">facebook</a></span>
-                <span class="bottom-bar-item bottom-bar-twitter"><a :href="'https://twitter.com/intent/tweet?url='" target="_blank" rel="nofollow">Twitter</a></span>
-                <span class="bottom-bar-item bottom-bar-weibo"><a :href="'http://service.weibo.com/share/share.php?url='" target="_blank" rel="nofollow">Weibo</a></span>
-                <span class="bottom-bar-item bottom-bar-qrcode"><a :href="'https://cli.im/api/qrcode/code?text='" target="_blank" rel="nofollow">QRcode</a></span>
+    <div id="footer">
+        <div id="post-bottom-bar" class="post-bottom-bar">
+            <div class="bottom-bar-inner">
+                <div class="bottom-bar-items social-share left">
+                    <span class="bottom-bar-item">Share : </span>
+                    <span class="bottom-bar-item bottom-bar-facebook"><a :href="'https://www.facebook.com/sharer/sharer.php?'" target="_blank" rel="nofollow">facebook</a></span>
+                    <span class="bottom-bar-item bottom-bar-twitter"><a :href="'https://twitter.com/intent/tweet?url='" target="_blank" rel="nofollow">Twitter</a></span>
+                    <span class="bottom-bar-item bottom-bar-weibo"><a :href="'http://service.weibo.com/share/share.php?url='" target="_blank" rel="nofollow">Weibo</a></span>
+                    <span class="bottom-bar-item bottom-bar-qrcode"><a :href="'https://cli.im/api/qrcode/code?text='" target="_blank" rel="nofollow">QRcode</a></span>
+                </div>
             </div>
         </div>
     </div>
-</div>
-
+</footer>
 </body>
 </html>

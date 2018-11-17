@@ -1,77 +1,32 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
-    <meta name="renderer" content="webkit">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta http-equiv="Cache-Control" content="no-transform"/>
-    <meta http-equiv="Cache-Control" content="no-siteapp"/>
-    <link rel="icon" th:href="@{/public/favicon.png}" type="image/png">
-    <link rel="apple-touch-icon" th:href="@{/public/favicon.png}"/>
-    <title>404 找不到 -- Tumo Blog</title>
-    <link rel="stylesheet" href="https://cdn.bootcss.com/highlight.js/9.12.0/styles/default.min.css"/>
-    <link rel="stylesheet" th:href="@{../../../site/css/index.css}">
+<!-- 公共的CSS库 -->
+<head th:include="/site/common/common_head :: commonHead"></head>
 
-    <!--[if lt IE 9]>
-    <script src="//cdn.bootcss.com/html5shiv/r29/html5.min.js"></script>
-    <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
+<title>404 找不到 -- Tumo Blog</title>
+<link rel="stylesheet" th:href="@{/public/error.css}">
 
-    <link rel="stylesheet" th:href="@{/public/error.css}">
-</head>
 <body style="display: flex; flex-direction: column; min-height: 100vh;">
-
 <!-- header -->
 <div th:replace="site/header :: header"></div>
-
 <div style="flex: 1;text-align: center">
     <div class="article" style="margin-top: 11%;margin-bottom: 4%;">
         <div class="article-content">
-            <blockquote>
+            <div>
                 <img th:src="@{/plugins/images/404.gif}" alt="404" width="500" height="400">
                 <footer>
                     <strong>Collect UI</strong>
                     <cite><a href="https://medium.com/@CollectUI/404-page-design-inspiration-march-2017-f6d9f7efd054">404
                         Page Design Inspiration</a></cite>
                 </footer>
-            </blockquote>
+            </div>
         </div>
     </div>
 </div>
 
 <!-- footer -->
-<div id="app">
-    <div th:replace="site/footer :: footer"></div>
-</div>
-
+<div th:replace="site/footer :: footer"></div>
+<!-- 公共的JS库 -->
+<div th:include="site/common/onload_js ::onloadJS"></div>
 </body>
-<script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.4.7/index.js"></script>
-<script type="text/javascript" src="https://cdn.bootcss.com/vue-resource/1.5.1/vue-resource.js"></script>
-<script type="text/javascript" src="https://cdn.bootcss.com/headroom/0.9.4/headroom.min.js"></script>
-<script type="text/javascript" src="https://cdn.bootcss.com/instantclick/3.0.1/instantclick.min.js"></script>
-<script type="text/javascript" th:src="@{/site/js/about.js}"></script>
-<script type="text/javascript">
-    var header = new Headroom(document.getElementById("header"), {
-        tolerance: 10,
-        offset : 80,
-        classes: {
-            initial: "animated",
-            pinned: "slideDown",
-            unpinned: "slideUp"
-        }
-    });
-    header.init();
-    $('#search-inp').keypress(function (e) {
-        var key = e.which; //e.which是按键的值
-        if (key === 13) {
-            var q = $(this).val();
-            if (q && q !== '') {
-                window.location.href = '/search/' + q;
-            }
-        }
-    });
-</script>
 </html>

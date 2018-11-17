@@ -17,9 +17,9 @@
 <div class="main-content archive-page clearfix">
     <div class="categorys-item">
         <div class="categorys-title">
-            分类： [[${category}]]
+            搜索： [[${title}]]
         </div>
-        <div class="post-lists">
+        <div class="post-lists" th:if="${article != '[]'}">
             <div class="post-lists-body">
                 <div class="post-list-item" th:each="item : ${article}">
                     <div class="post-list-item-container">
@@ -34,7 +34,11 @@
                         </div>
                     </div>
                 </div>
+
             </div>
+        </div>
+        <div th:if="${#lists.isEmpty(article)}">
+            <p>抱歉，还没有相关文章.</p>
         </div>
     </div>
 </div>

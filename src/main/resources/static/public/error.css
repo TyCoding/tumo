@@ -1,3 +1,11 @@
 .page .article-content img, .article .article-content img{
     background-color: #fff !important;
 }
+
+@media screen and (max-device-width: 500px){
+    .page .article-content img, .article .article-content img{
+        height: 280px !important;
+        width: 300px !important;
+        margin-top: 21% !important;
+    }
+}

@@ -57,9 +57,9 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public PageBean findByPageByFilter(Article article, Integer pageCode, Integer pageSize) {
+    public PageBean findByPageForSite(Integer pageCode, Integer pageSize) {
         PageHelper.startPage(pageCode, pageSize);
-        Page<Article> page = articleMapper.findByPageByFilter(article);
+        Page<Article> page = articleMapper.findByPageForSite();
         return new PageBean(page.getTotal(), page.getResult());
     }
 
@@ -156,10 +156,9 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public List<Article> findArchivesByArticle(Article article) {
-        List<Article> articleList = new ArrayList<Article>();
+    public List<Article> findFuzzyByTitle(String title) {
         try {
-            return articleMapper.findArchivesByArticle(article);
+            return articleMapper.findFuzzyByTitle(title);
         } catch (Exception e) {
             e.printStackTrace();
             throw new ModifyException(ModifyEnums.INNER_ERROR);

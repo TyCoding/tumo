@@ -43,4 +43,10 @@ public class ArticleMapperTest {
     @Test
     public void findArchivesByDate() {
     }
+
+    @Test
+    public void findFuzzyByTitle(){
+        List<Article> list = articleMapper.findFuzzyByTitle("haha");
+        logger.info("list={}", list);
+    }
 }

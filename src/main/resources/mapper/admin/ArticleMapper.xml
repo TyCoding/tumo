@@ -25,12 +25,9 @@
     </select>
 
     <!-- 前台条件查询=过滤查询 -->
-    <select id="findByPageByFilter" parameterType="cn.tycoding.admin.entity.Article"
+    <select id="findByPageForSite" parameterType="cn.tycoding.admin.entity.Article"
             resultType="cn.tycoding.admin.entity.Article">
         SELECT * FROM tb_article WHERE 1=1
-        <if test="author != null">
-            AND author LIKE CONCAT('%', #{author}, '%')
-        </if>
         AND state = '1'
         ORDER BY id DESC
     </select>
@@ -137,18 +134,9 @@
         SELECT id, title, publish_time FROM tb_article WHERE publish_time LIKE CONCAT ('%', #{date} ,'%')
     </select>
 
-    <!-- find article archives by title or category or other -->
-    <select id="findArchivesByArticle" resultType="Article" parameterType="Article">
-        SELECT id, title, publish_time FROM tb_article WHERE 1=1
-        <if test="category != null">
-            AND category = #{category}
-        </if>
-        <if test="title != null">
-            AND title = #{title}
-        </if>
-        <if test="publishTime != null">
-            AND publish_time = #{publishTime}
-        </if>
+    <!-- 模糊查询，为前端搜索框服务 -->
+    <select id="findFuzzyByTitle" resultType="Article" parameterType="String">
+        SELECT * FROM tb_article WHERE title LIKE CONCAT('%', #{title}, '%')
     </select>
 
 </mapper>

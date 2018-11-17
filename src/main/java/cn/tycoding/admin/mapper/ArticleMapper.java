@@ -17,7 +17,7 @@ public interface ArticleMapper {
 
     Page<Article> findByPage(Article article);
 
-    Page<Article> findByPageByFilter(Article article);
+    Page<Article> findByPageForSite();
 
     Article findById(long id);
 
@@ -37,5 +37,5 @@ public interface ArticleMapper {
 
     List<Article> findArchivesByDate(String date);
 
-    List<Article> findArchivesByArticle(Article article);
+    List<Article> findFuzzyByTitle(String title);
 }

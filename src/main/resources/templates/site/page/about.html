@@ -1,26 +1,11 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
-    <meta name="renderer" content="webkit">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta http-equiv="Cache-Control" content="no-transform"/>
-    <meta http-equiv="Cache-Control" content="no-siteapp"/>
-    <link rel="icon" th:href="@{/public/favicon.png}" type="image/png">
-    <link rel="apple-touch-icon" th:href="@{/public/favicon.png}"/>
-    <title>关于 - Tumo Blog</title>
-    <link rel="icon" th:href="@{../../public/favicon-icon.png}" type="image/png">
-    <link rel="stylesheet" th:href="@{../../../site/css/index.css}">
-    <link rel="stylesheet" th:href="@{../../site/css/about.css}"/>
 
-    <!--[if lt IE 9]>
-    <script src="//cdn.bootcss.com/html5shiv/r29/html5.min.js"></script>
-    <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-</head>
+<!-- 公共的CSS库 -->
+<head th:include="/site/common/common_head :: commonHead"></head>
+<title>关于 - Tumo Blog</title>
+
 <body class="bg-grey" gtools_scp_screen_capture_injected="true">
-
 <!--[if lt IE 8]>
 <div class="browsehappy" role="dialog">
     当前网页 <strong>不支持</strong> 你正在使用的浏览器. 为了正常的访问, 请 <a href="http://browsehappy.com/" target="_blank">升级你的浏览器</a>。
@@ -30,73 +15,45 @@
 <!-- header -->
 <div th:replace="site/header :: header"></div>
 
-<div id="app">
-    <!-- main -->
-    <div id="main">
-        <article role="pge-title-content" class="main-content page-page" itemscope itemtype="http://schema.org/Article">
-            <header>
-                <h2><span>Hi! </span> My name is TyCoding.</h2>
-            </header>
-            <label>I’m a Java Developer with an enduring interest in Coding and Write Blog.</label>
-            <br/>
-            <br/>
-            <h1>About</h1>
-            <p style="margin-bottom: 10px;">Hi! 你好，我是TyCoding, 专注Java开发， 喜欢代码艺术， 关注新技术</p>
-            <p>喜欢运动， 音乐</p>
-            <br/>
-            <br/>
-            <h1>Works</h1>
-            <ul>
-                <li><a href="https://github.com/TyCoding/tumo">Tumo Blog:</a> 炒鸡漂亮的Java博客系统，基于SpringBoot-2.x实现</li>
-                <li><a href="https://github.com/TyCoding/springboot-seckill">springboot-seckill:</a>基于SpringBoot-2.x的Java高并发Seckill秒杀系统实现</li>
-                <li><a href="https://github.com/TyCoding/springboot">springboot:</a> SpringBoot-2.x入门开发</li>
-                <li><a href="https://github.com/TyCoding/ssm-redis-solr">ssm-redis-solr:</a>
-                    基于SSM、Shiro、Redis、Solr框架简单实现电商项目中搜索功能
-                </li>
-                <li><a href="https://github.com/TyCoding/ssm">ssm:</a> Spring、SpringMVC、Mybatis框架整合开发</li>
-            </ul>
-            <br/>
-            <br/>
-            <h1>Concat</h1>
-            <img th:src="@{../../../site/img/qq.png}">
-        </article>
-        <br/>
-        <br/>
-        <br/>
-    </div>
+<link rel="stylesheet" th:href="@{/site/css/about.css}"/>
 
-    <!-- footer -->
-    <div th:replace="site/footer :: footer"></div>
+<!-- main -->
+<div id="main">
+    <article role="pge-title-content" class="main-content page-page" itemscope itemtype="http://schema.org/Article">
+        <header>
+            <h2><span>Hi! </span> My name is TyCoding.</h2>
+        </header>
+        <label>I’m a Java Developer with an enduring interest in Coding and Write Blog.</label>
+        <br/>
+        <br/>
+        <h1>About</h1>
+        <p style="margin-bottom: 10px;">Hi! 你好，我是TyCoding, 专注Java开发， 喜欢代码艺术， 关注新技术</p>
+        <p>喜欢运动， 音乐</p>
+        <br/>
+        <br/>
+        <h1>Works</h1>
+        <ul>
+            <li><a href="https://github.com/TyCoding/tumo">Tumo Blog:</a> 炒鸡漂亮的Java博客系统，基于SpringBoot-2.x实现</li>
+            <li><a href="https://github.com/TyCoding/springboot-seckill">springboot-seckill:</a>基于SpringBoot-2.x的Java高并发Seckill秒杀系统实现</li>
+            <li><a href="https://github.com/TyCoding/springboot">springboot:</a> SpringBoot-2.x入门开发</li>
+            <li><a href="https://github.com/TyCoding/ssm-redis-solr">ssm-redis-solr:</a>
+                基于SSM、Shiro、Redis、Solr框架简单实现电商项目中搜索功能
+            </li>
+            <li><a href="https://github.com/TyCoding/ssm">ssm:</a> Spring、SpringMVC、Mybatis框架整合开发</li>
+        </ul>
+        <br/>
+        <br/>
+        <h1>Concat</h1>
+        <img th:src="@{../../../site/img/qq.png}">
+    </article>
+    <br/>
+    <br/>
+    <br/>
 </div>
 
+<!-- footer -->
+<div th:replace="site/footer :: footer"></div>
+<!-- 公共的JS库 -->
+<div th:include="site/common/onload_js ::onloadJS"></div>
 </body>
-<script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.4.7/index.js"></script>
-<script type="text/javascript" src="https://cdn.bootcss.com/vue-resource/1.5.1/vue-resource.js"></script>
-<script type="text/javascript" src="https://cdn.bootcss.com/headroom/0.9.4/headroom.min.js"></script>
-<script type="text/javascript" src="https://cdn.bootcss.com/instantclick/3.0.1/instantclick.min.js"></script>
-<script type="text/javascript" th:src="@{../../site/js/about.js}"></script>
-<script type="text/javascript">
-    var header = new Headroom(document.getElementById("header"), {
-        tolerance: 10,
-        offset: 80,
-        classes: {
-            initial: "animated",
-            pinned: "slideDown",
-            unpinned: "slideUp"
-        }
-    });
-    header.init();
-    $('#search-inp').keypress(function (e) {
-        var key = e.which; //e.which是按键的值
-        if (key === 13) {
-            var q = $(this).val();
-            if (q && q !== '') {
-                window.location.href = '/search/' + q;
-            }
-        }
-    });
-</script>
-<script src="https://ajax.cloudflare.com/cdn-cgi/scripts/2448a7bd/cloudflare-static/rocket-loader.min.js"></script>
 </html>
