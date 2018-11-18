@@ -3,8 +3,9 @@
 <head>
     <meta charset="utf-8">
     <title>发布文章</title>
-    <link rel="icon" th:href="@{/public/favicon-icon.png}" type="image/png">
-    <link rel="stylesheet" th:href="@{/lib/element-ui/lib/theme-chalk/index.css}"/>
+    <link rel="icon" th:href="@{/public/admin/favicon.png}" type="image/png">
+    <!--<link rel="stylesheet" th:href="@{/lib/element-ui/lib/theme-chalk/index.css}"/>-->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
     <link rel="stylesheet" th:href="@{/lib/font/css/font-awesome.min.css}"/>
     <link rel="stylesheet" th:href="@{/lib/editormd/editormd.min.css}">
     <link rel="stylesheet" th:href="@{/public/admin/base.css}">
@@ -109,8 +110,10 @@
 </div>
 </body>
 <script type="text/javascript" th:src="@{/plugins/js/jquery.min.js}"></script>
-<script type="text/javascript" th:src="@{/lib/vue/vue.min.js}"></script>
-<script type="text/javascript" th:src="@{/lib/element-ui/lib/index.js}"></script>
+<!--<script type="text/javascript" th:src="@{/lib/vue/vue.min.js}"></script>-->
+<!--<script type="text/javascript" th:src="@{/lib/element-ui/lib/index.js}"></script>-->
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
 <script type="text/javascript" th:src="@{/lib/vue/vue-resource.min.js}"></script>
 <script type="text/javascript" th:src="@{/lib/editormd/editormd.min.js}"></script>
 <script type="text/javascript" th:src="@{/admin/js/publish.js}"></script>
