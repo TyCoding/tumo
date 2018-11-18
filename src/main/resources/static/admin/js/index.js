@@ -20,6 +20,8 @@ new Vue({
                 comments_count: '',
                 tags_count: '',
                 links_count: '',
+
+                token: {name: ''},
             },
 
         };
@@ -61,6 +63,10 @@ new Vue({
             //友链数量
             this.$http.get('/links/findAllCount').then(result => {
                 this.config.links_count = result.body;
+            });
+            //已登录用户名
+            this.$http.get('/admin/getName').then(result => {
+                this.config.token.name = result.bodyText;
             });
         }
 

@@ -45,6 +45,7 @@ var vm = new Vue({
 
                 //条件查询单独封装的对象
                 searchEntity: {},
+                token: {name: ''},
             },
         }
     },
@@ -170,10 +171,18 @@ var vm = new Vue({
                 this.$refs.article.clearSelection();
             }
         },
+
+        init(){
+            //已登录用户名
+            this.$http.get('/admin/getName').then(result => {
+                this.config.token.name = result.bodyText;
+            });
+        },
     },
     // 生命周期函数
     created() {
         this.search(this.pageConf.pageCode, this.pageConf.pageSize);
+        this.init();
     },
 
 });

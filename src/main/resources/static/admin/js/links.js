@@ -49,6 +49,8 @@ var vm = new Vue({
                 side_close_flag: true,
 
                 editDialog: false,
+
+                token: {name: ''},
             },
         }
     },
@@ -216,10 +218,17 @@ var vm = new Vue({
             this.editor.links_edit = {}; //清空表单
         },
 
+        init(){
+            //已登录用户名
+            this.$http.get('/admin/getName').then(result => {
+                this.config.token.name = result.bodyText;
+            });
+        },
     },
     // 生命周期函数
     created() {
         this.search(this.pageConf.pageCode, this.pageConf.pageSize);
+        this.init();
     },
 
 });

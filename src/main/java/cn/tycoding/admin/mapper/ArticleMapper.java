@@ -38,4 +38,6 @@ public interface ArticleMapper {
     List<Article> findArchivesByDate(String date);
 
     List<Article> findFuzzyByTitle(String title);
+
+    void addEyeCount(long id);
 }

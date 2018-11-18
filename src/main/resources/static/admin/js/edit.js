@@ -45,6 +45,8 @@ new Vue({
                     value: '',
                     label: ''
                 }],
+
+                token: {name: ''},
             },
         }
     },
@@ -134,6 +136,11 @@ new Vue({
                         this.config.options.push({value: row.cName.toString(), label: row.cName});
                     }
                 });
+            });
+
+            //已登录用户名
+            this.$http.get('/admin/getName').then(result => {
+                this.config.token.name = result.bodyText;
             });
         },
 

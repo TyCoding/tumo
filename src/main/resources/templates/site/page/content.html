@@ -27,8 +27,8 @@
             <time datetime="2017-02-25" itemprop="datePublished">发布于 [[${#dates.format(article.publishTime, 'yyy-MM-dd')}]]
             </time>
             / <a th:href="'/category/' + ${article.category}" th:text="${article.category}"></a> / <a
-                href="#comments"><b th:text="${2}"></b> 条评论</a> /
-            <b th:text="12"></b> 浏览
+                href="#comments"><b th:text="${commentsCount}"></b> 条评论</a> /
+            <b th:text="${article.eyeCount}"></b> 浏览
         </div>
     </div>
     <div id="post-content" class="post-content" itemprop="articleBody" th:utext="${article.content}"></div>
@@ -114,7 +114,7 @@
             </li>
         </ol>
         <div class="lists-navigator clearfix">
-            <ol class="page-navigator">
+            <ol class="page-navigator" th:if="${talkList.total > 0}">
                 <li class="prev" th:if="${cp} gt '1'">
                     <a th:href="'?cp=' + ${cp < 1 ? cp : cp-1} + '#comments'">←</a>
                 </li>

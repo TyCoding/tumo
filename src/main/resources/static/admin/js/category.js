@@ -56,6 +56,8 @@ var vm = new Vue({
                 editDialog: false,
                 saveDialog_t: false,
                 editDialog_t: false,
+
+                token: {name: ''},
             },
         }
     },
@@ -342,10 +344,18 @@ var vm = new Vue({
             this.editor.tags = {}; //清空表单
         },
 
+        init(){
+            //已登录用户名
+            this.$http.get('/admin/getName').then(result => {
+                this.config.token.name = result.bodyText;
+            });
+        },
+
     },
     // 生命周期函数
     created() {
         this.search(this.pageConf.pageCode, this.pageConf.pageSize);
         this.search_t(this.pageConf.pageCode_t, this.pageConf.pageSize_t);
+        this.init();
     },
 });

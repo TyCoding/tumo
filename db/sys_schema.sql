@@ -34,6 +34,7 @@ CREATE TABLE `tb_article` (
   `content_md` mediumtext COMMENT '内容-Markdown',
   `origin` varchar(100) DEFAULT NULL COMMENT '来源',
   `state` varchar(100) NOT NULL COMMENT '状态',
+  `eye_count` bigint DEFAULT 0 COMMENT '浏览量',
   `publish_time` timestamp NOT NULL DEFAULT '1970-02-01 00:00:01' COMMENT '发布时间',
   `edit_time` timestamp NOT NULL DEFAULT '1970-02-01 00:00:01' COMMENT '上次修改时间',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',

@@ -19,7 +19,7 @@
             <img class="el-tooltip" th:src="@{/public/author.jpg}"/>
             <el-dropdown>
                   <span class="el-dropdown-link">
-                    TyCoding<i class="el-icon-arrow-down el-icon--right"></i>
+                    {{config.token.name}}<i class="el-icon-arrow-down el-icon--right"></i>
                   </span>
                 <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item><a th:href="@{/admin}">首页</a></el-dropdown-item>

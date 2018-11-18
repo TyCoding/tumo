@@ -44,4 +44,9 @@ public interface ArticleService extends BaseService<Article> {
      * @return
      */
     List<Article> findFuzzyByTitle(String title);
+
+    /**
+     * 增加文章浏览量
+     */
+    void addEyeCount(long id);
 }

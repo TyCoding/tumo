@@ -139,4 +139,8 @@
         SELECT * FROM tb_article WHERE title LIKE CONCAT('%', #{title}, '%')
     </select>
 
+    <update id="addEyeCount" parameterType="Long">
+        update tb_article set eye_count = (eye_count + 1) where id = #{id};
+    </update>
+
 </mapper>

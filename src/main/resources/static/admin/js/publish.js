@@ -48,6 +48,8 @@ new Vue({
                     value: '',
                     label: ''
                 }],
+
+                token: {name: ''},
             },
         }
     },
@@ -132,9 +134,16 @@ new Vue({
         handleSideSelect(key, keyPath) {
         },
 
+        init(){
+            //已登录用户名
+            this.$http.get('/admin/getName').then(result => {
+                this.config.token.name = result.bodyText;
+            });
+        },
     },
     created() {
         this.findAllCategory();
+        this.init();
     },
 });
 

@@ -22,6 +22,7 @@ public class Article implements Serializable {
     private String contentMd; //留言内容-Markdown格式
     private String origin; //来源
     private String state; //状态
+    private long eyeCount; //浏览量
 
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
@@ -122,6 +123,14 @@ public class Article implements Serializable {
 
     public void setState(String state) {
         this.state = state;
+    }
+
+    public long getEyeCount() {
+        return eyeCount;
+    }
+
+    public void setEyeCount(long eyeCount) {
+        this.eyeCount = eyeCount;
     }
 
     public Date getPublishTime() {

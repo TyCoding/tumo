@@ -32,6 +32,7 @@ var vm = new Vue({
                 isCollapse: false,
                 side_close_flag: true,
 
+                token: {name: ''},
             },
         }
     },
@@ -149,9 +150,16 @@ var vm = new Vue({
             this.entity.pass.repassword = '';
         },
 
+        init(){
+            //已登录用户名
+            this.$http.get('/admin/getName').then(result => {
+                this.config.token.name = result.bodyText;
+            });
+        },
     },
     // 生命周期函数
     created() {
         this.getUserInfo();
+        this.init();
     },
 });

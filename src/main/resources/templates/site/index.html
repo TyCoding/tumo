@@ -24,8 +24,7 @@
                          th:style="'background-image:url(' + ${article.titlePic} + ');'"></div>
                     <a th:href="'/article/' + ${article.id}">
                         <div class="item-desc">
-                            <!--<p th:text="${article.content}"></p>-->
-                            <p th:utext="${#strings.abbreviate(article.content, 49)}"></p>
+                            <p th:utext="${#strings.abbreviate(article.content, 80)}"></p>
                         </div>
                     </a>
                     <div class="item-slant reverse-slant bg-deepgrey"></div>

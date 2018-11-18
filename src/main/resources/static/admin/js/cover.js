@@ -50,6 +50,8 @@ var vm = new Vue({
                 dialogVisible: false,
                 //图片列表（用于回显图片）
                 fileList: [{name: '', url: ''}],
+
+                token: {name: ''},
             },
         }
     },
@@ -197,10 +199,18 @@ var vm = new Vue({
             }
             return (isJPG || isBMP || isGIF || isPNG) && isLt2M;
         },
+
+        init(){
+            //已登录用户名
+            this.$http.get('/admin/getName').then(result => {
+                this.config.token.name = result.bodyText;
+            });
+        },
     },
     // 生命周期函数
     created() {
         this.search(this.pageConf.pageCode, this.pageConf.pageSize);
+        this.init();
     },
 
 });

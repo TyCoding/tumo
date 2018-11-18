@@ -164,4 +164,14 @@ public class ArticleServiceImpl implements ArticleService {
             throw new ModifyException(ModifyEnums.INNER_ERROR);
         }
     }
+
+    @Override
+    public void addEyeCount(long id) {
+        try {
+            articleMapper.addEyeCount(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new ModifyException(ModifyEnums.INNER_ERROR);
+        }
+    }
 }

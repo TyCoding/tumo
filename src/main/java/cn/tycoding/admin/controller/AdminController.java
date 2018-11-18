@@ -1,11 +1,13 @@
 package cn.tycoding.admin.controller;
 
 import cn.tycoding.admin.service.ArticleService;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * @auther TyCoding
@@ -36,7 +38,7 @@ public class AdminController {
      */
     @RequestMapping(value = {"/article/edit/{id}"})
     public String edit(@PathVariable("id") Long id) {
-        if (id == null || id == 0){
+        if (id == null || id == 0) {
             return "admin/page/article";
         } else {
             return "admin/page/edit";
@@ -111,5 +113,16 @@ public class AdminController {
     @GetMapping(value = {"/setting"})
     public String setting() {
         return "admin/page/setting";
+    }
+
+    /**
+     * 获取已登录用户名
+     *
+     * @return
+     */
+    @RequestMapping("/getName")
+    @ResponseBody
+    public String getName() {
+        return (String) SecurityUtils.getSubject().getPrincipal();
     }
 }

@@ -131,6 +131,10 @@ public class SiteController {
     public String generate(@PathVariable("id") Long id,
                            @RequestParam(value = "cp", required = false) Integer cp, Model model) {
         if (id != null && id != 0) {
+
+            //增加文章浏览量
+            articleService.addEyeCount(id);
+
             Article article = articleService.findById(id);
             model.addAttribute("article", article);
 
@@ -139,6 +143,8 @@ public class SiteController {
                 cp = 1;
             }
             PageBean talkList = commentsService.findCommentsList(cp, 6, new Long(id).intValue());
+
+            model.addAttribute("commentsCount", talkList.getTotal());
 
             talkList.setTotal((long) Math.ceil((double) talkList.getTotal() / (double) 6));
             model.addAttribute("talkList", talkList);
