@@ -37,26 +37,26 @@ demo website: [http://tumo.tycoding.cn](http://tumo.tycoding.cn)
 
 ## site
 
-![](http://phftvb7kq.bkt.clouddn.com/localhost_8084_.png)
+![](http://phftvb7kq.bkt.clouddn.com/localhost_8084_.png?v)
 
-![](http://phftvb7kq.bkt.clouddn.com/localhost_8084_article_5.png)
+![](http://phftvb7kq.bkt.clouddn.com/localhost_8084_article_5.png?v)
 
 ## admin
 
-![](http://phftvb7kq.bkt.clouddn.com/localhost_8084_login.png)
+![](http://phftvb7kq.bkt.clouddn.com/localhost_8084_login.png?v)
 
-![](http://phftvb7kq.bkt.clouddn.com/localhost_8084_admin.png)
+![](http://phftvb7kq.bkt.clouddn.com/localhost_8084_admin.png?v)
 
-![](http://phftvb7kq.bkt.clouddn.com/localhost_8084_admin_article_publish.png)
+![](http://phftvb7kq.bkt.clouddn.com/localhost_8084_admin_article_publish.png?v)
 
-![](http://phftvb7kq.bkt.clouddn.com/localhost_8084_admin_article.png)
+![](http://phftvb7kq.bkt.clouddn.com/localhost_8084_admin_article.png?v)
 
-![](http://phftvb7kq.bkt.clouddn.com/localhost_8084_admin_comment.png)
+![](http://phftvb7kq.bkt.clouddn.com/localhost_8084_admin_comment.png?v)
 
-![](http://phftvb7kq.bkt.clouddn.com/localhost_8084_admin_category.png)
+![](http://phftvb7kq.bkt.clouddn.com/localhost_8084_admin_category.png?v)
 
-![](http://phftvb7kq.bkt.clouddn.com/localhost_8084_admin_cover.png)
+![](http://phftvb7kq.bkt.clouddn.com/localhost_8084_admin_cover.png?v)
 
-![](http://phftvb7kq.bkt.clouddn.com/localhost_8084_admin_link.png)
+![](http://phftvb7kq.bkt.clouddn.com/localhost_8084_admin_link.png?v)
 
-![](http://phftvb7kq.bkt.clouddn.com/localhost_8084_admin_user.png)
+![](http://phftvb7kq.bkt.clouddn.com/localhost_8084_admin_user.png?v)
