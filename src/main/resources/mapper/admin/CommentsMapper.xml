@@ -35,12 +35,20 @@
 
     <!-- 查询所有评论信息列表 -->
     <select id="findCommentsList" resultType="Comments">
-        SELECT * FROM tb_comments WHERE article_id = #{articleId}
+        SELECT * FROM tb_comments WHERE 1=1
+        <if test="articleId != 0">
+            AND article_id = #{articleId}
+        </if>
+        AND sort = #{sort}
     </select>
 
     <!-- 查询所有父级文章留言信息 -->
     <select id="findAllId" resultType="Comments">
-        SELECT * FROM tb_comments WHERE p_id = 0 AND c_id = 0 AND article_id = #{articleId}
+        SELECT * FROM tb_comments WHERE p_id = 0 AND c_id = 0
+        <if test="articleId != 0">
+            AND article_id = #{articleId}
+        </if>
+        AND sort = #{sort}
     </select>
 
     <!-- 保存 -->
@@ -57,6 +65,7 @@
           content,
           time,
           url,
+          sort,
           state
         )
         VALUES(
@@ -70,6 +79,7 @@
           #{content},
           #{time},
           #{url},
+          #{sort},
           #{state}
         )
     </insert>

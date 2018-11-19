@@ -2,9 +2,7 @@ article[role="pge-title-content"] {
     padding-left: 41px;
 }
 
-article[role="pge-title-content"] h1 {
-    margin-bottom: 15px;
-}
+
 
 article[role="pge-title-content"] header, article[role="pge-title-content"] header {
     padding-bottom: 19px;
@@ -16,6 +14,21 @@ article[role="pge-title-content"] header h2, main[role="main-inner-wrapper"] art
     line-height: 53px;
     color: #404040;
     font-weight: 800;
+}
+
+article[role="pge-title-content"] header .hello{
+    font-size: 46px;
+    line-height: 53px;
+    color: #404040;
+    font-weight: 800;
+    margin-top: 30px;
+}
+
+article[role="pge-title-content"] header .hello span{
+    display: block;
+    font-size: 80px;
+    color: #fb5353;
+    padding-bottom: 15px;
 }
 
 article[role="pge-title-content"] header h2 span, article[role="pge-title-content"] header h2 span {

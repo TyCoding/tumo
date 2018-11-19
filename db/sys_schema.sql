@@ -141,6 +141,7 @@ CREATE TABLE `tb_comments` (
   `content` text COMMENT '留言内容',
   `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '留言时间',
   `url` varchar(200) DEFAULT NULL COMMENT '链接',
+  `sort` bigint DEFAULT 0 COMMENT '分类：0:默认，文章详情页，1:友链页，2:关于页',
   `state` varchar(100) DEFAULT '正常' COMMENT '状态',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8 COMMENT='评论表';
@@ -149,18 +150,18 @@ CREATE TABLE `tb_comments` (
 -- Records of tb_comments
 -- ----------------------------
 BEGIN;
-INSERT INTO `tb_comments` VALUES (1, 0, 0, 'springboot', 1, '涂陌', '', '2333@qq.com', '我是文章的第一条留言', '2018-11-03 11:35:35', 'tycoding.cn', '正常');
-INSERT INTO `tb_comments` VALUES (2, 0, 0, 'springboot', 1, 'tycoding', '', '2333@qq.com', '我是文章的第二条留言', '2018-11-03 11:36:40', 'tycoding.cn', '正常');
-INSERT INTO `tb_comments` VALUES (3, 1, 0, 'springboot', 1, '涂小陌', '@涂陌', '233333@qq.com', '我是文章第一条留言的第一条回复', '2018-11-03 11:38:26', 'tycoding.cn', '正常');
-INSERT INTO `tb_comments` VALUES (4, 1, 3, 'springboot', 1, '小涂陌', '@涂小陌', '23333@qq.com', '我是文章第一条留言第一条回复的评论信息', '2018-11-03 11:41:52', 'tycoding.cn', '正常');
-INSERT INTO `tb_comments` VALUES (5, 0, 0, 'SpringBoot实现Java高并发秒杀系统之并发优化（四）', 1, '嘻嘻', NULL, '123@qq.com', '我不是基佬哦', '2018-11-03 15:14:40', 'http://tycoding.cn', NULL);
-INSERT INTO `tb_comments` VALUES (6, 0, 0, 'SpringBoot实现Java高并发秒杀系统之并发优化（四）', 1, '哈哈', NULL, '1234@qq.com', '我也不是基佬哦', '2018-11-03 15:19:21', 'http://tycoding.cn', NULL);
-INSERT INTO `tb_comments` VALUES (7, 0, 0, 'SpringBoot实现Java高并发秒杀系统之并发优化（四）', 1, 'tumo', NULL, '123@qq.com', '我是第五条留言', '2018-11-03 15:21:27', 'http://tycoding.cn', NULL);
-INSERT INTO `tb_comments` VALUES (8, 1, 4, 'SpringBoot实现Java高并发秒杀系统之并发优化（四）', 1, '小小陌', '@小涂陌', '2333@tycoding.cn', '我想回去小涂陌', '2018-11-04 11:46:37', 'http://tycoding.cn', NULL);
-INSERT INTO `tb_comments` VALUES (9, 0, 0, 'SpringBoot实现Java高并发秒杀系统之并发优化（四）', 1, '测试', NULL, '2333@tycoding.cn', '测试一下哈', '2018-11-04 11:51:37', 'http://tycoding.cn', NULL);
-INSERT INTO `tb_comments` VALUES (10, 0, 0, 'Vue+ElementUI+SpringMVC实现图片上传和回显', 7, '666', NULL, '11111', '么么', '2018-11-04 17:48:51', '', NULL);
-INSERT INTO `tb_comments` VALUES (11, 0, 0, 'INTRO', 5, '涂陌', NULL, '123@qq.com', '占个沙发', '2018-11-04 17:52:28', 'http://tycoding.cn', NULL);
-INSERT INTO `tb_comments` VALUES (12, 11, 0, 'INTRO', 5, '涂小陌', '@涂陌', '2333@qq.com', '我想回复涂陌的沙发', '2018-11-04 17:53:10', 'http://tycoding.cn', NULL);
+INSERT INTO `tb_comments` VALUES (1, 0, 0, 'springboot', 1, '涂陌', '', '2333@qq.com', '我是文章的第一条留言', '2018-11-03 11:35:35', 'tycoding.cn', 0, '正常');
+INSERT INTO `tb_comments` VALUES (2, 0, 0, 'springboot', 1, 'tycoding', '', '2333@qq.com', '我是文章的第二条留言', '2018-11-03 11:36:40', 'tycoding.cn', 0, '正常');
+INSERT INTO `tb_comments` VALUES (3, 1, 0, 'springboot', 1, '涂小陌', '@涂陌', '233333@qq.com', '我是文章第一条留言的第一条回复', '2018-11-03 11:38:26', 'tycoding.cn', 0, '正常');
+INSERT INTO `tb_comments` VALUES (4, 1, 3, 'springboot', 1, '小涂陌', '@涂小陌', '23333@qq.com', '我是文章第一条留言第一条回复的评论信息', '2018-11-03 11:41:52', 'tycoding.cn', 0, '正常');
+INSERT INTO `tb_comments` VALUES (5, 0, 0, 'SpringBoot实现Java高并发秒杀系统之并发优化（四）', 1, '嘻嘻', NULL, '123@qq.com', '我不是基佬哦', '2018-11-03 15:14:40', 'http://tycoding.cn', 0, NULL);
+INSERT INTO `tb_comments` VALUES (6, 0, 0, 'SpringBoot实现Java高并发秒杀系统之并发优化（四）', 1, '哈哈', NULL, '1234@qq.com', '我也不是基佬哦', '2018-11-03 15:19:21', 'http://tycoding.cn', 0, NULL);
+INSERT INTO `tb_comments` VALUES (7, 0, 0, 'SpringBoot实现Java高并发秒杀系统之并发优化（四）', 1, 'tumo', NULL, '123@qq.com', '我是第五条留言', '2018-11-03 15:21:27', 'http://tycoding.cn', 0, NULL);
+INSERT INTO `tb_comments` VALUES (8, 1, 4, 'SpringBoot实现Java高并发秒杀系统之并发优化（四）', 1, '小小陌', '@小涂陌', '2333@tycoding.cn', '我想回去小涂陌', '2018-11-04 11:46:37', 'http://tycoding.cn', 0, NULL);
+INSERT INTO `tb_comments` VALUES (9, 0, 0, 'SpringBoot实现Java高并发秒杀系统之并发优化（四）', 1, '测试', NULL, '2333@tycoding.cn', '测试一下哈', '2018-11-04 11:51:37', 'http://tycoding.cn', 0, NULL);
+INSERT INTO `tb_comments` VALUES (10, 0, 0, 'Vue+ElementUI+SpringMVC实现图片上传和回显', 7, '666', NULL, '11111', '么么', '2018-11-04 17:48:51', '', 0, NULL);
+INSERT INTO `tb_comments` VALUES (11, 0, 0, 'INTRO', 5, '涂陌', NULL, '123@qq.com', '占个沙发', '2018-11-04 17:52:28', 'http://tycoding.cn', 0, NULL);
+INSERT INTO `tb_comments` VALUES (12, 11, 0, 'INTRO', 5, '涂小陌', '@涂陌', '2333@qq.com', '我想回复涂陌的沙发', '2018-11-04 17:53:10', 'http://tycoding.cn', 0, NULL);
 COMMIT;
 
 -- ----------------------------

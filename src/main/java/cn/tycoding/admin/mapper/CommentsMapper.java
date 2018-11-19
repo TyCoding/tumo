@@ -3,6 +3,7 @@ package cn.tycoding.admin.mapper;
 import cn.tycoding.admin.entity.Comments;
 import com.github.pagehelper.Page;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -32,9 +33,19 @@ public interface CommentsMapper {
      * 分页查询指定文章的评论数据
      *
      * @param articleId
+     * @param sort
      * @return
      */
-    Page<Comments> findCommentsList(int articleId);
+    Page<Comments> findCommentsList(@Param("articleId") int articleId, @Param("sort") int sort);
+
+    /**
+     * 查询所有评论数据，用于从中筛选实现分页
+     *
+     * @param articleId
+     * @param sort
+     * @return
+     */
+    Page<Comments> findAllId(@Param("articleId") int articleId, @Param("sort") int sort);
 
     /**
      * 根据ID查询
@@ -82,13 +93,5 @@ public interface CommentsMapper {
      * @return
      */
     Long findCountByArticleId(long articleId);
-
-    /**
-     * 查询所有评论数据，用于从中筛选实现分页
-     *
-     * @param articleId
-     * @return
-     */
-    Page<Comments> findAllId(int articleId);
 
 }

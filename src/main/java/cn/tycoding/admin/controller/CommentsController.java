@@ -54,7 +54,7 @@ public class CommentsController {
                                      @RequestParam(value = "pageSize", required = false) Integer pageSize,
                                      @RequestParam(value = "articleId", required = false) Integer articleId) {
         if (pageCode != null && pageSize != null && articleId != null && articleId != 0) {
-            return commentsService.findCommentsList(pageCode, pageSize, articleId);
+            return commentsService.findCommentsList(pageCode, pageSize, articleId, 0);
         } else {
             return null;
         }

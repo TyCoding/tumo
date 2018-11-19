@@ -44,12 +44,12 @@ public class CommentsServiceImpl implements CommentsService {
     }
 
     @Override
-    public PageBean findCommentsList(int pageCode, int pageSize, int articleId) {
+    public PageBean findCommentsList(int pageCode, int pageSize, int articleId, int sort) {
         PageHelper.startPage(pageCode, pageSize);
 
-        Page<Comments> page = commentsMapper.findAllId(articleId);
+        Page<Comments> page = commentsMapper.findAllId(articleId, sort);
 
-        List<Comments> list = commentsMapper.findCommentsList(articleId);
+        List<Comments> list = commentsMapper.findCommentsList(articleId, sort);
 
         List<CommentsDTO> commentsDTOS = new ArrayList<CommentsDTO>();
 

@@ -27,6 +27,7 @@ public class Comments implements Serializable {
     private Date time; //留言日期
 
     private String url; //链接URL
+    private long sort; //分类：0:默认文章列详情页，1:友链页，2:关于我页
     private String state; //状态
 
     public long getId() {
@@ -117,6 +118,14 @@ public class Comments implements Serializable {
         this.url = url;
     }
 
+    public long getSort() {
+        return sort;
+    }
+
+    public void setSort(long sort) {
+        this.sort = sort;
+    }
+
     public String getState() {
         return state;
     }
@@ -139,6 +148,7 @@ public class Comments implements Serializable {
                 ", content='" + content + '\'' +
                 ", time=" + time +
                 ", url='" + url + '\'' +
+                ", sort=" + sort +
                 ", state='" + state + '\'' +
                 '}';
     }

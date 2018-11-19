@@ -59,7 +59,23 @@ public class SiteController {
      * @return
      */
     @GetMapping("/about")
-    public String about(Model model) {
+    public String about(Model model, @RequestParam(value = "cp", required = false) Integer cp) {
+
+        if (cp == null) {
+            //查询的第一页评论数据
+            cp = 1;
+        }
+        //三个参数：1.pageCode当前页；2.PageSize默认每页显示6条（大）留言；3.文章ID值；4.sort当前是文章详情页，sort=0。
+        //规定：sort=0表示文章详情页的评论信息；sort=1表示友链页的评论信息；sort=2表示关于我页的评论信息
+        PageBean talkList = commentsService.findCommentsList(cp, 6, 0, 2);
+
+        model.addAttribute("commentsCount", talkList.getTotal());
+
+        talkList.setTotal((long) Math.ceil((double) talkList.getTotal() / (double) 6));
+        model.addAttribute("talkList", talkList);
+        model.addAttribute("cp", cp);
+        model.addAttribute("sort", 2);
+
         initFooter(model);
         return "site/page/about";
     }
@@ -82,7 +98,23 @@ public class SiteController {
      * @return
      */
     @GetMapping("/link")
-    public String link(Model model) {
+    public String link(Model model, @RequestParam(value = "cp", required = false) Integer cp) {
+
+        if (cp == null) {
+            //查询的第一页评论数据
+            cp = 1;
+        }
+        //三个参数：1.pageCode当前页；2.PageSize默认每页显示6条（大）留言；3.文章ID值；4.sort当前是文章详情页，sort=0。
+        //规定：sort=0表示文章详情页的评论信息；sort=1表示友链页的评论信息；sort=2表示关于我页的评论信息
+        PageBean talkList = commentsService.findCommentsList(cp, 6, 0, 1);
+
+        model.addAttribute("commentsCount", talkList.getTotal());
+
+        talkList.setTotal((long) Math.ceil((double) talkList.getTotal() / (double) 6));
+        model.addAttribute("talkList", talkList);
+        model.addAttribute("cp", cp);
+        model.addAttribute("sort", 1);
+
         initFooter(model);
         return "site/page/link";
     }
@@ -142,7 +174,9 @@ public class SiteController {
                 //查询的第一页评论数据
                 cp = 1;
             }
-            PageBean talkList = commentsService.findCommentsList(cp, 6, new Long(id).intValue());
+            //三个参数：1.pageCode当前页；2.PageSize默认每页显示6条（大）留言；3.文章ID值；4.sort当前是文章详情页，sort=0。
+            //规定：sort=0表示文章详情页的评论信息；sort=1表示友链页的评论信息；sort=2表示关于我页的评论信息
+            PageBean talkList = commentsService.findCommentsList(cp, 6, new Long(id).intValue(), 0);
 
             model.addAttribute("commentsCount", talkList.getTotal());
 
