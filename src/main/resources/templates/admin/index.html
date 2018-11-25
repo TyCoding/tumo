@@ -78,6 +78,41 @@
                     </el-card>
                 </div>
 
+                <br/>
+                <br/>
+
+                <div class="lists">
+                    <el-row>
+                        <el-col :span="8">
+                            <div>
+                                <h2>最新文章</h2>
+                                <div class="articles">
+                                    <div v-for="item in entity.article">
+                                        <a :href="'/article/' + item.id" target="_blank" v-text="item.title"></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </el-col>
+                        <el-col :span="8">
+                            <div>
+                                <h2>最新评论</h2>
+                                <div class="comments">
+                                    <div v-for="item in entity.comments">
+                                        <p><span v-text="item.author"></span>&nbsp;&nbsp;于&nbsp;<span v-text="item.time"></span>&nbsp;:</p>
+                                        <a v-if="item.articleId != 0" :href="'/article/' + item.articleId" target="_blank" v-text="item.content"></a>
+                                        <span v-else v-text="item.content"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </el-col>
+                        <el-col :span="8">
+                            <div>
+                                <!--<h2>系统日志</h2>-->
+                            </div>
+                        </el-col>
+                    </el-row>
+                </div>
+
             </el-main>
         </el-container>
     </div>

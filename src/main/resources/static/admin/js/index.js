@@ -6,6 +6,20 @@ new Vue({
     el: '#app',
     data() {
         return {
+            entity: {
+                article: [{
+                    id: '',
+                    title: ''
+                }],
+                comments: [{
+                    id: '',
+                    article_id: '',
+                    content: '',
+                    author: '',
+                    time: '',
+                }],
+            },
+
             //一些额外的配置属性
             config: {
                 defaultActive: '1',
@@ -67,6 +81,14 @@ new Vue({
             //已登录用户名
             this.$http.get('/admin/getName').then(result => {
                 this.config.token.name = result.bodyText;
+            });
+            //最新文章
+            this.$http.get('/article/findAll').then(result => {
+                this.entity.article = result.body;
+            });
+            //最新评论
+            this.$http.get('/comments/findAll').then(result => {
+                this.entity.comments = result.body;
             });
         }
 

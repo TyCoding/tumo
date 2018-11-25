@@ -180,6 +180,7 @@
             title="分类添加"
             :visible.sync="config.saveDialog"
             width="30%"
+            :append-to-body='true'
             :before-close="handleClose">
         <span>
             <el-input placeholder="请输入分类名称" v-model="editor.category.cName">
@@ -196,6 +197,7 @@
             title="标签添加"
             :visible.sync="config.saveDialog_t"
             width="30%"
+            :append-to-body='true'
             :before-close="handleClose">
         <span>
             <el-input placeholder="请输入标签名称" v-model="editor.tags.tName">
@@ -213,6 +215,7 @@
             title="分类编辑"
             :visible.sync="config.editDialog"
             width="30%"
+            :append-to-body='true'
             :before-close="handleClose">
         <span>
             <el-input placeholder="请输入分类名称" v-model="editor.category.cName">
@@ -229,6 +232,7 @@
             title="标签编辑"
             :visible.sync="config.editDialog_t"
             width="30%"
+            :append-to-body='true'
             :before-close="handleClose">
         <span>
             <el-input placeholder="请输入标签名称" v-model="editor.tags.tName">

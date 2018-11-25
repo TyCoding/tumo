@@ -37,7 +37,6 @@
                         <!-- 功能按钮 -->
                         <div>
                             <el-row>
-                                <el-button type="primary" plain icon="el-icon-edit">编辑</el-button>
                                 <el-button type="danger" plain icon="el-icon-delete"
                                            @click="deleteSelect(multipleSelection)">删除
                                 </el-button>
@@ -146,8 +145,8 @@
                                             type="danger"
                                             @click="handleDelete(scope.row.id)">删除
                                     </el-button>
-                                    <a :href="'/admin/article/' + scope.row.id + '/edit'">
-                                        <el-button size="mini" icon="el-icon-edit" type="warning">编辑</el-button>
+                                    <a :href="'/article/' + scope.row.id">
+                                        <el-button size="mini" icon="el-icon-edit" type="warning">查看</el-button>
                                     </a>
                                 </template>
                             </el-table-column>

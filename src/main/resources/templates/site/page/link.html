@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <!-- 公共的CSS库 -->
 <head th:include="/site/common/common_head :: commonHead"></head>
-<title>关于 - Tumo Blog</title>
+<title>关于 | Tumo Blog</title>
 
 <body class="bg-grey" gtools_scp_screen_capture_injected="true">
 
@@ -26,7 +26,7 @@
         <div id="post-content" class="post-content">
             <h2>友情链接</h2>
             <ul>
-                <li><a href="http://tycoding.cn/" target="_blank">TyCoding's Blog</a></li>
+                <li th:each="link : ${links}"><a th:href="${link.url}" target="_blank" th:text="${link.lName}"></a></li>
             </ul>
             <h2>链接须知</h2>
             <blockquote>

@@ -37,14 +37,15 @@
                 <div class="meta-item meta-posts">
                     <h3 class="meta-title">最新文章</h3>
                     <li th:each="item : ${articleList}">
-                        <a href="#" th:text="${item.title}"></a>
+                        <a th:href="'/article/' + ${item.id}" th:text="${item.title}"></a>
                     </li>
                 </div>
 
                 <div class="meta-item meta-comments">
                     <h3 class="meta-title">最新评论</h3>
                     <li th:each="item : ${commentsList}">
-                        <a href="#" th:text="${item.author} + ':  ' + ${item.content}"></a>
+                        <a th:if="${item.articleId != 0}" th:href="'/article/' + ${item.articleId}" th:text="${item.author} + ':  ' + ${item.content}"></a>
+                        <a th:if="${item.articleId == 0}" th:text="${item.author} + ':  ' + ${item.content}"></a>
                     </li>
                 </div>
             </div>

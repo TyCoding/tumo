@@ -2,10 +2,8 @@ package cn.tycoding.site.controller;
 
 import cn.tycoding.admin.dto.PageBean;
 import cn.tycoding.admin.entity.Article;
-import cn.tycoding.admin.service.ArticleService;
-import cn.tycoding.admin.service.ArticleTagsService;
-import cn.tycoding.admin.service.CategoryService;
-import cn.tycoding.admin.service.CommentsService;
+import cn.tycoding.admin.entity.Links;
+import cn.tycoding.admin.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +11,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
 
 /**
  * 用于博客前端页面跳转的控制层
@@ -36,6 +36,9 @@ public class SiteController {
 
     @Autowired
     private CommentsService commentsService;
+
+    @Autowired
+    private LinksService linksService;
 
     /**
      * /
@@ -100,11 +103,17 @@ public class SiteController {
     @GetMapping("/link")
     public String link(Model model, @RequestParam(value = "cp", required = false) Integer cp) {
 
+        //加载友情链接数据
+        List<Links> linksList = linksService.findAll();
+        model.addAttribute("links", linksList);
+
         if (cp == null) {
             //查询的第一页评论数据
             cp = 1;
         }
         //三个参数：1.pageCode当前页；2.PageSize默认每页显示6条（大）留言；3.文章ID值；4.sort当前是文章详情页，sort=0。
+
+
         //规定：sort=0表示文章详情页的评论信息；sort=1表示友链页的评论信息；sort=2表示关于我页的评论信息
         PageBean talkList = commentsService.findCommentsList(cp, 6, 0, 1);
 

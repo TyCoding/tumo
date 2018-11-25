@@ -1,4 +1,3 @@
-
 /*main-begin*/
 #cards span {
     display: block;
@@ -48,6 +47,64 @@
 
 .font {
     font-size: 15px !important;
+}
+
+.lists .articles > div {
+    width: 370px;
+    line-height: 2.7;
+    text-align: left;
+    display: block;
+
+    background: #fff;
+    border: 1px solid #dcdfe6;
+    -webkit-appearance: none;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    outline: 0;
+    margin: 0;
+    -webkit-transition: .1s;
+    transition: .1s;
+    font-weight: 500;
+    padding: 6px 20px;
+    font-size: 14px;
+    border-radius: 4px;
+    max-width: 370px;
+    min-width: 370px;
+}
+
+.lists .articles > div > a {
+    color: #409EFF;
+}
+
+.lists .articles > div{
+
+}
+
+.lists .comments > div {
+    display: inline-block;
+    line-height: 1;
+    background: #fff;
+    border: 1px solid #dcdfe6;
+    color: #606266;
+    -webkit-appearance: none;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    outline: 0;
+    margin: 0;
+    -webkit-transition: .1s;
+    transition: .1s;
+    font-weight: 500;
+    padding: 6px 20px;
+    font-size: 14px;
+    border-radius: 4px;
+    max-width: 370px;
+    min-width: 370px;
+}
+
+.lists .comments > div > a {
+    color: #409EFE;
+    line-height: 1.6;
+    cursor: pointer;
 }
 
 /*main-end*/
