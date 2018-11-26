@@ -4,7 +4,7 @@
 
 > 'Tumo'是一个中文单词，Tumo用中文解释为 **道路** 的意思，希望我们都能通过博客来记录自己学习的历程。
 
-Tumo Blog借鉴了很多开源作品的设计元素。博客前台UI大量借鉴了[@pinghsu](https://github.com/chakhsu/pinghsu)主题，因为原主题是基于PHP的，所以我不能直接使用它，但是非常感谢[@pinghsu](https://github.com/chakhsu/pinghsu)的作者。当然Tumo Blog作为一个基于SpringBoot2.x框架的博客系统，它也有一个非常漂亮的Java管理系统页面。如果你觉得它不错，请为他点赞支持。至此，让我们开始Tumor Blog。
+Tumo Blog借鉴了很多开源作品的设计元素。博客前台UI大量借鉴了[@pinghsu](https://github.com/chakhsu/pinghsu)主题，因为原主题是基于PHP的，所以我不能直接使用它，但是非常感谢[@pinghsu](https://github.com/chakhsu/pinghsu)的作者。当然Tumo Blog作为一个基于SpringBoot2.x框架的博客系统，它也有一个非常漂亮的Java管理系统页面。如果你觉得它不错，请为他点赞支持。至此，让我们开始Tumo Blog。
 
 演示站点: [http://tumo.tycoding.cn](http://tumo.tycoding.cn)
 
