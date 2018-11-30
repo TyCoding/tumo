@@ -41,19 +41,19 @@
     <update id="update" parameterType="User">
         UPDATE ignore tb_user
         <set>
-            <if test="username != null">
+            <if test="username != null and username != ''">
                 username = #{username},
             </if>
-            <if test="nickname != null">
+            <if test="nickname != null and nickname != ''">
                 nickname = #{nickname},
             </if>
-            <if test="password != null">
+            <if test="password != null and password != ''">
                 password = #{password},
             </if>
-            <if test="salt != null">
+            <if test="salt != null and salt != ''">
                 salt = #{salt},
             </if>
-            <if test="email != null">
+            <if test="email != null and email != ''">
                 email = #{email}
             </if>
         </set>

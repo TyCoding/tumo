@@ -13,6 +13,8 @@ var vm = new Vue({
                     username: '',
                     email: '',
                     nickname: '',
+                    password: '',
+                    checkPass: '',
                 },
                 pass: {
                     id: '',
@@ -65,6 +67,8 @@ var vm = new Vue({
                 this.entity.user.email = result.body.email;
                 this.entity.user.nickname = result.body.nickname;
                 this.entity.pass.id = result.body.id;
+
+                this.config.token.name = result.body.username;
             });
         },
 
@@ -77,14 +81,22 @@ var vm = new Vue({
                 });
             } else {
                 console.log(this.entity.user);
+                console.log(this.config.token);
                 this.$http.post('/user/update', JSON.stringify(this.entity.user)).then(result => {
-                    if (result.body.success){
-                        this.$message({
-                            type: 'success',
-                            message: result.body.info + ', 请重新刷新页面',
-                            duration: 6000
-                        });
-                    }else{
+                    if (result.body.success) {
+                        if (this.entity.user.username == this.config.token.name) {
+                            window.location.reload();
+                            this.$message({
+                                type: 'success',
+                                message: result.body.info,
+                                duration: 6000
+                            });
+                        } else {
+                            //修改了用户名，从新登陆
+                            //执行/logout请求
+                            window.location.href = '/user/logout'; //更改了密码，注销当前登录状态，重新登录
+                        }
+                    } else {
                         this.$message({
                             type: 'info',
                             message: result.body.info,
@@ -101,19 +113,26 @@ var vm = new Vue({
         },
 
         changePassword() {
-            if (this.entity.pass.password == this.entity.pass.checkPass) {
+            console.log(this.entity.pass);
+            if (this.entity.pass.checkPass.length < 6) {
+                this.$message({
+                    type: 'error',
+                    message: '请重新输入密码，密码长度在6位及以上',
+                    duration: 6000
+                });
+            } else if (this.entity.pass.password == this.entity.pass.checkPass) {
                 this.$message({
                     type: 'info',
                     message: '请输入新的密码',
                     duration: 6000
                 });
-            }else if (this.entity.pass.password != this.entity.pass.repassword) {
+            } else if (this.entity.pass.password != this.entity.pass.repassword) {
                 this.$message({
                     type: 'error',
                     message: '两次输入的密码不一致',
                     duration: 6000
                 });
-            } else if(this.entity.pass.password < 6){
+            } else if (this.entity.pass.password.length < 6) {
                 this.$message({
                     type: 'error',
                     message: '请重新输入密码，密码长度在6位及以上',
@@ -131,7 +150,7 @@ var vm = new Vue({
                         });
 
                         //执行/logout请求
-                        window.location.href = '/logout'; //更改了密码，注销当前登录状态，重新登录
+                        window.location.href = '/user/logout'; //更改了密码，注销当前登录状态，重新登录
                     }else{
                         this.$message({
                             type: 'info',
@@ -143,23 +162,15 @@ var vm = new Vue({
                 });
             }
         },
-        clearPass(){
+        clearPass() {
             this.$refs.pass.resetFields(); //清空校验状态
             this.entity.pass.checkPass = '';
             this.entity.pass.password = '';
             this.entity.pass.repassword = '';
         },
-
-        init(){
-            //已登录用户名
-            this.$http.get('/admin/getName').then(result => {
-                this.config.token.name = result.bodyText;
-            });
-        },
     },
     // 生命周期函数
     created() {
         this.getUserInfo();
-        this.init();
     },
 });

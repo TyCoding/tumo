@@ -224,7 +224,7 @@ CREATE TABLE `tb_user` (
 -- Records of tb_user
 -- ----------------------------
 BEGIN;
-INSERT INTO `tb_user` VALUES (1, 'tycoding', '菜鸡一枚', '39c3a2cdfe1f2908d819f6ef74cdce68', '29c1526a97334915762b6e39ed69c137', '233333@qq.com');
+INSERT INTO `tb_user` VALUES (1, 'tycoding', '菜鸡一枚', 'b9fd429a10b73d2c0971db1d4ad975a9', '9a924d8ae9800c229c892eeba7d413a6', '233333@qq.com');
 COMMIT;
 
 SET FOREIGN_KEY_CHECKS = 1;

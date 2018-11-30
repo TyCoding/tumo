@@ -44,6 +44,8 @@ public class UserServiceImplTest {
         user.setPassword("123456");
         userService.update(user);
         System.out.println(user.getPassword()); // cb0fc2e6755737a1a363d4f1f30c25e7
+        //b9fd429a10b73d2c0971db1d4ad975a9
+        //9a924d8ae9800c229c892eeba7d413a6
     }
 
     @Test

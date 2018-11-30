@@ -25,10 +25,6 @@ public class User implements Serializable {
         this.checkPass = checkPass;
     }
 
-    public String getCredentialsSalt() {
-        return username + salt;
-    }
-
     public long getId() {
         return id;
     }

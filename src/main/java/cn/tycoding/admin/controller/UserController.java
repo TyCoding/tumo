@@ -38,7 +38,7 @@ public class UserController {
     /**
      * 分页查询
      *
-     * @param comments  查询条件
+     * @param comments 查询条件
      * @param pageCode 当前页
      * @param pageSize 每页显示的记录数
      * @return
@@ -47,8 +47,8 @@ public class UserController {
     @ResponseBody
     @RequestMapping("/findByPage")
     public PageBean findByPage(User user,
-                                  @RequestParam(value = "pageCode", required = false) Integer pageCode,
-                                  @RequestParam(value = "pageSize", required = false) Integer pageSize) {
+                               @RequestParam(value = "pageCode", required = false) Integer pageCode,
+                               @RequestParam(value = "pageSize", required = false) Integer pageSize) {
         return userService.findByPage(user, pageCode, pageSize);
     }
 
@@ -77,22 +77,18 @@ public class UserController {
     @RequestMapping("/update")
     public ModifyResult update(@RequestBody User user) {
         try {
-            if (user != null){
-                if (user.getPassword() != null){
-                    // update password
-                    // 1.find old password
-                    User u = userService.findByName(user.getUsername());
-                    u.setCheckPass(user.getPassword()); // save password(new)
-                    // 2.check old and new
-                    // 2.1 set salt
-                    user.setSalt(u.getSalt()); // setting salt for check's password
-                    // 2.2 replace password and checkPass
-                    user.setPassword(user.getCheckPass()); // set password = checkPassword(old)
-                    passwordHelper.encryptPassword(user); // give encrpyt password
-                    if (!u.getPassword().equals(user.getPassword())){
+            if (user != null) {
+                if (user.getPassword() != null && !"".equals(user.getPassword()) && user.getCheckPass() != null && !"".equals(user.getCheckPass())) {
+                    //说明是更新密码操作
+                    User u = userService.findByName((String) SecurityUtils.getSubject().getPrincipal());
+                    u.setCheckPass(user.getPassword()); // 设置u.checkPass=旧密码
+                    user.setSalt(u.getSalt()); // 设置user盐值
+                    user.setPassword(user.getCheckPass()); // 设置user.password=旧密码
+                    passwordHelper.encryptPassword(user); // 将新输入的密码加密
+                    if (!u.getPassword().equals(user.getPassword())) {
                         logger.info("输入的旧密码不匹配：new:" + user.getPassword() + ", old:" + u.getPassword());
                         return new ModifyResult(false, ModifyEnums.LOGIN_CHECK_ERROR);
-                    }else{
+                    } else {
                         logger.info("输入的旧密码匹配，执行更新操作");
                         // 2.3 replace checkPassword and password
                         logger.info(u.getCheckPass());
@@ -100,11 +96,11 @@ public class UserController {
                         // check success
                         userService.update(user);
                     }
-                }else{
+                } else {
                     userService.update(user);
                 }
                 return new ModifyResult(true, ModifyEnums.SUCCESS);
-            }else{
+            } else {
                 return new ModifyResult(false, ModifyEnums.ERROR);
             }
         } catch (Exception e) {
@@ -129,11 +125,21 @@ public class UserController {
     @RequiresUser
     @ResponseBody
     @RequestMapping("/getUserInfo")
-    public User getUserInfo(){
+    public User getUserInfo() {
         Subject subject = SecurityUtils.getSubject();
         String username = (String) subject.getPrincipal();
         User user = userService.findByName(username);
         return user;
     }
 
+    /**
+     * 手动定义logout退出登录方法，因为Shiro提供的默认的`/logout`会退出到系统的根目录下即`localhost:8084`
+     * @return
+     */
+    @RequestMapping("/logout")
+    public String logout() {
+        Subject subject = SecurityUtils.getSubject();
+        subject.logout();
+        return "redirect:/login";
+    }
 }

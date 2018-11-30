@@ -66,7 +66,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public void update(User user) {
         try {
-            passwordHelper.encryptPassword(user); //加密
+            if (user.getPassword() != null && !"".equals(user.getPassword())) {
+                passwordHelper.encryptPassword(user); //加密
+            }
             int updateCount = userMapper.update(user);
             if (updateCount <= 0) {
                 throw new ModifyException(ModifyEnums.ERROR);
@@ -79,7 +81,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void delete(Long... ids) {
         try {
-            for (long id : ids){
+            for (long id : ids) {
                 int deleteCount = userMapper.delete(id);
                 if (deleteCount <= 0) {
                     throw new ModifyException(ModifyEnums.ERROR);
