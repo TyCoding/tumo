@@ -66,8 +66,7 @@
                     <div th:id="'comment-' + ${comment.parent.id}">
                         <div class="comment-view">
                             <div class="comment-header">
-                                <img class="avatar" src="http://phfvf87ik.bkt.clouddn.com/author.jpg"
-                                     th:title="${comment.parent.url}" width="80" height="80">
+                                <img class="avatar" th:src="@{/public/author.png}" width="80" height="80">
                                 <span class="comment-author">
                                     <a th:href="${comment.parent.url}" target="_blank" rel="external nofollow" th:text="${comment.parent.author}"></a>
                                 </span>
@@ -91,7 +90,7 @@
                                 <div th:id="'comment-' + ${item.id}">
                                     <div class="comment-view">
                                         <div class="comment-header">
-                                            <img class="avatar"th:title="${item.url}" src="http://phfvf87ik.bkt.clouddn.com/author.jpg" width="80" height="80">
+                                            <img class="avatar" th:src="@{/public/author.png}" width="80" height="80">
                                             <span class="comment-author comment-by-author">
                                             <a th:href="${item.url}" target="_blank" rel="external nofollow" th:text="${item.author}"></a>
                                         </span>
