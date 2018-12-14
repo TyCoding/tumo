@@ -40,26 +40,26 @@ Tumo Blog is a based on SpringBoot-2.x framework's blog system. Bingo, if you kn
 
 ## site
 
-![](http://phftvb7kq.bkt.clouddn.com/localhost_8084_.png?v=1)
+![](http://img.api.tycoding.cn/localhost_8084_.png)
 
-![](http://phftvb7kq.bkt.clouddn.com/localhost_8084_article_5.png?v=1)
+![](http://img.api.tycoding.cn/localhost_8084_article_5.png)
 
 ## admin
 
-![](http://phftvb7kq.bkt.clouddn.com/localhost_8084_login.png?v=1)
+![](http://img.api.tycoding.cn/localhost_8084_login.png)
 
-![](http://phftvb7kq.bkt.clouddn.com/localhost_8084_admin.png?v=1)
+![](http://img.api.tycoding.cn/localhost_8084_admin.png)
 
-![](http://phftvb7kq.bkt.clouddn.com/localhost_8084_admin_article_publish.png?v=1)
+![](http://img.api.tycoding.cn/localhost_8084_admin_article_publish.png?v=1)
 
-![](http://phftvb7kq.bkt.clouddn.com/localhost_8084_admin_article.png?v=1)
+![](http://img.api.tycoding.cn/localhost_8084_admin_article.png?v=1)
 
-![](http://phftvb7kq.bkt.clouddn.com/localhost_8084_admin_comment.png?v=1)
+![](http://img.api.tycoding.cn/localhost_8084_admin_comment.png?v=1)
 
-![](http://phftvb7kq.bkt.clouddn.com/localhost_8084_admin_category.png?v=1)
+![](http://img.api.tycoding.cn/localhost_8084_admin_category.png?v=1)
 
-![](http://phftvb7kq.bkt.clouddn.com/localhost_8084_admin_cover.png?v=1)
+![](http://img.api.tycoding.cn/localhost_8084_admin_cover.png?v=1)
 
-![](http://phftvb7kq.bkt.clouddn.com/localhost_8084_admin_link.png?v=1)
+![](http://img.api.tycoding.cn/localhost_8084_admin_link.png?v=1)
 
-![](http://phftvb7kq.bkt.clouddn.com/localhost_8084_admin_user.png?v=1)
+![](http://img.api.tycoding.cn/localhost_8084_admin_user.png?v=1)
