@@ -2,8 +2,8 @@ package cn.tycoding.admin.service.impl;
 
 import cn.tycoding.admin.dto.PageBean;
 import cn.tycoding.admin.entity.Tags;
-import cn.tycoding.admin.enums.ModifyEnums;
-import cn.tycoding.admin.exception.ModifyException;
+import cn.tycoding.admin.enums.ResultEnums;
+import cn.tycoding.admin.exception.ResultException;
 import cn.tycoding.admin.mapper.TagsMapper;
 import cn.tycoding.admin.service.ArticleTagsService;
 import cn.tycoding.admin.service.TagsService;
@@ -56,11 +56,11 @@ public class TagsServiceImpl implements TagsService {
             if (!exists(tags)) {
                 int saveCount = tagsMapper.save(tags);
                 if (saveCount <= 0) {
-                    throw new ModifyException(ModifyEnums.ERROR);
+                    throw new ResultException(ResultEnums.ERROR);
                 }
             }
         } catch (Exception e) {
-            throw new ModifyException(ModifyEnums.INNER_ERROR);
+            throw new ResultException(ResultEnums.INNER_ERROR);
         }
     }
 
@@ -74,13 +74,13 @@ public class TagsServiceImpl implements TagsService {
             if (tags.getId() != 0) {
                 int updateCount = tagsMapper.update(tags);
                 if (updateCount <= 0) {
-                    throw new ModifyException(ModifyEnums.ERROR);
+                    throw new ResultException(ResultEnums.ERROR);
                 }
             } else {
-                throw new ModifyException(ModifyEnums.ERROR);
+                throw new ResultException(ResultEnums.ERROR);
             }
         } catch (Exception e) {
-            throw new ModifyException(ModifyEnums.INNER_ERROR);
+            throw new ResultException(ResultEnums.INNER_ERROR);
         }
     }
 
@@ -92,7 +92,7 @@ public class TagsServiceImpl implements TagsService {
 
                     int deleteCount = tagsMapper.delete(id);
                     if (deleteCount <= 0) {
-                        throw new ModifyException(ModifyEnums.ERROR);
+                        throw new ResultException(ResultEnums.ERROR);
                     } else {
                         // delete success
                         // delete linked article ==> tb_article_tags
@@ -100,10 +100,10 @@ public class TagsServiceImpl implements TagsService {
                     }
                 }
             } else {
-                throw new ModifyException(ModifyEnums.ERROR);
+                throw new ResultException(ResultEnums.ERROR);
             }
         } catch (Exception e) {
-            throw new ModifyException(ModifyEnums.INNER_ERROR);
+            throw new ResultException(ResultEnums.INNER_ERROR);
         }
     }
 

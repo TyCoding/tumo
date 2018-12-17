@@ -78,8 +78,8 @@ var vm = new Vue({
         //条件查询
         search(pageCode, pageSize) {
             this.$http.post('/article/findByPage?pageSize=' + pageSize + '&pageCode=' + pageCode, this.searchEntity).then(result => {
-                this.entity.article = result.body.rows;
-                this.pageConf.totalPage = result.body.total;
+                this.entity.article = result.body.data.rows;
+                this.pageConf.totalPage = result.body.data.total;
             });
 
         },
@@ -112,11 +112,11 @@ var vm = new Vue({
             }).then(() => {
                 // 调用删除的接口(这里必须将数据转换成JSON格式，不然接收不到值，并且后端要用@RequestBody注解标识)
                 this.$http.post('/article/delete', JSON.stringify(ids)).then(result => {
-                    if (result.body.success) {
+                    if (result.body.code == 20000) {
                         //删除成功
                         this.$message({
                             type: 'success',
-                            message: result.body.info,
+                            message: result.body.data,
                             duration: 6000
                         });
                         this.config.selectIds = []; //清空选项
@@ -133,7 +133,7 @@ var vm = new Vue({
                         this.config.selectIds = []; //清空选项
                         this.$message({
                             type: 'warning',
-                            message: result.body.info,
+                            message: result.body.data,
                             duration: 6000
                         });
                         //刷新列表
@@ -174,8 +174,8 @@ var vm = new Vue({
 
         init(){
             //已登录用户名
-            this.$http.get('/admin/getName').then(result => {
-                this.config.token.name = result.bodyText;
+            this.$http.get('/admin/info').then(result => {
+                this.config.token.name = result.body.data.name;
             });
         },
     },

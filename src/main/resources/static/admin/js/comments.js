@@ -56,7 +56,6 @@ var vm = new Vue({
         //===============侧边栏&&顶栏================
         //顶栏触发事件
         handleSelect(key, keyPath) {
-            console.log("不经过？");
             console.log(key, keyPath);
         },
         //打开侧边栏
@@ -82,8 +81,8 @@ var vm = new Vue({
         search(pageCode, pageSize) {
             this.$http.post('/comments/findByPage?pageSize=' + pageSize + '&pageCode=' + pageCode, this.config.searchEntity).then(result => {
                 console.log(result);
-                this.entity.comments = result.body.rows;
-                this.pageConf.totalPage = result.body.total;
+                this.entity.comments = result.body.data.rows;
+                this.pageConf.totalPage = result.body.data.total;
             });
 
         },
@@ -116,12 +115,12 @@ var vm = new Vue({
             }).then(() => {
                 //调用删除的接口(这里必须将数据转换成JSON格式，不然接收不到值，并且后端要用@RequestBody注解标识)
                 this.$http.post('/comments/delete', JSON.stringify(ids)).then(result => {
-                    if (result.body.success) {
+                    if (result.body.code == 20000) {
                         //删除成功
                         this.selectIds = []; //清空选项
                         this.$message({
                             type: 'success',
-                            message: result.body.info,
+                            message: result.body.data,
                             duration: 6000
                         });
                         //刷新列表
@@ -137,7 +136,7 @@ var vm = new Vue({
                         this.selectIds = []; //清空选项
                         this.$message({
                             type: 'warning',
-                            message: result.body.info,
+                            message: result.body.data,
                             duration: 6000
                         });
                         //刷新列表
@@ -178,8 +177,8 @@ var vm = new Vue({
 
         init(){
             //已登录用户名
-            this.$http.get('/admin/getName').then(result => {
-                this.config.token.name = result.bodyText;
+            this.$http.get('/admin/info').then(result => {
+                this.config.token.name = result.body.data.name;
             });
         },
 

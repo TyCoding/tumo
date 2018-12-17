@@ -3,8 +3,8 @@ package cn.tycoding.admin.service.impl;
 import cn.tycoding.admin.dto.ArticleArchives;
 import cn.tycoding.admin.dto.PageBean;
 import cn.tycoding.admin.entity.*;
-import cn.tycoding.admin.enums.ModifyEnums;
-import cn.tycoding.admin.exception.ModifyException;
+import cn.tycoding.admin.enums.ResultEnums;
+import cn.tycoding.admin.exception.ResultException;
 import cn.tycoding.admin.mapper.ArticleMapper;
 import cn.tycoding.admin.service.*;
 import com.alibaba.fastjson.JSONArray;
@@ -73,7 +73,7 @@ public class ArticleServiceImpl implements ArticleService {
         try {
             int saveCount = articleMapper.save(article);
             if (saveCount <= 0) {
-                throw new ModifyException(ModifyEnums.ERROR);
+                throw new ResultException(ResultEnums.ERROR);
             } else {
                 long articleId = articleMapper.getLastId();
                 if (article.getCategory() != null) {
@@ -97,7 +97,7 @@ public class ArticleServiceImpl implements ArticleService {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            throw new ModifyException(ModifyEnums.INNER_ERROR);
+            throw new ResultException(ResultEnums.INNER_ERROR);
         }
     }
 
@@ -106,7 +106,7 @@ public class ArticleServiceImpl implements ArticleService {
         try {
             int updateCount = articleMapper.update(article);
             if (updateCount <= 0) {
-                throw new ModifyException(ModifyEnums.ERROR);
+                throw new ResultException(ResultEnums.ERROR);
             } else {
                 if (article.getCategory() != null) {
 
@@ -114,7 +114,7 @@ public class ArticleServiceImpl implements ArticleService {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            throw new ModifyException(ModifyEnums.INNER_ERROR);
+            throw new ResultException(ResultEnums.INNER_ERROR);
         }
     }
 
@@ -124,12 +124,12 @@ public class ArticleServiceImpl implements ArticleService {
             for (long id : ids) {
                 int deleteCount = articleMapper.delete(id);
                 if (deleteCount <= 0) {
-                    throw new ModifyException(ModifyEnums.ERROR);
+                    throw new ResultException(ResultEnums.ERROR);
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
-            throw new ModifyException(ModifyEnums.INNER_ERROR);
+            throw new ResultException(ResultEnums.INNER_ERROR);
         }
     }
 
@@ -150,7 +150,7 @@ public class ArticleServiceImpl implements ArticleService {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            throw new ModifyException(ModifyEnums.INNER_ERROR);
+            throw new ResultException(ResultEnums.INNER_ERROR);
         }
         return articleArchivesList;
     }
@@ -161,7 +161,7 @@ public class ArticleServiceImpl implements ArticleService {
             return articleMapper.findFuzzyByTitle(title);
         } catch (Exception e) {
             e.printStackTrace();
-            throw new ModifyException(ModifyEnums.INNER_ERROR);
+            throw new ResultException(ResultEnums.INNER_ERROR);
         }
     }
 
@@ -171,7 +171,7 @@ public class ArticleServiceImpl implements ArticleService {
             articleMapper.addEyeCount(id);
         } catch (Exception e) {
             e.printStackTrace();
-            throw new ModifyException(ModifyEnums.INNER_ERROR);
+            throw new ResultException(ResultEnums.INNER_ERROR);
         }
     }
 }

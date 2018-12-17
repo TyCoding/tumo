@@ -84,8 +84,8 @@ var vm = new Vue({
         search(pageCode, pageSize) {
             this.$http.post('/links/findByPage?pageSize=' + pageSize + '&pageCode=' + pageCode, this.searchEntity).then(result => {
                 console.log(result);
-                this.entity.links = result.body.rows;
-                this.pageConf.totalPage = result.body.total;
+                this.entity.links = result.body.data.rows;
+                this.pageConf.totalPage = result.body.data.total;
             });
 
         },
@@ -114,12 +114,12 @@ var vm = new Vue({
             }).then(() => {
                 //调用删除的接口(这里必须将数据转换成JSON格式，不然接收不到值，并且后端要用@RequestBody注解标识)
                 this.$http.post('/links/delete', JSON.stringify(ids)).then(result => {
-                    if (result.body.success) {
+                    if (result.body.code == 20000) {
                         //删除成功
                         this.selectIds = []; //清空选项
                         this.$message({
                             type: 'success',
-                            message: result.body.info,
+                            message: result.body.data,
                             duration: 6000
                         });
                         //刷新列表
@@ -135,7 +135,7 @@ var vm = new Vue({
                         this.selectIds = []; //清空选项
                         this.$message({
                             type: 'warning',
-                            message: result.body.info,
+                            message: result.body.data,
                             duration: 6000
                         });
                         //刷新列表
@@ -169,17 +169,17 @@ var vm = new Vue({
             }else{
                 this.$http.post('/links/save', JSON.stringify(this.editor.links)).then(result => {
                     this.reloadList();
-                    if (result.body.success) {
+                    if (result.body.code == 20000) {
                         this.editor.links = {};
                         this.$message({
                             showClose: true,
-                            message: result.body.info,
+                            message: result.body.data,
                             type: 'success'
                         });
                     } else {
                         this.$message({
                             showClose: true,
-                            message: result.body.info,
+                            message: result.body.data,
                             type: 'error'
                         });
                     }
@@ -193,24 +193,24 @@ var vm = new Vue({
             this.editor.links_edit = {}; //清空表单
             //查询当前id对应的数据
             this.$http.post('/links/findById', {id: id}).then(result => {
-                this.editor.links_edit = result.body;
+                this.editor.links_edit = result.body.data;
             });
         },
         edit(){
             this.config.editDialog = false;
             //查询当前id对应的数据
-            this.$http.post('/links/update', JSON.stringify(this.editor.links_edit)).then(result => {
+            this.$http.put('/links/update', JSON.stringify(this.editor.links_edit)).then(result => {
                 this.reloadList();
-                if (result.body.success){
+                if (result.body.code == 20000){
                     this.$message({
                         type: 'success',
-                        message: result.body.info,
+                        message: result.body.data,
                         duration: 6000
                     });
                 } else{
                     this.$message({
                         type: 'error',
-                        message: result.body.info,
+                        message: result.body.data,
                         duration: 6000
                     });
                 }
@@ -220,8 +220,8 @@ var vm = new Vue({
 
         init(){
             //已登录用户名
-            this.$http.get('/admin/getName').then(result => {
-                this.config.token.name = result.bodyText;
+            this.$http.get('/admin/info').then(result => {
+                this.config.token.name = result.body.data;
             });
         },
     },

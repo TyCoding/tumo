@@ -1,13 +1,17 @@
 package cn.tycoding.admin.controller;
 
-import cn.tycoding.admin.service.ArticleService;
+import cn.tycoding.admin.dto.Result;
+import cn.tycoding.admin.dto.StatusCode;
+import cn.tycoding.admin.enums.ResultEnums;
+import cn.tycoding.admin.service.UserService;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @auther TyCoding
@@ -18,7 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class AdminController {
 
     @Autowired
-    private ArticleService articleService;
+    private UserService userService;
 
     /**
      * 发布文章页
@@ -116,13 +120,32 @@ public class AdminController {
     }
 
     /**
-     * 获取已登录用户名
-     *
+     * 根据登录token获取登录信息
+     * @param token
      * @return
      */
-    @RequestMapping("/getName")
     @ResponseBody
-    public String getName() {
-        return (String) SecurityUtils.getSubject().getPrincipal();
+    @RequestMapping(value = "/info", method = RequestMethod.GET)
+    public Result getUserInfo(String token) {
+        try {
+            Subject subject = SecurityUtils.getSubject();
+            String name = (String) subject.getPrincipal();
+            if (name != null) {
+                Map map = new HashMap();
+                map.put("name", name);
+                return new Result(StatusCode.SUCCESS, map);
+            }
+            return new Result(StatusCode.ERROR, ResultEnums.INNER_ERROR);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Result(StatusCode.ERROR, ResultEnums.INNER_ERROR);
+        }
+    }
+
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    public String logout() {
+        Subject subject = SecurityUtils.getSubject();
+        subject.logout();
+        return "redirect:/admin/login";
     }
 }

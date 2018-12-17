@@ -63,16 +63,16 @@ new Vue({
 
             this.$http.post('/article/save', JSON.stringify(this.entity.article)).then(result => {
                 window.location.reload();
-                if (result.body.success) {
+                if (result.body.code == 20000) {
                     this.$message({
                         showClose: true,
-                        message: result.body.info,
+                        message: result.body.data,
                         type: 'success'
                     });
                 } else {
                     this.$message({
                         showClose: true,
-                        message: result.body.info,
+                        message: result.body.data,
                         type: 'error'
                     });
                 }
@@ -87,9 +87,9 @@ new Vue({
 
         //得到所有的分类列表
         findAllCategory() {
-            this.$http.post('/category/findAll').then(result => {
+            this.$http.get('/category/findAll').then(result => {
                 this.config.options = [];
-                result.body.forEach(row => {
+                result.body.data.forEach(row => {
                     if (row.cName != null){
                         this.config.options.push({value: row.cName.toString(), label: row.cName});
                     }
@@ -136,8 +136,8 @@ new Vue({
 
         init(){
             //已登录用户名
-            this.$http.get('/admin/getName').then(result => {
-                this.config.token.name = result.bodyText;
+            this.$http.get('/admin/info').then(result => {
+                this.config.token.name = result.body.data.name;
             });
         },
     },

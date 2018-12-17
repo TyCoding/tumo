@@ -46,14 +46,12 @@
                 },
                 success: function (result) {
                     $('#comment-form input[name=coid]').val('');
-                    if (result && result.success) {
+                    if (result && result.code == 20000) {
                         alert('评论成功');
                         window.location.reload();
                     } else {
-                        if (result.msg) {
-                            alert(result.msg);
-                            window.location.reload();
-                        }
+                        alert(result.data.info);
+                        window.location.reload();
                     }
                 }
             });
@@ -61,6 +59,7 @@
         }
     };
 })();
+
 function getCommentCookie(name) {
     var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
     if (arr = document.cookie.match(reg)) {
@@ -69,18 +68,20 @@ function getCommentCookie(name) {
         return null;
     }
 }
+
 function addCommentInputValue() {
     document.getElementById('author').value = getCommentCookie('tale_remember_author');
     document.getElementById('email').value = getCommentCookie('tale_remember_mail');
     document.getElementById('url').value = getCommentCookie('tale_remember_url');
 }
+
 addCommentInputValue();
 //>>>>>>>>>>>>>回复表单提交<<<<<<<<<<<<END
 
 
 //>>>>>>>>>>>>>右侧文章导航大纲<<<<<<<<<<<<BEGIN
 $('#directory').html('');
-var postDirectoryBuild = function() {
+var postDirectoryBuild = function () {
     var postChildren = function children(childNodes, reg) {
             var result = [],
                 isReg = typeof reg === 'object',
@@ -97,12 +98,12 @@ var postDirectoryBuild = function() {
             }
             return result;
         },
-        createPostDirectory = function(article, directory, isDirNum) {
+        createPostDirectory = function (article, directory, isDirNum) {
             var contentArr = [],
                 titleId = [],
                 levelArr, root, level,
                 currentList, list, li, link, i, len;
-            levelArr = (function(article, contentArr, titleId) {
+            levelArr = (function (article, contentArr, titleId) {
                 var titleElem = postChildren(article.childNodes, /^h\d$/),
                     levelArr = [],
                     lastNum = 1,
@@ -159,13 +160,13 @@ var postDirectoryBuild = function() {
                 link = document.createElement('a');
                 link.href = '#' + titleId[i];
                 link.innerHTML = !isDirNum ? contentArr[i] :
-                    dirNum.join('.') + ' ' + contentArr[i] ;
+                    dirNum.join('.') + ' ' + contentArr[i];
                 li.appendChild(link);
                 currentList.appendChild(li);
             }
             directory.appendChild(root);
         };
-    createPostDirectory(document.getElementById('post-content'),document.getElementById('directory'), true);
+    createPostDirectory(document.getElementById('post-content'), document.getElementById('directory'), true);
 };
 postDirectoryBuild();
 //>>>>>>>>>>>>>右侧文章导航大纲<<<<<<<<<<<<END

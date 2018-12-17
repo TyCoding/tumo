@@ -3,8 +3,8 @@ package cn.tycoding.admin.service.impl;
 import cn.tycoding.admin.dto.PageBean;
 import cn.tycoding.admin.entity.Article;
 import cn.tycoding.admin.entity.Category;
-import cn.tycoding.admin.enums.ModifyEnums;
-import cn.tycoding.admin.exception.ModifyException;
+import cn.tycoding.admin.enums.ResultEnums;
+import cn.tycoding.admin.exception.ResultException;
 import cn.tycoding.admin.mapper.CategoryMapper;
 import cn.tycoding.admin.service.ArticleCategoryService;
 import cn.tycoding.admin.service.ArticleService;
@@ -61,11 +61,11 @@ public class CategoryServiceImpl implements CategoryService {
             if (!exists(category)) {
                 int saveCount = categoryMapper.save(category);
                 if (saveCount <= 0) {
-                    throw new ModifyException(ModifyEnums.ERROR);
+                    throw new ResultException(ResultEnums.ERROR);
                 }
             }
         } catch (Exception e) {
-            throw new ModifyException(ModifyEnums.INNER_ERROR);
+            throw new ResultException(ResultEnums.INNER_ERROR);
         }
     }
 
@@ -81,7 +81,7 @@ public class CategoryServiceImpl implements CategoryService {
                 Category category_old = categoryMapper.findById(category.getId());
                 int updateCount = categoryMapper.update(category);
                 if (updateCount <= 0) {
-                    throw new ModifyException(ModifyEnums.ERROR);
+                    throw new ResultException(ResultEnums.ERROR);
                 } else {
                     // update tb_article ==> article
                     // find tb_article all this article
@@ -92,10 +92,10 @@ public class CategoryServiceImpl implements CategoryService {
                     }
                 }
             } else {
-                throw new ModifyException(ModifyEnums.ERROR);
+                throw new ResultException(ResultEnums.ERROR);
             }
         } catch (Exception e) {
-            throw new ModifyException(ModifyEnums.INNER_ERROR);
+            throw new ResultException(ResultEnums.INNER_ERROR);
         }
     }
 
@@ -109,7 +109,7 @@ public class CategoryServiceImpl implements CategoryService {
 
                     int deleteCount = categoryMapper.delete(id);
                     if (deleteCount <= 0) {
-                        throw new ModifyException(ModifyEnums.ERROR);
+                        throw new ResultException(ResultEnums.ERROR);
                     } else {
                         // delete success
                         // delete linked article ==> tb_article_category
@@ -124,10 +124,10 @@ public class CategoryServiceImpl implements CategoryService {
                     }
                 }
             } else {
-                throw new ModifyException(ModifyEnums.ERROR);
+                throw new ResultException(ResultEnums.ERROR);
             }
         } catch (Exception e) {
-            throw new ModifyException(ModifyEnums.INNER_ERROR);
+            throw new ResultException(ResultEnums.INNER_ERROR);
         }
     }
 

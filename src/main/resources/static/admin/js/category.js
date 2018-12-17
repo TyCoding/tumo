@@ -94,15 +94,15 @@ var vm = new Vue({
         search(pageCode, pageSize) {
             this.$http.post('/category/findByPage?pageSize=' + pageSize + '&pageCode=' + pageCode).then(result => {
                 console.log(result);
-                this.entity.category = result.body.rows;
-                this.pageConf.totalPage = result.body.total;
+                this.entity.category = result.body.data.rows;
+                this.pageConf.totalPage = result.body.data.total;
             });
         },
         search_t(pageCode_t, pageSize_t){
             this.$http.post('/tags/findByPage?pageSize=' + pageSize_t + '&pageCode=' + pageCode_t).then(result => {
                 console.log(result);
-                this.entity.tags = result.body.rows;
-                this.pageConf.totalPage_t = result.body.total;
+                this.entity.tags = result.body.data.rows;
+                this.pageConf.totalPage_t = result.body.data.total;
             });
         },
         //checkbox复选框
@@ -137,11 +137,11 @@ var vm = new Vue({
             }).then(() => {
                 //调用删除的接口(这里必须将数据转换成JSON格式，不然接收不到值，并且后端要用@RequestBody注解标识)
                 this.$http.post('/category/delete', JSON.stringify(ids)).then(result => {
-                    if (result.body.success) {
+                    if (result.body.code == 20000) {
                         //删除成功
                         this.$message({
                             type: 'success',
-                            message: result.body.info,
+                            message: result.body.data,
                             duration: 6000
                         });
                         //刷新列表
@@ -156,7 +156,7 @@ var vm = new Vue({
                         //删除失败
                         this.$message({
                             type: 'warning',
-                            message: result.body.info,
+                            message: result.body.data,
                             duration: 6000
                         });
                         //刷新列表
@@ -181,11 +181,11 @@ var vm = new Vue({
             }).then(() => {
                 //调用删除的接口(这里必须将数据转换成JSON格式，不然接收不到值，并且后端要用@RequestBody注解标识)
                 this.$http.post('/tags/delete', JSON.stringify(ids)).then(result => {
-                    if (result.body.success) {
+                    if (result.body.code == 20000) {
                         //删除成功
                         this.$message({
                             type: 'success',
-                            message: result.body.info,
+                            message: result.body.data,
                             duration: 6000
                         });
                         //刷新列表
@@ -200,7 +200,7 @@ var vm = new Vue({
                         //删除失败
                         this.$message({
                             type: 'warning',
-                            message: result.body.info,
+                            message: result.body.data,
                             duration: 6000
                         });
                         //刷新列表
@@ -244,12 +244,12 @@ var vm = new Vue({
                 return false;
             }
             this.$http.post('/category/save', JSON.stringify(this.editor.category)).then(result => {
-                if (result.body.success){
+                if (result.body.code == 20000){
                     this.reloadList();
                 }else{
                     this.$message({
                         type: 'info',
-                        message: result.body.info,
+                        message: result.body.data,
                         duration: 6000
                     });
                     this.reloadList();
@@ -271,12 +271,12 @@ var vm = new Vue({
                 return false;
             }
             this.$http.post('/tags/save', JSON.stringify(this.editor.tags)).then(result => {
-                if (result.body.success){
+                if (result.body.code == 20000){
                     this.reloadList_t();
                 }else{
                     this.$message({
                         type: 'info',
-                        message: result.body.info,
+                        message: result.body.data,
                         duration: 6000
                     });
                     this.reloadList_t();
@@ -289,25 +289,25 @@ var vm = new Vue({
             this.config.editDialog = true;
             this.editor.category = {}; //清空表单
             //查询当前id对应的数据
-            this.$http.post('/category/findById', {id: id}).then(result => {
-                this.editor.category = result.body;
+            this.$http.get('/category/findById?id=' + id).then(result => {
+                this.editor.category = result.body.data;
             });
         },
         edit(){
             this.config.editDialog = false;
             //查询当前id对应的数据
-            this.$http.post('/category/update', JSON.stringify(this.editor.category)).then(result => {
+            this.$http.put('/category/update', JSON.stringify(this.editor.category)).then(result => {
                 this.reloadList();
-                if (result.body.success){
+                if (result.body.code == 20000){
                     this.$message({
                         type: 'success',
-                        message: result.body.info,
+                        message: result.body.data,
                         duration: 6000
                     });
                 } else{
                     this.$message({
                         type: 'error',
-                        message: result.body.info,
+                        message: result.body.data,
                         duration: 6000
                     });
                 }
@@ -318,25 +318,25 @@ var vm = new Vue({
             this.config.editDialog_t = true;
             this.editor.tags = {}; //清空表单
             //查询当前id对应的数据
-            this.$http.post('/tags/findById', {id: id}).then(result => {
-                this.editor.tags = result.body;
+            this.$http.get('/tags/findById?id=' + id).then(result => {
+                this.editor.tags = result.body.data;
             });
         },
         edit_t(){
             this.config.editDialog_t = false;
             //查询当前id对应的数据
-            this.$http.post('/tags/update', JSON.stringify(this.editor.tags)).then(result => {
+            this.$http.put('/tags/update', JSON.stringify(this.editor.tags)).then(result => {
                 this.reloadList_t();
-                if (result.body.success){
+                if (result.body.code == 20000){
                     this.$message({
                         type: 'success',
-                        message: result.body.info,
+                        message: result.body.data,
                         duration: 6000
                     });
                 } else{
                     this.$message({
                         type: 'error',
-                        message: result.body.info,
+                        message: result.body.data,
                         duration: 6000
                     });
                 }
@@ -346,8 +346,8 @@ var vm = new Vue({
 
         init(){
             //已登录用户名
-            this.$http.get('/admin/getName').then(result => {
-                this.config.token.name = result.bodyText;
+            this.$http.get('/admin/info').then(result => {
+                this.config.token.name = result.body.data.name;
             });
         },
 

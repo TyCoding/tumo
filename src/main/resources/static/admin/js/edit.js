@@ -58,18 +58,18 @@ new Vue({
             this.entity.article.contentMd = window.markdownContent.getMarkdown(); //给contentMd赋值
             this.entity.article.tags = JSON.stringify(this.config.dynamicTags); //给tags字段赋值
 
-            this.$http.post('/article/update', JSON.stringify(this.entity.article)).then(result => {
+            this.$http.put('/article/update', JSON.stringify(this.entity.article)).then(result => {
                 window.location.href = '/admin/article';
-                if (result.body.success) {
+                if (result.body.code == 20000) {
                     this.$message({
                         showClose: true,
-                        message: result.body.info,
+                        message: result.body.data,
                         type: 'success'
                     });
                 } else {
                     this.$message({
                         showClose: true,
-                        message: result.body.info,
+                        message: result.body.data,
                         type: 'error'
                     });
                 }
@@ -120,18 +120,18 @@ new Vue({
 
         init(id) {
             //从url中获取参数查询文章数据
-            this.$http.post('/article/findById', {id: id}).then(result => {
-                this.entity.article = result.body;
+            this.$http.get('/article/findById?id=' + id).then(result => {
+                this.entity.article = result.body.data;
             });
 
             //从url中获取参数查询文章的标签数据
-            this.$http.post('/article/findTags', {id: id}).then(result => {
-                this.config.dynamicTags = result.body;
+            this.$http.get('/article/findTags?id=' + id).then(result => {
+                this.config.dynamicTags = result.body.data;
             });
 
             //得到所有的分类列表
-            this.$http.post('/category/findAll').then(result => {
-                result.body.forEach(row => {
+            this.$http.get('/category/findAll').then(result => {
+                result.body.data.forEach(row => {
                     if (row.cName != null) {
                         this.config.options.push({value: row.cName.toString(), label: row.cName});
                     }
@@ -139,8 +139,8 @@ new Vue({
             });
 
             //已登录用户名
-            this.$http.get('/admin/getName').then(result => {
-                this.config.token.name = result.bodyText;
+            this.$http.get('/admin/info').then(result => {
+                this.config.token.name = result.body.data.name;
             });
         },
 

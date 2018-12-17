@@ -47,14 +47,12 @@
                 },
                 success: function (result) {
                     $('#comment-form input[name=coid]').val('');
-                    if (result && result.success) {
+                    if (result && result.code == 20000) {
                         alert('评论成功');
                         window.location.reload();
                     } else {
-                        if (result.msg) {
-                            alert(result.msg);
-                            window.location.reload();
-                        }
+                        alert(result.data.info);
+                        window.location.reload();
                     }
                 }
             });
@@ -62,6 +60,7 @@
         }
     };
 })();
+
 function getCommentCookie(name) {
     var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
     if (arr = document.cookie.match(reg)) {
@@ -70,11 +69,13 @@ function getCommentCookie(name) {
         return null;
     }
 }
+
 function addCommentInputValue() {
     document.getElementById('author').value = getCommentCookie('tale_remember_author');
     document.getElementById('email').value = getCommentCookie('tale_remember_mail');
     document.getElementById('url').value = getCommentCookie('tale_remember_url');
 }
+
 addCommentInputValue();
 //>>>>>>>>>>>>>回复表单提交<<<<<<<<<<<<END
 

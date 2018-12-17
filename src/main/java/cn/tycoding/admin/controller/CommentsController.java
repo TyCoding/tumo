@@ -1,15 +1,12 @@
 package cn.tycoding.admin.controller;
 
-import cn.tycoding.admin.dto.ModifyResult;
-import cn.tycoding.admin.dto.PageBean;
+import cn.tycoding.admin.dto.Result;
+import cn.tycoding.admin.dto.StatusCode;
 import cn.tycoding.admin.entity.Comments;
-import cn.tycoding.admin.enums.ModifyEnums;
+import cn.tycoding.admin.enums.ResultEnums;
 import cn.tycoding.admin.service.CommentsService;
-import org.apache.shiro.authz.annotation.RequiresUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * @auther TyCoding
@@ -23,84 +20,99 @@ public class CommentsController {
     @Autowired
     private CommentsService commentsService;
 
-    @RequestMapping("/findAllCount")
-    public Long findAllCount() {
-        return commentsService.findAllCount();
+    @RequestMapping(value = "/findAllCount", method = RequestMethod.GET)
+    public Result findAllCount() {
+        return new Result(StatusCode.SUCCESS, commentsService.findAllCount());
     }
 
-    @RequestMapping("/findAll")
-    public List<Comments> findAll() {
-        return commentsService.findAll();
+    @RequestMapping(value = "/findAll", method = RequestMethod.GET)
+    public Result findAll() {
+        return new Result(StatusCode.SUCCESS, commentsService.findAll());
     }
 
-    @ResponseBody
-    @RequestMapping("/findByPage")
-    public PageBean findByPage(Comments comments,
-                               @RequestParam(value = "pageCode", required = false) Integer pageCode,
-                               @RequestParam(value = "pageSize", required = false) Integer pageSize) {
-        return commentsService.findByPage(comments, pageCode, pageSize);
+    @RequestMapping(value = "/findByPage", method = RequestMethod.POST)
+    public Result findByPage(Comments comments,
+                             @RequestParam(value = "pageCode", required = false) Integer pageCode,
+                             @RequestParam(value = "pageSize", required = false) Integer pageSize) {
+        if (pageCode != null && pageSize != null) {
+            return new Result(StatusCode.SUCCESS, commentsService.findByPage(comments, pageCode, pageSize));
+        }
+        return new Result(StatusCode.ERROR, ResultEnums.ERROR);
     }
 
-    @RequestMapping("/findCountByArticleId")
-    public Long findCountByArticleId(@RequestParam("articleId") Long articleId) {
+    /**
+     * 根据文章ID查询其下的评论数量
+     *
+     * @param articleId
+     * @return
+     */
+    @RequestMapping(value = "/findCountByArticleId", method = RequestMethod.GET)
+    public Result findCountByArticleId(@RequestParam("articleId") Long articleId) {
         if (articleId != null && articleId != 0) {
-            return commentsService.findCountByArticle(articleId);
+            return new Result(StatusCode.SUCCESS, commentsService.findCountByArticle(articleId));
         }
-        return null;
+        return new Result(StatusCode.ERROR, ResultEnums.ERROR);
     }
 
-    @RequestMapping("/findCommentsList")
-    public PageBean findCommentsList(@RequestParam(value = "pageCode", required = false) Integer pageCode,
-                                     @RequestParam(value = "pageSize", required = false) Integer pageSize,
-                                     @RequestParam(value = "articleId", required = false) Integer articleId) {
+    /**
+     * 分页查询并过滤留言数据
+     *
+     * @param pageCode  当前页
+     * @param pageSize  每页显示的记录数
+     * @param articleId 当前访问的文章ID
+     * @param sort 分类，规定：sort=0表示文章详情页的评论信息；sort=1表示友链页的评论信息；sort=2表示关于我页的评论信息
+     * @return
+     */
+    @RequestMapping(value = "/findCommentsList", method = RequestMethod.GET)
+    public Result findCommentsList(@RequestParam(value = "pageCode", required = false) Integer pageCode,
+                                   @RequestParam(value = "pageSize", required = false) Integer pageSize,
+                                   @RequestParam(value = "articleId", required = false) Integer articleId) {
         if (pageCode != null && pageSize != null && articleId != null && articleId != 0) {
-            return commentsService.findCommentsList(pageCode, pageSize, articleId, 0);
+            return new Result(StatusCode.SUCCESS, commentsService.findCommentsList(pageCode, pageSize, articleId, 0));
         } else {
-            return null;
+            return new Result(StatusCode.ERROR, ResultEnums.ERROR);
         }
     }
 
-    @RequestMapping("/findById")
-    public Comments findById(@RequestParam("id") Long id) {
+    @RequestMapping(value = "/findById", method = RequestMethod.GET)
+    public Result findById(@RequestParam("id") Long id) {
         if (id != null && id != 0) {
-            return commentsService.findById(id);
+            return new Result(StatusCode.SUCCESS, commentsService.findById(id));
         } else {
-            return null;
+            return new Result(StatusCode.ERROR, ResultEnums.ERROR);
         }
     }
 
-    @RequestMapping("/save")
-    public ModifyResult save(@RequestBody Comments comments) {
+    @RequestMapping(value = "/save", method = RequestMethod.POST)
+    public Result save(@RequestBody Comments comments) {
         try {
             commentsService.save(comments);
-            return new ModifyResult(true, ModifyEnums.SUCCESS);
+            return new Result(StatusCode.SUCCESS, ResultEnums.SUCCESS);
         } catch (Exception e) {
             e.printStackTrace();
-            return new ModifyResult(false, e.getMessage());
+            return new Result(StatusCode.ERROR, ResultEnums.ERROR);
         }
     }
 
-    @RequiresUser
-    @RequestMapping("/update")
-    public ModifyResult update(@RequestBody Comments comments) {
+    @RequestMapping(value = "/update", method = RequestMethod.PUT)
+    public Result update(@RequestBody Comments comments) {
         try {
             commentsService.update(comments);
-            return new ModifyResult(true, ModifyEnums.SUCCESS);
+            return new Result(StatusCode.SUCCESS, ResultEnums.SUCCESS);
         } catch (Exception e) {
             e.printStackTrace();
-            return new ModifyResult(false, e.getMessage());
+            return new Result(StatusCode.ERROR, ResultEnums.ERROR);
         }
     }
 
-    @RequiresUser
-    @RequestMapping("/delete")
-    public ModifyResult delete(@RequestBody Long... ids) {
+    @RequestMapping(value = "/delete", method = RequestMethod.POST)
+    public Result delete(@RequestBody Long... ids) {
         try {
             commentsService.delete(ids);
-            return new ModifyResult(true, ModifyEnums.SUCCESS);
+            return new Result(StatusCode.SUCCESS, ResultEnums.SUCCESS);
         } catch (Exception e) {
             e.printStackTrace();
-            return new ModifyResult(false, e.getMessage());
+            return new Result(StatusCode.ERROR, ResultEnums.ERROR);
         }
     }
 }

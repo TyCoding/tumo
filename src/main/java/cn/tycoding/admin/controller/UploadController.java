@@ -1,7 +1,7 @@
 package cn.tycoding.admin.controller;
 
-import cn.tycoding.admin.dto.ModifyResult;
-import org.apache.shiro.authz.annotation.RequiresUser;
+import cn.tycoding.admin.dto.Result;
+import cn.tycoding.admin.dto.StatusCode;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,6 +14,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @auther TyCoding
@@ -26,13 +28,12 @@ public class UploadController {
     /**
      * 文件上传
      *
-     * @param picture
+     * @param file
      * @param request
      * @return
      */
-    @RequiresUser
     @RequestMapping("/upload")
-    public ModifyResult upload(@RequestParam("picture") MultipartFile picture, HttpServletRequest request) throws FileNotFoundException {
+    public Result upload(@RequestParam("file") MultipartFile file, HttpServletRequest request) throws FileNotFoundException {
         //获取文件在服务器的储存位置
         File path = new File(ResourceUtils.getURL("classpath:").getPath());
         File filePath = new File(path.getAbsolutePath(),"static/upload/");
@@ -43,7 +44,7 @@ public class UploadController {
         }
 
         //获取原始文件名称(包含格式)
-        String originalFileName = picture.getOriginalFilename();
+        String originalFileName = file.getOriginalFilename();
         System.out.println("原始文件名称：" + originalFileName);
 
         //获取文件类型，以最后一个`.`为标识
@@ -64,14 +65,19 @@ public class UploadController {
 
         //将文件保存到服务器指定位置
         try {
-            picture.transferTo(targetFile);
+            file.transferTo(targetFile);
             System.out.println("上传成功");
             //将文件在服务器的存储路径返回
-            return new ModifyResult(true, "/upload/" + fileName);
+
+            Map map = new HashMap<>();
+            map.put("name", fileName);
+            map.put("url", "/upload/" + fileName);
+
+            return new Result(StatusCode.SUCCESS, map);
         } catch (IOException e) {
             System.out.println("上传失败");
             e.printStackTrace();
-            return new ModifyResult(false, "上传失败");
+            return new Result(StatusCode.ERROR, "上传失败");
         }
     }
 }

@@ -3,8 +3,8 @@ package cn.tycoding.admin.service.impl;
 import cn.tycoding.admin.dto.CommentsDTO;
 import cn.tycoding.admin.dto.PageBean;
 import cn.tycoding.admin.entity.Comments;
-import cn.tycoding.admin.enums.ModifyEnums;
-import cn.tycoding.admin.exception.ModifyException;
+import cn.tycoding.admin.enums.ResultEnums;
+import cn.tycoding.admin.exception.ResultException;
 import cn.tycoding.admin.mapper.CommentsMapper;
 import cn.tycoding.admin.service.CommentsService;
 import com.github.pagehelper.Page;
@@ -94,11 +94,11 @@ public class CommentsServiceImpl implements CommentsService {
         try {
             int saveCount = commentsMapper.save(comments);
             if (saveCount <= 0) {
-                throw new ModifyException(ModifyEnums.INNER_ERROR);
+                throw new ResultException(ResultEnums.INNER_ERROR);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            throw new ModifyException(ModifyEnums.ERROR);
+            throw new ResultException(ResultEnums.ERROR);
         }
     }
 
@@ -107,11 +107,11 @@ public class CommentsServiceImpl implements CommentsService {
         try {
             int updateCount = commentsMapper.update(comments);
             if (updateCount <= 0) {
-                throw new ModifyException(ModifyEnums.INNER_ERROR);
+                throw new ResultException(ResultEnums.INNER_ERROR);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            throw new ModifyException(ModifyEnums.ERROR);
+            throw new ResultException(ResultEnums.ERROR);
         }
     }
 
@@ -121,12 +121,12 @@ public class CommentsServiceImpl implements CommentsService {
             for (long id : ids) {
                 int deleteCount = commentsMapper.delete(id);
                 if (deleteCount <= 0) {
-                    throw new ModifyException(ModifyEnums.INNER_ERROR);
+                    throw new ResultException(ResultEnums.INNER_ERROR);
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
-            throw new ModifyException(ModifyEnums.ERROR);
+            throw new ResultException(ResultEnums.ERROR);
         }
     }
 

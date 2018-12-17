@@ -3,8 +3,8 @@ package cn.tycoding.admin.service.impl;
 import cn.tycoding.admin.dto.PageBean;
 import cn.tycoding.admin.dto.PasswordHelper;
 import cn.tycoding.admin.entity.User;
-import cn.tycoding.admin.enums.ModifyEnums;
-import cn.tycoding.admin.exception.ModifyException;
+import cn.tycoding.admin.enums.ResultEnums;
+import cn.tycoding.admin.exception.ResultException;
 import cn.tycoding.admin.mapper.UserMapper;
 import cn.tycoding.admin.service.UserService;
 import com.github.pagehelper.Page;
@@ -56,10 +56,10 @@ public class UserServiceImpl implements UserService {
             passwordHelper.encryptPassword(user); //加密
             int saveCount = userMapper.save(user);
             if (saveCount <= 0) {
-                throw new ModifyException(ModifyEnums.ERROR);
+                throw new ResultException(ResultEnums.ERROR);
             }
         } catch (Exception e) {
-            throw new ModifyException(ModifyEnums.INNER_ERROR);
+            throw new ResultException(ResultEnums.INNER_ERROR);
         }
     }
 
@@ -71,10 +71,10 @@ public class UserServiceImpl implements UserService {
             }
             int updateCount = userMapper.update(user);
             if (updateCount <= 0) {
-                throw new ModifyException(ModifyEnums.ERROR);
+                throw new ResultException(ResultEnums.ERROR);
             }
         } catch (Exception e) {
-            throw new ModifyException(ModifyEnums.INNER_ERROR);
+            throw new ResultException(ResultEnums.INNER_ERROR);
         }
     }
 
@@ -84,11 +84,11 @@ public class UserServiceImpl implements UserService {
             for (long id : ids) {
                 int deleteCount = userMapper.delete(id);
                 if (deleteCount <= 0) {
-                    throw new ModifyException(ModifyEnums.ERROR);
+                    throw new ResultException(ResultEnums.ERROR);
                 }
             }
         } catch (Exception e) {
-            throw new ModifyException(ModifyEnums.INNER_ERROR);
+            throw new ResultException(ResultEnums.INNER_ERROR);
         }
     }
 

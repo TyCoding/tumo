@@ -85,8 +85,8 @@ var vm = new Vue({
         search(pageCode, pageSize) {
             this.$http.post('/article/findByPage?pageSize=' + pageSize + '&pageCode=' + pageCode).then(result => {
                 console.log(result);
-                this.entity.article = result.body.rows;
-                this.pageConf.totalPage = result.body.total;
+                this.entity.article = result.body.data.rows;
+                this.pageConf.totalPage = result.body.data.total;
             });
 
         },
@@ -103,39 +103,30 @@ var vm = new Vue({
         //编辑按钮
         editBtn(id) {
             this.config.editDialog = true;
-            this.$http.post('/article/findById', {id: id}).then(result => {
-                this.entity.editor.id = result.body.id;
-                this.entity.editor.titlePic = result.body.titlePic;
+            this.$http.get('/article/findById?id=' + id).then(result => {
+                this.entity.editor.id = result.body.data.id;
+                this.entity.editor.titlePic = result.body.data.titlePic;
 
                 this.config.fileList.forEach(row => {
-                    row.url = result.body.titlePic; //将图片的URL地址赋值给file-list展示出来
+                    row.url = result.body.data.titlePic; //将图片的URL地址赋值给file-list展示出来
                 });
             });
         },
         //编辑
         edit() {
-            console.log(this.entity.editor);
-            console.log(this.config.fileList.length);
-            if (this.config.fileList.length < 2) {
-                this.$message({
-                    type: 'warning',
-                    message: '您还没有上传图片',
-                });
-                return false;
-            }
-            this.$http.post('/article/update', JSON.stringify(this.entity.editor)).then(result => {
+            this.$http.put('/article/update', JSON.stringify(this.entity.editor)).then(result => {
                 this.config.editDialog = false;
                 this.reloadList();
-                if (result.body.success) {
+                if (result.body.code == 20000) {
                     this.$message({
                         type: 'success',
-                        message: result.body.info,
+                        message: result.body.data,
                         duration: 6000
                     });
                 } else {
                     this.$message({
                         type: 'error',
-                        message: result.body.info,
+                        message: result.body.data,
                         duration: 6000
                     });
                 }
@@ -155,24 +146,28 @@ var vm = new Vue({
                 message: '图片上传成功',
                 duration: 6000
             });
-            if (file.response.success) {
-                this.entity.editor.titlePic = file.response.info; //将返回的文件储存路径赋值image字段
+            console.log(res);
+            console.log(file);
+            console.log(fileList);
+            if (res.code == 20000) {
+                this.config.fileList = [];
+                this.config.fileList.push(res.data);
+                this.entity.editor.titlePic = res.data.url; //将返回的文件储存路径赋值image字段
             }
         },
         //删除文件之前的钩子函数
         handleRemove(file, fileList) {
-            console.log(file, fileList);
             this.$message({
                 type: 'info',
                 message: '已删除原有图片',
                 duration: 6000
             });
+            this.config.fileList = [];
         },
         //点击列表中已上传的文件事的钩子函数
         handlePreview(file) {
             // this.dialogImageUrl = file.url;
             // this.dialogVisible = true;
-
         },
         //上传的文件个数超出设定时触发的函数
         onExceed(files, fileList) {
@@ -185,10 +180,10 @@ var vm = new Vue({
         //文件上传前的前的钩子函数
         //参数是上传的文件，若返回false，或返回Primary且被reject，则停止上传
         beforeUpload(file) {
-            const isJPG = file.type === 'img/jpeg';
-            const isGIF = file.type === 'img/gif';
-            const isPNG = file.type === 'img/png';
-            const isBMP = file.type === 'img/bmp';
+            const isJPG = file.type === 'image/jpeg';
+            const isGIF = file.type === 'image/gif';
+            const isPNG = file.type === 'image/png';
+            const isBMP = file.type === 'image/bmp';
             const isLt2M = file.size / 1024 / 1024 < 2;
 
             if (!isJPG && !isGIF && !isPNG && !isBMP) {
@@ -202,8 +197,8 @@ var vm = new Vue({
 
         init(){
             //已登录用户名
-            this.$http.get('/admin/getName').then(result => {
-                this.config.token.name = result.bodyText;
+            this.$http.get('/admin/info').then(result => {
+                this.config.token.name = result.body.data.name;
             });
         },
     },

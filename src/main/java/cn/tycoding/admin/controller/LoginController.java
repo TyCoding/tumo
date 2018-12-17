@@ -1,7 +1,9 @@
 package cn.tycoding.admin.controller;
 
-import cn.tycoding.admin.dto.ModifyResult;
-import cn.tycoding.admin.enums.ModifyEnums;
+import ch.qos.logback.core.status.Status;
+import cn.tycoding.admin.dto.Result;
+import cn.tycoding.admin.dto.StatusCode;
+import cn.tycoding.admin.enums.ResultEnums;
 import cn.tycoding.admin.service.UserService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
@@ -14,6 +16,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @auther TyCoding
@@ -48,7 +53,7 @@ public class LoginController {
 
     @ResponseBody
     @RequestMapping("/admin/login")
-    public ModifyResult login(
+    public Result login(
             @RequestParam(value = "username", required = false) String username,
             @RequestParam(value = "password", required = false) String password,
             @RequestParam(value = "remember", required = false) String remember) {
@@ -69,19 +74,21 @@ public class LoginController {
             try {
                 subject.login(token);
                 System.out.println("是否登录：" + subject.isAuthenticated());
-                return new ModifyResult(true, ModifyEnums.LOGIN_SUCCESS);
+                Map map = new HashMap();
+                map.put("token", subject.getPrincipal());
+                return new Result(StatusCode.SUCCESS, map);
             } catch (UnknownAccountException e) {
                 e.printStackTrace();
-                return new ModifyResult(false, ModifyEnums.LOGIN_UNKNOWN);
+                return new Result(Status.ERROR, ResultEnums.LOGIN_UNKNOWN);
             } catch (IncorrectCredentialsException e) {
                 e.printStackTrace();
-                return new ModifyResult(false, ModifyEnums.LOGIN_ERROR);
+                return new Result(StatusCode.ERROR, ResultEnums.LOGIN_ERROR);
             } catch (Exception e) {
                 e.printStackTrace();
-                return new ModifyResult(false, ModifyEnums.INNER_ERROR);
+                return new Result(StatusCode.ERROR, ResultEnums.INNER_ERROR);
             }
         } else {
-            return new ModifyResult(false, ModifyEnums.INPUT_ERROR);
+            return new Result(StatusCode.ERROR, ResultEnums.INPUT_ERROR);
         }
     }
 

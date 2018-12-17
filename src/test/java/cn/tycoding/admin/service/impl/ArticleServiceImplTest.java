@@ -2,7 +2,6 @@ package cn.tycoding.admin.service.impl;
 
 import cn.tycoding.admin.dto.PageBean;
 import cn.tycoding.admin.entity.Article;
-import cn.tycoding.admin.exception.ModifyException;
 import cn.tycoding.admin.service.ArticleService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,7 +28,7 @@ public class ArticleServiceImplTest {
     private ArticleService articleService;
 
     @Test
-    public void findAll(){
+    public void findAll() {
         List<Article> list = articleService.findAll();
         /*for (Article article : list){
             logger.info("list={}", article.getTags());
@@ -65,12 +64,7 @@ public class ArticleServiceImplTest {
         Article article = new Article();
         article.setId(2);
         article.setTitle("不想测试了");
-        try {
-            articleService.update(article);
-        } catch (ModifyException e) {
-            e.printStackTrace();
-            logger.error(e.getMessage());
-        }
+        articleService.update(article);
     }
 
     @Test
@@ -89,7 +83,7 @@ public class ArticleServiceImplTest {
     }
 
     @Test
-    public void findFuzzyByTitle(){
+    public void findFuzzyByTitle() {
         List<Article> list = articleService.findFuzzyByTitle("haha");
         logger.info("list={}", list);
     }

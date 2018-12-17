@@ -4,7 +4,7 @@ package cn.tycoding.admin.enums;
  * @auther TyCoding
  * @date 2018/10/16
  */
-public enum ModifyEnums {
+public enum ResultEnums {
 
     SUCCESS("操作成功"),
     ERROR("操作失败"),
@@ -21,7 +21,7 @@ public enum ModifyEnums {
         return info;
     }
 
-    ModifyEnums(String info) {
+    ResultEnums(String info) {
         this.info = info;
     }
 }

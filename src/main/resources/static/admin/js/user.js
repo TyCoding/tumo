@@ -62,13 +62,13 @@ var vm = new Vue({
             this.$http.get('/user/getUserInfo').then(result => {
                 this.$refs.user.resetFields(); //清空校验状态
                 this.$refs.pass.resetFields(); //清空校验状态
-                this.entity.user.id = result.body.id;
-                this.entity.user.username = result.body.username;
-                this.entity.user.email = result.body.email;
-                this.entity.user.nickname = result.body.nickname;
-                this.entity.pass.id = result.body.id;
+                this.entity.user.id = result.body.data.id;
+                this.entity.user.username = result.body.data.username;
+                this.entity.user.email = result.body.data.email;
+                this.entity.user.nickname = result.body.data.nickname;
+                this.entity.pass.id = result.body.data.id;
 
-                this.config.token.name = result.body.username;
+                this.config.token.name = result.body.data.username;
             });
         },
 
@@ -83,23 +83,23 @@ var vm = new Vue({
                 console.log(this.entity.user);
                 console.log(this.config.token);
                 this.$http.post('/user/update', JSON.stringify(this.entity.user)).then(result => {
-                    if (result.body.success) {
+                    if (result.body.code == 20000) {
                         if (this.entity.user.username == this.config.token.name) {
                             window.location.reload();
                             this.$message({
                                 type: 'success',
-                                message: result.body.info,
+                                message: result.body.data,
                                 duration: 6000
                             });
                         } else {
                             //修改了用户名，从新登陆
                             //执行/logout请求
-                            window.location.href = '/user/logout'; //更改了密码，注销当前登录状态，重新登录
+                            window.location.href = '/admin/logout'; //更改了密码，注销当前登录状态，重新登录
                         }
                     } else {
                         this.$message({
                             type: 'info',
-                            message: result.body.info,
+                            message: result.body.data,
                             duration: 6000
                         });
                         window.location.reload();
@@ -142,19 +142,19 @@ var vm = new Vue({
             } else {
                 this.entity.pass.username = this.entity.user.username;
                 this.$http.post('/user/update', JSON.stringify(this.entity.pass)).then(result => {
-                    if (result.body.success){
+                    if (result.body.code == 20000){
                         this.$message({
                             type: 'success',
-                            message: result.body.info,
+                            message: result.body.data,
                             duration: 6000
                         });
 
                         //执行/logout请求
-                        window.location.href = '/user/logout'; //更改了密码，注销当前登录状态，重新登录
+                        window.location.href = '/admin/logout'; //更改了密码，注销当前登录状态，重新登录
                     }else{
                         this.$message({
                             type: 'info',
-                            message: result.body.info,
+                            message: result.body.data,
                             duration: 6000
                         });
                     }

@@ -41,7 +41,7 @@ new Vue({
                         password: this.login.password,
                         remember: this.login.remember
                     }).then(result => {
-                        if (result.body.success) {
+                        if (result.body.code == 20000) {
                             window.location.href = "/admin";
                             this.loading.close(); //关闭动画加载
                         } else {
@@ -49,7 +49,7 @@ new Vue({
                             this.$emit(
                                 'submit-form',
                                 this.$message({
-                                    message: result.body.info,
+                                    message: result.body.data.info,
                                     type: 'warning',
                                     duration: 6000
                                 }),

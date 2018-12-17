@@ -64,31 +64,31 @@ new Vue({
         init(){
             //文章数量
             this.$http.get('/article/findAllCount').then(result => {
-                this.config.article_count = result.body;
+                this.config.article_count = result.body.data;
             });
             //评论数量
             this.$http.get('/comments/findAllCount').then(result => {
-                this.config.comments_count = result.body;
+                this.config.comments_count = result.body.data;
             });
             //标签数量
             this.$http.get('/tags/findAllCount').then(result => {
-                this.config.tags_count = result.body;
+                this.config.tags_count = result.body.data;
             });
             //友链数量
             this.$http.get('/links/findAllCount').then(result => {
-                this.config.links_count = result.body;
+                this.config.links_count = result.body.data;
             });
             //已登录用户名
-            this.$http.get('/admin/getName').then(result => {
-                this.config.token.name = result.bodyText;
+            this.$http.get('/admin/info').then(result => {
+                this.config.token.name = result.body.data.name;
             });
             //最新文章
             this.$http.get('/article/findAll').then(result => {
-                this.entity.article = result.body;
+                this.entity.article = result.body.data;
             });
             //最新评论
             this.$http.get('/comments/findAll').then(result => {
-                this.entity.comments = result.body;
+                this.entity.comments = result.body.data;
             });
         }
 

@@ -3,8 +3,8 @@ package cn.tycoding.admin.service.impl;
 import cn.tycoding.admin.dto.PageBean;
 import cn.tycoding.admin.entity.ArticleTags;
 import cn.tycoding.admin.entity.Tags;
-import cn.tycoding.admin.enums.ModifyEnums;
-import cn.tycoding.admin.exception.ModifyException;
+import cn.tycoding.admin.enums.ResultEnums;
+import cn.tycoding.admin.exception.ResultException;
 import cn.tycoding.admin.mapper.ArticleTagsMapper;
 import cn.tycoding.admin.service.ArticleTagsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,11 +49,11 @@ public class ArticleTagsServiceImpl implements ArticleTagsService {
             if (!exists(articleTags)) {
                 int saveCount = articleTagsMapper.save(articleTags);
                 if (saveCount <= 0) {
-                    throw new ModifyException(ModifyEnums.ERROR);
+                    throw new ResultException(ResultEnums.ERROR);
                 }
             }
         } catch (Exception e) {
-            throw new ModifyException(ModifyEnums.INNER_ERROR);
+            throw new ResultException(ResultEnums.INNER_ERROR);
         }
     }
 
@@ -75,11 +75,11 @@ public class ArticleTagsServiceImpl implements ArticleTagsService {
             for (long id : ids) {
                 int deleteCount = articleTagsMapper.delete(id);
                 if (deleteCount <= 0) {
-                    throw new ModifyException(ModifyEnums.ERROR);
+                    throw new ResultException(ResultEnums.ERROR);
                 }
             }
         } catch (Exception e) {
-            throw new ModifyException(ModifyEnums.INNER_ERROR);
+            throw new ResultException(ResultEnums.INNER_ERROR);
         }
     }
 

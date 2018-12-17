@@ -1,22 +1,17 @@
 package cn.tycoding.admin.controller;
 
-import cn.tycoding.admin.dto.ArticleArchives;
-import cn.tycoding.admin.dto.ModifyResult;
-import cn.tycoding.admin.dto.PageBean;
+import cn.tycoding.admin.dto.Result;
+import cn.tycoding.admin.dto.StatusCode;
 import cn.tycoding.admin.entity.Article;
 import cn.tycoding.admin.entity.Tags;
-import cn.tycoding.admin.enums.ModifyEnums;
+import cn.tycoding.admin.enums.ResultEnums;
 import cn.tycoding.admin.service.ArticleService;
 import cn.tycoding.admin.service.ArticleTagsService;
 import cn.tycoding.admin.service.CategoryService;
 import com.alibaba.fastjson.JSON;
-import org.apache.shiro.authz.annotation.RequiresUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,96 +34,97 @@ public class ArticleController {
     @Autowired
     private ArticleTagsService articleTagsService;
 
-    @RequestMapping("/findAll")
-    public List<Article> findAll() {
-        return articleService.findAll();
+    @RequestMapping(value = "/findAll", method = RequestMethod.GET)
+    public Result findAll() {
+        return new Result(StatusCode.SUCCESS, articleService.findAll());
     }
 
-    @RequestMapping("/findAllCount")
-    public Long findAllCount() {
-        return articleService.findAllCount();
+    @RequestMapping(value = "/findAllCount", method = RequestMethod.GET)
+    public Result findAllCount() {
+        return new Result(StatusCode.SUCCESS, articleService.findAllCount());
     }
 
-    @RequiresUser
-    @RequestMapping("/findByPage")
-    public PageBean findByPage(Article article,
-                               @RequestParam(value = "pageCode", required = false) Integer pageCode,
-                               @RequestParam(value = "pageSize", required = false) Integer pageSize) {
-        return articleService.findByPage(article, pageCode, pageSize);
+    @RequestMapping(value = "/findByPage", method = RequestMethod.POST)
+    public Result findByPage(Article article,
+                             @RequestParam(value = "pageCode", required = false) Integer pageCode,
+                             @RequestParam(value = "pageSize", required = false) Integer pageSize) {
+        if (pageCode != null && pageSize != null) {
+            return new Result(StatusCode.SUCCESS, articleService.findByPage(article, pageCode, pageSize));
+        }
+        return new Result(StatusCode.ERROR, ResultEnums.ERROR);
     }
 
-    @RequestMapping("/findById")
-    public Article findById(@RequestParam("id") Long id, Model model) {
+    @RequestMapping(value = "/findById", method = RequestMethod.GET)
+    public Result findById(@RequestParam("id") Long id, Model model) {
         if (id == null || id == 0) {
-            return null;
+            return new Result(StatusCode.ERROR, ResultEnums.ERROR);
         } else {
             Article article = articleService.findById(id);
-            if (article.getId() != 0) {
-                List<String> tags = new ArrayList<String>();
-                List<Tags> tagsList = articleTagsService.findByArticleId(article.getId());
-                for (Tags t : tagsList) {
-                    tags.add(t.gettName());
+            if (article != null) {
+                if (article.getId() != 0) {
+                    List<String> tags = new ArrayList<String>();
+                    List<Tags> tagsList = articleTagsService.findByArticleId(article.getId());
+                    for (Tags t : tagsList) {
+                        tags.add(t.gettName());
+                    }
+                    article.setTags(JSON.toJSONString(tags));
+                } else {
+                    return new Result(StatusCode.ERROR, ResultEnums.ERROR);
                 }
-                article.setTags(JSON.toJSONString(tags));
-            } else {
-                return null;
             }
-            return article;
+            return new Result(StatusCode.SUCCESS, article);
         }
     }
 
-    @RequestMapping("/findTags")
-    public List<String> findTags(@RequestParam("id") Long articleId) {
-        if (articleId != null) {
-            List<String> tags = new ArrayList<String>();
-            List<Tags> tagsList = articleTagsService.findByArticleId(articleId);
+    @RequestMapping(value = "/findTags", method = RequestMethod.GET)
+    public Result findTags(@RequestParam("id") Long id) {
+        if (id != null) {
+            List<String> list = new ArrayList<String>();
+            List<Tags> tagsList = articleTagsService.findByArticleId(id);
             for (Tags t : tagsList) {
-                tags.add(t.gettName());
+                list.add(t.gettName());
             }
-            return tags;
+            return new Result(StatusCode.SUCCESS, list);
         } else {
-            return null;
+            return new Result(StatusCode.ERROR, ResultEnums.ERROR);
         }
     }
 
-    @RequestMapping("/findArchives")
-    public List<ArticleArchives> findArchives() {
-        return articleService.findArchives();
+    @RequestMapping(value = "/findArchives", method = RequestMethod.GET)
+    public Result findArchives() {
+        return new Result(StatusCode.SUCCESS, articleService.findArchives());
     }
 
-    @RequiresUser
-    @RequestMapping("/save")
-    public ModifyResult save(@RequestBody Article article) {
+    @RequestMapping(value = "/save", method = RequestMethod.POST)
+    public Result save(@RequestBody Article article) {
         try {
             articleService.save(article);
-            return new ModifyResult(true, ModifyEnums.SUCCESS);
+            return new Result(StatusCode.SUCCESS, ResultEnums.SUCCESS);
         } catch (Exception e) {
             e.printStackTrace();
-            return new ModifyResult(false, e.getMessage());
+            return new Result(StatusCode.ERROR, ResultEnums.ERROR);
         }
     }
 
-    @RequiresUser
-    @RequestMapping("/update")
-    public ModifyResult update(@RequestBody Article article) {
+    @RequestMapping(value = "/update", method = RequestMethod.PUT)
+    public Result update(@RequestBody Article article) {
         try {
             articleService.update(article);
-            return new ModifyResult(true, ModifyEnums.SUCCESS);
+            return new Result(StatusCode.SUCCESS, ResultEnums.SUCCESS);
         } catch (Exception e) {
             e.printStackTrace();
-            return new ModifyResult(false, e.getMessage());
+            return new Result(StatusCode.ERROR, ResultEnums.ERROR);
         }
     }
 
-    @RequiresUser
-    @RequestMapping("/delete")
-    public ModifyResult delete(@RequestBody Long... ids) {
+    @RequestMapping(value = "/delete", method = RequestMethod.POST)
+    public Result delete(@RequestBody Long... ids) {
         try {
             articleService.delete(ids);
-            return new ModifyResult(true, ModifyEnums.SUCCESS);
+            return new Result(StatusCode.SUCCESS, ResultEnums.SUCCESS);
         } catch (Exception e) {
             e.printStackTrace();
-            return new ModifyResult(false, e.getMessage());
+            return new Result(StatusCode.ERROR, ResultEnums.ERROR);
         }
     }
 }
