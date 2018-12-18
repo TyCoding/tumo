@@ -11,6 +11,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -20,6 +21,7 @@ import java.util.List;
  */
 @Service
 @SuppressWarnings("all")
+@Transactional
 public class UserServiceImpl implements UserService {
 
     @Autowired
@@ -54,10 +56,7 @@ public class UserServiceImpl implements UserService {
     public void save(User user) {
         try {
             passwordHelper.encryptPassword(user); //加密
-            int saveCount = userMapper.save(user);
-            if (saveCount <= 0) {
-                throw new ResultException(ResultEnums.ERROR);
-            }
+            userMapper.save(user);
         } catch (Exception e) {
             throw new ResultException(ResultEnums.INNER_ERROR);
         }
@@ -69,10 +68,7 @@ public class UserServiceImpl implements UserService {
             if (user.getPassword() != null && !"".equals(user.getPassword())) {
                 passwordHelper.encryptPassword(user); //加密
             }
-            int updateCount = userMapper.update(user);
-            if (updateCount <= 0) {
-                throw new ResultException(ResultEnums.ERROR);
-            }
+            userMapper.update(user);
         } catch (Exception e) {
             throw new ResultException(ResultEnums.INNER_ERROR);
         }
@@ -82,10 +78,7 @@ public class UserServiceImpl implements UserService {
     public void delete(Long... ids) {
         try {
             for (long id : ids) {
-                int deleteCount = userMapper.delete(id);
-                if (deleteCount <= 0) {
-                    throw new ResultException(ResultEnums.ERROR);
-                }
+                userMapper.delete(id);
             }
         } catch (Exception e) {
             throw new ResultException(ResultEnums.INNER_ERROR);

@@ -19,13 +19,21 @@
 
     <!-- 查询是否存在 -->
     <select id="exists" resultType="Boolean">
-        SELECT COUNT(1) FROM tb_article_category WHERE article_id = #{articleId} AND category_id = #{categoryId}
+        SELECT COUNT(1) FROM tb_article_category WHERE 1=1
+        <if test="articleId != 0">
+            AND article_id = #{articleId}
+        </if>
+        <if test="categoryId != 0">
+            AND category_id = #{categoryId}
+        </if>
     </select>
 
-    <!-- 删除 -->
-    <delete id="delete" parameterType="Long">
-        DELETE FROM tb_article_category WHERE category_id = #{id}
+    <delete id="deleteByArticleId" parameterType="long">
+        DELETE FROM tb_article_category WHERE article_id = #{id}
     </delete>
 
+    <delete id="deleteByCategoryId" parameterType="long">
+        DELETE FROM tb_article_category WHERE category_id = #{id}
+    </delete>
 
 </mapper>

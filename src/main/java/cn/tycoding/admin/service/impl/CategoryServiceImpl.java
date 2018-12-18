@@ -1,7 +1,6 @@
 package cn.tycoding.admin.service.impl;
 
 import cn.tycoding.admin.dto.PageBean;
-import cn.tycoding.admin.entity.Article;
 import cn.tycoding.admin.entity.Category;
 import cn.tycoding.admin.enums.ResultEnums;
 import cn.tycoding.admin.exception.ResultException;
@@ -13,6 +12,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -22,6 +22,7 @@ import java.util.List;
  */
 @Service
 @SuppressWarnings("all")
+@Transactional
 public class CategoryServiceImpl implements CategoryService {
 
     @Autowired
@@ -59,17 +60,20 @@ public class CategoryServiceImpl implements CategoryService {
     public void save(Category category) {
         try {
             if (!exists(category)) {
-                int saveCount = categoryMapper.save(category);
-                if (saveCount <= 0) {
-                    throw new ResultException(ResultEnums.ERROR);
-                }
+                categoryMapper.save(category);
             }
         } catch (Exception e) {
+            e.printStackTrace();
             throw new ResultException(ResultEnums.INNER_ERROR);
         }
     }
 
-    // judge, if this category's info is exists, return
+    /**
+     * 判断添加的标签是否已存在
+     *
+     * @param category
+     * @return
+     */
     private boolean exists(Category category) {
         return categoryMapper.exists(category.getcName());
     }
@@ -78,53 +82,28 @@ public class CategoryServiceImpl implements CategoryService {
     public void update(Category category) {
         try {
             if (category.getId() != 0) {
-                Category category_old = categoryMapper.findById(category.getId());
-                int updateCount = categoryMapper.update(category);
-                if (updateCount <= 0) {
-                    throw new ResultException(ResultEnums.ERROR);
-                } else {
-                    // update tb_article ==> article
-                    // find tb_article all this article
-                    List<Article> articleList = articleService.findByCategory(category_old.getcName()); // find all related article by category's name
-                    for (Article article : articleList) {
-                        // get single article info, and update this article's category field's info
-                        articleService.update(new Article(article.getId(), category.getcName()));
-                    }
-                }
-            } else {
-                throw new ResultException(ResultEnums.ERROR);
+                categoryMapper.update(category);
             }
+            throw new ResultException(ResultEnums.PARAMETER_ERROR);
         } catch (Exception e) {
+            e.printStackTrace();
             throw new ResultException(ResultEnums.INNER_ERROR);
         }
     }
 
+    /**
+     * 删除分类
+     *
+     * @param ids
+     */
     @Override
     public void delete(Long... ids) {
         try {
-            if (ids != null && ids.length > 0) {
-                for (long id : ids) {
-                    // find tb_article all this article
-                    Category category = categoryMapper.findById(id); //find category info by id
+            for (long id : ids) {
+                categoryMapper.delete(id);
 
-                    int deleteCount = categoryMapper.delete(id);
-                    if (deleteCount <= 0) {
-                        throw new ResultException(ResultEnums.ERROR);
-                    } else {
-                        // delete success
-                        // delete linked article ==> tb_article_category
-                        articleCategoryService.delete(id);
-
-                        // update tb_article ==> article
-                        List<Article> articleList = articleService.findByCategory(category.getcName()); // find all related article by category's name
-                        for (Article article : articleList) {
-                            // get single article info, and update this article's category field's info
-                            articleService.update(new Article(article.getId(), "默认分类"));
-                        }
-                    }
-                }
-            } else {
-                throw new ResultException(ResultEnums.ERROR);
+                //删除与该分类与文章关联的信息
+                articleCategoryService.deleteByCategoryId(id);
             }
         } catch (Exception e) {
             throw new ResultException(ResultEnums.INNER_ERROR);
@@ -134,5 +113,10 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public Category findByName(String name) {
         return categoryMapper.findByName(name);
+    }
+
+    @Override
+    public List<Category> findByArticleId(long id) {
+        return categoryMapper.findCategoryByArticleId(id);
     }
 }

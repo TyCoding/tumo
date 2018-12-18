@@ -3,7 +3,6 @@ package cn.tycoding.admin.mapper;
 import cn.tycoding.admin.entity.Category;
 import com.github.pagehelper.Page;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.shiro.authz.annotation.RequiresRoles;
 
 import java.util.List;
 
@@ -20,13 +19,15 @@ public interface CategoryMapper {
 
     Category findById(long id);
 
-    int save(Category category);
+    void save(Category category);
 
-    int update(Category category);
+    void update(Category category);
 
-    int delete(long id);
+    void delete(long id);
 
     boolean exists(String name);
 
     Category findByName(String name);
+
+    List<Category> findCategoryByArticleId(long id);
 }

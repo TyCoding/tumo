@@ -3,7 +3,6 @@ package cn.tycoding.admin.mapper;
 import cn.tycoding.admin.entity.Tags;
 import com.github.pagehelper.Page;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.shiro.authz.annotation.RequiresRoles;
 
 import java.util.List;
 
@@ -20,17 +19,19 @@ public interface TagsMapper {
 
     Tags findById(long id);
 
-    int save(Tags tags);
+    void save(Tags tags);
 
-    int update(Tags tags);
+    void update(Tags tags);
 
-    int delete(long id);
+    void delete(long id);
 
     boolean exists(String name);
 
     Tags findByName(String name);
 
-    List<Tags> findByArticleTagsId(long articleId, long tagsId);
+//    List<Tags> findByArticleTagsId(long articleId, long tagsId);
 
     Long findAllCount();
+
+    List<Tags> findByArticleId(long id);
 }

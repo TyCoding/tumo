@@ -9,6 +9,7 @@ import cn.tycoding.admin.mapper.ArticleTagsMapper;
 import cn.tycoding.admin.service.ArticleTagsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -18,6 +19,7 @@ import java.util.List;
  */
 @Service
 @SuppressWarnings("all")
+@Transactional
 public class ArticleTagsServiceImpl implements ArticleTagsService {
 
     @Autowired
@@ -47,12 +49,10 @@ public class ArticleTagsServiceImpl implements ArticleTagsService {
     public void save(ArticleTags articleTags) {
         try {
             if (!exists(articleTags)) {
-                int saveCount = articleTagsMapper.save(articleTags);
-                if (saveCount <= 0) {
-                    throw new ResultException(ResultEnums.ERROR);
-                }
+                articleTagsMapper.save(articleTags);
             }
         } catch (Exception e) {
+            e.printStackTrace();
             throw new ResultException(ResultEnums.INNER_ERROR);
         }
     }
@@ -66,25 +66,37 @@ public class ArticleTagsServiceImpl implements ArticleTagsService {
 
     }
 
-    /**
-     * @param ids tags-id
-     */
     @Override
     public void delete(Long... ids) {
-        try {
-            for (long id : ids) {
-                int deleteCount = articleTagsMapper.delete(id);
-                if (deleteCount <= 0) {
-                    throw new ResultException(ResultEnums.ERROR);
-                }
-            }
-        } catch (Exception e) {
-            throw new ResultException(ResultEnums.INNER_ERROR);
-        }
+
     }
 
     @Override
     public List<Tags> findByArticleId(long articleId) {
         return articleTagsMapper.findByArticleId(articleId);
+    }
+
+    @Override
+    public void deleteByArticleId(long id) {
+        try {
+            if (exists(new ArticleTags(id, 0))) {
+                articleTagsMapper.deleteByArticleId(id);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new ResultException(ResultEnums.INNER_ERROR);
+        }
+    }
+
+    @Override
+    public void deleteByTagsId(long id) {
+        try {
+            if (exists(new ArticleTags(0, id))) {
+                articleTagsMapper.deleteByTagsId(id);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new ResultException(ResultEnums.INNER_ERROR);
+        }
     }
 }

@@ -200,7 +200,7 @@ public class SiteController {
         }
     }
 
-    @RequestMapping("/category/{name}")
+    /*@RequestMapping("/category/{name}")
     public String findArchivesByCategory(@PathVariable("name") String name, Model model) {
         if (name != null && !name.equals("")) {
             model.addAttribute("article", articleService.findByCategory(name));
@@ -210,7 +210,7 @@ public class SiteController {
         } else {
             return "site/page/archives";
         }
-    }
+    }*/
 
     @RequestMapping("/search/{name}")
     public String findArchivesByTitle(@PathVariable("name") String title, Model model) {

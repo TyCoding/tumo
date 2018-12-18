@@ -7,6 +7,7 @@ import cn.tycoding.admin.entity.Category;
 import cn.tycoding.admin.enums.ResultEnums;
 import cn.tycoding.admin.service.ArticleService;
 import cn.tycoding.admin.service.CategoryService;
+import cn.tycoding.admin.utils.CheckValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -55,44 +56,59 @@ public class CategoryController {
     public Result findByPage(Category category,
                              @RequestParam(value = "pageCode", required = false) Integer pageCode,
                              @RequestParam(value = "pageSize", required = false) Integer pageSize) {
-        return new Result(StatusCode.SUCCESS, categoryService.findByPage(category, pageCode, pageSize));
+        if (CheckValue.checkPage(pageCode, pageSize)) {
+            return new Result(StatusCode.SUCCESS, categoryService.findByPage(category, pageCode, pageSize));
+        }
+        return new Result(StatusCode.PARAMETER_ERROR, ResultEnums.PARAMETER_ERROR);
     }
 
     @RequestMapping(value = "/findById", method = RequestMethod.GET)
     public Result findById(@RequestParam("id") Long id) {
-        return new Result(StatusCode.SUCCESS, categoryService.findById(id));
+        if (CheckValue.checkId(id)) {
+            return new Result(StatusCode.SUCCESS, categoryService.findById(id));
+        }
+        return new Result(StatusCode.PARAMETER_ERROR, ResultEnums.PARAMETER_ERROR);
     }
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public Result save(@RequestBody Category category) {
-        try {
-            categoryService.save(category);
-            return new Result(StatusCode.SUCCESS, ResultEnums.SUCCESS);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new Result(StatusCode.ERROR, ResultEnums.ERROR);
+        if (CheckValue.checkObj(category)) {
+            try {
+                categoryService.save(category);
+                return new Result(StatusCode.SUCCESS, ResultEnums.SUCCESS);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return new Result(StatusCode.ERROR, e.getMessage());
+            }
         }
+        return new Result(StatusCode.PARAMETER_ERROR, ResultEnums.PARAMETER_ERROR);
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.PUT)
     public Result update(@RequestBody Category category) {
-        try {
-            categoryService.update(category);
-            return new Result(StatusCode.SUCCESS, ResultEnums.SUCCESS);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new Result(StatusCode.ERROR, ResultEnums.ERROR);
+        if (CheckValue.checkObj(category)) {
+            try {
+                categoryService.update(category);
+                return new Result(StatusCode.SUCCESS, ResultEnums.SUCCESS);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return new Result(StatusCode.ERROR, e.getMessage());
+            }
         }
+        return new Result(StatusCode.PARAMETER_ERROR, ResultEnums.PARAMETER_ERROR);
     }
 
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public Result delete(@RequestBody Long... ids) {
-        try {
-            categoryService.delete(ids);
-            return new Result(StatusCode.SUCCESS, ResultEnums.SUCCESS);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new Result(StatusCode.ERROR, ResultEnums.ERROR);
+        if (CheckValue.checkIds(ids)) {
+            try {
+                categoryService.delete(ids);
+                return new Result(StatusCode.SUCCESS, ResultEnums.SUCCESS);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return new Result(StatusCode.ERROR, e.getMessage());
+            }
         }
+        return new Result(StatusCode.PARAMETER_ERROR, ResultEnums.PARAMETER_ERROR);
     }
 }

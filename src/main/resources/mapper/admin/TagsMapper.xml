@@ -64,7 +64,7 @@
         SELECT * FROM tb_tags WHERE t_name = #{name}
     </select>
 
-    <!-- find by articleId or tagsId -->
+    <!--&lt;!&ndash; find by articleId or tagsId &ndash;&gt;
     <select id="findByArticleTagsId" resultType="Tags">
         SELECT * FROM tb_article_tags WHERE 1=1
         <if test="articleId != null and articleId != 0">
@@ -73,6 +73,11 @@
         <if test="tagsId != null and tagsId != 0">
             AND tags_id = #{tagsId}
         </if>
+    </select>-->
+
+    <select id="findByArticleId" parameterType="long" resultType="Tags">
+        SELECT * FROM tb_tags t, tb_article a, tb_article_tags ta
+        WHERE t.id = ta.tags_id AND a.id = ta.article_id AND a.id = #{id}
     </select>
 
 </mapper>

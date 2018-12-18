@@ -10,6 +10,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -19,6 +20,7 @@ import java.util.List;
  */
 @Service
 @SuppressWarnings("all")
+@Transactional
 public class LinksServiceImpl implements LinksService {
 
     @Autowired
@@ -49,11 +51,9 @@ public class LinksServiceImpl implements LinksService {
     @Override
     public void save(Links links) {
         try {
-            int saveCount = linksMapper.save(links);
-            if (saveCount <= 0) {
-                throw new ResultException(ResultEnums.ERROR);
-            }
+            linksMapper.save(links);
         } catch (Exception e) {
+            e.printStackTrace();
             throw new ResultException(ResultEnums.INNER_ERROR);
         }
     }
@@ -61,11 +61,9 @@ public class LinksServiceImpl implements LinksService {
     @Override
     public void update(Links links) {
         try {
-            int updateCount = linksMapper.update(links);
-            if (updateCount <= 0) {
-                throw new ResultException(ResultEnums.ERROR);
-            }
+            linksMapper.update(links);
         } catch (Exception e) {
+            e.printStackTrace();
             throw new ResultException(ResultEnums.INNER_ERROR);
         }
     }
@@ -74,12 +72,10 @@ public class LinksServiceImpl implements LinksService {
     public void delete(Long... ids) {
         try {
             for (long id : ids){
-                int deleteCount = linksMapper.delete(id);
-                if (deleteCount <= 0) {
-                    throw new ResultException(ResultEnums.ERROR);
-                }
+                linksMapper.delete(id);
             }
         } catch (Exception e) {
+            e.printStackTrace();
             throw new ResultException(ResultEnums.INNER_ERROR);
         }
     }

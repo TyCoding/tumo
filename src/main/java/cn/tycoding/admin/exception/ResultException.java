@@ -18,6 +18,6 @@ public class ResultException extends RuntimeException {
     }
 
     public ResultException(ResultEnums resultEnums) {
-
+        
     }
 }

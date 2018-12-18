@@ -11,6 +11,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +22,7 @@ import java.util.List;
  */
 @Service
 @SuppressWarnings("all")
+@Transactional
 public class CommentsServiceImpl implements CommentsService {
 
     @Autowired
@@ -92,10 +94,7 @@ public class CommentsServiceImpl implements CommentsService {
     @Override
     public void save(Comments comments) {
         try {
-            int saveCount = commentsMapper.save(comments);
-            if (saveCount <= 0) {
-                throw new ResultException(ResultEnums.INNER_ERROR);
-            }
+            commentsMapper.save(comments);
         } catch (Exception e) {
             e.printStackTrace();
             throw new ResultException(ResultEnums.ERROR);
@@ -105,10 +104,7 @@ public class CommentsServiceImpl implements CommentsService {
     @Override
     public void update(Comments comments) {
         try {
-            int updateCount = commentsMapper.update(comments);
-            if (updateCount <= 0) {
-                throw new ResultException(ResultEnums.INNER_ERROR);
-            }
+            commentsMapper.update(comments);
         } catch (Exception e) {
             e.printStackTrace();
             throw new ResultException(ResultEnums.ERROR);
@@ -119,10 +115,7 @@ public class CommentsServiceImpl implements CommentsService {
     public void delete(Long... ids) {
         try {
             for (long id : ids) {
-                int deleteCount = commentsMapper.delete(id);
-                if (deleteCount <= 0) {
-                    throw new ResultException(ResultEnums.INNER_ERROR);
-                }
+                commentsMapper.delete(id);
             }
         } catch (Exception e) {
             e.printStackTrace();

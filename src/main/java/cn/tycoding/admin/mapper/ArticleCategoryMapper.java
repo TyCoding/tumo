@@ -11,9 +11,11 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface ArticleCategoryMapper {
 
-    int save(ArticleCategory articleCategory);
+    void save(ArticleCategory articleCategory);
 
     boolean exists(@Param("articleId") long articleId, @Param("categoryId") long categoryId);
 
-    int delete(long id);
+    void deleteByArticleId(long id);
+
+    void deleteByCategoryId(long id);
 }

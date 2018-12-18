@@ -60,4 +60,10 @@
         SELECT * FROM tb_category WHERE c_name = #{name}
     </select>
 
+    <!-- 根据文章id查询其关联分类表中的数据 -->
+    <select id="findCategoryByArticleId" parameterType="long" resultType="Category">
+        SELECT c.c_name FROM tb_article a, tb_category c, tb_article_category ac
+        WHERE a.id = ac.article_id AND c.id = ac.category_id AND a.id = #{id}
+    </select>
+
 </mapper>

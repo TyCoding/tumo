@@ -21,11 +21,11 @@ public interface ArticleMapper {
 
     Article findById(long id);
 
-    int save(Article article);
+    void save(Article article);
 
-    int update(Article article);
+    void update(Article article);
 
-    int delete(long id);
+    void delete(long id);
 
     long getLastId();
 

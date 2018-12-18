@@ -19,15 +19,16 @@
 
     <!-- 查询是否存在 -->
     <select id="exists" resultType="Boolean">
-        SELECT COUNT(1) FROM tb_article_tags WHERE article_id = #{articleId} AND tags_id = #{tagsId}
+        SELECT COUNT(1) FROM tb_article_tags WHERE 1=1
+        <if test="articleId != 0">
+            AND article_id = #{articleId}
+        </if>
+        <if test="tagsId != 0">
+            AND tags_id = #{tagsId}
+        </if>
     </select>
 
-    <!-- 删除 -->
-    <delete id="delete" parameterType="Long">
-        DELETE FROM tb_article_tags WHERE tags_id = #{id}
-    </delete>
-
-    <!-- find by articleId -->
+    <!-- 根据文章ID查询其关联的标签信息 -->
     <select id="findByArticleId" resultType="Tags">
         SELECT t.t_name
         FROM tb_article_tags at,
@@ -36,5 +37,12 @@
           AND t.id = at.tags_id;
     </select>
 
+    <delete id="deleteByArticleId" parameterType="Long">
+        DELETE FROM tb_article_tags WHERE article_id = #{id}
+    </delete>
+
+    <delete id="deleteByTagsId" parameterType="Long">
+        DELETE FROM tb_article_tags WHERE tags_id = #{id}
+    </delete>
 
 </mapper>

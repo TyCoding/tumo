@@ -11,6 +11,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -20,6 +21,7 @@ import java.util.List;
  */
 @Service
 @SuppressWarnings("all")
+@Transactional
 public class TagsServiceImpl implements TagsService {
 
     @Autowired
@@ -54,10 +56,7 @@ public class TagsServiceImpl implements TagsService {
     public void save(Tags tags) {
         try {
             if (!exists(tags)) {
-                int saveCount = tagsMapper.save(tags);
-                if (saveCount <= 0) {
-                    throw new ResultException(ResultEnums.ERROR);
-                }
+                tagsMapper.save(tags);
             }
         } catch (Exception e) {
             throw new ResultException(ResultEnums.INNER_ERROR);
@@ -72,10 +71,7 @@ public class TagsServiceImpl implements TagsService {
     public void update(Tags tags) {
         try {
             if (tags.getId() != 0) {
-                int updateCount = tagsMapper.update(tags);
-                if (updateCount <= 0) {
-                    throw new ResultException(ResultEnums.ERROR);
-                }
+                tagsMapper.update(tags);
             } else {
                 throw new ResultException(ResultEnums.ERROR);
             }
@@ -89,15 +85,10 @@ public class TagsServiceImpl implements TagsService {
         try {
             if (ids != null && ids.length > 0) {
                 for (long id : ids) {
+                    tagsMapper.delete(id);
 
-                    int deleteCount = tagsMapper.delete(id);
-                    if (deleteCount <= 0) {
-                        throw new ResultException(ResultEnums.ERROR);
-                    } else {
-                        // delete success
-                        // delete linked article ==> tb_article_tags
-                        articleTagsService.delete(id);
-                    }
+                    //删除该标签与文章有关联的关联信息
+                    articleTagsService.deleteByTagsId(id);
                 }
             } else {
                 throw new ResultException(ResultEnums.ERROR);
@@ -113,7 +104,12 @@ public class TagsServiceImpl implements TagsService {
     }
 
     @Override
+    public List<Tags> findByArticleId(long id) {
+        return tagsMapper.findByArticleId(id);
+    }
+
+    /*@Override
     public List<Tags> findByArticleTagsId(long articleId, long tagsId) {
         return tagsMapper.findByArticleTagsId(articleId, tagsId);
-    }
+    }*/
 }

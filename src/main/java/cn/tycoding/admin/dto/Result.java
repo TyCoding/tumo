@@ -1,5 +1,6 @@
 package cn.tycoding.admin.dto;
 
+import cn.tycoding.admin.enums.HttpExceptionEnum;
 import cn.tycoding.admin.enums.ResultEnums;
 
 /**
@@ -8,7 +9,7 @@ import cn.tycoding.admin.enums.ResultEnums;
  */
 public class Result {
 
-    private Integer code; //返回码
+    private Integer code; //状态码
     private Object data; //返回数据
 
     public Result() {
@@ -20,6 +21,11 @@ public class Result {
     }
 
     public Result(Integer code, ResultEnums enums) {
+        this.code = code;
+        this.data = enums.getInfo();
+    }
+
+    public Result(Integer code, HttpExceptionEnum enums) {
         this.code = code;
         this.data = enums.getInfo();
     }

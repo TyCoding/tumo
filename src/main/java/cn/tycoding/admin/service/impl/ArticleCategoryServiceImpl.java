@@ -8,6 +8,7 @@ import cn.tycoding.admin.mapper.ArticleCategoryMapper;
 import cn.tycoding.admin.service.ArticleCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -17,6 +18,7 @@ import java.util.List;
  */
 @Service
 @SuppressWarnings("all")
+@Transactional
 public class ArticleCategoryServiceImpl implements ArticleCategoryService {
 
     @Autowired
@@ -45,11 +47,8 @@ public class ArticleCategoryServiceImpl implements ArticleCategoryService {
     @Override
     public void save(ArticleCategory articleCategory) {
         try {
-            if (!exists(articleCategory)){
-                int updateCount = articleCategoryMapper.save(articleCategory);
-                if (updateCount <= 0) {
-                    throw new ResultException(ResultEnums.ERROR);
-                }
+            if (!exists(articleCategory)) {
+                articleCategoryMapper.save(articleCategory);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -57,27 +56,35 @@ public class ArticleCategoryServiceImpl implements ArticleCategoryService {
         }
     }
 
-    private boolean exists(ArticleCategory articleCategory){
+    private boolean exists(ArticleCategory articleCategory) {
         return articleCategoryMapper.exists(articleCategory.getArticleId(), articleCategory.getCategoryId());
     }
 
     @Override
     public void update(ArticleCategory articleCategory) {
-
     }
 
-    /**
-     *
-     * @param ids category-id
-     */
     @Override
     public void delete(Long... ids) {
+    }
+
+    @Override
+    public void deleteByArticleId(long id) {
         try {
-            for (long id : ids) {
-                int deleteCount = articleCategoryMapper.delete(id);
-                if (deleteCount <= 0) {
-                    throw new ResultException(ResultEnums.ERROR);
-                }
+            if (exists(new ArticleCategory(id, 0))) {
+                articleCategoryMapper.deleteByArticleId(id);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new ResultException(ResultEnums.INNER_ERROR);
+        }
+    }
+
+    @Override
+    public void deleteByCategoryId(long id) {
+        try {
+            if (exists(new ArticleCategory(0, id))) {
+                articleCategoryMapper.deleteByCategoryId(id);
             }
         } catch (Exception e) {
             e.printStackTrace();
