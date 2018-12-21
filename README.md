@@ -18,6 +18,7 @@ Tumo Blog的后台管理页面基于ElementUI绘制，后台管理通过ajax异�
 # 特点
 
 * 简约的设计，漂亮的界面。
+* 博客前台、管理后台响应式设计。
 * 支持Markdown格式文章的撰写。
 * 支持文件上传。
 * 支持网易云音乐插件。
@@ -32,7 +33,7 @@ Tumo Blog是一个基于SpringBoot-2.x框架的博客系统。如果你已经熟
 
 # 预览
 
-**在线:** [tumo.tycoding.cn](http://tumo.tycoding.cn)
+**在线演示:** [tumo.tycoding.cn](http://tumo.tycoding.cn)
 
 **Github:** [tumo](https://github.com/TyCoding/tumo)
 
@@ -47,3 +48,11 @@ Tumo Blog是一个基于SpringBoot-2.x框架的博客系统。如果你已经熟
 
 ![](http://img.api.tycoding.cn/localhost_8084_admin_article.png?v=1)
 
+
+响应式：
+
+![](http://img.api.tycoding.cn/index-phone.png)
+![](http://img.api.tycoding.cn/admin-phone.png)
+![](http://img.api.tycoding.cn/login-phone.png)
+![](http://img.api.tycoding.cn/admin-phone2.png)
+![](http://img.api.tycoding.cn/cover-phone.png)
