@@ -30,7 +30,7 @@
 
     <!-- 根据文章ID查询其关联的标签信息 -->
     <select id="findByArticleId" resultType="Tags">
-        SELECT t.t_name
+        SELECT t.name
         FROM tb_article_tags at,
              tb_tags t
         WHERE at.article_id = #{articleId}

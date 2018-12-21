@@ -1,90 +1,74 @@
 //设置全局表单提交格式
 Vue.http.options.emulateJSON = true;
 
+const {body} = document;
+const WIDTH = 1024;
+const RATIO = 3;
+
+const api = {
+    update: '/user/update',
+    info: '/admin/info',
+};
+
 // Vue实例
 var vm = new Vue({
     el: '#app',
     data() {
         return {
-            //实体类
-            entity: {
-                user: {
-                    id: '',
-                    username: '',
-                    email: '',
-                    nickname: '',
-                    password: '',
-                    checkPass: '',
-                },
-                pass: {
-                    id: '',
-                    username: '',
-                    password: '',
-                    checkPass: '', //old password
-                    repassword: '', //repeat password
-                },
+            user: {
+                id: '',
+                username: '',
+                email: '',
+                nickname: '',
+                password: '',
+                checkPass: '',
+            },
+            pass: {
+                id: '',
+                username: '',
+                password: '',
+                checkPass: '', //old password
+                repassword: '', //repeat password
             },
 
-            //一些额外的配置属性
-            config: {
-                defaultActive: '9',
+            defaultActive: '9',
+            token: {name: ''},
 
-                //===========侧边栏===========
-                name: '',
-                isCollapse: false,
-                side_close_flag: true,
-
-                token: {name: ''},
-            },
+            mobileStatus: false, //是否是移动端
+            sidebarStatus: true, //侧边栏状态，true：打开，false：关闭
+            sidebarFlag: ' openSidebar ', //侧边栏标志
         }
     },
     methods: {
 
-        //===============侧边栏&&顶栏================
-        //顶栏触发事件
-        handleSelect(key, keyPath) {
-            console.log(key, keyPath);
-        },
-        //打开侧边栏
-        handleOpen(key, keyPath) {
-            console.log(key, keyPath);
-        },
-        //关闭侧边栏
-        handleClose(key, keyPath) {
-            console.log(key, keyPath);
-        },
-        //侧边栏触发事件
-        handleSideSelect(key, keyPath) {
-        },
-
         //获取当前用户信息
         getUserInfo() {
-            this.$http.get('/user/getUserInfo').then(result => {
+            this.$http.get(api.info).then(result => {
                 this.$refs.user.resetFields(); //清空校验状态
                 this.$refs.pass.resetFields(); //清空校验状态
-                this.entity.user.id = result.body.data.id;
-                this.entity.user.username = result.body.data.username;
-                this.entity.user.email = result.body.data.email;
-                this.entity.user.nickname = result.body.data.nickname;
-                this.entity.pass.id = result.body.data.id;
+                this.user.id = result.body.data.id;
+                this.user.username = result.body.data.username;
+                this.user.email = result.body.data.email;
+                this.user.nickname = result.body.data.nickname;
+                this.pass.id = result.body.data.id;
 
-                this.config.token.name = result.body.data.username;
+                this.token.name = result.body.data.username;
             });
         },
 
         save() {
-            if (this.entity.user.username == '' || this.entity.user.username == null || this.entity.user.nickname == '' || this.entity.user.nickname == null || this.entity.user.email == '' || this.entity.user.email == null) {
+            if (this.user.username == '' || this.user.username == null || this.user.nickname == '' || this.user.nickname == null || this.user.email == '' || this.user.email == null) {
                 this.$message({
                     type: 'info',
                     message: '输入的信息有误',
                     duration: 6000
                 });
             } else {
-                console.log(this.entity.user);
-                console.log(this.config.token);
-                this.$http.post('/user/update', JSON.stringify(this.entity.user)).then(result => {
+                console.log(this.user);
+                console.log(this.token);
+                this.$http.post(api.update, JSON.stringify(this.user)).then(result => {
                     if (result.body.code == 20000) {
-                        if (this.entity.user.username == this.config.token.name) {
+                        if (this.user.username == this.token.name) {
                             window.location.reload();
                             this.$message({
                                 type: 'success',
@@ -105,34 +89,34 @@ var vm = new Vue({
                         window.location.reload();
                     }
                     this.$refs.user.resetFields(); //清空校验状态
-                    this.entity.user.username = '';
-                    this.entity.user.nickname = '';
-                    this.entity.user.email = '';
+                    this.user.username = '';
+                    this.user.nickname = '';
+                    this.user.email = '';
                 });
             }
         },
 
         changePassword() {
-            console.log(this.entity.pass);
-            if (this.entity.pass.checkPass.length < 6) {
+            console.log(this.pass);
+            if (this.pass.checkPass.length < 6) {
                 this.$message({
                     type: 'error',
                     message: '请重新输入密码，密码长度在6位及以上',
                     duration: 6000
                 });
-            } else if (this.entity.pass.password == this.entity.pass.checkPass) {
+            } else if (this.pass.password == this.pass.checkPass) {
                 this.$message({
                     type: 'info',
                     message: '请输入新的密码',
                     duration: 6000
                 });
-            } else if (this.entity.pass.password != this.entity.pass.repassword) {
+            } else if (this.pass.password != this.pass.repassword) {
                 this.$message({
                     type: 'error',
                     message: '两次输入的密码不一致',
                     duration: 6000
                 });
-            } else if (this.entity.pass.password.length < 6) {
+            } else if (this.pass.password.length < 6) {
                 this.$message({
                     type: 'error',
                     message: '请重新输入密码，密码长度在6位及以上',
@@ -140,9 +124,9 @@ var vm = new Vue({
                 });
                 this.clearPass();
             } else {
-                this.entity.pass.username = this.entity.user.username;
-                this.$http.post('/user/update', JSON.stringify(this.entity.pass)).then(result => {
-                    if (result.body.code == 20000){
+                this.pass.username = this.user.username;
+                this.$http.post('/user/update', JSON.stringify(this.pass)).then(result => {
+                    if (result.body.code == 20000) {
                         this.$message({
                             type: 'success',
                             message: result.body.data,
@@ -151,7 +135,7 @@ var vm = new Vue({
 
                         //执行/logout请求
                         window.location.href = '/admin/logout'; //更改了密码，注销当前登录状态，重新登录
-                    }else{
+                    } else {
                         this.$message({
                             type: 'info',
                             message: result.body.data,
@@ -164,13 +148,47 @@ var vm = new Vue({
         },
         clearPass() {
             this.$refs.pass.resetFields(); //清空校验状态
-            this.entity.pass.checkPass = '';
-            this.entity.pass.password = '';
-            this.entity.pass.repassword = '';
+            this.pass.checkPass = '';
+            this.pass.password = '';
+            this.pass.repassword = '';
         },
+
+        isMobile() {
+            const rect = body.getBoundingClientRect();
+            return rect.width - RATIO < WIDTH
+        },
+
+        handleSidebar() {
+            if (this.sidebarStatus) {
+                this.sidebarFlag = ' hideSidebar ';
+                this.sidebarStatus = false;
+
+            } else {
+                this.sidebarFlag = ' openSidebar ';
+                this.sidebarStatus = true;
+            }
+            const isMobile = this.isMobile();
+            if (isMobile) {
+                this.sidebarFlag += ' mobile ';
+                this.mobileStatus = true;
+            }
+        },
+        //蒙版
+        drawerClick() {
+            this.sidebarStatus = false;
+            this.sidebarFlag = ' hideSidebar mobile '
+        }
     },
     // 生命周期函数
     created() {
         this.getUserInfo();
+
+        const isMobile = this.isMobile();
+        if (isMobile) {
+            //手机访问
+            this.sidebarFlag = ' hideSidebar mobile ';
+            this.sidebarStatus = false;
+            this.mobileStatus = true;
+        }
     },
 });

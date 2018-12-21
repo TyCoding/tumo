@@ -1,67 +1,62 @@
 //设置全局表单提交格式
 Vue.http.options.emulateJSON = true;
 
+const {body} = document;
+const WIDTH = 1024;
+const RATIO = 3;
+
+const api = {
+    save: '/article/save',
+    allCategory: '/category/findAll',
+    info: '/admin/info'
+};
+
 //Vue实例
 new Vue({
     el: '#app',
     data() {
         return {
-            entity: {
-                article: {
-                    title: '',
-                    titlePic: '',
-                    category: '',
-                    tags: '',
-                    author: '',
-                    content: '',
-                    contentMd: '',
-                    origin: 'http://tycoding.cn',
-                },
-                category: [{
-                    id: '',
-                    cName: '',
-                }],
+            article: {
+                title: '',
+                titlePic: '',
+                category: '',
+                tags: '',
+                author: '',
+                content: '',
+                contentMd: '',
+                origin: 'http://tycoding.cn',
             },
-
-            //一些额外的配置属性
-            config: {
-                defaultActive: '2',
-
-                multipleSelection: [], //checkbox选择的行中所有数据，将会放入multipartSelection数组中
-                selectIds: [], //被checkbox选择的id值，用于批量删除
-                count: 0, //tag栏，此项那是checkbox选择了几行
-
-                //===========侧边栏===========
+            category: [{
+                id: '',
                 name: '',
-                isCollapse: false,
-                side_close_flag: true,
+            }],
 
-                //条件查询单独封装的对象
-                searchEntity: {},
+            defaultActive: '2',
+            //tags
+            dynamicTags: [],
+            inputVisible: false,
+            //=========select分类选择==========
+            options: [{
+                value: '',
+                label: ''
+            }],
 
-                //tags
-                dynamicTags: [],
-                inputVisible: false,
+            token: {name: ''},
 
-                //=========select分类选择==========
-                options: [{
-                    value: '',
-                    label: ''
-                }],
-
-                token: {name: ''},
-            },
+            mobileStatus: false, //是否是移动端
+            sidebarStatus: true, //侧边栏状态，true：打开，false：关闭
+            sidebarFlag: ' openSidebar ', //侧边栏标志
         }
     },
     methods: {
 
         //点击存入草稿
         save() {
-            this.entity.article.content = window.markdownContent.getHTML(); //给content赋值
-            this.entity.article.contentMd = window.markdownContent.getMarkdown(); //给contentMd赋值
-            this.entity.article.tags = JSON.stringify(this.config.dynamicTags); //给tags字段赋值
+            this.article.content = window.markdownContent.getHTML(); //给content赋值
+            this.article.contentMd = window.markdownContent.getMarkdown(); //给contentMd赋值
+            this.article.tags = JSON.stringify(this.dynamicTags); //给tags字段赋值
 
-            this.$http.post('/article/save', JSON.stringify(this.entity.article)).then(result => {
+            this.$http.post(api.save, JSON.stringify(this.article)).then(result => {
                 window.location.reload();
                 if (result.body.code == 20000) {
                     this.$message({
@@ -81,69 +76,82 @@ new Vue({
         },
         //点击发布文章
         publishBtn(state) {
-            this.entity.article.state = state; //0:存入草稿；1:发布
+            this.article.state = state; //0:存入草稿；1:发布
             this.save();
         },
 
-        //得到所有的分类列表
-        findAllCategory() {
-            this.$http.get('/category/findAll').then(result => {
-                this.config.options = [];
-                result.body.data.forEach(row => {
-                    if (row.cName != null){
-                        this.config.options.push({value: row.cName.toString(), label: row.cName});
-                    }
-                });
-            });
-        },
-
-
         //===============标签==================
         handleCloseTag(tag) {
-            this.config.dynamicTags.splice(this.config.dynamicTags.indexOf(tag), 1);
+            this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1);
         },
         showInput() {
-            this.config.inputVisible = true;
+            this.inputVisible = true;
             this.$nextTick(_ => {
                 this.$refs.saveTagInput.$refs.input.focus();
             });
         },
         handleInputConfirm() {
-            let inputValue = this.entity.article.tags;
+            let inputValue = this.article.tags;
             if (inputValue) {
-                this.config.dynamicTags.push(inputValue);
+                this.dynamicTags.push(inputValue);
             }
-            this.config.inputVisible = false;
-            this.entity.article.tags = '';
+            this.inputVisible = false;
+            this.article.tags = '';
         },
 
-        //===============侧边栏&&顶栏================
-        //顶栏触发事件
-        handleSelect(key, keyPath) {
-            console.log(key, keyPath);
-        },
-        //打开侧边栏
-        handleOpen(key, keyPath) {
-            console.log(key, keyPath);
-        },
-        //关闭侧边栏
-        handleClose(key, keyPath) {
-            console.log(key, keyPath);
-        },
-        //侧边栏触发事件
-        handleSideSelect(key, keyPath) {
-        },
-
-        init(){
+        init() {
+            //分类数据
+            this.$http.get(api.allCategory).then(result => {
+                this.options = [];
+                result.body.data.forEach(row => {
+                    if (row.name != null) {
+                        this.options.push({value: row.name.toString(), label: row.name});
+                    }
+                });
+            });
             //已登录用户名
-            this.$http.get('/admin/info').then(result => {
-                this.config.token.name = result.body.data.name;
+            this.$http.get(api.info).then(result => {
+                this.token.name = result.body.data.name;
             });
         },
+
+        isMobile() {
+            const rect = body.getBoundingClientRect();
+            return rect.width - RATIO < WIDTH
+        },
+
+        handleSidebar() {
+            if (this.sidebarStatus) {
+                this.sidebarFlag = ' hideSidebar ';
+                this.sidebarStatus = false;
+
+            } else {
+                this.sidebarFlag = ' openSidebar ';
+                this.sidebarStatus = true;
+            }
+            const isMobile = this.isMobile();
+            if (isMobile) {
+                this.sidebarFlag += ' mobile ';
+                this.mobileStatus = true;
+            }
+        },
+        //蒙版
+        drawerClick() {
+            this.sidebarStatus = false;
+            this.sidebarFlag = ' hideSidebar mobile '
+        }
     },
     created() {
-        this.findAllCategory();
         this.init();
+
+        const isMobile = this.isMobile();
+        if (isMobile) {
+            //手机访问
+            this.sidebarFlag = ' hideSidebar mobile ';
+            this.sidebarStatus = false;
+            this.mobileStatus = true;
+        }
+
     },
 });
 

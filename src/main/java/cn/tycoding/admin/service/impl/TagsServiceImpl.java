@@ -64,7 +64,7 @@ public class TagsServiceImpl implements TagsService {
     }
 
     private boolean exists(Tags tags) {
-        return tagsMapper.exists(tags.gettName());
+        return tagsMapper.exists(tags.getName());
     }
 
     @Override

@@ -1,28 +1,49 @@
 //设置全局表单提交格式
 Vue.http.options.emulateJSON = true;
 
+const {body} = document;
+const WIDTH = 1024;
+const RATIO = 3;
+
+const api = {
+    findByPage(flag, pageSize, pageCode) {
+        return '/' + flag + '/findByPage?pageSize=' + pageSize + '&pageCode=' + pageCode
+    },
+    delete(flag) {
+        return '/' + flag + '/delete';
+    },
+    update(flag) {
+        return '/' + flag + '/update'
+    },
+    save(flag) {
+        return '/' + flag + '/save'
+    },
+    findById(flag, id) {
+        return '/' + flag + '/findById?id=' + id
+    },
+    info: '/admin/info'
+};
+
 // Vue实例
 var vm = new Vue({
     el: '#app',
     data() {
         return {
-            entity: {
-                article: [{
-                    id: '',
-                    title: '',
-                    titlePic: '',
-                    category: '',
-                    author: '',
-                    content: '',
-                    state: '',
-                    publishTime: '',
-                    editTime: '',
-                    createTime: ''
-                }],
-                editor: {
-                    id: '',
-                    titlePic: '',
-                },
+            article: [{
+                id: '',
+                title: '',
+                titlePic: '',
+                category: '',
+                author: '',
+                content: '',
+                state: '',
+                publishTime: '',
+                editTime: '',
+                createTime: ''
+            }],
+            editor: {
+                id: '',
+                titlePic: '',
             },
 
             //分页选项
@@ -34,49 +55,25 @@ var vm = new Vue({
                 pageOption: [8, 10, 20], //分页选项
             },
 
-            //一些额外的配置属性
-            config: {
-                defaultActive: '7',
+            defaultActive: '7',
+            editDialog: false, //编辑Dialog
+            //文件上传的参数
+            dialogImageUrl: '',
+            //图片列表（用于回显图片）
+            fileList: [{name: '', url: ''}],
 
-                //===========侧边栏===========
-                name: '',
-                isCollapse: false,
-                side_close_flag: true,
+            token: {name: ''},
 
-                editDialog: false, //编辑Dialog
-
-                //文件上传的参数
-                dialogImageUrl: '',
-                dialogVisible: false,
-                //图片列表（用于回显图片）
-                fileList: [{name: '', url: ''}],
-
-                token: {name: ''},
-            },
+            mobileStatus: false, //是否是移动端
+            sidebarStatus: true, //侧边栏状态，true：打开，false：关闭
+            sidebarFlag: ' openSidebar ', //侧边栏标志
         }
     },
     methods: {
-
-        //===============侧边栏&&顶栏================
-        //顶栏触发事件
-        handleSelect(key, keyPath) {
-            console.log(key, keyPath);
-        },
-        //打开侧边栏
-        handleOpen(key, keyPath) {
-            console.log(key, keyPath);
-        },
-        //关闭侧边栏
         handleClose(key, keyPath) {
-            console.log(key, keyPath);
-        },
-        //侧边栏触发事件
-        handleSideSelect(key, keyPath) {
+            this.editDialog = false;
         },
 
-        /**
-         * Public method
-         */
         //刷新列表
         reloadList() {
             this.search(this.pageConf.pageCode, this.pageConf.pageSize);
@@ -84,8 +81,7 @@ var vm = new Vue({
         //条件查询
         search(pageCode, pageSize) {
             this.$http.post('/article/findByPage?pageSize=' + pageSize + '&pageCode=' + pageCode).then(result => {
-                console.log(result);
-                this.entity.article = result.body.data.rows;
+                this.article = result.body.data.rows;
                 this.pageConf.totalPage = result.body.data.total;
             });
 
@@ -102,20 +98,20 @@ var vm = new Vue({
 
         //编辑按钮
         editBtn(id) {
-            this.config.editDialog = true;
+            this.editDialog = true;
             this.$http.get('/article/findById?id=' + id).then(result => {
-                this.entity.editor.id = result.body.data.id;
-                this.entity.editor.titlePic = result.body.data.titlePic;
+                this.editor.id = result.body.data.id;
+                this.editor.titlePic = result.body.data.titlePic;
 
-                this.config.fileList.forEach(row => {
+                this.fileList.forEach(row => {
                     row.url = result.body.data.titlePic; //将图片的URL地址赋值给file-list展示出来
                 });
             });
         },
         //编辑
         edit() {
-            this.$http.put('/article/update', JSON.stringify(this.entity.editor)).then(result => {
-                this.config.editDialog = false;
+            this.$http.put('/article/update', JSON.stringify(this.editor)).then(result => {
+                this.editDialog = false;
                 this.reloadList();
                 if (result.body.code == 20000) {
                     this.$message({
@@ -146,13 +142,10 @@ var vm = new Vue({
                 message: '图片上传成功',
                 duration: 6000
             });
-            console.log(res);
-            console.log(file);
-            console.log(fileList);
             if (res.code == 20000) {
-                this.config.fileList = [];
-                this.config.fileList.push(res.data);
-                this.entity.editor.titlePic = res.data.url; //将返回的文件储存路径赋值image字段
+                this.fileList = [];
+                this.fileList.push(res.data);
+                this.editor.titlePic = res.data.url; //将返回的文件储存路径赋值image字段
             }
         },
         //删除文件之前的钩子函数
@@ -162,13 +155,10 @@ var vm = new Vue({
                 message: '已删除原有图片',
                 duration: 6000
             });
-            this.config.fileList = [];
+            this.fileList = [];
         },
         //点击列表中已上传的文件事的钩子函数
-        handlePreview(file) {
-            // this.dialogImageUrl = file.url;
-            // this.dialogVisible = true;
-        },
+        handlePreview(file) {},
         //上传的文件个数超出设定时触发的函数
         onExceed(files, fileList) {
             this.$message({
@@ -195,17 +185,52 @@ var vm = new Vue({
             return (isJPG || isBMP || isGIF || isPNG) && isLt2M;
         },
 
-        init(){
+        init() {
             //已登录用户名
             this.$http.get('/admin/info').then(result => {
-                this.config.token.name = result.body.data.name;
+                this.token.name = result.body.data.name;
             });
         },
+
+        isMobile() {
+            const rect = body.getBoundingClientRect();
+            return rect.width - RATIO < WIDTH
+        },
+
+        handleSidebar() {
+            if (this.sidebarStatus) {
+                this.sidebarFlag = ' hideSidebar ';
+                this.sidebarStatus = false;
+
+            } else {
+                this.sidebarFlag = ' openSidebar ';
+                this.sidebarStatus = true;
+            }
+            const isMobile = this.isMobile();
+            if (isMobile) {
+                this.sidebarFlag += ' mobile ';
+                this.mobileStatus = true;
+            }
+        },
+        //蒙版
+        drawerClick() {
+            this.sidebarStatus = false;
+            this.sidebarFlag = ' hideSidebar mobile '
+        }
     },
     // 生命周期函数
     created() {
         this.search(this.pageConf.pageCode, this.pageConf.pageSize);
         this.init();
+
+        const isMobile = this.isMobile();
+        if (isMobile) {
+            //手机访问
+            this.sidebarFlag = ' hideSidebar mobile ';
+            this.sidebarStatus = false;
+            this.mobileStatus = true;
+        }
+
     },
 
 });

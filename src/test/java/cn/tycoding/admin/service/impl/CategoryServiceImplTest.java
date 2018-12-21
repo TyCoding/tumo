@@ -40,7 +40,7 @@ public class CategoryServiceImplTest {
     @Test
     public void save() {
         Category category = new Category();
-        category.setcName("随笔");
+        category.setName("随笔");
         try {
             categoryService.save(category);
         } catch (Exception e) {
@@ -53,7 +53,7 @@ public class CategoryServiceImplTest {
     public void update() {
         Category category = new Category();
         category.setId(1l);
-        category.setcName("不想写随笔了");
+        category.setName("不想写随笔了");
         try {
             categoryService.update(category);
         } catch (Exception e) {

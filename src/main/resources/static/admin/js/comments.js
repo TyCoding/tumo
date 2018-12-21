@@ -1,26 +1,37 @@
 //设置全局表单提交格式
 Vue.http.options.emulateJSON = true;
 
+const {body} = document;
+const WIDTH = 1024;
+const RATIO = 3;
+
+const api = {
+    findByPage(pageSize, pageCode) {
+        return '/comments/findByPage?pageSize=' + pageSize + '&pageCode=' + pageCode
+    },
+    delete: '/comments/delete',
+    info: '/admin/info',
+
+};
+
 // Vue实例
 var vm = new Vue({
     el: '#app',
     data() {
         return {
-            entity: {
-                comments: [{
-                    id: '',
-                    parentId: '',
-                    articleTitle: '',
-                    articleId: '',
-                    author: '',
-                    authorId: '',
-                    email: '',
-                    content: '',
-                    time: '',
-                    url: '',
-                    state: '',
-                }],
-            },
+            comments: [{
+                id: '',
+                parentId: '',
+                articleTitle: '',
+                articleId: '',
+                author: '',
+                authorId: '',
+                email: '',
+                content: '',
+                time: '',
+                url: '',
+                state: '',
+            }],
 
             //分页选项
             pageConf: {
@@ -31,69 +42,27 @@ var vm = new Vue({
                 pageOption: [6, 10, 20], //分页选项
             },
 
-            //一些额外的配置属性
-            config: {
-                defaultActive: '4',
+            defaultActive: '4',
+            //条件查询单独封装的对象
+            searchEntity: {},
+            token: {name: ''},
 
-                multipleSelection: [], //checkbox选择的行中所有数据，将会放入multipartSelection数组中
-                selectIds: [], //被checkbox选择的id值，用于批量删除
-                count: 0, //tag栏，此项那是checkbox选择了几行
-
-                //===========侧边栏===========
-                name: '',
-                isCollapse: false,
-                side_close_flag: true,
-
-                //条件查询单独封装的对象
-                searchEntity: {},
-
-                token: {name: ''},
-            },
+            mobileStatus: false, //是否是移动端
+            sidebarStatus: true, //侧边栏状态，true：打开，false：关闭
+            sidebarFlag: ' openSidebar ', //侧边栏标志
         }
     },
     methods: {
-
-        //===============侧边栏&&顶栏================
-        //顶栏触发事件
-        handleSelect(key, keyPath) {
-            console.log(key, keyPath);
-        },
-        //打开侧边栏
-        handleOpen(key, keyPath) {
-            console.log(key, keyPath);
-        },
-        //关闭侧边栏
-        handleClose(key, keyPath) {
-            console.log(key, keyPath);
-        },
-        //侧边栏触发事件
-        handleSideSelect(key, keyPath){
-        },
-
-        /**
-         * Public method
-         */
         //刷新列表
         reloadList() {
             this.search(this.pageConf.pageCode, this.pageConf.pageSize);
         },
         //条件查询
         search(pageCode, pageSize) {
-            this.$http.post('/comments/findByPage?pageSize=' + pageSize + '&pageCode=' + pageCode, this.config.searchEntity).then(result => {
-                console.log(result);
-                this.entity.comments = result.body.data.rows;
+            this.$http.post(api.findByPage(pageSize,pageCode), this.searchEntity).then(result => {
+                this.comments = result.body.data.rows;
                 this.pageConf.totalPage = result.body.data.total;
             });
-
-        },
-        //checkbox复选框
-        selectChange(val) {
-            this.config.count = val.length;
-            this.config.multipleSelection = val;
-        },
-        //清空已选择的
-        clearSelect() {
-            this.$refs.comments.clearSelection();
         },
         //pageSize改变时触发的函数
         handleSizeChange(val) {
@@ -114,10 +83,9 @@ var vm = new Vue({
                 center: true
             }).then(() => {
                 //调用删除的接口(这里必须将数据转换成JSON格式，不然接收不到值，并且后端要用@RequestBody注解标识)
-                this.$http.post('/comments/delete', JSON.stringify(ids)).then(result => {
+                this.$http.post(api.delete, JSON.stringify(ids)).then(result => {
                     if (result.body.code == 20000) {
                         //删除成功
-                        this.selectIds = []; //清空选项
                         this.$message({
                             type: 'success',
                             message: result.body.data,
@@ -130,18 +98,15 @@ var vm = new Vue({
                         if ((this.pageConf.totalPage - 1) / this.pageConf.pageSize === (this.pageConf.pageCode - 1)) {
                             this.pageConf.pageCode = this.pageConf.pageCode - 1;
                         }
-                        this.reloadList();
                     } else {
                         //删除失败
-                        this.selectIds = []; //清空选项
                         this.$message({
                             type: 'warning',
                             message: result.body.data,
                             duration: 6000
                         });
-                        //刷新列表
-                        this.reloadList();
                     }
+                    this.reloadList();
                 });
             }).catch(() => {
                 this.$message({
@@ -152,41 +117,59 @@ var vm = new Vue({
             });
         },
 
-        /**
-         * Private method
-         */
         //删除按钮
         handleDelete(id) {
             var ids = new Array();
             ids.push(id);
             this.sureDelete(ids);
         },
-        //批量删除按钮（checkbox）
-        deleteSelect(rows) {
-            if (rows) {
-                rows.forEach(row => {
-                    this.config.selectIds.push(row.id);
-                    this.$refs.entity.comments.toggleRowSelection(row);
-                });
-                //调用删除方法
-                this.sureDelete(this.config.selectIds);
-            } else {
-                this.$refs.entity.comments.clearSelection();
-            }
-        },
 
-        init(){
+        init() {
             //已登录用户名
-            this.$http.get('/admin/info').then(result => {
-                this.config.token.name = result.body.data.name;
+            this.$http.get(api.info).then(result => {
+                this.token.name = result.body.data.name;
             });
         },
+
+        isMobile() {
+            const rect = body.getBoundingClientRect();
+            return rect.width - RATIO < WIDTH
+        },
+
+        handleSidebar() {
+            if (this.sidebarStatus) {
+                this.sidebarFlag = ' hideSidebar ';
+                this.sidebarStatus = false;
+
+            } else {
+                this.sidebarFlag = ' openSidebar ';
+                this.sidebarStatus = true;
+            }
+            const isMobile = this.isMobile();
+            if (isMobile) {
+                this.sidebarFlag += ' mobile ';
+                this.mobileStatus = true;
+            }
+        },
+        //蒙版
+        drawerClick() {
+            this.sidebarStatus = false;
+            this.sidebarFlag = ' hideSidebar mobile '
+        }
 
     },
     // 生命周期函数
     created() {
         this.search(this.pageConf.pageCode, this.pageConf.pageSize);
         this.init();
+        const isMobile = this.isMobile();
+        if (isMobile) {
+            //手机访问
+            this.sidebarFlag = ' hideSidebar mobile ';
+            this.sidebarStatus = false;
+            this.mobileStatus = true;
+        }
+
     },
 
 });

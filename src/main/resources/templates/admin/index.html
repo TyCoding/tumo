@@ -3,9 +3,9 @@
 <head>
     <meta charset="utf-8">
     <title>后台首页</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
     <link rel="icon" th:href="@{/public/admin/favicon.png}" type="image/png">
-    <!--<link rel="stylesheet" th:href="@{/lib/element-ui/lib/theme-chalk/index.css}"/>-->
-    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <link rel="stylesheet" th:href="@{/lib/element-ui/lib/theme-chalk/index.css}"/>
     <link rel="stylesheet" th:href="@{/lib/font/css/font-awesome.min.css}"/>
     <link rel="stylesheet" th:href="@{/lib/font/icon/iconfont.css}"/>
     <link rel="stylesheet" th:href="@{/public/admin/base.css}">
@@ -18,88 +18,98 @@
 
 </head>
 <body>
-<!--<body>-->
 <!-- vue入口 -->
 <div id="app">
-    <!-- 布局容器 -->
-    <div class="pull-height">
+    <div :class="'app-wrapper' + sidebarFlag">
+
         <!-- aside -->
         <div th:replace="admin/side :: side"></div>
 
         <!-- container -->
-        <el-container id="main" :class="{main_close:config.isCollapse}">
+        <el-container class="main-container">
             <!-- header -->
             <div style="background-color: rgb(84, 92, 100);" th:replace="admin/header :: header"></div>
 
             <!-- main -->
-            <el-main>
+            <el-main class="app-main">
                 <!-- 卡片 -->
-                <h2>仪表盘</h2>
+                <blockquote>仪表盘</blockquote>
                 <div id="cards">
-                    <el-card role="1">
-                        <span style="float:left">
-                            <h1><i class="icon fa fa-pencil-square-o"></i></h1>
-                        </span>
-                        <span style="float:right">
-                            <span class="font">发表了</span>
-                            <span class="num" v-text="config.article_count"></span>
-                            <span class="font">篇文章</span>
-                        </span>
-                    </el-card>
-                    <el-card role="2">
-                        <span style="float:left">
-                            <h1><i class="icon fa fa-comments"></i></h1>
-                        </span>
-                        <span style="float:right">
-                            <span class="font">收到了</span>
-                            <span class="num" v-text="config.comments_count"></span>
-                            <span class="font">条评论</span>
-                        </span>
-                    </el-card>
-                    <el-card role="3">
-                        <span style="float:left">
-                            <h1><i class="icon fa fa-tags"></i></h1>
-                        </span>
-                        <span style="float:right">
-                            <span class="font">添加了</span>
-                            <span class="num" v-text="config.tags_count"></span>
-                            <span class="font">个标签</span>
-                        </span>
-                    </el-card>
-                    <el-card role="4">
-                        <span style="float:left">
-                            <h1><i class="icon fa fa-link"></i></h1>
-                        </span>
-                        <span style="float:right">
-                            <span class="font">友链了</span>
-                            <span class="num" v-text="config.links_count"></span>
-                            <span class="font">个好友</span>
-                        </span>
-                    </el-card>
+                    <el-row :gutter="40">
+                        <el-col :xs="12" :sm="12" :lg="6" style="padding:20px 20px">
+                            <el-card role="1">
+                                <span>
+                                    <h1><i class="icon fa fa-pencil-square-o"></i></h1>
+                                </span>
+                                <span>
+                                    <span class="font">发表了</span>
+                                    <span class="num" v-text="article_count"></span>
+                                    <span class="font">篇文章</span>
+                                </span>
+                            </el-card>
+                        </el-col>
+                        <el-col :xs="12" :sm="12" :lg="6" style="padding:20px 20px">
+                            <el-card role="2">
+                                <span>
+                                    <h1><i class="icon fa fa-comments"></i></h1>
+                                </span>
+                                <span>
+                                    <span class="font">收到了</span>
+                                    <span class="num" v-text="comments_count"></span>
+                                    <span class="font">条评论</span>
+                                </span>
+                            </el-card>
+                        </el-col>
+                        <el-col :xs="12" :sm="12" :lg="6" style="padding:20px 20px">
+                            <el-card role="3">
+                                <span>
+                                    <h1><i class="icon fa fa-tags"></i></h1>
+                                </span>
+                                <span>
+                                    <span class="font">添加了</span>
+                                    <span class="num" v-text="tags_count"></span>
+                                    <span class="font">个标签</span>
+                                </span>
+                            </el-card>
+                        </el-col>
+                        <el-col :xs="12" :sm="12" :lg="6" style="padding:20px 20px">
+                            <el-card role="4">
+                                <span>
+                                    <h1><i class="icon fa fa-link"></i></h1>
+                                </span>
+                                <span>
+                                    <span class="font">友链了</span>
+                                    <span class="num" v-text="links_count"></span>
+                                    <span class="font">个好友</span>
+                                </span>
+                            </el-card>
+                        </el-col>
+                    </el-row>
                 </div>
-
                 <br/>
-                <br/>
-
+                <blockquote>博客数据</blockquote>
                 <div class="lists">
-                    <el-row>
-                        <el-col :span="8">
+                    <el-row :gutter="40">
+                        <el-col :xs="24" :sm="8" :lg="8" style="padding:20px 20px">
                             <div>
-                                <h2>最新文章</h2>
+                                <h3>最新文章</h3>
                                 <div class="articles">
-                                    <div v-for="item in entity.article">
-                                        <a :href="'/article/' + item.id" target="_blank" v-text="item.title"></a>
+                                    <div v-for="item in article">
+                                        <a v-if="item.title != ''" :href="'/article/' + item.id" target="_blank"
+                                           v-text="item.title"></a>
                                     </div>
                                 </div>
                             </div>
                         </el-col>
-                        <el-col :span="8">
+                        <el-col :xs="24" :sm="8" :lg="8" style="padding:20px 20px">
                             <div>
-                                <h2>最新评论</h2>
+                                <h3>最新评论</h3>
                                 <div class="comments">
-                                    <div v-for="item in entity.comments">
-                                        <p><span v-text="item.author"></span>&nbsp;&nbsp;于&nbsp;<span v-text="item.time"></span>&nbsp;:</p>
-                                        <a v-if="item.articleId != 0" :href="'/article/' + item.articleId" target="_blank" v-text="item.content"></a>
+                                    <div v-for="item in comments">
+                                        <p><span v-text="item.author"></span>&nbsp;&nbsp;于&nbsp;<span
+                                                v-text="item.time"></span>&nbsp;:</p>
+                                        <a v-if="item.articleId != 0" :href="'/article/' + item.articleId"
+                                           target="_blank" v-text="item.content"></a>
                                         <span v-else v-text="item.content"></span>
                                     </div>
                                 </div>
@@ -112,17 +122,16 @@
                         </el-col>
                     </el-row>
                 </div>
-
             </el-main>
         </el-container>
     </div>
 </div>
 
 </body>
-<!--<script type="text/javascript" th:src="@{/lib/vue/vue.min.js}"></script>-->
-<!--<script type="text/javascript" th:src="@{/lib/element-ui/lib/index.js}"></script>-->
-<script src="https://cdn.jsdelivr.net/npm/vue"></script>
-<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<script type="text/javascript" th:src="@{/lib/vue/vue.min.js}"></script>
+<script type="text/javascript" th:src="@{/lib/element-ui/lib/index.js}"></script>
+<!--<script src="https://cdn.jsdelivr.net/npm/vue"></script>-->
+<!--<script src="https://unpkg.com/element-ui/lib/index.js"></script>-->
 <script type="text/javascript" th:src="@{/lib/vue/vue-resource.min.js}"></script>
 <script type="text/javascript" th:src="@{/admin/js/index.js}"></script>
 </html>

@@ -40,7 +40,7 @@ public class TagsServiceImplTest {
     @Test
     public void save() {
         Tags tags = new Tags();
-        tags.settName("随笔");
+        tags.setName("随笔");
         try {
             tagsService.save(tags);
         } catch (Exception e) {
@@ -54,7 +54,7 @@ public class TagsServiceImplTest {
         try {
             Tags tags = new Tags();
             tags.setId(1l);
-            tags.settName("不想写随笔了");
+            tags.setName("不想写随笔了");
             tagsService.update(tags);
         } catch (Exception e) {
             e.printStackTrace();

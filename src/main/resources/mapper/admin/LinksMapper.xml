@@ -32,11 +32,11 @@
     <insert id="save" parameterType="Links">
         INSERT  INTO
         tb_links(
-          l_name,
+          name,
           url
         )
         VALUES(
-          #{lName},
+          #{name},
           #{url}
         )
     </insert>
@@ -45,8 +45,8 @@
     <update id="update" parameterType="Links">
         UPDATE ignore tb_links
         <set>
-            <if test="lName != null">
-                l_name = #{lName},
+            <if test="name != null">
+                name = #{name},
             </if>
             <if test="url != null">
                 url = #{url}

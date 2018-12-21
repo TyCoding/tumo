@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8">
     <title>编辑文章</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
     <link rel="icon" th:href="@{/public/admin/favicon.png}" type="image/png">
     <!--<link rel="stylesheet" th:href="@{/lib/element-ui/lib/theme-chalk/index.css}"/>-->
     <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
@@ -20,39 +21,39 @@
 <!-- vue入口 -->
 <div id="app">
     <!-- 布局容器 -->
-    <div class="pull-height">
+    <div :class="'app-wrapper' + sidebarFlag">
         <!-- aside -->
         <div th:replace="admin/side :: side"></div>
 
         <!-- container -->
-        <el-container id="main" :class="{main_close:config.isCollapse}">
+        <el-container class="main-container">
             <!-- header -->
             <div style="background-color: rgb(84, 92, 100);" th:replace="admin/header :: header"></div>
 
             <!-- main -->
-            <el-main>
+            <el-main class="app-main">
                 <el-card>
                     <h2>编辑文章</h2>
                     <div style="margin-bottom: 6px;">
                         <el-row :gutter="100">
-                            <el-col :span="12">
-                                <el-input v-model="entity.article.title" placeholder="请输入文章标题">
+                            <el-col :xs="24" :sm="24" :lg="12" :span="12">
+                                <el-input v-model="article.title" placeholder="请输入文章标题">
                                     <template slot="prepend">文章标题</template>
                                 </el-input>
                             </el-col>
-                            <el-col :span="12">
-                                <el-input v-model="entity.article.author" placeholder="请输入文章作者">
+                            <el-col :xs="24" :sm="24" :lg="12" :span="12">
+                                <el-input v-model="article.author" placeholder="请输入文章作者">
                                     <template slot="prepend">文章作者</template>
                                 </el-input>
                             </el-col>
                         </el-row>
                         <br/>
                         <el-row :gutter="100">
-                            <el-col :span="4" class="category">
+                            <el-col :xs="24" :sm="12" :lg="6" :span="4" class="category">
                                 <el-tooltip class="item" effect="dark" content="下拉框中没有？可直接键入" placement="top-start">
-                                    <el-select v-model="entity.article.category" allow-create filterable placeholder="请选择文章分类">
+                                    <el-select v-model="article.category" allow-create filterable placeholder="请选择文章分类">
                                         <el-option
-                                                v-for="item in config.options"
+                                                v-for="item in options"
                                                 :key="item.value"
                                                 :label="item.label"
                                                 :value="item.value">
@@ -60,11 +61,11 @@
                                     </el-select>
                                 </el-tooltip>
                             </el-col>
-                            <el-col :span="8" class="tags">
+                            <el-col :xs="24" :sm="12" :lg="6" :span="8" style="padding-top:10px;">
                                 <div>
                                     <el-tag
                                             :key="tag"
-                                            v-for="tag in config.dynamicTags"
+                                            v-for="tag in dynamicTags"
                                             closable
                                             :disable-transitions="false"
                                             @close="handleCloseTag(tag)">
@@ -72,8 +73,8 @@
                                     </el-tag>
                                     <el-input
                                             class="input-new-tag"
-                                            v-if="config.inputVisible"
-                                            v-model="entity.article.tags"
+                                            v-if="inputVisible"
+                                            v-model="article.tags"
                                             ref="saveTagInput"
                                             size="small"
                                             @keyup.enter.native="handleInputConfirm"
@@ -82,22 +83,22 @@
                                     </el-button>
                                 </div>
                             </el-col>
-                            <el-col :span="12">
-                                <el-input v-model="entity.article.origin" placeholder="请输入文章来源，默认来自本系统">
+                            <el-col :xs="24" :sm="24" :lg="12" :span="12" style="padding-top:10px;">
+                                <el-input v-model="article.origin" placeholder="请输入文章来源，默认来自本系统">
                                     <template slot="prepend">文章来源</template>
-                                    {{entity.article.origin}}
+                                    {{article.origin}}
                                 </el-input>
                             </el-col>
                         </el-row>
                     </div>
                     <div>
                         <div id="article">
-                            <textarea id="article-editor-md" ref="articleEditorMd" name="article-editor-md">{{entity.article.contentMd}}</textarea>
+                            <textarea id="article-editor-md" ref="articleEditorMd" name="article-editor-md">{{article.contentMd}}</textarea>
                         </div>
                     </div>
                     <div>
                         <el-row :gutter="20">
-                            <el-col :span="12" :offset="20">
+                            <el-col :xs="24" :sm="24" :lg="24" :span="12">
                                 <el-button type="primary" @click="publishBtn(0)">存入草稿</el-button>
                                 <el-button type="warning" @click="publishBtn(1)">发布文章</el-button>
                             </el-col>
@@ -111,9 +112,8 @@
 </body>
 <script type="text/javascript" th:src="@{/plugins/js/jquery.min.js}"></script>
 <!--<script type="text/javascript" th:src="@{/lib/vue/vue.min.js}"></script>-->
-<!--<script type="text/javascript" th:src="@{/lib/element-ui/lib/index.js}"></script>-->
 <script src="https://cdn.jsdelivr.net/npm/vue"></script>
-<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<script type="text/javascript" th:src="@{/lib/element-ui/lib/index.js}"></script>
 <script type="text/javascript" th:src="@{/lib/vue/vue-resource.min.js}"></script>
 <script type="text/javascript" th:src="@{/lib/editormd/editormd.min.js}"></script>
 <script type="text/javascript" th:src="@{/admin/js/edit.js}"></script>

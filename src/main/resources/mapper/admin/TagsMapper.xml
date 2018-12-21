@@ -32,24 +32,24 @@
     <insert id="save" parameterType="Tags">
         INSERT  INTO
         tb_tags(
-          t_name
+          name
         )
         VALUES(
-          #{tName}
+          #{name}
         )
     </insert>
 
     <!-- 查询是否存在 -->
     <select id="exists" resultType="Boolean">
-        SELECT COUNT(1) FROM tb_tags WHERE t_name = #{name}
+        SELECT COUNT(1) FROM tb_tags WHERE name = #{name}
     </select>
 
     <!-- 更新 -->
     <update id="update" parameterType="Tags">
         UPDATE ignore tb_tags
         <set>
-            <if test="tName != null">
-                t_name = #{tName}
+            <if test="name != null">
+                name = #{name}
             </if>
         </set>
         WHERE id = #{id}
@@ -61,7 +61,7 @@
     </delete>
 
     <select id="findByName" resultType="Tags">
-        SELECT * FROM tb_tags WHERE t_name = #{name}
+        SELECT * FROM tb_tags WHERE name = #{name}
     </select>
 
     <!--&lt;!&ndash; find by articleId or tagsId &ndash;&gt;

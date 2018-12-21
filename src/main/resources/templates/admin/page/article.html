@@ -3,9 +3,9 @@
 <head>
     <meta charset="utf-8">
     <title>文章管理</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
     <link rel="icon" th:href="@{/public/admin/favicon.png}" type="image/png">
-    <!--<link rel="stylesheet" th:href="@{/lib/element-ui/lib/theme-chalk/index.css}"/>-->
-    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <link rel="stylesheet" th:href="@{/lib/element-ui/lib/theme-chalk/index.css}"/>
     <link rel="stylesheet" th:href="@{/lib/font/css/font-awesome.min.css}"/>
     <link rel="stylesheet" th:href="@{/public/admin/base.css}">
 
@@ -17,127 +17,53 @@
 <body>
 <!-- vue入口 -->
 <div id="app">
-    <!-- 布局容器 -->
-    <div class="pull-height">
+    <div :class="'app-wrapper' + sidebarFlag">
         <!-- aside -->
         <div th:replace="admin/side :: side"></div>
 
         <!-- container -->
-        <el-container id="main" :class="{main_close:config.isCollapse}">
+        <el-container class="main-container">
             <!-- header -->
             <div style="background-color: rgb(84, 92, 100);" th:replace="admin/header :: header"></div>
 
             <!-- main -->
-            <el-main>
+            <el-main class="app-main">
                 <el-card>
                     <h2>文章管理</h2>
                     <div>
                         <!-- 功能按钮 -->
                         <div>
-                            <el-row>
-                                <a th:href="@{/admin/article/publish}">
-                                    <el-button type="primary" icon="el-icon-plus">新增</el-button>
-                                </a>
-                                <el-button type="primary" plain icon="el-icon-edit">编辑</el-button>
-                                <el-button type="danger" plain icon="el-icon-delete"
-                                           @click="deleteSelect(config.multipleSelection)">删除
-                                </el-button>
-                                <el-button icon="el-icon-refresh"
-                                           @click="search(pageConf.pageCode,pageConf.pageSize)">刷新
-                                </el-button>
+                            <el-row :gutter="20">
+                                <el-col :xs="12" :sm="12" :lg="6" :span="6">
+                                    <el-input placeholder="请输入内容" v-model="searchEntity.title" @keyup.native="search(pageConf.pageCode,pageConf.pageCode)">
+                                        <i slot="prefix" class="el-input__icon el-icon-search"></i>
+                                    </el-input>
+                                </el-col>
+                                <el-col :xs="12" :sm="12" :lg="6" :span="6">
+                                    <a th:href="@{/admin/article/publish}">
+                                        <el-button type="primary" icon="el-icon-plus">新增</el-button>
+                                    </a>
+                                </el-col>
                             </el-row>
-                            <span id="tag" class="el-tag avue-tip">
-                                <i class="el-icon-info"></i>
-                                <span class="name">
-                                    当前表格已选择<span class="count" v-text="config.count"></span>项
-                                </span>
-                                <span @click.prevent="clearSelect()" style="cursor:pointer">&nbsp;&nbsp;清空</span>
-                            </span>
                         </div>
+                        <br/>
                         <!-- 列表 -->
-                        <el-table
-                                ref="article"
-                                :data="entity.article"
-                                border
-                                tooltip-effect="dark"
-                                style="width: 100%"
-                                @selection-change="selectChange">
-                            <el-table-column
-                                    ref="selection"
-                                    align="center"
-                                    type="selection"
-                                    width="55">
-                            </el-table-column>
-                            <el-table-column
-                                    prop="id"
-                                    align="center"
-                                    sortable
-                                    fixed
-                                    show-overflow-tooltip
-                                    label="编号"
-                                    width="80">
-                            </el-table-column>
-                            <el-table-column
-                                    align="center"
-                                    prop="title"
-                                    label="文章标题"
-                                    width="260"
-                                    show-overflow-tooltip>
-                            </el-table-column>
-                            <el-table-column
-                                    align="center"
-                                    prop="author"
-                                    sortable
-                                    show-overflow-tooltip
-                                    label="文章作者"
-                                    width="120">
-                            </el-table-column>
-                            <el-table-column
-                                    align="center"
-                                    prop="createTime"
-                                    sortable
-                                    label="创建时间"
-                                    width="170">
-                            </el-table-column>
-                            <el-table-column
-                                    align="center"
-                                    prop="editTime"
-                                    sortable
-                                    label="最后编辑时间"
-                                    width="170">
-                            </el-table-column>
-                            <el-table-column
-                                    align="center"
-                                    prop="publishTime"
-                                    sortable
-                                    label="发布时间"
-                                    width="170">
-                            </el-table-column>
-                            <el-table-column
-                                    align="center"
-                                    prop="category"
-                                    show-overflow-tooltip
-                                    label="文章分类"
-                                    width="130">
-                            </el-table-column>
-                            <el-table-column
-                                    align="center"
-                                    prop="state"
-                                    sortable
-                                    label="状态"
-                                    width="120">
+                        <el-table ref="article" :data="article" border tooltip-effect="dark" style="width: 100%">
+                            <el-table-column prop="id" align="center" sortable show-overflow-tooltip label="编号" width="80"></el-table-column>
+                            <el-table-column align="center" prop="title" label="文章标题" width="260" show-overflow-tooltip></el-table-column>
+                            <el-table-column align="center" prop="author" show-overflow-tooltip label="文章作者" width="120"></el-table-column>
+                            <el-table-column align="center" prop="createTime" label="创建时间" width="170"></el-table-column>
+                            <el-table-column align="center" prop="editTime" label="最后编辑时间" width="170"></el-table-column>
+                            <el-table-column align="center" prop="publishTime" label="发布时间" width="170"></el-table-column>
+                            <el-table-column align="center" prop="category" show-overflow-tooltip label="文章分类" width="130"></el-table-column>
+                            <el-table-column align="center" prop="state" sortable label="状态" width="120">
                                 <template slot-scope="scope">
                                     <el-tag>{{scope.row.state == '1' ? '已发布':'存入草稿'}}</el-tag>
                                 </template>
                             </el-table-column>
-                            <el-table-column label="操作" align="center" fixed="right">
+                            <el-table-column label="操作" align="center">
                                 <template slot-scope="scope">
-                                    <el-button
-                                            icon="el-icon-delete"
-                                            size="mini"
-                                            type="danger"
-                                            @click="handleDelete(scope.row.id)">删除
-                                    </el-button>
+                                    <el-button icon="el-icon-delete" size="mini" type="danger" @click="handleDelete(scope.row.id)">删除</el-button>
                                     <a :href="'/admin/article/edit/' + scope.row.id">
                                         <el-button size="mini" icon="el-icon-edit" type="warning">编辑</el-button>
                                     </a>
@@ -147,13 +73,10 @@
                                 </template>
                             </el-table-column>
                         </el-table>
-
+                        <br/>
                         <!-- 分页 -->
                         <div class="pagination">
-                            <el-pagination
-                                    background
-                                    @size-change="handleSizeChange"
-                                    @current-change="handleCurrentChange"
+                            <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange"
                                     :current-page="pageConf.pageCode"
                                     :page-sizes="pageConf.pageOption"
                                     :page-size="pageConf.pageSize"
@@ -170,9 +93,8 @@
 </div>
 </body>
 <!--<script type="text/javascript" th:src="@{/lib/vue/vue.min.js}"></script>-->
-<!--<script type="text/javascript" th:src="@{/lib/element-ui/lib/index.js}"></script>-->
 <script src="https://cdn.jsdelivr.net/npm/vue"></script>
-<script src="https://unpkg.com/element-ui/lib/index.js"></script>
 <script type="text/javascript" th:src="@{/lib/vue/vue-resource.min.js}"></script>
+<script type="text/javascript" th:src="@{/lib/element-ui/lib/index.js}"></script>
 <script type="text/javascript" th:src="@{/admin/js/article.js}"></script>
 </html>

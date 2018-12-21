@@ -15,8 +15,7 @@
     </select>
 
     <!-- 条件查询 -->
-    <select id="findByPage" parameterType="cn.tycoding.admin.entity.Article"
-            resultType="cn.tycoding.admin.entity.Article">
+    <select id="findByPage" parameterType="cn.tycoding.admin.entity.Article" resultType="cn.tycoding.admin.entity.Article">
         SELECT * FROM tb_article WHERE 1=1
         <if test="author != null">
             AND author LIKE CONCAT('%', #{author}, '%')
@@ -43,7 +42,6 @@
         tb_article(
           title,
           title_pic,
-          category,
           author,
           content,
           content_md,
@@ -56,7 +54,6 @@
         VALUES(
           #{title},
           #{titlePic},
-          #{category},
           #{author},
           #{content},
           #{contentMd},
@@ -77,9 +74,6 @@
             </if>
             <if test="titlePic != null">
                 title_pic = #{titlePic},
-            </if>
-            <if test="category != null">
-                category = #{category},
             </if>
             <if test="author != null">
                 author = #{author},

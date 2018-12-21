@@ -38,3 +38,45 @@
     height: 148px !important;
     width: 350px !important;
 }
+
+.box-card-component .el-card__header {
+    padding: 0px !important;
+}
+
+[class*=el-col-] {
+    float: none;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.panel-group {
+    box-sizing: border-box;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.card-panel-col {
+    margin: 20px 0;
+}
+
+.box-card-component {
+    width: 100%;
+}
+
+.box-card-component .box-card-header {
+    position: relative;
+    height: 220px;
+}
+
+.box-card-component .box-card-header img {
+    width: 100%;
+    height: 100%;
+    transition: all 0.3s linear;
+}
+
+.box-card-component .box-card-header img:hover {
+    transform: scale(1.1, 1.1);
+    filter: contrast(130%);
+}

@@ -12,6 +12,7 @@ import cn.tycoding.admin.utils.CheckValue;
 import com.alibaba.fastjson.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -65,7 +66,7 @@ public class ArticleController {
                     List<String> tags = new ArrayList<>();
                     List<Tags> tagsList = articleTagsService.findByArticleId(article.getId());
                     for (Tags t : tagsList) {
-                        tags.add(t.gettName());
+                        tags.add(t.getName());
                     }
                     article.setTags(JSON.toJSONString(tags));
                 } else {
@@ -83,7 +84,7 @@ public class ArticleController {
             List<String> list = new ArrayList<String>();
             List<Tags> tagsList = articleTagsService.findByArticleId(id);
             for (Tags t : tagsList) {
-                list.add(t.gettName());
+                list.add(t.getName());
             }
             return new Result(StatusCode.SUCCESS, list);
         } else {
@@ -97,7 +98,7 @@ public class ArticleController {
     }
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public Result save(@RequestBody Article article) {
+    public Result save(@Validated @RequestBody Article article) {
         if (CheckValue.checkObj(article)) {
             try {
                 articleService.save(article);

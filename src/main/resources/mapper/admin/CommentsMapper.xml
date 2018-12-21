@@ -17,10 +17,10 @@
     <!-- 条件查询 -->
     <select id="findByPage" parameterType="Comments" resultType="Comments">
         SELECT * FROM tb_comments
-        <!--WHERE 1=1-->
-        <!--<if test="author != null">-->
-        <!--AND author LIKE CONCAT('%', #{author}, '%')-->
-        <!--</if>-->
+        WHERE 1=1
+        <if test="author != null">
+            AND author LIKE CONCAT('%', #{author}, '%')
+        </if>
     </select>
 
     <!-- 根据ID查询 -->

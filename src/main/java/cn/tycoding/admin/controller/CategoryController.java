@@ -46,8 +46,8 @@ public class CategoryController {
         Map<String, Integer> map = new HashMap<String, Integer>();
         List<Category> categoryList = categoryService.findAll();
         for (Category category : categoryList) {
-            List<Article> articleList = articleService.findByCategory(category.getcName());
-            map.put(category.getcName(), articleList.size());
+            List<Article> articleList = articleService.findByCategory(category.getName());
+            map.put(category.getName(), articleList.size());
         }
         return new Result(StatusCode.SUCCESS, map);
     }

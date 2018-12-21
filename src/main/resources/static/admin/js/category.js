@@ -1,6 +1,29 @@
 //设置全局表单提交格式
 Vue.http.options.emulateJSON = true;
 
+const {body} = document;
+const WIDTH = 1024;
+const RATIO = 3;
+
+const api = {
+    findByPage(flag, pageSize, pageCode) {
+        return '/' + flag + '/findByPage?pageSize=' + pageSize + '&pageCode=' + pageCode
+    },
+    delete(flag) {
+        return '/' + flag + '/delete';
+    },
+    update(flag) {
+        return '/' + flag + '/update'
+    },
+    save(flag) {
+        return '/' + flag + '/save'
+    },
+    findById(flag, id) {
+        return '/' + flag + '/findById?id=' + id
+    },
+    info: '/admin/info'
+};
+
 // Vue实例
 var vm = new Vue({
     el: '#app',
@@ -10,22 +33,16 @@ var vm = new Vue({
             entity: {
                 category: [{
                     id: '',
-                    cName: ''
+                    name: ''
                 }],
                 tags: [{
                     id: '',
-                    tName: ''
+                    name: ''
                 }],
             },
             editor: {
-                category: {
-                    id: '',
-                    cName: ''
-                },
-                tags: {
-                    id: '',
-                    tName: ''
-                },
+                id: '',
+                name: '',
             },
 
             //分页选项
@@ -36,107 +53,76 @@ var vm = new Vue({
                 totalPage: 12, //总记录数
                 pageOption: [6, 10, 20], //分页选项
 
-                pageCode_t: 1, //当前页
-                pageSize_t: 6, //每页显示的记录数
-                totalPage_t: 12, //总记录数
-                pageOption_t: [6, 10, 20], //分页选项
+                t_pageCode: 1,
+                t_pageSize: 6,
+                t_totalPage: 12,
+                t_pageOption: [6, 10, 20]
             },
 
-            //一些额外的配置属性
-            config: {
-                defaultActive: '5',
+            dialogVisible: false,
+            dialogFlag: '',
+            dialogType: true, //dialog分类：true：新增，false：修改
+            defaultActive: '5',
+            token: {name: ''},
 
-                //===========侧边栏===========
-                name: '',
-                isCollapse: false,
-                side_close_flag: true,
-
-                //===========模态框===========
-                saveDialog: false,
-                editDialog: false,
-                saveDialog_t: false,
-                editDialog_t: false,
-
-                token: {name: ''},
-            },
+            mobileStatus: false, //是否是移动端
+            sidebarStatus: true, //侧边栏状态，true：打开，false：关闭
+            sidebarFlag: ' openSidebar ', //侧边栏标志
         }
     },
     methods: {
-
-        //===============侧边栏&&顶栏================
-        //顶栏触发事件
-        handleSelect(key, keyPath) {
-            console.log(key, keyPath);
-        },
         //打开侧边栏
         handleOpen(key, keyPath) {
             console.log(key, keyPath);
         },
-        //关闭侧边栏
         handleClose(key, keyPath) {
-            console.log(key, keyPath);
-        },
-        //侧边栏触发事件
-        handleSideSelect(key, keyPath){
+            this.dialogVisible = false;
         },
 
-        /**
-         * Public method
-         */
         //刷新列表
-        reloadList() {
-            this.search(this.pageConf.pageCode, this.pageConf.pageSize);
-        },
-        reloadList_t() {
-            this.search_t(this.pageConf.pageCode_t, this.pageConf.pageSize_t);
+        reloadList(flag) {
+            this.search(flag, this.pageConf.pageCode, this.pageConf.pageSize);
         },
         //条件查询
-        search(pageCode, pageSize) {
-            this.$http.post('/category/findByPage?pageSize=' + pageSize + '&pageCode=' + pageCode).then(result => {
-                console.log(result);
-                this.entity.category = result.body.data.rows;
-                this.pageConf.totalPage = result.body.data.total;
+        search(flag, pageCode, pageSize) {
+            this.$http.post(api.findByPage(flag, pageSize, pageCode)).then(result => {
+                if (flag == 'category') {
+                    this.entity.category = result.body.data.rows;
+                    this.pageConf.totalPage = result.body.data.total;
+                }
+                if (flag == 'tags') {
+                    this.entity.tags = result.body.data.rows;
+                    this.pageConf.t_totalPage = result.body.data.total;
+                }
             });
         },
-        search_t(pageCode_t, pageSize_t){
-            this.$http.post('/tags/findByPage?pageSize=' + pageSize_t + '&pageCode=' + pageCode_t).then(result => {
-                console.log(result);
-                this.entity.tags = result.body.data.rows;
-                this.pageConf.totalPage_t = result.body.data.total;
-            });
-        },
-        //checkbox复选框
-        selectChange(val) {
-        },
-        selectChange_t(val) {
-        },
+
         //pageSize改变时触发的函数
         handleSizeChange(val) {
-            this.search(this.pageConf.pageCode, val);
+            this.search('category', this.pageConf.pageCode, val);
         },
-        handleSizeChange_t(val) {
-            this.search_t(this.pageConf.pageCode_t, val);
+        t_handleSizeChange(val) {
+            this.search('tags', this.pageConf.t_pageCode, val);
         },
         //当前页改变时触发的函数
         handleCurrentChange(val) {
-            this.pageConf.pageCode = val; //为了保证刷新列表后页面还是在当前页，而不是跳转到第一页
-            this.search(val, this.pageConf.pageSize);
+            this.pageConf.pageCode = val;
+            this.search('category', val, this.pageConf.pageSize);
         },
-        handleCurrentChange_t(val) {
-            this.pageConf.pageCode_t = val; //为了保证刷新列表后页面还是在当前页，而不是跳转到第一页
-            this.search_t(val, this.pageConf.pageSize_t);
+        t_handleCurrentChange(val) {
+            this.pageConf.t_pageCode = val;
+            this.search('tags', val, this.pageConf.t_pageSize);
         },
 
         //删除
-        sureDelete(ids) {
+        sureDelete(flag, ids) {
             this.$confirm('你确定永久删除此用户信息？', '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 type: 'warning',
                 center: true
             }).then(() => {
-                //调用删除的接口(这里必须将数据转换成JSON格式，不然接收不到值，并且后端要用@RequestBody注解标识)
-                this.$http.post('/category/delete', JSON.stringify(ids)).then(result => {
+                this.$http.post(api.delete(flag), JSON.stringify(ids)).then(result => {
                     if (result.body.code == 20000) {
                         //删除成功
                         this.$message({
@@ -144,14 +130,17 @@ var vm = new Vue({
                             message: result.body.data,
                             duration: 6000
                         });
-                        //刷新列表
-                        //为什么要判断并赋值？
-                        //答：即使调用reloadList()刷新列表，但是对于删除，在reloadList()中获取到的totalPage总记录和pageCode当前页都是未删除之前的记录，当遇到删除此页的最后一个记录时，页码会自动跳到上一页，但是table中的数据显示"暂无记录"
-                        //   所以要判断，如果是删除此页的最后一条记录，删除后自动跳转到前一页，数据也是前一页的数据
-                        if ((this.pageConf.totalPage - 1) / this.pageConf.pageSize === (this.pageConf.pageCode - 1)) {
-                            this.pageConf.pageCode = this.pageConf.pageCode - 1;
+                        if (flag == 'category') {
+                            if ((this.pageConf.totalPage - 1) / this.pageConf.pageSize === (this.pageConf.pageCode - 1)) {
+                                this.pageConf.pageCode = this.pageConf.pageCode - 1;
+                            }
                         }
-                        this.reloadList();
+                        if (flag == 'tags') {
+                            if ((this.pageConf.t_totalPage - 1) / this.pageConf.t_pageSize === (this.pageConf.t_pageCode - 1)) {
+                                this.pageConf.t_pageCode = this.pageConf.t_pageCode - 1;
+                            }
+                        }
+                        this.reloadList(flag);
                     } else {
                         //删除失败
                         this.$message({
@@ -159,8 +148,7 @@ var vm = new Vue({
                             message: result.body.data,
                             duration: 6000
                         });
-                        //刷新列表
-                        this.reloadList();
+                        this.reloadList(flag);
                     }
                 });
             }).catch(() => {
@@ -171,71 +159,42 @@ var vm = new Vue({
                 });
             });
         },
-        //删除
-        sureDelete_t(ids) {
-            this.$confirm('你确定永久删除此用户信息？', '提示', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning',
-                center: true
-            }).then(() => {
-                //调用删除的接口(这里必须将数据转换成JSON格式，不然接收不到值，并且后端要用@RequestBody注解标识)
-                this.$http.post('/tags/delete', JSON.stringify(ids)).then(result => {
-                    if (result.body.code == 20000) {
-                        //删除成功
-                        this.$message({
-                            type: 'success',
-                            message: result.body.data,
-                            duration: 6000
-                        });
-                        //刷新列表
-                        //为什么要判断并赋值？
-                        //答：即使调用reloadList()刷新列表，但是对于删除，在reloadList()中获取到的totalPage总记录和pageCode当前页都是未删除之前的记录，当遇到删除此页的最后一个记录时，页码会自动跳到上一页，但是table中的数据显示"暂无记录"
-                        //   所以要判断，如果是删除此页的最后一条记录，删除后自动跳转到前一页，数据也是前一页的数据
-                        if ((this.pageConf.totalPage_t - 1) / this.pageConf.pageSize_t === (this.pageConf.pageCode_t - 1)) {
-                            this.pageConf.pageCode_t = this.pageConf.pageCode_t - 1;
-                        }
-                        this.reloadList_t();
-                    } else {
-                        //删除失败
-                        this.$message({
-                            type: 'warning',
-                            message: result.body.data,
-                            duration: 6000
-                        });
-                        //刷新列表
-                        this.reloadList();
-                    }
-                });
-            }).catch(() => {
-                this.$message({
-                    type: 'info',
-                    message: '已取消删除',
-                    duration: 6000
-                });
-            });
-        },
-
         //删除按钮
-        handleDelete(id) {
+        handleDelete(flag, id) {
             var ids = new Array();
             ids.push(id);
-            this.sureDelete(ids);
-        },
-        handleDelete_t(id) {
-            var ids = new Array();
-            ids.push(id);
-            this.sureDelete_t(ids);
+            this.sureDelete(flag, ids);
         },
         //新增按钮
-        saveBtn() {
-            //打开新增dialog
-            this.config.saveDialog = true;
-            this.editor.category = {}; //清空表单
+        handleSave(flag) {
+            this.editor = {};
+            this.dialogVisible = true;
+            if (flag == 'category') {
+                this.dialogFlag = '分类'
+            }
+            if (flag == 'tags') {
+                this.dialogFlag = '标签'
+            }
+            this.dialogType = true;
         },
-        save(){
-            this.config.saveDialog = false;
-            if (this.editor.category.cName == null || this.editor.category.cName == ''){
+        //更新按钮
+        handleEdit(flag, id) {
+            this.dialogVisible = true;
+            //查询当前id对应的数据
+            this.$http.get(api.findById(flag, id)).then(result => {
+                this.editor = result.body.data;
+            });
+            this.dialogType = false; //更新
+            if (flag == 'category') {
+                this.dialogFlag = '分类'
+            }
+            if (flag == 'tags') {
+                this.dialogFlag = '标签'
+            }
+        },
+        handleGo() { //新增、更新公用
+            this.dialogVisible = false;
+            if (this.editor.name == null || this.editor.name == '') {
                 this.$message({
                     type: 'error',
                     message: '输入的信息不能为空',
@@ -243,119 +202,108 @@ var vm = new Vue({
                 });
                 return false;
             }
-            this.$http.post('/category/save', JSON.stringify(this.editor.category)).then(result => {
-                if (result.body.code == 20000){
-                    this.reloadList();
-                }else{
-                    this.$message({
-                        type: 'info',
-                        message: result.body.data,
-                        duration: 6000
-                    });
-                    this.reloadList();
+            var flag = '';
+            if (this.dialogType) {
+                //新增
+                if (this.dialogFlag == '分类') {
+                    flag = api.save('category')
                 }
-            });
-        },
-        saveBtn_t() {
-            this.config.saveDialog_t = true;
-            this.editor.tags = {}; //清空表单
-        },
-        save_t(){
-            this.config.saveDialog_t = false;
-            if (this.editor.tags.tName == null || this.editor.tags.tName == ''){
-                this.$message({
-                    type: 'error',
-                    message: '输入的信息不能为空',
-                    duration: 6000
+                if (this.dialogFlag == '标签') {
+                    flag = api.save('tags')
+                }
+                console.log('请求API：' + flag + ', 数据：' + this.editor.name);
+                this.$http.post(flag, JSON.stringify(this.editor)).then(result => {
+                    if (result.body.code == 20000) {
+                        this.$message({
+                            type: 'success',
+                            message: result.body.data,
+                            duration: 6000
+                        });
+                    } else {
+                        this.$message({
+                            type: 'danger',
+                            message: result.body.data,
+                            duration: 6000
+                        });
+                    }
+                    this.reloadList(flag.substring(1, flag.lastIndexOf('/')));
                 });
-                return false;
+            } else {
+                //更新
+                if (this.dialogFlag == '分类') {
+                    flag = api.update('category')
+                }
+                if (this.dialogFlag == '标签') {
+                    flag = api.update('tags')
+                }
+                console.log('请求API：' + flag + ', 数据：' + this.editor.name);
+                this.$http.put(flag, JSON.stringify(this.editor)).then(result => {
+                    if (result.body.code == 20000) {
+                        this.$message({
+                            type: 'success',
+                            message: result.body.data,
+                            duration: 6000
+                        });
+                    } else {
+                        this.$message({
+                            type: 'danger',
+                            message: result.body.data,
+                            duration: 6000
+                        });
+                    }
+                    this.reloadList(flag.substring(1, flag.lastIndexOf('/')));
+                });
             }
-            this.$http.post('/tags/save', JSON.stringify(this.editor.tags)).then(result => {
-                if (result.body.code == 20000){
-                    this.reloadList_t();
-                }else{
-                    this.$message({
-                        type: 'info',
-                        message: result.body.data,
-                        duration: 6000
-                    });
-                    this.reloadList_t();
-                }
-            });
+
         },
 
-        //更新按钮（表格）
-        handleEdit(id) {
-            this.config.editDialog = true;
-            this.editor.category = {}; //清空表单
-            //查询当前id对应的数据
-            this.$http.get('/category/findById?id=' + id).then(result => {
-                this.editor.category = result.body.data;
-            });
-        },
-        edit(){
-            this.config.editDialog = false;
-            //查询当前id对应的数据
-            this.$http.put('/category/update', JSON.stringify(this.editor.category)).then(result => {
-                this.reloadList();
-                if (result.body.code == 20000){
-                    this.$message({
-                        type: 'success',
-                        message: result.body.data,
-                        duration: 6000
-                    });
-                } else{
-                    this.$message({
-                        type: 'error',
-                        message: result.body.data,
-                        duration: 6000
-                    });
-                }
-            });
-            this.editor.category = {}; //清空表单
-        },
-        handleEdit_t(id){
-            this.config.editDialog_t = true;
-            this.editor.tags = {}; //清空表单
-            //查询当前id对应的数据
-            this.$http.get('/tags/findById?id=' + id).then(result => {
-                this.editor.tags = result.body.data;
-            });
-        },
-        edit_t(){
-            this.config.editDialog_t = false;
-            //查询当前id对应的数据
-            this.$http.put('/tags/update', JSON.stringify(this.editor.tags)).then(result => {
-                this.reloadList_t();
-                if (result.body.code == 20000){
-                    this.$message({
-                        type: 'success',
-                        message: result.body.data,
-                        duration: 6000
-                    });
-                } else{
-                    this.$message({
-                        type: 'error',
-                        message: result.body.data,
-                        duration: 6000
-                    });
-                }
-            });
-            this.editor.tags = {}; //清空表单
-        },
-
-        init(){
+        init() {
             //已登录用户名
-            this.$http.get('/admin/info').then(result => {
-                this.config.token.name = result.body.data.name;
+            this.$http.get(api.info).then(result => {
+                this.token.name = result.body.data.name;
             });
         },
+
+        isMobile() {
+            const rect = body.getBoundingClientRect();
+            return rect.width - RATIO < WIDTH
+        },
+
+        handleSidebar() {
+            if (this.sidebarStatus) {
+                this.sidebarFlag = ' hideSidebar ';
+                this.sidebarStatus = false;
+
+            } else {
+                this.sidebarFlag = ' openSidebar ';
+                this.sidebarStatus = true;
+            }
+            const isMobile = this.isMobile();
+            if (isMobile) {
+                this.sidebarFlag += ' mobile ';
+                this.mobileStatus = true;
+            }
+        },
+        //蒙版
+        drawerClick() {
+            this.sidebarStatus = false;
+            this.sidebarFlag = ' hideSidebar mobile '
+        }
 
     },
     // 生命周期函数
     created() {
-        this.search(this.pageConf.pageCode, this.pageConf.pageSize);
-        this.search_t(this.pageConf.pageCode_t, this.pageConf.pageSize_t);
+        this.search('category', this.pageConf.pageCode, this.pageConf.pageSize);
+        this.search('tags', this.pageConf.t_pageCode, this.pageConf.t_pageSize);
         this.init();
+
+        const isMobile = this.isMobile();
+        if (isMobile) {
+            //手机访问
+            this.sidebarFlag = ' hideSidebar mobile ';
+            this.sidebarStatus = false;
+            this.mobileStatus = true;
+        }
+
     },
 });

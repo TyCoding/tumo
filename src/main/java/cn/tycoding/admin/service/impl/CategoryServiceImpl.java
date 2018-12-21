@@ -75,7 +75,7 @@ public class CategoryServiceImpl implements CategoryService {
      * @return
      */
     private boolean exists(Category category) {
-        return categoryMapper.exists(category.getcName());
+        return categoryMapper.exists(category.getName());
     }
 
     @Override
@@ -84,7 +84,6 @@ public class CategoryServiceImpl implements CategoryService {
             if (category.getId() != 0) {
                 categoryMapper.update(category);
             }
-            throw new ResultException(ResultEnums.PARAMETER_ERROR);
         } catch (Exception e) {
             e.printStackTrace();
             throw new ResultException(ResultEnums.INNER_ERROR);

@@ -27,24 +27,24 @@
     <insert id="save" parameterType="Category">
         INSERT  INTO
         tb_category(
-          c_name
+          name
         )
         VALUES(
-          #{cName}
+          #{name}
         )
     </insert>
 
     <!-- 查询是否存在 -->
     <select id="exists" resultType="Boolean">
-        SELECT COUNT(1) FROM tb_category WHERE c_name = #{name}
+        SELECT COUNT(1) FROM tb_category WHERE name = #{name}
     </select>
 
     <!-- 更新 -->
     <update id="update" parameterType="Category">
         UPDATE ignore tb_category
         <set>
-            <if test="cName != null">
-                c_name = #{cName}
+            <if test="name != null">
+                name = #{name}
             </if>
         </set>
         WHERE id = #{id}
@@ -57,12 +57,12 @@
 
     <!-- 根据name查询 -->
     <select id="findByName" resultType="Category">
-        SELECT * FROM tb_category WHERE c_name = #{name}
+        SELECT * FROM tb_category WHERE name = #{name}
     </select>
 
     <!-- 根据文章id查询其关联分类表中的数据 -->
     <select id="findCategoryByArticleId" parameterType="long" resultType="Category">
-        SELECT c.c_name FROM tb_article a, tb_category c, tb_article_category ac
+        SELECT c.name FROM tb_article a, tb_category c, tb_article_category ac
         WHERE a.id = ac.article_id AND c.id = ac.category_id AND a.id = #{id}
     </select>
 

@@ -66,12 +66,12 @@ public class ArticleServiceImpl implements ArticleService {
         for (Article article : list) {
             List<Category> categoryList = categoryService.findByArticleId(article.getId());
             if (categoryList.size() > 0) {
-                article.setCategory(categoryList.get(0).getcName());
+                article.setCategory(categoryList.get(0).getName());
             }
             List<Tags> tagsList = tagsService.findByArticleId(article.getId());
             List<String> stringList = new ArrayList<>();
             for (Tags tags : tagsList) {
-                stringList.add(tags.gettName());
+                stringList.add(tags.getName());
             }
             article.setTags(JSON.toJSONString(tagsList));
         }

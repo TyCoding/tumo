@@ -9,7 +9,7 @@ import java.io.Serializable;
 public class Links implements Serializable {
 
     private long id; //编号
-    private String lName; //连接名称
+    private String name; //连接名称
     private String url; //连接URL
 
     public long getId() {
@@ -20,12 +20,12 @@ public class Links implements Serializable {
         this.id = id;
     }
 
-    public String getlName() {
-        return lName;
+    public String getName() {
+        return name;
     }
 
-    public void setlName(String lName) {
-        this.lName = lName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getUrl() {
@@ -34,14 +34,5 @@ public class Links implements Serializable {
 
     public void setUrl(String url) {
         this.url = url;
-    }
-
-    @Override
-    public String toString() {
-        return "Links{" +
-                "id=" + id +
-                ", lName='" + lName + '\'' +
-                ", url='" + url + '\'' +
-                '}';
     }
 }

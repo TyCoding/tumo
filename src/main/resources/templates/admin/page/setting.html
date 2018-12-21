@@ -18,18 +18,17 @@
 <body>
 <!-- vue入口 -->
 <div id="app">
-    <!-- 布局容器 -->
-    <div class="pull-height">
+    <div :class="'app-wrapper' + sidebarFlag">
         <!-- aside -->
         <div th:replace="admin/side :: side"></div>
 
         <!-- container -->
-        <el-container id="main" :class="{main_close:config.isCollapse}">
+        <el-container class="main-container">
             <!-- header -->
             <div style="background-color: rgb(84, 92, 100);" th:replace="admin/header :: header"></div>
 
             <!-- main -->
-            <el-main>
+            <el-main class="app-main">
                 <el-card>
                     <h2>系统设置</h2>
                     <div>

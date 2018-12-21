@@ -9,13 +9,18 @@ import java.io.Serializable;
 public class Category implements Serializable {
 
     private long id; //编号
-    private String cName; //分类名称
+    private String name; //分类名称
 
     public Category() {
     }
 
-    public Category(String cName) {
-        this.cName = cName;
+    public Category(String name) {
+        this.name = name;
+    }
+
+    public Category(long id, String name) {
+        this.id = id;
+        this.name = name;
     }
 
     public long getId() {
@@ -26,19 +31,19 @@ public class Category implements Serializable {
         this.id = id;
     }
 
-    public String getcName() {
-        return cName;
+    public String getName() {
+        return name;
     }
 
-    public void setcName(String cName) {
-        this.cName = cName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
     public String toString() {
         return "Category{" +
                 "id=" + id +
-                ", cName='" + cName + '\'' +
+                ", name='" + name + '\'' +
                 '}';
     }
 }

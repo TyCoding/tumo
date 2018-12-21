@@ -3,6 +3,7 @@ package cn.tycoding.admin.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -13,6 +14,7 @@ import java.util.Date;
 public class Article implements Serializable {
 
     private long id; //编号
+    @NotNull
     private String title; //标题
     private String titlePic; //封面图片
     private String category; //分类

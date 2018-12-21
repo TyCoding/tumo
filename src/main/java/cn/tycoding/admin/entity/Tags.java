@@ -9,13 +9,18 @@ import java.io.Serializable;
 public class Tags implements Serializable {
 
     private long id; //编号
-    private String tName; //标签名称
+    private String name; //标签名称
 
     public Tags() {
     }
 
-    public Tags(String tName) {
-        this.tName = tName;
+    public Tags(String name) {
+        this.name = name;
+    }
+
+    public Tags(long id, String name) {
+        this.id = id;
+        this.name = name;
     }
 
     public long getId() {
@@ -26,19 +31,12 @@ public class Tags implements Serializable {
         this.id = id;
     }
 
-    public String gettName() {
-        return tName;
+    public String getName() {
+        return name;
     }
 
-    public void settName(String tName) {
-        this.tName = tName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    @Override
-    public String toString() {
-        return "Tags{" +
-                "id=" + id +
-                ", tName='" + tName + '\'' +
-                '}';
-    }
 }

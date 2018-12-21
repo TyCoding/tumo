@@ -10,9 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * @auther TyCoding
  * @date 2018/10/3
@@ -126,16 +123,11 @@ public class AdminController {
      */
     @ResponseBody
     @RequestMapping(value = "/info", method = RequestMethod.GET)
-    public Result getUserInfo(String token) {
+    public Result info(String token) {
         try {
             Subject subject = SecurityUtils.getSubject();
             String name = (String) subject.getPrincipal();
-            if (name != null) {
-                Map map = new HashMap();
-                map.put("name", name);
-                return new Result(StatusCode.SUCCESS, map);
-            }
-            return new Result(StatusCode.ERROR, ResultEnums.INNER_ERROR);
+            return new Result(StatusCode.SUCCESS, userService.findByName(name));
         } catch (Exception e) {
             e.printStackTrace();
             return new Result(StatusCode.ERROR, ResultEnums.INNER_ERROR);
@@ -146,6 +138,6 @@ public class AdminController {
     public String logout() {
         Subject subject = SecurityUtils.getSubject();
         subject.logout();
-        return "redirect:/admin/login";
+        return "redirect:/admin";
     }
 }
