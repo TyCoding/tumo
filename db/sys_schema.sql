@@ -212,7 +212,7 @@ CREATE TABLE `tb_user` (
 -- Records of tb_user
 -- ----------------------------
 BEGIN;
-INSERT INTO `tb_user` VALUES (1, 'tycoding', '菜鸡一枚sss', '0a50cd07704a138cf51c8f5d7f7fc39d', '9a924d8ae9800c229c892eeba7d413a6', '233333@qq.com', 'http://img.api.tycoding.cn/avatar.jpg');
+INSERT INTO `tb_user` VALUES (1, 'tycoding', '菜鸡一枚sss', 'b9fd429a10b73d2c0971db1d4ad975a9', '9a924d8ae9800c229c892eeba7d413a6', '233333@qq.com', 'http://img.api.tycoding.cn/avatar.jpg');
 COMMIT;
 
 SET FOREIGN_KEY_CHECKS = 1;
