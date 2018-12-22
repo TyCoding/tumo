@@ -5,7 +5,7 @@
 Tumo Blog是一个基于SpringBoot2开发的博客系统。博客前台UI移植自[@pinghsu](https://github.com/chakhsu/pinghsu)主题，因为原主题是基于PHP的，所以我不能直接使用它，但是非常感谢[@pinghsu](https://github.com/chakhsu/pinghsu)的作者。
 Tumo Blog的后台管理页面基于ElementUI绘制，后台管理通过ajax异步交互，相当于前后端半分离吧。如果你觉得它不错，请为他点赞支持。
 
-注意：本博客系统仍在不断的维护开发中，一些细节仍在处理。当前系统适合正在学习SSM框架的同学。陆续，我会发布基于Vue、Angular（node.js）的前后端完全分离的版本，如果你喜欢，请持续关注了(#^.^#)。
+注意：本博客系统仍在不断的维护开发中，一些细节仍在处理。当前系统适合正在学习SSM&&SpringBoot框架的同学。陆续，我会发布基于Vue、Angular（node.js）的前后端完全分离的版本，如果你喜欢，请持续关注了(#^.^#)。
 
 演示站点: [http://tumo.tycoding.cn](http://tumo.tycoding.cn)
 
@@ -39,6 +39,8 @@ Tumo Blog是一个基于SpringBoot-2.x框架的博客系统。如果你已经熟
 
 **Blog:** [tycoding.cn](http://tycoding.cn)
 
+初始账户：tycoding  密码：123456
+
 
 ## 后台
 
@@ -56,3 +58,5 @@ Tumo Blog是一个基于SpringBoot-2.x框架的博客系统。如果你已经熟
 ![](http://img.api.tycoding.cn/login-phone.png)
 ![](http://img.api.tycoding.cn/admin-phone2.png)
 ![](http://img.api.tycoding.cn/cover-phone.png)
+
+更多预览请部署后查看

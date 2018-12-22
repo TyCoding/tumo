@@ -1,7 +1,7 @@
 //设置全局表单提交格式
 Vue.http.options.emulateJSON = true;
 
-const { body } = document;
+const {body} = document;
 const WIDTH = 1024;
 const RATIO = 3;
 
@@ -10,65 +10,25 @@ var vm = new Vue({
     el: '#app',
     data() {
         return {
-            //实体类
-            entity: {
-                user: {
-                    id: '',
-                    username: '',
-                    password: '',
-                    email: ''
-                },
-            },
-            editor: {
-                user: {
-                    id: '',
-                    username: '',
-                    password: '',
-                    email: ''
-                },
+            user: {
+                id: '',
+                username: '',
+                password: '',
+                email: ''
             },
 
-            //一些额外的配置属性
-            config: {
-                defaultActive: '10',
-
-                //===========侧边栏===========
-                name: '',
-                isCollapse: false,
-                side_close_flag: true,
-
-                token: {name: ''},
-            },
-
-
+            defaultActive: '10',
+            token: {name: ''},
             mobileStatus: false, //是否是移动端
             sidebarStatus: true, //侧边栏状态，true：打开，false：关闭
             sidebarFlag: ' openSidebar ', //侧边栏标志
         }
     },
     methods: {
-
-        //===============侧边栏&&顶栏================
-        //顶栏触发事件
-        handleSelect(key, keyPath) {
-            console.log(key, keyPath);
-        },
-        //打开侧边栏
-        handleOpen(key, keyPath) {
-            console.log(key, keyPath);
-        },
-        //关闭侧边栏
-        handleClose(key, keyPath) {
-            console.log(key, keyPath);
-        },
-        //侧边栏触发事件
-        handleSideSelect(key, keyPath){
-        },
-
-        init(){
+        init() {
             //已登录用户名
             this.$http.get('/admin/info').then(result => {
-                this.config.token.name = result.body.data.name;
+                this.token.name = result.body.data.name;
             });
         },
 
@@ -93,7 +53,7 @@ var vm = new Vue({
             }
         },
         //蒙版
-        drawerClick(){
+        drawerClick() {
             this.sidebarStatus = false;
             this.sidebarFlag = ' hideSidebar mobile '
         }
@@ -105,9 +65,9 @@ var vm = new Vue({
         const isMobile = this.isMobile();
         if (isMobile) {
             //手机访问
-            this.sidebarFlag = ' hideSidebar mobile '
+            this.sidebarFlag = ' hideSidebar mobile ';
+            this.sidebarStatus = false;
             this.mobileStatus = true;
         }
-
     },
 });
