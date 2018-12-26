@@ -1,5 +1,6 @@
 package cn.tycoding.admin.entity;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 /**
@@ -9,7 +10,9 @@ import java.io.Serializable;
 public class ArticleCategory implements Serializable {
 
     private long id; //编号
+    @NotNull
     private long articleId; //文章ID
+    @NotNull
     private long categoryId; //分类ID
 
     public ArticleCategory() {

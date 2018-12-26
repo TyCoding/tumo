@@ -1,5 +1,6 @@
 package cn.tycoding.admin.entity;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 /**
@@ -9,6 +10,7 @@ import java.io.Serializable;
 public class Tags implements Serializable {
 
     private long id; //编号
+    @NotNull
     private String name; //标签名称
 
     public Tags() {

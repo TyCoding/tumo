@@ -3,6 +3,7 @@ package cn.tycoding.admin.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -17,6 +18,7 @@ public class Comments implements Serializable {
     private long cId; //子级ID，给哪个留言评论
     private String articleTitle; //文章标题
     private long articleId; //文章ID
+    @NotNull
     private String author; //留言人
     private String authorId; //给谁回复，即`@`谁
     private String email; //留言邮箱
