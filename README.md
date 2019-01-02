@@ -17,6 +17,20 @@ Tumo Blog的后台管理页面基于ElementUI绘制，后台管理通过ajax异�
 
 [快速开始](https://github.com/TyCoding/tumo/wiki/%E5%A6%82%E4%BD%95%E9%83%A8%E7%BD%B2Tumo-Blog)
 
+## Vue版本
+
+本博客也有基于Vue组件开发的前后端完全分离的版本，如果你已经熟悉的传统的SSM框架开发模式，或许你可以尝试一下前后端分离的开发模式，那么 [https://github.com/TyCoding/tumo-vue](https://github.com/TyCoding/tumo-vue)就是一个不错的选择。
+
+同时也欢迎大家借此项目进行二次开发。详细介绍请看：[https://github.com/TyCoding/tumo-vue](https://github.com/TyCoding/tumo-vue)
+
+如果大家喜欢、或是对大家的学习有所帮助，请点击右上角star、fork 给作者一些鼓励。
+
+### 链接
+
+项目地址：[TyCoding/tumo-vue](https://github.com/TyCoding/tumo-vue)
+预览站点：[tumo-vue.tycoding.cn](http://tumo-vue.tycoding.cn/)
+后台地址：[tumo-vue.tycoding.cn/login](http://tumo-vue.tycoding.cn/login)
+
 # 特点
 
 * 简约的设计，漂亮的界面。
