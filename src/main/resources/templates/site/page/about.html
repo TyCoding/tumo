@@ -18,7 +18,7 @@
 <link rel="stylesheet" th:href="@{/site/css/about.css}"/>
 
 <!-- main -->
-<div id="main">
+<div id="main" style="background: #fff">
     <article role="pge-title-content" class="main-content page-page" itemscope itemtype="http://schema.org/Article">
         <div class="post-header">
             <h1 class="post-title" itemprop="name headline">关于</h1>
@@ -76,7 +76,7 @@
                     <div th:id="'comment-' + ${comment.parent.id}">
                         <div class="comment-view">
                             <div class="comment-header">
-                                <img class="avatar" th:src="@{/public/author.png}" width="80" height="80">
+                                <img class="avatar" src="http://cdn.tycoding.cn/author.png" width="80" height="80">
                                 <span class="comment-author">
                                     <a th:href="${comment.parent.url}" target="_blank" rel="external nofollow" th:text="${comment.parent.author}"></a>
                                 </span>
@@ -100,7 +100,7 @@
                                 <div th:id="'comment-' + ${item.id}">
                                     <div class="comment-view">
                                         <div class="comment-header">
-                                            <img class="avatar" th:src="@{/public/author.png}" width="80" height="80">
+                                            <img class="avatar" src="http://cdn.tycoding.cn/author.png" width="80" height="80">
                                             <span class="comment-author comment-by-author">
                                             <a th:href="${item.url}" target="_blank" rel="external nofollow" th:text="${item.author}"></a>
                                         </span>

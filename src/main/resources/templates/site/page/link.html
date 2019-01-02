@@ -15,7 +15,7 @@
 <!-- header -->
 <div th:replace="site/header :: header"></div>
 
-<div id="app">
+<div id="app" style="background: #fff">
     <article class="main-content page-page">
         <div class="post-header">
             <h1 class="post-title" itemprop="name headline">友情链接</h1>
@@ -26,7 +26,7 @@
         <div id="post-content" class="post-content">
             <h2>友情链接</h2>
             <ul>
-                <li th:each="link : ${links}"><a th:href="${link.url}" target="_blank" th:text="${link.lName}"></a></li>
+                <li th:each="link : ${links}"><a th:href="${link.url}" target="_blank" th:text="${link.name}"></a></li>
             </ul>
             <h2>链接须知</h2>
             <blockquote>

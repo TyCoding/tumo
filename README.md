@@ -5,7 +5,7 @@
 > 'Tumo'是一个中文单词，Tumo用中文解释为 **道路** 的意思，希望可以通过博客来记录自己学习的历程。
 
 Tumo Blog是一个基于SpringBoot2开发的博客系统。博客前台UI移植自[@pinghsu](https://github.com/chakhsu/pinghsu)主题，因为原主题是基于PHP的，所以我不能直接使用它，但是非常感谢[@pinghsu](https://github.com/chakhsu/pinghsu)的作者。
-Tumo Blog的后台管理页面基于ElementUI绘制，后台管理通过ajax异步交互，相当于前后端半分离吧。如果你觉得它不错，欢迎 star flok。
+Tumo Blog的后台管理页面基于ElementUI绘制，后台管理通过ajax异步交互，相当于前后端半分离吧。如果你觉得它不错，欢迎 star fork。
 
 注意：本博客系统仍在不断的维护开发中，欢迎提出合理的建议。当前系统适合正在学习SSM&&SpringBoot框架的同学。陆续，我会发布基于Vue、Angular（node.js）的前后端完全分离的版本，如果你喜欢，请持续关注了(#^.^#)。
 
