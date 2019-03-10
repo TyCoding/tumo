@@ -1,10 +1,10 @@
 package cn.tycoding.admin.service;
 
 import cn.tycoding.admin.dto.ArticleArchives;
-import cn.tycoding.admin.dto.PageBean;
 import cn.tycoding.admin.entity.Article;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @auther TyCoding
@@ -15,11 +15,9 @@ public interface ArticleService extends BaseService<Article> {
     /**
      * 分页查询（为博客前端服务）
      *
-     * @param pageCode
-     * @param pageSize
      * @return
      */
-    PageBean findByPageForSite(Integer pageCode, Integer pageSize);
+    Map<String, Object> findByPageForSite(int pageCode, int pageSize);
 
     /**
      * 根据分类名称查询文章数据
@@ -48,5 +46,5 @@ public interface ArticleService extends BaseService<Article> {
     /**
      * 增加文章浏览量
      */
-    void addEyeCount(long id);
+    void addEyeCount(Long id);
 }

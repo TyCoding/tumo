@@ -1,11 +1,10 @@
 package cn.tycoding.admin.controller;
 
-import cn.tycoding.admin.dto.Result;
-import cn.tycoding.admin.dto.StatusCode;
+import cn.tycoding.admin.dto.QueryPage;
+import cn.tycoding.admin.dto.ResponseCode;
 import cn.tycoding.admin.entity.Comments;
-import cn.tycoding.admin.enums.ResultEnums;
+import cn.tycoding.admin.exception.GlobalException;
 import cn.tycoding.admin.service.CommentsService;
-import cn.tycoding.admin.utils.CheckValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,29 +15,24 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @SuppressWarnings("all")
 @RequestMapping("/comments")
-public class CommentsController {
+public class CommentsController extends BaseController {
 
     @Autowired
     private CommentsService commentsService;
 
-    @RequestMapping(value = "/findAllCount", method = RequestMethod.GET)
-    public Result findAllCount() {
-        return new Result(StatusCode.SUCCESS, commentsService.findAllCount());
+    @GetMapping(value = "/findAllCount")
+    public ResponseCode findAllCount() {
+        return ResponseCode.success(commentsService.findAllCount());
     }
 
-    @RequestMapping(value = "/findAll", method = RequestMethod.GET)
-    public Result findAll() {
-        return new Result(StatusCode.SUCCESS, commentsService.findAll());
+    @GetMapping(value = "/findAll")
+    public ResponseCode findAll() {
+        return ResponseCode.success(commentsService.findAll());
     }
 
-    @RequestMapping(value = "/findByPage", method = RequestMethod.POST)
-    public Result findByPage(Comments comments,
-                             @RequestParam(value = "pageCode", required = false) Integer pageCode,
-                             @RequestParam(value = "pageSize", required = false) Integer pageSize) {
-        if (CheckValue.checkPage(pageCode, pageSize)) {
-            return new Result(StatusCode.SUCCESS, commentsService.findByPage(comments, pageCode, pageSize));
-        }
-        return new Result(StatusCode.PARAMETER_ERROR, ResultEnums.PARAMETER_ERROR);
+    @PostMapping(value = "/findByPage")
+    public ResponseCode findByPage(QueryPage queryPage, Comments comments) {
+        return ResponseCode.success(super.selectByPageNumSize(queryPage, () -> commentsService.findByPage(comments)));
     }
 
     /**
@@ -47,12 +41,9 @@ public class CommentsController {
      * @param articleId
      * @return
      */
-    @RequestMapping(value = "/findCountByArticleId", method = RequestMethod.GET)
-    public Result findCountByArticleId(@RequestParam("articleId") Long articleId) {
-        if (CheckValue.checkId(articleId)) {
-            return new Result(StatusCode.SUCCESS, commentsService.findCountByArticle(articleId));
-        }
-        return new Result(StatusCode.PARAMETER_ERROR, ResultEnums.PARAMETER_ERROR);
+    @GetMapping(value = "/findCountByArticleId")
+    public ResponseCode findCountByArticleId(@RequestParam("articleId") Long articleId) {
+        return ResponseCode.success(commentsService.findCountByArticle(articleId));
     }
 
     /**
@@ -64,63 +55,46 @@ public class CommentsController {
      * @param sort      分类，规定：sort=0表示文章详情页的评论信息；sort=1表示友链页的评论信息；sort=2表示关于我页的评论信息
      * @return
      */
-    @RequestMapping(value = "/findCommentsList", method = RequestMethod.GET)
-    public Result findCommentsList(@RequestParam(value = "pageCode", required = false) Integer pageCode,
-                                   @RequestParam(value = "pageSize", required = false) Integer pageSize,
-                                   @RequestParam(value = "articleId", required = false) Integer articleId) {
-        if (CheckValue.checkPageIds(pageCode, pageSize, articleId)) {
-            return new Result(StatusCode.SUCCESS, commentsService.findCommentsList(pageCode, pageSize, articleId, 0));
-        }
-        return new Result(StatusCode.PARAMETER_ERROR, ResultEnums.PARAMETER_ERROR);
+    @GetMapping(value = "/findCommentsList")
+    public ResponseCode findCommentsList(QueryPage queryPage, Integer articleId) {
+        return ResponseCode.success(commentsService.findCommentsList(queryPage.getPageCode(), queryPage.getPageSize(), articleId, 0));
     }
 
-    @RequestMapping(value = "/findById", method = RequestMethod.GET)
-    public Result findById(@RequestParam("id") Long id) {
-        if (id != null && id != 0) {
-            return new Result(StatusCode.SUCCESS, commentsService.findById(id));
-        }
-        return new Result(StatusCode.PARAMETER_ERROR, ResultEnums.PARAMETER_ERROR);
+    @GetMapping(value = "/findById")
+    public ResponseCode findById(@RequestParam("id") Long id) {
+        return ResponseCode.success(commentsService.findById(id));
     }
 
-    @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public Result save(@RequestBody Comments comments) {
-        if (CheckValue.checkObj(comments)) {
-            try {
-                commentsService.save(comments);
-                return new Result(StatusCode.SUCCESS, ResultEnums.SUCCESS);
-            } catch (Exception e) {
-                e.printStackTrace();
-                return new Result(StatusCode.ERROR, e.getMessage());
-            }
+    @PostMapping(value = "/save")
+    public ResponseCode save(@RequestBody Comments comments) {
+        try {
+            commentsService.save(comments);
+            return ResponseCode.success();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new GlobalException(e.getMessage());
         }
-        return new Result(StatusCode.PARAMETER_ERROR, ResultEnums.PARAMETER_ERROR);
     }
 
-    @RequestMapping(value = "/update", method = RequestMethod.PUT)
-    public Result update(@RequestBody Comments comments) {
-        if (CheckValue.checkObj(comments)) {
-            try {
-                commentsService.update(comments);
-                return new Result(StatusCode.SUCCESS, ResultEnums.SUCCESS);
-            } catch (Exception e) {
-                e.printStackTrace();
-                return new Result(StatusCode.ERROR, e.getMessage());
-            }
+    @PutMapping(value = "/update")
+    public ResponseCode update(@RequestBody Comments comments) {
+        try {
+            commentsService.update(comments);
+            return ResponseCode.success();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new GlobalException(e.getMessage());
         }
-        return new Result(StatusCode.PARAMETER_ERROR, ResultEnums.PARAMETER_ERROR);
     }
 
-    @RequestMapping(value = "/delete", method = RequestMethod.POST)
-    public Result delete(@RequestBody Long... ids) {
-        if (CheckValue.checkIds(ids)) {
-            try {
-                commentsService.delete(ids);
-                return new Result(StatusCode.SUCCESS, ResultEnums.SUCCESS);
-            } catch (Exception e) {
-                e.printStackTrace();
-                return new Result(StatusCode.ERROR, e.getMessage());
-            }
+    @PostMapping(value = "/delete")
+    public ResponseCode delete(@RequestBody Long... ids) {
+        try {
+            commentsService.delete(ids);
+            return ResponseCode.success();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new GlobalException(e.getMessage());
         }
-        return new Result(StatusCode.PARAMETER_ERROR, ResultEnums.PARAMETER_ERROR);
     }
 }

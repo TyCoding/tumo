@@ -5,19 +5,20 @@
     <title>登录</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <link rel="icon" th:href="@{/public/admin/favicon.png}" type="image/png">
-    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <link rel="stylesheet" th:href="@{/lib/element-ui/lib/theme-chalk/index.css}"/>
     <link rel="stylesheet" th:href="@{/admin/css/login.css}">
     <link rel="stylesheet" th:href="@{/lib/font/icon/iconfont.css}">
-
-    <!--[if lt IE 9]>
-    <script src="//cdn.bootcss.com/html5shiv/r29/html5.min.js"></script>
-    <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-
 </head>
 <body>
 <div id="app">
-    <div v-if="true" id="login">
+    <div class="page-loader" ref="loader">
+        <div class="page-loader__spinner">
+            <svg viewBox="25 25 50 50">
+                <circle cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/>
+            </svg>
+        </div>
+    </div>
+    <div id="login">
         <el-main id="main">
             <el-row type="flex" class="row-bg" justify="center">
                 <el-col :xs="24" :sm="12" :md="8" :lg="6" :xl="5">
@@ -55,8 +56,8 @@
     </div>
 </div>
 </body>
-<script src="https://cdn.jsdelivr.net/npm/vue"></script>
-<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<script type="text/javascript" th:src="@{/lib/vue/vue.min.js}"></script>
+<script type="text/javascript" th:src="@{/lib/element-ui/lib/index.js}"></script>
 <script type="text/javascript" th:src="@{/lib/vue/vue-resource.min.js}"></script>
 <script type="text/javascript" th:src="@{/admin/js/login.js}"></script>
 </html>

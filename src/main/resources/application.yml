@@ -35,9 +35,6 @@ spring:
 
     #devtools插件
   devtools:
-    livereload:
-      enabled: true #是否支持livereload
-      port: 35729
     restart:
       enabled: true #是否支持热部署
 
@@ -47,20 +44,11 @@ spring:
       max-file-size: 10Mb
       max-request-size: 100Mb
 
-#  resources:
-#    #强调springboot的配置文件位置
-#    static-locations: classpath:static/,file:static/
-
 #mybatis配置
 mybatis:
   mapper-locations: classpath:mapper/**/*.xml
   type-aliases-package: cn.tycoding.admin.entity
   configuration:
-    # 使用jdbc的getGeneratedKeys 可以获取数据库自增主键值
-    use-generated-keys: true
-    # 使用列别名替换列名，默认true。如：select name as title from table
-    use-column-label: true
-    # 开启驼峰命名转换，如：Table(create_time) -> Entity(createTime)。不需要我们关心怎么进行字段匹配，mybatis会自动识别`大写字母与下划线`
     map-underscore-to-camel-case: true
 
 #mybaatis分页插件pagehelper设置
@@ -68,8 +56,6 @@ pagehelper:
   pagehelperDialect: mysql
   reasonable: true
   support-methods-arguments: true
-  #params: count=countSql
-
 
 # 打印sql
 logging:

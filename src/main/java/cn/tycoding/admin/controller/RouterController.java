@@ -1,11 +1,6 @@
 package cn.tycoding.admin.controller;
 
-import cn.tycoding.admin.dto.Result;
-import cn.tycoding.admin.dto.StatusCode;
-import cn.tycoding.admin.enums.ResultEnums;
 import cn.tycoding.admin.service.UserService;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @Controller
 @RequestMapping("/admin")
-public class AdminController {
+public class RouterController {
 
     @Autowired
     private UserService userService;
@@ -114,30 +109,5 @@ public class AdminController {
     @GetMapping(value = {"/setting"})
     public String setting() {
         return "admin/page/setting";
-    }
-
-    /**
-     * 根据登录token获取登录信息
-     * @param token
-     * @return
-     */
-    @ResponseBody
-    @RequestMapping(value = "/info", method = RequestMethod.GET)
-    public Result info(String token) {
-        try {
-            Subject subject = SecurityUtils.getSubject();
-            String name = (String) subject.getPrincipal();
-            return new Result(StatusCode.SUCCESS, userService.findByName(name));
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new Result(StatusCode.ERROR, ResultEnums.INNER_ERROR);
-        }
-    }
-
-    @RequestMapping(value = "/logout", method = RequestMethod.GET)
-    public String logout() {
-        Subject subject = SecurityUtils.getSubject();
-        subject.logout();
-        return "redirect:/admin";
     }
 }

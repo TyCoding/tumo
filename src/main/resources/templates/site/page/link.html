@@ -1,20 +1,11 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <!-- 公共的CSS库 -->
-<head th:include="/site/common/common_head :: commonHead"></head>
+<head th:include="/site/common/head"></head>
 <title>关于 | Tumo Blog</title>
-
-<body class="bg-grey" gtools_scp_screen_capture_injected="true">
-
-<!--[if lt IE 8]>
-<div class="browsehappy" role="dialog">
-    当前网页 <strong>不支持</strong> 你正在使用的浏览器. 为了正常的访问, 请 <a href="http://browsehappy.com/" target="_blank">升级你的浏览器</a>。
-</div>
-<![endif]-->
-
+<body class="bg-grey">
 <!-- header -->
-<div th:replace="site/header :: header"></div>
-
+<div th:replace="site/header"></div>
 <div id="app" style="background: #fff">
     <article class="main-content page-page">
         <div class="post-header">
@@ -131,10 +122,10 @@
     </div>
 
     <!-- footer -->
-    <div th:replace="site/footer :: footer"></div>
+    <div th:replace="site/footer"></div>
 </div>
 <!-- 公共的JS库 -->
-<div th:include="site/common/onload_js ::onloadJS"></div>
+<div th:include="site/common/js"></div>
 </body>
 <script type="text/javascript" th:src="@{/site/js/link.js}"></script>
 </html>

@@ -12,11 +12,11 @@ public interface ArticleCategoryService extends BaseService<ArticleCategory> {
      * 根据文章ID删除
      * @param id
      */
-    void deleteByArticleId(long id);
+    void deleteByArticleId(Long id);
 
     /**
      * 根据分类ID删除
      * @param id
      */
-    void deleteByCategoryId(long id);
+    void deleteByCategoryId(Long id);
 }

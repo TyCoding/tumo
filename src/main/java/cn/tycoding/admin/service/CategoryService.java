@@ -18,5 +18,5 @@ public interface CategoryService extends BaseService<Category> {
      * @param id
      * @return
      */
-    List<Category> findByArticleId(long id);
+    List<Category> findByArticleId(Long id);
 }

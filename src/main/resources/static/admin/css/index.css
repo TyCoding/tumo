@@ -15,7 +15,9 @@
 .num {
     font-size: 30px;
 }
-
+h2,h3{
+    color: #443d3d
+}
 #cards .el-card__body{
     display: flex;
     justify-content: space-between;

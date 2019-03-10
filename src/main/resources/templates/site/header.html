@@ -1,39 +1,28 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-<header id="header" class="header bg-white" th:fragment="header">
+<header id="header" class="header bg-white">
     <div class="navbar-container">
         <a href="/" class="navbar-logo">
             <img src="http://cdn.tycoding.cn/tumo-logo.png" alt="Tumo Blog"/>
         </a>
         <div class="navbar-menu">
-            <a th:href="@{/archives}">归档</a>
-            <a th:href="@{/link}">友链</a>
-            <a th:href="@{/about}">关于</a>
+            <a data-th-href="@{/archives}">归档</a>
+            <a data-th-href="@{/link}">友链</a>
+            <a data-th-href="@{/about}">关于</a>
         </div>
         <div class="navbar-search" onclick="">
             <span class="icon-search"></span>
             <form role="search" onsubmit="return false;">
                 <span class="search-box">
-                    <input type="text" id="search-inp" class="input" placeholder="搜索..." maxlength="30"
-                           autocomplete="off">
+                    <input type="text" id="search-inp" class="input" placeholder="搜索..." maxlength="30" autocomplete="off">
                 </span>
             </form>
         </div>
         <div class="navbar-mobile-menu">
             <span class="icon-menu cross"><span class="middle"></span></span>
             <ul>
-                <li><a th:href="@{/archives}">归档</a></li>
-                <li><a th:href="@{/link}">友链</a></li>
-                <li><a th:href="@{/about}">关于</a></li>
+                <li><a data-th-href="@{/archives}">归档</a></li>
+                <li><a data-th-href="@{/link}">友链</a></li>
+                <li><a data-th-href="@{/about}">关于</a></li>
             </ul>
         </div>
     </div>
 </header>
-
-</body>
-</html>

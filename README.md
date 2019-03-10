@@ -31,6 +31,43 @@ Tumo Blog的后台管理页面基于ElementUI绘制，后台管理通过ajax异�
 预览站点：[tumo-vue.tycoding.cn](http://tumo-vue.tycoding.cn/)
 后台地址：[tumo-vue.tycoding.cn/login](http://tumo-vue.tycoding.cn/login)
 
+## 技术选型
+
+### 后端
+
+* 基础框架：Spring Boot 2.1.3.RELEASE
+
+* 持久层框架：Mybatis 1.3.1
+
+* 安全框架：Shiro
+
+* 模板引擎：Thymeleaf 3.0.11.RELEASE
+
+* 其他：Druid、PageHelper、
+
+### 前端
+
+* 基础框架：ElementUI
+
+* JavaScript框架：Vue.js
+
+### 开发环境
+
+* 语言： JDK1.8
+
+* IDE： IDEA 2018.3
+
+* 依赖管理： Maven
+
+* 数据库： Mysql 5.7.24
+
+## 写在前面
+
+如上，前端完全依赖Vue.js，这和传统依赖Jquery的前端区别还是蛮大的，使用Vue即要用基于Node.js的前后端分离的开发模式，而本项目中仅仅是在HTML中引入了vue.js，虽然不是完全的前后端分离开发，但项目中我尽量使用Vue.js渲染数据，涉及后端的也仅是用到Thymeleaf的`th:replace`拼接页面。看下图：
+
+![](https://tycoding.cn/2019/02/26/spring-boot-thymeleaf-mybatis/3.png)
+
+
 # 特点
 
 * 简约的设计，漂亮的界面。

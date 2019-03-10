@@ -1,10 +1,8 @@
 package cn.tycoding.admin.service.impl;
 
 import cn.tycoding.admin.dto.CommentsDTO;
-import cn.tycoding.admin.dto.PageBean;
 import cn.tycoding.admin.entity.Comments;
-import cn.tycoding.admin.enums.ResultEnums;
-import cn.tycoding.admin.exception.ResultException;
+import cn.tycoding.admin.exception.GlobalException;
 import cn.tycoding.admin.mapper.CommentsMapper;
 import cn.tycoding.admin.service.CommentsService;
 import com.github.pagehelper.Page;
@@ -14,7 +12,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @auther TyCoding
@@ -22,7 +22,6 @@ import java.util.List;
  */
 @Service
 @SuppressWarnings("all")
-@Transactional
 public class CommentsServiceImpl implements CommentsService {
 
     @Autowired
@@ -39,56 +38,64 @@ public class CommentsServiceImpl implements CommentsService {
     }
 
     @Override
-    public PageBean findByPage(Comments comments, int pageCode, int pageSize) {
-        PageHelper.startPage(pageCode, pageSize);
-        Page page = commentsMapper.findByPage(comments);
-        return new PageBean(page.getTotal(), page.getResult());
+    public List<Comments> findByPage(Comments comments) {
+        return commentsMapper.findByPage(comments);
     }
 
     @Override
-    public PageBean findCommentsList(int pageCode, int pageSize, int articleId, int sort) {
+    public Map<String, Object> findCommentsList(Integer pageCode, Integer pageSize, Integer articleId, Integer sort) {
+        Map<String, Object> map = new HashMap<>();
         PageHelper.startPage(pageCode, pageSize);
-
         Page<Comments> page = commentsMapper.findAllId(articleId, sort);
-
         List<Comments> list = commentsMapper.findCommentsList(articleId, sort);
-
         List<CommentsDTO> commentsDTOS = new ArrayList<CommentsDTO>();
 
         /**
          * 封装结果类型结构：
          *      [{{Comments-Parent}, [{Comments-Children}, {Comments-Children}...]}, {{}, [{}, {}, {}...]}]
          */
-        for (Comments comments : list) {
+        list.forEach(comments -> {
             List<Comments> commentsList = new ArrayList<Comments>();
-            if (comments.getpId() == 0 && comments.getcId() == 0) {
+            if (comments.getPId() == 0 && comments.getCId() == 0) {
                 //说明是顶层的文章留言信息
-                for (Comments parent : list) {
-                    if (parent.getpId() != 0) {
-                        if (parent.getpId() == comments.getId()) {
+                list.forEach(parent -> {
+                    if (parent.getPId() != 0) {
+                        if (parent.getPId() == comments.getId()) {
                             //说明属于当前父节点
                             commentsList.add(parent);
                         }
                     }
-                }
+                });
                 commentsDTOS.add(new CommentsDTO(comments, commentsList));
             }
-        }
+        });
         if (page.getTotal() < (pageCode * pageSize) - 1) {
-            return new PageBean(page.getTotal(), commentsDTOS.subList((pageCode - 1) * pageSize, commentsDTOS.size()));
+            map.put("total", page.getTotal());
+            map.put("rows", commentsDTOS.subList((pageCode - 1) * pageSize, commentsDTOS.size()));
+            return map;
         } else {
-            return new PageBean(page.getTotal(), commentsDTOS.subList((pageCode - 1) * pageSize, (pageCode * pageSize) - 1));
+            map.put("total", page.getTotal());
+            map.put("rows", commentsDTOS.subList((pageCode - 1) * pageSize, (pageCode * pageSize) - 1));
+            return map;
         }
     }
 
     @Override
-    public Long findCountByArticle(long articleId) {
-        return commentsMapper.findCountByArticleId(articleId);
+    public Long findCountByArticle(Long articleId) {
+        if (!articleId.equals(null) && articleId != 0) {
+            return commentsMapper.findCountByArticleId(articleId);
+        } else {
+            throw new GlobalException("参数错误");
+        }
     }
 
     @Override
-    public Comments findById(long id) {
-        return commentsMapper.findById(id);
+    public Comments findById(Long id) {
+        if (!id.equals(null) && id != 0) {
+            return commentsMapper.findById(id);
+        } else {
+            throw new GlobalException("参数错误");
+        }
     }
 
     @Override
@@ -97,29 +104,35 @@ public class CommentsServiceImpl implements CommentsService {
             commentsMapper.save(comments);
         } catch (Exception e) {
             e.printStackTrace();
-            throw new ResultException(ResultEnums.ERROR);
+            throw new GlobalException(e.getMessage());
         }
     }
 
     @Override
+    @Transactional
     public void update(Comments comments) {
-        try {
-            commentsMapper.update(comments);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new ResultException(ResultEnums.ERROR);
+        if (comments.getId() != 0) {
+            try {
+                commentsMapper.update(comments);
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw new GlobalException(e.getMessage());
+            }
         }
     }
 
     @Override
+    @Transactional
     public void delete(Long... ids) {
-        try {
-            for (long id : ids) {
-                commentsMapper.delete(id);
+        if (ids.length > 0 && !ids.equals(null)) {
+            try {
+                for (long id : ids) {
+                    commentsMapper.delete(id);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw new GlobalException(e.getMessage());
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new ResultException(ResultEnums.ERROR);
         }
     }
 

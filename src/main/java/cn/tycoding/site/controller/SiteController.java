@@ -1,9 +1,10 @@
 package cn.tycoding.site.controller;
 
-import cn.tycoding.admin.dto.PageBean;
 import cn.tycoding.admin.entity.Article;
 import cn.tycoding.admin.entity.Links;
-import cn.tycoding.admin.service.*;
+import cn.tycoding.admin.service.ArticleService;
+import cn.tycoding.admin.service.CommentsService;
+import cn.tycoding.admin.service.LinksService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 用于博客前端页面跳转的控制层
@@ -29,30 +31,15 @@ public class SiteController {
     private ArticleService articleService;
 
     @Autowired
-    private ArticleTagsService articleTagsService;
-
-    @Autowired
-    private CategoryService categoryService;
-
-    @Autowired
     private CommentsService commentsService;
 
     @Autowired
     private LinksService linksService;
 
-    /**
-     * /
-     * /index
-     *
-     * @return
-     */
     @GetMapping(value = {"", "/", "/index"})
     public String index(Model model) {
-
-        //初始化页面数据
         initIndex(1, model);
         initFooter(model);
-
         return "site/index";
     }
 
@@ -70,17 +57,17 @@ public class SiteController {
         }
         //三个参数：1.pageCode当前页；2.PageSize默认每页显示6条（大）留言；3.文章ID值；4.sort当前是文章详情页，sort=0。
         //规定：sort=0表示文章详情页的评论信息；sort=1表示友链页的评论信息；sort=2表示关于我页的评论信息
-        PageBean talkList = commentsService.findCommentsList(cp, 6, 0, 2);
-
-        model.addAttribute("commentsCount", talkList.getTotal());
-
-        talkList.setTotal((long) Math.ceil((double) talkList.getTotal() / (double) 6));
-        model.addAttribute("talkList", talkList);
-        model.addAttribute("cp", cp);
-        model.addAttribute("sort", 2);
-
-        initFooter(model);
+        getPage(commentsService.findCommentsList(cp, 6, 0, 2), model, cp, 2);
         return "site/page/about";
+    }
+
+    private void getPage(Map<String, Object> map, Model model, Integer cp, Integer sort) {
+        model.addAttribute("commentsCount", map.get("total"));
+        map.put("total", (long) Math.ceil(((Long) map.get("total")).doubleValue() / (double) 6));
+        model.addAttribute("talkList", map);
+        model.addAttribute("cp", cp);
+        model.addAttribute("sort", sort);
+        initFooter(model);
     }
 
     /**
@@ -112,19 +99,8 @@ public class SiteController {
             cp = 1;
         }
         //三个参数：1.pageCode当前页；2.PageSize默认每页显示6条（大）留言；3.文章ID值；4.sort当前是文章详情页，sort=0。
-
-
         //规定：sort=0表示文章详情页的评论信息；sort=1表示友链页的评论信息；sort=2表示关于我页的评论信息
-        PageBean talkList = commentsService.findCommentsList(cp, 6, 0, 1);
-
-        model.addAttribute("commentsCount", talkList.getTotal());
-
-        talkList.setTotal((long) Math.ceil((double) talkList.getTotal() / (double) 6));
-        model.addAttribute("talkList", talkList);
-        model.addAttribute("cp", cp);
-        model.addAttribute("sort", 1);
-
-        initFooter(model);
+        getPage(commentsService.findCommentsList(cp, 6, 0, 1), model, cp, 1);
         return "site/page/link";
     }
 
@@ -156,16 +132,17 @@ public class SiteController {
      */
     private void initIndex(Integer pageCode, Model model) {
         //分页文章数据
-        PageBean page = articleService.findByPageForSite(pageCode, 6);
-        page.setTotal((long) Math.ceil((double) page.getTotal() / (double) 6));
-        model.addAttribute("page", page); //格式：[{...}, {...}, {...}]
-        model.addAttribute("pageCode", pageCode); //格式：1
+        Map<String, Object> map = articleService.findByPageForSite(pageCode, 6);
+        map.put("total", (long) Math.ceil(((Long) map.get("total")).doubleValue() / (double) 6));
+        //格式：[{...}, {...}, {...}]
+        model.addAttribute("page", map);
+        model.addAttribute("pageCode", pageCode);
     }
 
     private void initFooter(Model model) {
-        //网站footer显示数据
-        model.addAttribute("articleList", articleService.findAll()); //格式：[{...}, {...}, {...}]
-        model.addAttribute("commentsList", commentsService.findAll()); //格式：[{...}, {...}, {...}]
+        //网站footer显示数据, 格式：[{...}, {...}, {...}]
+        model.addAttribute("articleList", articleService.findAll());
+        model.addAttribute("commentsList", commentsService.findAll());
     }
 
     @RequestMapping("/article/{id}")
@@ -185,32 +162,12 @@ public class SiteController {
             }
             //三个参数：1.pageCode当前页；2.PageSize默认每页显示6条（大）留言；3.文章ID值；4.sort当前是文章详情页，sort=0。
             //规定：sort=0表示文章详情页的评论信息；sort=1表示友链页的评论信息；sort=2表示关于我页的评论信息
-            PageBean talkList = commentsService.findCommentsList(cp, 6, new Long(id).intValue(), 0);
-
-            model.addAttribute("commentsCount", talkList.getTotal());
-
-            talkList.setTotal((long) Math.ceil((double) talkList.getTotal() / (double) 6));
-            model.addAttribute("talkList", talkList);
-            model.addAttribute("cp", cp);
-
-            initFooter(model);
+            getPage(commentsService.findCommentsList(cp, 6, new Long(id).intValue(), 0), model, cp, 0);
             return "site/page/content";
         } else {
             return "site/index";
         }
     }
-
-    /*@RequestMapping("/category/{name}")
-    public String findArchivesByCategory(@PathVariable("name") String name, Model model) {
-        if (name != null && !name.equals("")) {
-            model.addAttribute("article", articleService.findByCategory(name));
-            model.addAttribute("category", name);
-            initFooter(model);
-            return "/site/page/category";
-        } else {
-            return "site/page/archives";
-        }
-    }*/
 
     @RequestMapping("/search/{name}")
     public String findArchivesByTitle(@PathVariable("name") String title, Model model) {

@@ -11,6 +11,71 @@ body{
     position: relative;
     overflow: hidden;
 }
+h2,h3{
+    color: #443d3d
+}
+.page-loader {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #f3f3f3;
+    z-index: 999999999;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+.page-loader__spinner {
+    position: relative;
+    width: 50px;
+    height: 50px;
+}
+.page-loader__spinner svg {
+    animation: rotate 2s linear infinite;
+    transform-origin: center center;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+.page-loader__spinner svg circle {
+    stroke-dasharray: 1, 200;
+    stroke-dashoffset: 0;
+    animation: dash 1.5s ease-in-out infinite, color 6s ease-in-out infinite;
+    stroke-linecap: round;
+}
+@keyframes dash {
+    0% {
+        stroke-dasharray: 1, 200;
+        stroke-dashoffset: 0;
+    }
+    50% {
+        stroke-dasharray: 89, 200;
+        stroke-dashoffset: -35px;
+    }
+    100% {
+        stroke-dasharray: 89, 200;
+        stroke-dashoffset: -124px;
+    }
+}
+@keyframes color {
+    100%,
+    0% {
+        stroke: #ff5652;
+    }
+    40% {
+        stroke: #2196F3;
+    }
+    66% {
+        stroke: #32c787;
+    }
+    80%,
+    90% {
+        stroke: #ffc107;
+    }
+}
 .fade-enter-active,
 .fade-leave-active {
     -webkit-transition: opacity .28s;

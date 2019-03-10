@@ -37,12 +37,4 @@
           AND t.id = at.tags_id;
     </select>
 
-    <delete id="deleteByArticleId" parameterType="Long">
-        DELETE FROM tb_article_tags WHERE article_id = #{id}
-    </delete>
-
-    <delete id="deleteByTagsId" parameterType="Long">
-        DELETE FROM tb_article_tags WHERE tags_id = #{id}
-    </delete>
-
 </mapper>

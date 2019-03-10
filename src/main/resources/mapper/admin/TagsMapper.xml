@@ -4,30 +4,6 @@
 
 <mapper namespace="cn.tycoding.admin.mapper.TagsMapper">
 
-    <!-- 查询总数量 -->
-    <select id="findAllCount" resultType="Long">
-        SELECT COUNT(*) FROM tb_tags
-    </select>
-
-    <!-- 查询所有 -->
-    <select id="findAll" resultType="Tags">
-        SELECT * FROM tb_tags
-    </select>
-
-    <!-- 条件查询 -->
-    <select id="findByPage" parameterType="Tags" resultType="Tags">
-        SELECT * FROM tb_tags
-        <!--WHERE 1=1-->
-        <!--<if test="author != null">-->
-        <!--AND author LIKE CONCAT('%', #{author}, '%')-->
-        <!--</if>-->
-    </select>
-
-    <!-- 根据ID查询 -->
-    <select id="findById" parameterType="Long" resultType="Tags">
-        SELECT * FROM tb_tags WHERE id = #{id}
-    </select>
-
     <!-- 保存 -->
     <insert id="save" parameterType="Tags">
         INSERT  INTO
@@ -39,11 +15,6 @@
         )
     </insert>
 
-    <!-- 查询是否存在 -->
-    <select id="exists" resultType="Boolean">
-        SELECT COUNT(1) FROM tb_tags WHERE name = #{name}
-    </select>
-
     <!-- 更新 -->
     <update id="update" parameterType="Tags">
         UPDATE ignore tb_tags
@@ -54,15 +25,6 @@
         </set>
         WHERE id = #{id}
     </update>
-
-    <!-- 删除 -->
-    <delete id="delete" parameterType="Long">
-        DELETE FROM tb_tags WHERE id = #{id}
-    </delete>
-
-    <select id="findByName" resultType="Tags">
-        SELECT * FROM tb_tags WHERE name = #{name}
-    </select>
 
     <!--&lt;!&ndash; find by articleId or tagsId &ndash;&gt;
     <select id="findByArticleTagsId" resultType="Tags">

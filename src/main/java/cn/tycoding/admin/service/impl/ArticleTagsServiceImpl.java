@@ -1,10 +1,8 @@
 package cn.tycoding.admin.service.impl;
 
-import cn.tycoding.admin.dto.PageBean;
 import cn.tycoding.admin.entity.ArticleTags;
 import cn.tycoding.admin.entity.Tags;
-import cn.tycoding.admin.enums.ResultEnums;
-import cn.tycoding.admin.exception.ResultException;
+import cn.tycoding.admin.exception.GlobalException;
 import cn.tycoding.admin.mapper.ArticleTagsMapper;
 import cn.tycoding.admin.service.ArticleTagsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +17,6 @@ import java.util.List;
  */
 @Service
 @SuppressWarnings("all")
-@Transactional
 public class ArticleTagsServiceImpl implements ArticleTagsService {
 
     @Autowired
@@ -36,16 +33,17 @@ public class ArticleTagsServiceImpl implements ArticleTagsService {
     }
 
     @Override
-    public PageBean findByPage(ArticleTags articleTags, int pageCode, int pageSize) {
+    public List<ArticleTags> findByPage(ArticleTags articleTags) {
         return null;
     }
 
     @Override
-    public ArticleTags findById(long id) {
+    public ArticleTags findById(Long id) {
         return null;
     }
 
     @Override
+    @Transactional
     public void save(ArticleTags articleTags) {
         try {
             if (!exists(articleTags)) {
@@ -53,7 +51,7 @@ public class ArticleTagsServiceImpl implements ArticleTagsService {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            throw new ResultException(ResultEnums.INNER_ERROR);
+            throw new GlobalException(e.getMessage());
         }
     }
 
@@ -63,40 +61,52 @@ public class ArticleTagsServiceImpl implements ArticleTagsService {
 
     @Override
     public void update(ArticleTags articleTags) {
-
     }
 
     @Override
     public void delete(Long... ids) {
-
     }
 
     @Override
-    public List<Tags> findByArticleId(long articleId) {
-        return articleTagsMapper.findByArticleId(articleId);
-    }
-
-    @Override
-    public void deleteByArticleId(long id) {
-        try {
-            if (exists(new ArticleTags(id, 0))) {
-                articleTagsMapper.deleteByArticleId(id);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new ResultException(ResultEnums.INNER_ERROR);
+    public List<Tags> findByArticleId(Long articleId) {
+        if (!articleId.equals(null) && articleId != 0) {
+            return articleTagsMapper.findByArticleId(articleId);
+        } else {
+            throw new GlobalException("参数错误");
         }
     }
 
     @Override
-    public void deleteByTagsId(long id) {
-        try {
-            if (exists(new ArticleTags(0, id))) {
-                articleTagsMapper.deleteByTagsId(id);
+    @Transactional
+    public void deleteByArticleId(Long id) {
+        if (!id.equals(null) && id != 0) {
+            try {
+                if (exists(new ArticleTags(id, 0))) {
+                    articleTagsMapper.deleteByArticleId(id);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw new GlobalException(e.getMessage());
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new ResultException(ResultEnums.INNER_ERROR);
+        } else {
+            throw new GlobalException("参数错误");
+        }
+    }
+
+    @Override
+    @Transactional
+    public void deleteByTagsId(Long id) {
+        if (!id.equals(null) && id != 0) {
+            try {
+                if (exists(new ArticleTags(0, id))) {
+                    articleTagsMapper.deleteByTagsId(id);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw new GlobalException(e.getMessage());
+            }
+        } else {
+            throw new GlobalException("参数错误");
         }
     }
 }

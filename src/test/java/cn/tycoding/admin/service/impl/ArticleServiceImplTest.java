@@ -1,6 +1,5 @@
 package cn.tycoding.admin.service.impl;
 
-import cn.tycoding.admin.dto.PageBean;
 import cn.tycoding.admin.entity.Article;
 import cn.tycoding.admin.service.ArticleService;
 import org.junit.Test;
@@ -37,7 +36,7 @@ public class ArticleServiceImplTest {
 
     @Test
     public void findById() {
-        Article article = articleService.findById(1);
+        Article article = articleService.findById(1L);
         logger.info("article={}", article);
     }
 
@@ -74,12 +73,6 @@ public class ArticleServiceImplTest {
         } catch (Exception e) {
             logger.error(e.getMessage());
         }
-    }
-
-    @Test
-    public void findByPage() {
-        PageBean pageBean = articleService.findByPage(new Article(), 1, 3);
-        logger.info("list={}", pageBean.getRows());
     }
 
     @Test

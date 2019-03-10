@@ -1,90 +1,73 @@
-//设置全局表单提交格式
-Vue.http.options.emulateJSON = true;
-
-const {body} = document;
-const WIDTH = 1024;
-const RATIO = 3;
-
-const api = {
-    findByPage(flag, pageSize, pageCode) {
-        return '/' + flag + '/findByPage?pageSize=' + pageSize + '&pageCode=' + pageCode
-    },
-    delete(flag) {
-        return '/' + flag + '/delete';
-    },
-    update(flag) {
-        return '/' + flag + '/update'
-    },
-    save(flag) {
-        return '/' + flag + '/save'
-    },
-    findById(flag, id) {
-        return '/' + flag + '/findById?id=' + id
-    },
-    info: '/admin/info'
-};
-
-// Vue实例
-var vm = new Vue({
+var app = new Vue({
     el: '#app',
-    data() {
-        return {
-            article: [{
-                id: '',
-                title: '',
-                titlePic: '',
-                category: '',
-                author: '',
-                content: '',
-                state: '',
-                publishTime: '',
-                editTime: '',
-                createTime: ''
-            }],
-            editor: {
-                id: '',
-                titlePic: '',
-            },
+    data: {
+        article: [{
+            id: '',
+            title: '',
+            titlePic: '',
+            category: '',
+            author: '',
+            content: '',
+            state: '',
+            publishTime: '',
+            editTime: '',
+            createTime: ''
+        }],
+        editor: {
+            id: '',
+            titlePic: '',
+        },
 
-            //分页选项
-            pageConf: {
-                //设置一些初始值(会被覆盖)
-                pageCode: 1, //当前页
-                pageSize: 8, //每页显示的记录数
-                totalPage: 12, //总记录数
-                pageOption: [8, 10, 20], //分页选项
-            },
-
-            defaultActive: '7',
-            editDialog: false, //编辑Dialog
-            //文件上传的参数
-            dialogImageUrl: '',
-            //图片列表（用于回显图片）
-            fileList: [{name: '', url: ''}],
-
-            token: {name: ''},
-
-            mobileStatus: false, //是否是移动端
-            sidebarStatus: true, //侧边栏状态，true：打开，false：关闭
-            sidebarFlag: ' openSidebar ', //侧边栏标志
+        //分页选项
+        pageConf: {
+            //设置一些初始值(会被覆盖)
+            pageCode: 1, //当前页
+            pageSize: 8, //每页显示的记录数
+            totalPage: 12, //总记录数
+            pageOption: [8, 10, 20], //分页选项
+        },
+        defaultActive: '7',
+        editDialog: false, //编辑Dialog
+        //文件上传的参数
+        dialogImageUrl: '',
+        //图片列表（用于回显图片）
+        fileList: [{name: '', url: ''}],
+        mobileStatus: false, //是否是移动端
+        sidebarStatus: true, //侧边栏状态，true：打开，false：关闭
+        sidebarFlag: ' openSidebar ', //侧边栏标志
+    },
+    created() {
+        window.onload = function() {
+            app.changeDiv();
         }
+        window.onresize = function() {
+            app.changeDiv();
+        }
+        this.search(this.pageConf.pageCode, this.pageConf.pageSize);
+    },
+    mounted() {
+        this.$refs.loader.style.display = 'none';
     },
     methods: {
+        _notify(message, type) {
+            this.$message({
+                message: message,
+                type: type
+            })
+        },
         handleClose(key, keyPath) {
             this.editDialog = false;
         },
-
         //刷新列表
         reloadList() {
             this.search(this.pageConf.pageCode, this.pageConf.pageSize);
         },
         //条件查询
         search(pageCode, pageSize) {
-            this.$http.post('/article/findByPage?pageSize=' + pageSize + '&pageCode=' + pageCode).then(result => {
+            this.$http.post(api.cover.findByPage(pageSize, pageCode)).then(result => {
                 this.article = result.body.data.rows;
                 this.pageConf.totalPage = result.body.data.total;
             });
-
         },
         //pageSize改变时触发的函数
         handleSizeChange(val) {
@@ -99,7 +82,7 @@ var vm = new Vue({
         //编辑按钮
         editBtn(id) {
             this.editDialog = true;
-            this.$http.get('/article/findById?id=' + id).then(result => {
+            this.$http.get(api.cover.findById(id)).then(result => {
                 this.editor.id = result.body.data.id;
                 this.editor.titlePic = result.body.data.titlePic;
 
@@ -110,21 +93,19 @@ var vm = new Vue({
         },
         //编辑
         edit() {
-            this.$http.put('/article/update', JSON.stringify(this.editor)).then(result => {
+            if (this.fileList.length > 0 && this.fileList[0].url != '') {
+                this.editor.titlePic = this.fileList[0].url;
+            } else {
+                this._notify('请选择文章封面', 'warning')
+                return;
+            }
+            this.$http.put(api.cover.update, JSON.stringify(this.editor)).then(result => {
                 this.editDialog = false;
                 this.reloadList();
-                if (result.body.code == 20000) {
-                    this.$message({
-                        type: 'success',
-                        message: result.body.data,
-                        duration: 6000
-                    });
+                if (result.body.code == 200) {
+                    this._notify(result.body.msg, 'success')
                 } else {
-                    this.$message({
-                        type: 'error',
-                        message: result.body.data,
-                        duration: 6000
-                    });
+                    this._notify(result.body.msg, 'error')
                 }
             });
         },
@@ -137,12 +118,8 @@ var vm = new Vue({
          */
         //文件上传成功的钩子函数
         handleSuccess(res, file, fileList) {
-            this.$message({
-                type: 'info',
-                message: '图片上传成功',
-                duration: 6000
-            });
-            if (res.code == 20000) {
+            this._notify('图片上传成功', 'info')
+            if (res.code == 200) {
                 this.fileList = [];
                 this.fileList.push(res.data);
                 this.editor.titlePic = res.data.url; //将返回的文件储存路径赋值image字段
@@ -150,22 +127,14 @@ var vm = new Vue({
         },
         //删除文件之前的钩子函数
         handleRemove(file, fileList) {
-            this.$message({
-                type: 'info',
-                message: '已删除原有图片',
-                duration: 6000
-            });
-            this.fileList = [];
+            this._notify('已删除原有图片', 'info')
+            this.fileList[0].url = '';
         },
         //点击列表中已上传的文件事的钩子函数
         handlePreview(file) {},
         //上传的文件个数超出设定时触发的函数
         onExceed(files, fileList) {
-            this.$message({
-                type: 'info',
-                message: '最多只能上传一个图片',
-                duration: 6000
-            });
+            this._notify('最多只能上传一张图片')
         },
         //文件上传前的前的钩子函数
         //参数是上传的文件，若返回false，或返回Primary且被reject，则停止上传
@@ -185,18 +154,26 @@ var vm = new Vue({
             return (isJPG || isBMP || isGIF || isPNG) && isLt2M;
         },
 
-        init() {
-            //已登录用户名
-            this.$http.get('/admin/info').then(result => {
-                this.token.name = result.body.data.name;
-            });
+        /**
+         * 监听窗口改变UI样式（区别PC和Phone）
+         */
+        changeDiv() {
+            let isMobile = this.isMobile();
+            if (isMobile) {
+                //手机访问
+                this.sidebarFlag = ' hideSidebar mobile ';
+                this.sidebarStatus = false;
+                this.mobileStatus = true;
+            } else {
+                this.sidebarFlag = ' openSidebar';
+                this.sidebarStatus = true;
+                this.mobileStatus = false;
+            }
         },
-
         isMobile() {
-            const rect = body.getBoundingClientRect();
+            let rect = body.getBoundingClientRect();
             return rect.width - RATIO < WIDTH
         },
-
         handleSidebar() {
             if (this.sidebarStatus) {
                 this.sidebarFlag = ' hideSidebar ';
@@ -206,7 +183,7 @@ var vm = new Vue({
                 this.sidebarFlag = ' openSidebar ';
                 this.sidebarStatus = true;
             }
-            const isMobile = this.isMobile();
+            let isMobile = this.isMobile();
             if (isMobile) {
                 this.sidebarFlag += ' mobile ';
                 this.mobileStatus = true;
@@ -218,19 +195,4 @@ var vm = new Vue({
             this.sidebarFlag = ' hideSidebar mobile '
         }
     },
-    // 生命周期函数
-    created() {
-        this.search(this.pageConf.pageCode, this.pageConf.pageSize);
-        this.init();
-
-        const isMobile = this.isMobile();
-        if (isMobile) {
-            //手机访问
-            this.sidebarFlag = ' hideSidebar mobile ';
-            this.sidebarStatus = false;
-            this.mobileStatus = true;
-        }
-
-    },
-
 });

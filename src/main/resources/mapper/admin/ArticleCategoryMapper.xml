@@ -27,13 +27,4 @@
             AND category_id = #{categoryId}
         </if>
     </select>
-
-    <delete id="deleteByArticleId" parameterType="long">
-        DELETE FROM tb_article_category WHERE article_id = #{id}
-    </delete>
-
-    <delete id="deleteByCategoryId" parameterType="long">
-        DELETE FROM tb_article_category WHERE category_id = #{id}
-    </delete>
-
 </mapper>

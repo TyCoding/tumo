@@ -1,6 +1,7 @@
 package cn.tycoding.admin.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotNull;
@@ -11,6 +12,7 @@ import java.util.Date;
  * @auther TyCoding
  * @date 2018/10/16
  */
+@Data
 public class Article implements Serializable {
 
     private long id; //编号
@@ -53,136 +55,5 @@ public class Article implements Serializable {
     public Article(String title, String category) {
         this.title = title;
         this.category = category;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getTitlePic() {
-        return titlePic;
-    }
-
-    public void setTitlePic(String titlePic) {
-        this.titlePic = titlePic;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public String getTags() {
-        return tags;
-    }
-
-    public void setTags(String tags) {
-        this.tags = tags;
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public String getContentMd() {
-        return contentMd;
-    }
-
-    public void setContentMd(String contentMd) {
-        this.contentMd = contentMd;
-    }
-
-    public String getState() {
-        return state;
-    }
-
-    public void setState(String state) {
-        this.state = state;
-    }
-
-    public long getEyeCount() {
-        return eyeCount;
-    }
-
-    public void setEyeCount(long eyeCount) {
-        this.eyeCount = eyeCount;
-    }
-
-    public Date getPublishTime() {
-        return publishTime;
-    }
-
-    public void setPublishTime(Date publishTime) {
-        this.publishTime = publishTime;
-    }
-
-    public String getOrigin() {
-        return origin;
-    }
-
-    public void setOrigin(String origin) {
-        this.origin = origin;
-    }
-
-    public Date getEditTime() {
-        return editTime;
-    }
-
-    public void setEditTime(Date editTime) {
-        this.editTime = editTime;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    @Override
-    public String toString() {
-        return "Article{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", titlePic='" + titlePic + '\'' +
-                ", category='" + category + '\'' +
-                ", tags='" + tags + '\'' +
-                ", author='" + author + '\'' +
-                ", content='" + content + '\'' +
-                ", contentMd='" + contentMd + '\'' +
-                ", origin='" + origin + '\'' +
-                ", state='" + state + '\'' +
-                ", publishTime=" + publishTime +
-                ", editTime=" + editTime +
-                ", createTime=" + createTime +
-                '}';
     }
 }

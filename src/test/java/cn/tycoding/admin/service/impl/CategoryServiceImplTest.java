@@ -1,6 +1,5 @@
 package cn.tycoding.admin.service.impl;
 
-import cn.tycoding.admin.dto.PageBean;
 import cn.tycoding.admin.entity.Category;
 import cn.tycoding.admin.service.CategoryService;
 import org.junit.Test;
@@ -24,12 +23,6 @@ public class CategoryServiceImplTest {
 
     @Autowired
     private CategoryService categoryService;
-
-    @Test
-    public void findByPage() {
-        PageBean page = categoryService.findByPage(new Category(), 1, 3);
-        logger.info("page={}", page.getRows());
-    }
 
     @Test
     public void findById() {

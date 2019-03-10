@@ -1,6 +1,8 @@
 //设置全局表单提交格式
 Vue.http.options.emulateJSON = true;
-
+const api = {
+    login: '/admin/login'
+}
 // Vue实例
 new Vue({
     el: '#app',
@@ -15,6 +17,9 @@ new Vue({
             flag: true,
             loading: {}, //loading动画
         };
+    },
+    mounted() {
+        this.$refs.loader.style.display = 'none';
     },
     methods: {
         /**
@@ -36,12 +41,12 @@ new Vue({
                 if (valid) {
                     this.loadings(); //加载动画
                     //提交表单
-                    this.$http.post('/admin/login', {
+                    this.$http.post(api.login, {
                         username: this.login.username,
                         password: this.login.password,
                         remember: this.login.remember
                     }).then(result => {
-                        if (result.body.code == 20000) {
+                        if (result.body.code == 200) {
                             window.location.href = "/admin";
                             this.loading.close(); //关闭动画加载
                         } else {
@@ -49,7 +54,7 @@ new Vue({
                             this.$emit(
                                 'submit-form',
                                 this.$message({
-                                    message: result.body.data.info,
+                                    message: result.body.msg,
                                     type: 'warning',
                                     duration: 6000
                                 }),

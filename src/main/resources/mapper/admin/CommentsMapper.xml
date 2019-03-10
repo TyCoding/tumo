@@ -4,16 +4,6 @@
 
 <mapper namespace="cn.tycoding.admin.mapper.CommentsMapper">
 
-    <!-- 查询总数量 -->
-    <select id="findAllCount" resultType="Long">
-        SELECT COUNT(*) FROM tb_comments
-    </select>
-
-    <!-- 查询所有 -->
-    <select id="findAll" resultType="Comments">
-        SELECT * FROM tb_comments ORDER BY id DESC LIMIT 0, 8
-    </select>
-
     <!-- 条件查询 -->
     <select id="findByPage" parameterType="Comments" resultType="Comments">
         SELECT * FROM tb_comments
@@ -21,16 +11,6 @@
         <if test="author != null">
             AND author LIKE CONCAT('%', #{author}, '%')
         </if>
-    </select>
-
-    <!-- 根据ID查询 -->
-    <select id="findById" parameterType="Long" resultType="Comments">
-        SELECT * FROM tb_comments WHERE id = #{id}
-    </select>
-
-    <!-- 查询文章评论量 -->
-    <select id="findCountByArticleId" resultType="Long">
-        SELECT COUNT(*) FROM tb_comments WHERE article_id = #{articleId}
     </select>
 
     <!-- 查询所有评论信息列表 -->
@@ -124,11 +104,5 @@
         </set>
         WHERE id = #{id}
     </update>
-
-    <!-- 删除 -->
-    <delete id="delete" parameterType="Long">
-        DELETE FROM tb_comments WHERE id = #{id}
-    </delete>
-
 
 </mapper>

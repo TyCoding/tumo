@@ -11,17 +11,17 @@ import java.util.List;
  */
 public interface ArticleTagsService extends BaseService<ArticleTags> {
 
-    List<Tags> findByArticleId(long articleId);
+    List<Tags> findByArticleId(Long articleId);
 
     /**
      * 根据文章ID删除
      * @param id
      */
-    void deleteByArticleId(long id);
+    void deleteByArticleId(Long id);
 
     /**
      * 根据标签ID删除
      * @param id
      */
-    void deleteByTagsId(long id);
+    void deleteByTagsId(Long id);
 }

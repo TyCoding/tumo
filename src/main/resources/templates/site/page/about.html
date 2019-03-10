@@ -1,20 +1,11 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-
 <!-- 公共的CSS库 -->
-<head th:include="/site/common/common_head :: commonHead"></head>
+<head th:replace="/site/common/head"></head>
 <title>关于 | Tumo Blog</title>
-
-<body class="bg-grey" gtools_scp_screen_capture_injected="true">
-<!--[if lt IE 8]>
-<div class="browsehappy" role="dialog">
-    当前网页 <strong>不支持</strong> 你正在使用的浏览器. 为了正常的访问, 请 <a href="http://browsehappy.com/" target="_blank">升级你的浏览器</a>。
-</div>
-<![endif]-->
-
+<body class="bg-grey">
 <!-- header -->
-<div th:replace="site/header :: header"></div>
-
+<div th:replace="site/header"></div>
 <link rel="stylesheet" th:href="@{/site/css/about.css}"/>
 
 <!-- main -->
@@ -40,6 +31,8 @@
             <br/>
             <h1>Works</h1>
             <ul>
+                <li><a href="http://study.tycoding.cn/#/">TyCoding Adventure：</a> 这里有丰富的Java学习笔记</li>
+                <li><a href="https://github.com/TyCoding/spring-boot-learn">spring-boot-learn：</a> 这里记录了一些spring-boot常见的框架整合技术</li>
                 <li><a href="https://github.com/TyCoding/tumo">Tumo Blog:</a> 炒鸡漂亮的Java博客系统，基于SpringBoot-2.x实现</li>
                 <li><a href="https://github.com/TyCoding/springboot-seckill">springboot-seckill:</a>基于SpringBoot-2.x的Java高并发Seckill秒杀系统实现</li>
                 <li><a href="https://github.com/TyCoding/spring-boot">spring-boot:</a> SpringBoot-2.x入门开发</li>
@@ -142,9 +135,9 @@
 </div>
 
 <!-- footer -->
-<div th:replace="site/footer :: footer"></div>
+<div th:replace="site/footer"></div>
 <!-- 公共的JS库 -->
-<div th:include="site/common/onload_js ::onloadJS"></div>
+<div th:include="site/common/js"></div>
 </body>
 <script type="text/javascript" th:src="@{/site/js/about.js}"></script>
 </html>

@@ -1,6 +1,5 @@
 package cn.tycoding.admin.service.impl;
 
-import cn.tycoding.admin.dto.PageBean;
 import cn.tycoding.admin.entity.Comments;
 import cn.tycoding.admin.service.CommentsService;
 import org.junit.Test;
@@ -26,14 +25,8 @@ public class CommentsServiceImplTest {
     private CommentsService commentsService;
 
     @Test
-    public void findByPage() {
-        PageBean page = commentsService.findByPage(new Comments(), 1, 3);
-        logger.info("page={}", page.getRows());
-    }
-
-    @Test
     public void findById() {
-        Comments comments = commentsService.findById(1l);
+        Comments comments = commentsService.findById(1L);
         logger.info("comments={}", comments);
     }
 

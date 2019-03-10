@@ -1,48 +1,36 @@
-//设置全局表单提交格式
-Vue.http.options.emulateJSON = true;
-
-const {body} = document;
-const WIDTH = 1024;
-const RATIO = 3;
-
-const api = {
-    articleCount: '/article/findAllCount',
-    commentsCount: '/comments/findAllCount',
-    tagsCount: '/tags/findAllCount',
-    linksCount: '/links/findAllCount',
-    info: '/admin/info',
-    allArticle: '/article/findAll',
-    allComments: '/comments/findAll'
-};
-
-
-// Vue实例
-new Vue({
+var app = new Vue({
     el: '#app',
-    data() {
-        return {
-            article: [{
-                id: '',
-                title: ''
-            }],
-            comments: [{
-                id: '',
-                author: '',
-            }],
+    data: {
+        article: [{
+            id: '',
+            title: ''
+        }],
+        comments: [{
+            id: '',
+            author: '',
+        }],
 
-            defaultActive: '1',
-            //===========参数===========
-            article_count: '',
-            comments_count: '',
-            tags_count: '',
-            links_count: '',
-            token: {name: ''},
+        defaultActive: '1',
+        article_count: '',
+        comments_count: '',
+        tags_count: '',
+        links_count: '',
 
-            mobileStatus: false, //是否是移动端
-            sidebarStatus: true, //侧边栏状态，true：打开，false：关闭
-            sidebarFlag: ' openSidebar ', //侧边栏标志
-
-        };
+        mobileStatus: false, //是否是移动端
+        sidebarStatus: true, //侧边栏状态，true：打开，false：关闭
+        sidebarFlag: ' openSidebar ', //侧边栏标志
+    },
+    created() {
+        window.onload = function() {
+            app.changeDiv();
+        }
+        window.onresize = function() {
+            app.changeDiv();
+        }
+        this.init(); //初始化
+    },
+    mounted() {
+        this.$refs.loader.style.display = 'none';
     },
     methods: {
 
@@ -51,40 +39,51 @@ new Vue({
          */
         init() {
             //文章数量
-            this.$http.get(api.articleCount).then(result => {
+            this.$http.get(api.index.articleCount).then(result => {
                 this.article_count = result.body.data;
             });
             //评论数量
-            this.$http.get(api.commentsCount).then(result => {
+            this.$http.get(api.index.commentsCount).then(result => {
                 this.comments_count = result.body.data;
             });
             //标签数量
-            this.$http.get(api.tagsCount).then(result => {
+            this.$http.get(api.index.tagsCount).then(result => {
                 this.tags_count = result.body.data;
             });
             //友链数量
-            this.$http.get(api.linksCount).then(result => {
+            this.$http.get(api.index.linksCount).then(result => {
                 this.links_count = result.body.data;
             });
-            //已登录用户名
-            this.$http.get(api.info).then(result => {
-                this.token.name = result.body.data.name;
-            });
             //最新文章
-            this.$http.get(api.allArticle).then(result => {
+            this.$http.get(api.index.allArticle).then(result => {
                 this.article = result.body.data;
             });
             //最新评论
-            this.$http.get(api.allComments).then(result => {
+            this.$http.get(api.index.allComments).then(result => {
                 this.comments = result.body.data;
             });
         },
 
+        /**
+         * 监听窗口改变UI样式（区别PC和Phone）
+         */
+        changeDiv() {
+            let isMobile = this.isMobile();
+            if (isMobile) {
+                //手机访问
+                this.sidebarFlag = ' hideSidebar mobile ';
+                this.sidebarStatus = false;
+                this.mobileStatus = true;
+            } else {
+                this.sidebarFlag = ' openSidebar';
+                this.sidebarStatus = true;
+                this.mobileStatus = false;
+            }
+        },
         isMobile() {
-            const rect = body.getBoundingClientRect();
+            let rect = body.getBoundingClientRect();
             return rect.width - RATIO < WIDTH
         },
-
         handleSidebar() {
             if (this.sidebarStatus) {
                 this.sidebarFlag = ' hideSidebar ';
@@ -94,7 +93,7 @@ new Vue({
                 this.sidebarFlag = ' openSidebar ';
                 this.sidebarStatus = true;
             }
-            const isMobile = this.isMobile();
+            let isMobile = this.isMobile();
             if (isMobile) {
                 this.sidebarFlag += ' mobile ';
                 this.mobileStatus = true;
@@ -105,20 +104,6 @@ new Vue({
             this.sidebarStatus = false;
             this.sidebarFlag = ' hideSidebar mobile '
         }
-
     },
-
-    created() {
-        this.init(); //初始化
-        const isMobile = this.isMobile();
-        if (isMobile) {
-            //手机访问
-            this.sidebarFlag = ' hideSidebar mobile ';
-            this.sidebarStatus = false;
-            this.mobileStatus = true;
-        }
-
-    },
-
 });
 

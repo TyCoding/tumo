@@ -1,13 +1,9 @@
 package cn.tycoding.admin.service.impl;
 
-import cn.tycoding.admin.dto.PageBean;
 import cn.tycoding.admin.entity.Links;
-import cn.tycoding.admin.enums.ResultEnums;
-import cn.tycoding.admin.exception.ResultException;
+import cn.tycoding.admin.exception.GlobalException;
 import cn.tycoding.admin.mapper.LinksMapper;
 import cn.tycoding.admin.service.LinksService;
-import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,7 +16,6 @@ import java.util.List;
  */
 @Service
 @SuppressWarnings("all")
-@Transactional
 public class LinksServiceImpl implements LinksService {
 
     @Autowired
@@ -37,46 +32,55 @@ public class LinksServiceImpl implements LinksService {
     }
 
     @Override
-    public PageBean findByPage(Links links, int pageCode, int pageSize) {
-        PageHelper.startPage(pageCode, pageSize);
-        Page page = linksMapper.findByPage(links);
-        return new PageBean(page.getTotal(), page.getResult());
+    public List<Links> findByPage(Links links) {
+        return linksMapper.findByPage(links);
     }
 
     @Override
-    public Links findById(long id) {
-        return linksMapper.findById(id);
+    public Links findById(Long id) {
+        if (!id.equals(null) && id != 0) {
+            return linksMapper.findById(id);
+        } else {
+            throw new GlobalException("参数错误");
+        }
     }
 
     @Override
+    @Transactional
     public void save(Links links) {
         try {
             linksMapper.save(links);
         } catch (Exception e) {
             e.printStackTrace();
-            throw new ResultException(ResultEnums.INNER_ERROR);
+            throw new GlobalException(e.getMessage());
         }
     }
 
     @Override
+    @Transactional
     public void update(Links links) {
-        try {
-            linksMapper.update(links);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new ResultException(ResultEnums.INNER_ERROR);
+        if (links.getId() != 0) {
+            try {
+                linksMapper.update(links);
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw new GlobalException(e.getMessage());
+            }
         }
     }
 
     @Override
+    @Transactional
     public void delete(Long... ids) {
-        try {
-            for (long id : ids){
-                linksMapper.delete(id);
+        if (!ids.equals(null) && ids.length > 0) {
+            try {
+                for (long id : ids) {
+                    linksMapper.delete(id);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw new GlobalException(e.getMessage());
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new ResultException(ResultEnums.INNER_ERROR);
         }
     }
 }

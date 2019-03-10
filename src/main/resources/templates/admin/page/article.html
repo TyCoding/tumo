@@ -1,100 +1,82 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="utf-8">
-    <title>文章管理</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <link rel="icon" th:href="@{/public/admin/favicon.png}" type="image/png">
-    <link rel="stylesheet" th:href="@{/lib/element-ui/lib/theme-chalk/index.css}"/>
-    <link rel="stylesheet" th:href="@{/lib/font/css/font-awesome.min.css}"/>
-    <link rel="stylesheet" th:href="@{/public/admin/base.css}">
-
-    <!--[if lt IE 9]>
-    <script src="//cdn.bootcss.com/html5shiv/r29/html5.min.js"></script>
-    <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-</head>
+<head th:replace="admin/common/head"></head>
+<title>文章管理</title>
 <body>
 <!-- vue入口 -->
 <div id="app">
     <div :class="'app-wrapper' + sidebarFlag">
         <!-- aside -->
-        <div th:replace="admin/side :: side"></div>
+        <div th:replace="admin/side"></div>
 
         <!-- container -->
         <el-container class="main-container">
             <!-- header -->
-            <div style="background-color: rgb(84, 92, 100);" th:replace="admin/header :: header"></div>
+            <div style="background-color: rgb(84, 92, 100);" th:replace="admin/header"></div>
 
             <!-- main -->
             <el-main class="app-main">
                 <el-card>
-                    <h2>文章管理</h2>
-                    <div>
-                        <!-- 功能按钮 -->
-                        <div>
-                            <el-row :gutter="20">
-                                <el-col :xs="12" :sm="12" :lg="6" :span="6">
-                                    <el-input placeholder="请输入内容" v-model="searchEntity.title" @keyup.native="search(pageConf.pageCode,pageConf.pageCode)">
-                                        <i slot="prefix" class="el-input__icon el-icon-search"></i>
-                                    </el-input>
-                                </el-col>
-                                <el-col :xs="12" :sm="12" :lg="6" :span="6">
-                                    <a th:href="@{/admin/article/publish}">
-                                        <el-button type="primary" icon="el-icon-plus">新增</el-button>
-                                    </a>
-                                </el-col>
-                            </el-row>
-                        </div>
-                        <br/>
-                        <!-- 列表 -->
-                        <el-table ref="article" :data="article" border tooltip-effect="dark" style="width: 100%">
-                            <el-table-column prop="id" align="center" sortable show-overflow-tooltip label="编号" width="80"></el-table-column>
-                            <el-table-column align="center" prop="title" label="文章标题" width="260" show-overflow-tooltip></el-table-column>
-                            <el-table-column align="center" prop="author" show-overflow-tooltip label="文章作者" width="120"></el-table-column>
-                            <el-table-column align="center" prop="createTime" label="创建时间" width="170"></el-table-column>
-                            <el-table-column align="center" prop="editTime" label="最后编辑时间" width="170"></el-table-column>
-                            <el-table-column align="center" prop="publishTime" label="发布时间" width="170"></el-table-column>
-                            <el-table-column align="center" prop="category" show-overflow-tooltip label="文章分类" width="130"></el-table-column>
-                            <el-table-column align="center" prop="state" sortable label="状态" width="120">
-                                <template slot-scope="scope">
-                                    <el-tag>{{scope.row.state == '1' ? '已发布':'存入草稿'}}</el-tag>
-                                </template>
-                            </el-table-column>
-                            <el-table-column label="操作" align="center">
-                                <template slot-scope="scope">
-                                    <el-button icon="el-icon-delete" size="mini" type="danger" @click="handleDelete(scope.row.id)">删除</el-button>
-                                    <a :href="'/admin/article/edit/' + scope.row.id">
-                                        <el-button size="mini" icon="el-icon-edit" type="warning">编辑</el-button>
-                                    </a>
-                                    <a :href="'/article/' + scope.row.id" target="_blank">
-                                        <el-button size="mini" icon="el-icon-view" type="primary">预览</el-button>
-                                    </a>
-                                </template>
-                            </el-table-column>
-                        </el-table>
-                        <br/>
-                        <!-- 分页 -->
-                        <div class="pagination">
-                            <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange"
-                                    :current-page="pageConf.pageCode"
-                                    :page-sizes="pageConf.pageOption"
-                                    :page-size="pageConf.pageSize"
-                                    layout="total, sizes, prev, pager, next, jumper"
-                                    :total="pageConf.totalPage">
-                            </el-pagination>
-                        </div>
-                        <br/>
+                    <h3>文章管理</h3>
+                    <!-- 功能按钮 -->
+                    <el-row :gutter="20">
+                        <el-col :xs="12" :sm="12" :lg="6" :span="6" style="display: flex">
+                            <el-input placeholder="请输入文章标题查询" size="small" v-model="searchEntity.title" @keyup.native="search(pageConf.pageCode, pageConf.pageSize)">
+                                <i slot="prefix" class="el-input__icon el-icon-search"></i>
+                            </el-input>
+                            <el-button @click="search(pageConf.pageCode, pageConf.pageSize)" plain size="small" style="margin-left:12px;" icon="el-icon-search"></el-button>
+                        </el-col>
+                        <el-col :xs="12" :sm="12" :lg="6" :span="6" style="float: right;text-align: right">
+                            <el-button size="small" plain type="primary" @click="handleAdd" icon="el-icon-plus"></el-button>
+                            <el-button type="primary" plain size="small" @click="search(pageConf.pageCode, pageConf.pageSize)" icon="el-icon-refresh"></el-button>
+                            <el-button type="primary" plain size="small" @click="handleExcel" icon="el-icon-printer"></el-button>
+                        </el-col>
+                    </el-row>
+                    <br/>
+                    <!-- 列表 -->
+                    <el-table ref="article" :data="article" border tooltip-effect="dark" style="width: 100%">
+                        <el-table-column prop="id" align="center" sortable show-overflow-tooltip label="编号" width="80"></el-table-column>
+                        <el-table-column align="center" prop="title" label="文章标题" width="260" show-overflow-tooltip></el-table-column>
+                        <el-table-column align="center" prop="author" show-overflow-tooltip label="文章作者" width="120"></el-table-column>
+                        <el-table-column align="center" prop="createTime" label="创建时间" width="170"></el-table-column>
+                        <el-table-column align="center" prop="editTime" label="最后编辑时间" width="170"></el-table-column>
+                        <el-table-column align="center" prop="publishTime" label="发布时间" width="170"></el-table-column>
+                        <el-table-column align="center" prop="category" show-overflow-tooltip label="文章分类" width="130"></el-table-column>
+                        <el-table-column align="center" prop="state" sortable label="状态" width="120">
+                            <template slot-scope="scope">
+                                <el-tag>{{scope.row.state == '1' ? '已发布':'存入草稿'}}</el-tag>
+                            </template>
+                        </el-table-column>
+                        <el-table-column label="操作" align="center">
+                            <template slot-scope="scope">
+                                <el-button icon="el-icon-delete" size="mini" type="danger" @click="handleDelete(scope.row.id)">删除</el-button>
+                                <a :href="'/admin/article/edit/' + scope.row.id">
+                                    <el-button size="mini" icon="el-icon-edit" type="warning">编辑</el-button>
+                                </a>
+                                <a :href="'/article/' + scope.row.id" target="_blank">
+                                    <el-button size="mini" icon="el-icon-view" type="primary">预览</el-button>
+                                </a>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                    <br/>
+                    <!-- 分页 -->
+                    <div class="pagination">
+                        <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange"
+                                       :current-page="pageConf.pageCode"
+                                       :page-sizes="pageConf.pageOption"
+                                       :page-size="pageConf.pageSize"
+                                       layout="total, sizes, prev, pager, next, jumper"
+                                       :total="pageConf.totalPage">
+                        </el-pagination>
                     </div>
+                    <br/>
                 </el-card>
             </el-main>
         </el-container>
     </div>
 </div>
 </body>
-<!--<script type="text/javascript" th:src="@{/lib/vue/vue.min.js}"></script>-->
-<script src="https://cdn.jsdelivr.net/npm/vue"></script>
-<script type="text/javascript" th:src="@{/lib/vue/vue-resource.min.js}"></script>
-<script type="text/javascript" th:src="@{/lib/element-ui/lib/index.js}"></script>
+<div th:replace="admin/common/js"></div>
 <script type="text/javascript" th:src="@{/admin/js/article.js}"></script>
 </html>

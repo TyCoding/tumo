@@ -1,58 +1,48 @@
-//设置全局表单提交格式
-Vue.http.options.emulateJSON = true;
-
-const {body} = document;
-const WIDTH = 1024;
-const RATIO = 3;
-
-const api = {
-    findByPage(pageSize, pageCode) {
-        return '/links/findByPage?pageSize=' + pageSize + '&pageCode=' + pageCode
-    },
-    findById(id) {
-        return '/links/findById?id=' + id
-    },
-    save: '/links/save',
-    delete: '/links/delete',
-    update: '/links/update',
-    info: '/admin/info'
-};
-
-// Vue实例
-var vm = new Vue({
+var app = new Vue({
     el: '#app',
-    data() {
-        return {
-            links: [{
-                id: '',
-                name: '',
-                url: ''
-            }],
-            editor: {
-                id: '',
-                name: '',
-                url: ''
-            },
-
-            //分页选项
-            pageConf: {
-                //设置一些初始值(会被覆盖)
-                pageCode: 1, //当前页
-                pageSize: 6, //每页显示的记录数
-                totalPage: 12, //总记录数
-                pageOption: [6, 10, 20], //分页选项
-            },
-
-            defaultActive: '8',
-            editDialog: false,
-            token: {name: ''},
-
-            mobileStatus: false, //是否是移动端
-            sidebarStatus: true, //侧边栏状态，true：打开，false：关闭
-            sidebarFlag: ' openSidebar ', //侧边栏标志
+    data: {
+        links: [{
+            id: '',
+            name: '',
+            url: ''
+        }],
+        editor: {
+            id: '',
+            name: '',
+            url: ''
+        },
+        pageConf: {
+            //设置一些初始值(会被覆盖)
+            pageCode: 1, //当前页
+            pageSize: 6, //每页显示的记录数
+            totalPage: 12, //总记录数
+            pageOption: [6, 10, 20], //分页选项
+        },
+        defaultActive: '8',
+        editDialog: false,
+        mobileStatus: false, //是否是移动端
+        sidebarStatus: true, //侧边栏状态，true：打开，false：关闭
+        sidebarFlag: ' openSidebar ', //侧边栏标志
+    },
+    created() {
+        window.onload = function() {
+            app.changeDiv();
         }
+        window.onresize = function() {
+            app.changeDiv();
+        }
+        this.search(this.pageConf.pageCode, this.pageConf.pageSize);
+    },
+    mounted() {
+        this.$refs.loader.style.display = 'none';
     },
     methods: {
+        _notify(message, type) {
+            this.$message({
+                message: message,
+                type: type
+            })
+        },
         //关闭侧边栏
         handleClose(key, keyPath) {
             this.editDialog = false;
@@ -64,7 +54,7 @@ var vm = new Vue({
         },
         //条件查询
         search(pageCode, pageSize) {
-            this.$http.post(api.findByPage(pageSize, pageCode)).then(result => {
+            this.$http.post(api.links.findByPage(pageSize, pageCode)).then(result => {
                 this.links = result.body.data.rows;
                 this.pageConf.totalPage = result.body.data.total;
             });
@@ -88,35 +78,20 @@ var vm = new Vue({
                 type: 'warning',
                 center: true
             }).then(() => {
-                this.$http.post(api.delete, JSON.stringify(ids)).then(result => {
-                    if (result.body.code == 20000) {
-                        //删除成功
-                        this.$message({
-                            type: 'success',
-                            message: result.body.data,
-                            duration: 6000
-                        });
+                this.$http.post(api.links.delete, JSON.stringify(ids)).then(result => {
+                    if (result.body.code == 200) {
+                        this._notify(result.body.msg, 'success')
                         if ((this.pageConf.totalPage - 1) / this.pageConf.pageSize === (this.pageConf.pageCode - 1)) {
                             this.pageConf.pageCode = this.pageConf.pageCode - 1;
                         }
                         this.reloadList();
                     } else {
-                        //删除失败
-                        this.$message({
-                            type: 'warning',
-                            message: result.body.data,
-                            duration: 6000
-                        });
-                        //刷新列表
+                        this._notify(result.body.msg, 'error')
                         this.reloadList();
                     }
                 });
             }).catch(() => {
-                this.$message({
-                    type: 'info',
-                    message: '已取消删除',
-                    duration: 6000
-                });
+                this._notify('已取消删除', 'info')
             });
         },
 
@@ -131,27 +106,16 @@ var vm = new Vue({
         save() {
             if (this.editor.name == null || this.editor.name == '' || this.editor.url == null || this.editor.url == '') {
                 this.reloadList();
-                this.$message({
-                    type: 'warning',
-                    message: '输入的信息不能为空',
-                    duration: 6000
-                });
+                this._notify('输入的信息不能为空', 'warning')
+                return;
             } else {
-                this.$http.post(api.save, JSON.stringify(this.editor)).then(result => {
+                this.$http.post(api.links.save, JSON.stringify(this.editor)).then(result => {
                     this.reloadList();
-                    if (result.body.code == 20000) {
+                    if (result.body.code == 200) {
                         this.editor.links = {};
-                        this.$message({
-                            showClose: true,
-                            message: result.body.data,
-                            type: 'success'
-                        });
+                        this._notify(result.body.msg, 'success')
                     } else {
-                        this.$message({
-                            showClose: true,
-                            message: result.body.data,
-                            type: 'error'
-                        });
+                        this._notify(result.body.msg, 'error')
                     }
                 });
             }
@@ -163,44 +127,43 @@ var vm = new Vue({
             this.editDialog = true;
             this.editor = {}; //清空表单
             //查询当前id对应的数据
-            this.$http.get(api.findById(id)).then(result => {
+            this.$http.get(api.links.findById(id)).then(result => {
                 this.editor = result.body.data;
             });
         },
         edit() {
             this.editDialog = false;
             //查询当前id对应的数据
-            this.$http.put(api.update, JSON.stringify(this.editor)).then(result => {
+            this.$http.put(api.links.update, JSON.stringify(this.editor)).then(result => {
                 this.reloadList();
-                if (result.body.code == 20000) {
-                    this.$message({
-                        type: 'success',
-                        message: result.body.data,
-                        duration: 6000
-                    });
+                if (result.body.code == 200) {
+                    this._notify(result.body.msg, 'success')
                 } else {
-                    this.$message({
-                        type: 'error',
-                        message: result.body.data,
-                        duration: 6000
-                    });
+                    this._notify(result.body.msg, 'error')
                 }
             });
             this.editor = {}
         },
-
-        init() {
-            //已登录用户名
-            this.$http.get(api.info).then(result => {
-                this.token.name = result.body.data;
-            });
+        /**
+         * 监听窗口改变UI样式（区别PC和Phone）
+         */
+        changeDiv() {
+            let isMobile = this.isMobile();
+            if (isMobile) {
+                //手机访问
+                this.sidebarFlag = ' hideSidebar mobile ';
+                this.sidebarStatus = false;
+                this.mobileStatus = true;
+            } else {
+                this.sidebarFlag = ' openSidebar';
+                this.sidebarStatus = true;
+                this.mobileStatus = false;
+            }
         },
-
         isMobile() {
-            const rect = body.getBoundingClientRect();
+            let rect = body.getBoundingClientRect();
             return rect.width - RATIO < WIDTH
         },
-
         handleSidebar() {
             if (this.sidebarStatus) {
                 this.sidebarFlag = ' hideSidebar ';
@@ -210,7 +173,7 @@ var vm = new Vue({
                 this.sidebarFlag = ' openSidebar ';
                 this.sidebarStatus = true;
             }
-            const isMobile = this.isMobile();
+            let isMobile = this.isMobile();
             if (isMobile) {
                 this.sidebarFlag += ' mobile ';
                 this.mobileStatus = true;
@@ -222,19 +185,4 @@ var vm = new Vue({
             this.sidebarFlag = ' hideSidebar mobile '
         }
     },
-    // 生命周期函数
-    created() {
-        this.search(this.pageConf.pageCode, this.pageConf.pageSize);
-        this.init();
-
-        const isMobile = this.isMobile();
-        if (isMobile) {
-            //手机访问
-            this.sidebarFlag = ' hideSidebar mobile ';
-            this.sidebarStatus = false;
-            this.mobileStatus = true;
-        }
-
-    },
-
 });

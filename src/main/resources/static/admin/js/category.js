@@ -1,79 +1,64 @@
-//设置全局表单提交格式
-Vue.http.options.emulateJSON = true;
-
-const {body} = document;
-const WIDTH = 1024;
-const RATIO = 3;
-
-const api = {
-    findByPage(flag, pageSize, pageCode) {
-        return '/' + flag + '/findByPage?pageSize=' + pageSize + '&pageCode=' + pageCode
-    },
-    delete(flag) {
-        return '/' + flag + '/delete';
-    },
-    update(flag) {
-        return '/' + flag + '/update'
-    },
-    save(flag) {
-        return '/' + flag + '/save'
-    },
-    findById(flag, id) {
-        return '/' + flag + '/findById?id=' + id
-    },
-    info: '/admin/info'
-};
-
-// Vue实例
-var vm = new Vue({
+var app = new Vue({
     el: '#app',
-    data() {
-        return {
-            //实体类
-            entity: {
-                category: [{
-                    id: '',
-                    name: ''
-                }],
-                tags: [{
-                    id: '',
-                    name: ''
-                }],
-            },
-            editor: {
+    data: {
+        //实体类
+        entity: {
+            category: [{
                 id: '',
-                name: '',
-            },
+                name: ''
+            }],
+            tags: [{
+                id: '',
+                name: ''
+            }],
+        },
+        editor: {
+            id: '',
+            name: '',
+        },
 
-            //分页选项
-            pageConf: {
-                //设置一些初始值(会被覆盖)
-                pageCode: 1, //当前页
-                pageSize: 6, //每页显示的记录数
-                totalPage: 12, //总记录数
-                pageOption: [6, 10, 20], //分页选项
+        //分页选项
+        pageConf: {
+            //设置一些初始值(会被覆盖)
+            pageCode: 1, //当前页
+            pageSize: 6, //每页显示的记录数
+            totalPage: 12, //总记录数
+            pageOption: [6, 10, 20], //分页选项
 
-                t_pageCode: 1,
-                t_pageSize: 6,
-                t_totalPage: 12,
-                t_pageOption: [6, 10, 20]
-            },
+            t_pageCode: 1,
+            t_pageSize: 6,
+            t_totalPage: 12,
+            t_pageOption: [6, 10, 20]
+        },
 
-            dialogVisible: false,
-            dialogFlag: '',
-            dialogType: true, //dialog分类：true：新增，false：修改
-            defaultActive: '5',
-            token: {name: ''},
+        dialogVisible: false,
+        dialogFlag: '',
+        dialogType: true, //dialog分类：true：新增，false：修改
+        defaultActive: '5',
 
-            mobileStatus: false, //是否是移动端
-            sidebarStatus: true, //侧边栏状态，true：打开，false：关闭
-            sidebarFlag: ' openSidebar ', //侧边栏标志
+        mobileStatus: false, //是否是移动端
+        sidebarStatus: true, //侧边栏状态，true：打开，false：关闭
+        sidebarFlag: ' openSidebar ', //侧边栏标志
+    },
+    created() {
+        window.onload = function() {
+            app.changeDiv();
         }
+        window.onresize = function() {
+            app.changeDiv();
+        }
+        this.search('category', this.pageConf.pageCode, this.pageConf.pageSize);
+        this.search('tags', this.pageConf.t_pageCode, this.pageConf.t_pageSize);
+    },
+    mounted() {
+        this.$refs.loader.style.display = 'none';
     },
     methods: {
-        //打开侧边栏
-        handleOpen(key, keyPath) {
-            console.log(key, keyPath);
+        _notify(message, type) {
+            this.$message({
+                message: message,
+                type: type
+            })
         },
         handleClose(key, keyPath) {
             this.dialogVisible = false;
@@ -85,7 +70,7 @@ var vm = new Vue({
         },
         //条件查询
         search(flag, pageCode, pageSize) {
-            this.$http.post(api.findByPage(flag, pageSize, pageCode)).then(result => {
+            this.$http.post(api.category.findByPage(flag, pageSize, pageCode)).then(result => {
                 if (flag == 'category') {
                     this.entity.category = result.body.data.rows;
                     this.pageConf.totalPage = result.body.data.total;
@@ -122,14 +107,9 @@ var vm = new Vue({
                 type: 'warning',
                 center: true
             }).then(() => {
-                this.$http.post(api.delete(flag), JSON.stringify(ids)).then(result => {
-                    if (result.body.code == 20000) {
-                        //删除成功
-                        this.$message({
-                            type: 'success',
-                            message: result.body.data,
-                            duration: 6000
-                        });
+                this.$http.post(api.category.delete(flag), JSON.stringify(ids)).then(result => {
+                    if (result.body.code == 200) {
+                        this._notify(result.body.msg, 'success');
                         if (flag == 'category') {
                             if ((this.pageConf.totalPage - 1) / this.pageConf.pageSize === (this.pageConf.pageCode - 1)) {
                                 this.pageConf.pageCode = this.pageConf.pageCode - 1;
@@ -142,21 +122,12 @@ var vm = new Vue({
                         }
                         this.reloadList(flag);
                     } else {
-                        //删除失败
-                        this.$message({
-                            type: 'warning',
-                            message: result.body.data,
-                            duration: 6000
-                        });
+                        this._notify(result.body.msg, 'error');
                         this.reloadList(flag);
                     }
                 });
             }).catch(() => {
-                this.$message({
-                    type: 'info',
-                    message: '已取消删除',
-                    duration: 6000
-                });
+                this._notify('已取消删除', 'info');
             });
         },
         //删除按钮
@@ -181,7 +152,7 @@ var vm = new Vue({
         handleEdit(flag, id) {
             this.dialogVisible = true;
             //查询当前id对应的数据
-            this.$http.get(api.findById(flag, id)).then(result => {
+            this.$http.get(api.category.findById(flag, id)).then(result => {
                 this.editor = result.body.data;
             });
             this.dialogType = false; //更新
@@ -195,80 +166,67 @@ var vm = new Vue({
         handleGo() { //新增、更新公用
             this.dialogVisible = false;
             if (this.editor.name == null || this.editor.name == '') {
-                this.$message({
-                    type: 'error',
-                    message: '输入的信息不能为空',
-                    duration: 6000
-                });
+                this._notify('输入的信息不能为空', 'error');
                 return false;
             }
             var flag = '';
             if (this.dialogType) {
                 //新增
                 if (this.dialogFlag == '分类') {
-                    flag = api.save('category')
+                    flag = api.category.save('category')
                 }
                 if (this.dialogFlag == '标签') {
-                    flag = api.save('tags')
+                    flag = api.category.save('tags')
                 }
                 console.log('请求API：' + flag + ', 数据：' + this.editor.name);
                 this.$http.post(flag, JSON.stringify(this.editor)).then(result => {
-                    if (result.body.code == 20000) {
-                        this.$message({
-                            type: 'success',
-                            message: result.body.data,
-                            duration: 6000
-                        });
+                    if (result.body.code == 200) {
+                        this._notify(result.body.msg, 'success');
                     } else {
-                        this.$message({
-                            type: 'danger',
-                            message: result.body.data,
-                            duration: 6000
-                        });
+                        this._notify(result.body.msg, 'error');
                     }
                     this.reloadList(flag.substring(1, flag.lastIndexOf('/')));
                 });
             } else {
                 //更新
                 if (this.dialogFlag == '分类') {
-                    flag = api.update('category')
+                    flag = api.category.update('category')
                 }
                 if (this.dialogFlag == '标签') {
-                    flag = api.update('tags')
+                    flag = api.category.update('tags')
                 }
                 console.log('请求API：' + flag + ', 数据：' + this.editor.name);
                 this.$http.put(flag, JSON.stringify(this.editor)).then(result => {
-                    if (result.body.code == 20000) {
-                        this.$message({
-                            type: 'success',
-                            message: result.body.data,
-                            duration: 6000
-                        });
+                    if (result.body.code == 200) {
+                        this._notify(result.body.msg, 'success');
                     } else {
-                        this.$message({
-                            type: 'danger',
-                            message: result.body.data,
-                            duration: 6000
-                        });
+                        this._notify(result.body.msg, 'error');
                     }
                     this.reloadList(flag.substring(1, flag.lastIndexOf('/')));
                 });
             }
 
         },
-
-        init() {
-            //已登录用户名
-            this.$http.get(api.info).then(result => {
-                this.token.name = result.body.data.name;
-            });
+        /**
+         * 监听窗口改变UI样式（区别PC和Phone）
+         */
+        changeDiv() {
+            let isMobile = this.isMobile();
+            if (isMobile) {
+                //手机访问
+                this.sidebarFlag = ' hideSidebar mobile ';
+                this.sidebarStatus = false;
+                this.mobileStatus = true;
+            } else {
+                this.sidebarFlag = ' openSidebar';
+                this.sidebarStatus = true;
+                this.mobileStatus = false;
+            }
         },
-
         isMobile() {
-            const rect = body.getBoundingClientRect();
+            let rect = body.getBoundingClientRect();
             return rect.width - RATIO < WIDTH
         },
-
         handleSidebar() {
             if (this.sidebarStatus) {
                 this.sidebarFlag = ' hideSidebar ';
@@ -278,7 +236,7 @@ var vm = new Vue({
                 this.sidebarFlag = ' openSidebar ';
                 this.sidebarStatus = true;
             }
-            const isMobile = this.isMobile();
+            let isMobile = this.isMobile();
             if (isMobile) {
                 this.sidebarFlag += ' mobile ';
                 this.mobileStatus = true;
@@ -289,21 +247,5 @@ var vm = new Vue({
             this.sidebarStatus = false;
             this.sidebarFlag = ' hideSidebar mobile '
         }
-
-    },
-    // 生命周期函数
-    created() {
-        this.search('category', this.pageConf.pageCode, this.pageConf.pageSize);
-        this.search('tags', this.pageConf.t_pageCode, this.pageConf.t_pageSize);
-        this.init();
-
-        const isMobile = this.isMobile();
-        if (isMobile) {
-            //手机访问
-            this.sidebarFlag = ' hideSidebar mobile ';
-            this.sidebarStatus = false;
-            this.mobileStatus = true;
-        }
-
     },
 });

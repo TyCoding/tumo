@@ -4,36 +4,13 @@
 
 <mapper namespace="cn.tycoding.admin.mapper.ArticleMapper">
 
-    <!-- 查询总数量 -->
-    <select id="findAllCount" resultType="Long">
-        SELECT COUNT(*) FROM tb_article
-    </select>
-
-    <!-- 查询所有 -->
-    <select id="findAll" resultType="Article">
-        SELECT * FROM tb_article ORDER BY id DESC LIMIT 0,8
-    </select>
-
     <!-- 条件查询 -->
     <select id="findByPage" parameterType="cn.tycoding.admin.entity.Article" resultType="cn.tycoding.admin.entity.Article">
         SELECT * FROM tb_article WHERE 1=1
-        <if test="author != null">
-            AND author LIKE CONCAT('%', #{author}, '%')
+        <if test="title != null">
+            AND title LIKE CONCAT('%', #{title}, '%')
         </if>
         ORDER BY id DESC
-    </select>
-
-    <!-- 前台条件查询=过滤查询 -->
-    <select id="findByPageForSite" parameterType="cn.tycoding.admin.entity.Article"
-            resultType="cn.tycoding.admin.entity.Article">
-        SELECT * FROM tb_article WHERE 1=1
-        AND state = '1'
-        ORDER BY id DESC
-    </select>
-
-    <!-- 根据ID查询 -->
-    <select id="findById" parameterType="Long" resultType="cn.tycoding.admin.entity.Article">
-        SELECT * FROM tb_article WHERE id = #{id}
     </select>
 
     <!-- 保存 -->
@@ -102,39 +79,4 @@
         </set>
         WHERE id = #{id}
     </update>
-
-    <!-- 删除 -->
-    <delete id="delete" parameterType="Long">
-        DELETE FROM tb_article WHERE id = #{id}
-    </delete>
-
-    <!-- 查询最后一条记录的ID值 -->
-    <select id="getLastId" resultType="Long">
-        SELECT id FROM tb_article ORDER BY id DESC LIMIT 1;
-    </select>
-
-    <!-- find linked for category -->
-    <select id="findByCategory" resultType="Article">
-        SELECT * FROM tb_article WHERE category = #{category}
-    </select>
-
-    <!-- find distinct date -->
-    <select id="findArchivesDates" resultType="String">
-        SELECT DISTINCT DATE_FORMAT(publish_time, '%Y-%m') FROM tb_article ORDER BY DATE_FORMAT(publish_time, '%Y-%m') DESC;
-    </select>
-
-    <!-- find article list by date -->
-    <select id="findArchivesByDate" resultType="Article">
-        SELECT id, title, publish_time FROM tb_article WHERE publish_time LIKE CONCAT ('%', #{date} ,'%')
-    </select>
-
-    <!-- 模糊查询，为前端搜索框服务 -->
-    <select id="findFuzzyByTitle" resultType="Article" parameterType="String">
-        SELECT * FROM tb_article WHERE title LIKE CONCAT('%', #{title}, '%')
-    </select>
-
-    <update id="addEyeCount" parameterType="Long">
-        update tb_article set eye_count = (eye_count + 1) where id = #{id};
-    </update>
-
 </mapper>

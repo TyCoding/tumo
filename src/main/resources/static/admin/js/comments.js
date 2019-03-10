@@ -1,65 +1,64 @@
-//设置全局表单提交格式
-Vue.http.options.emulateJSON = true;
-
-const {body} = document;
-const WIDTH = 1024;
-const RATIO = 3;
-
-const api = {
-    findByPage(pageSize, pageCode) {
-        return '/comments/findByPage?pageSize=' + pageSize + '&pageCode=' + pageCode
-    },
-    delete: '/comments/delete',
-    info: '/admin/info',
-
-};
-
-// Vue实例
-var vm = new Vue({
+var app = new Vue({
     el: '#app',
-    data() {
-        return {
-            comments: [{
-                id: '',
-                parentId: '',
-                articleTitle: '',
-                articleId: '',
-                author: '',
-                authorId: '',
-                email: '',
-                content: '',
-                time: '',
-                url: '',
-                state: '',
-            }],
+    data: {
+        comments: [{
+            id: '',
+            parentId: '',
+            articleTitle: '',
+            articleId: '',
+            author: '',
+            authorId: '',
+            email: '',
+            content: '',
+            time: '',
+            url: '',
+            state: '',
+        }],
 
-            //分页选项
-            pageConf: {
-                //设置一些初始值(会被覆盖)
-                pageCode: 1, //当前页
-                pageSize: 6, //每页显示的记录数
-                totalPage: 12, //总记录数
-                pageOption: [6, 10, 20], //分页选项
-            },
+        //分页选项
+        pageConf: {
+            //设置一些初始值(会被覆盖)
+            pageCode: 1, //当前页
+            pageSize: 6, //每页显示的记录数
+            totalPage: 12, //总记录数
+            pageOption: [6, 10, 20], //分页选项
+        },
 
-            defaultActive: '4',
-            //条件查询单独封装的对象
-            searchEntity: {},
-            token: {name: ''},
+        defaultActive: '4',
+        //条件查询单独封装的对象
+        searchEntity: {},
+        token: {name: ''},
 
-            mobileStatus: false, //是否是移动端
-            sidebarStatus: true, //侧边栏状态，true：打开，false：关闭
-            sidebarFlag: ' openSidebar ', //侧边栏标志
+        mobileStatus: false, //是否是移动端
+        sidebarStatus: true, //侧边栏状态，true：打开，false：关闭
+        sidebarFlag: ' openSidebar ', //侧边栏标志
+    },
+    created() {
+        window.onload = function() {
+            app.changeDiv();
         }
+        window.onresize = function() {
+            app.changeDiv();
+        }
+        this.search(this.pageConf.pageCode, this.pageConf.pageSize);
+    },
+    mounted() {
+        this.$refs.loader.style.display = 'none';
     },
     methods: {
+        _notify(message, type) {
+            this.$message({
+                message: message,
+                type: type
+            })
+        },
         //刷新列表
         reloadList() {
             this.search(this.pageConf.pageCode, this.pageConf.pageSize);
         },
         //条件查询
         search(pageCode, pageSize) {
-            this.$http.post(api.findByPage(pageSize,pageCode), this.searchEntity).then(result => {
+            this.$http.post(api.comments.findByPage(pageSize,pageCode), this.searchEntity).then(result => {
                 this.comments = result.body.data.rows;
                 this.pageConf.totalPage = result.body.data.total;
             });
@@ -83,37 +82,19 @@ var vm = new Vue({
                 center: true
             }).then(() => {
                 //调用删除的接口(这里必须将数据转换成JSON格式，不然接收不到值，并且后端要用@RequestBody注解标识)
-                this.$http.post(api.delete, JSON.stringify(ids)).then(result => {
-                    if (result.body.code == 20000) {
-                        //删除成功
-                        this.$message({
-                            type: 'success',
-                            message: result.body.data,
-                            duration: 6000
-                        });
-                        //刷新列表
-                        //为什么要判断并赋值？
-                        //答：即使调用reloadList()刷新列表，但是对于删除，在reloadList()中获取到的totalPage总记录和pageCode当前页都是未删除之前的记录，当遇到删除此页的最后一个记录时，页码会自动跳到上一页，但是table中的数据显示"暂无记录"
-                        //   所以要判断，如果是删除此页的最后一条记录，删除后自动跳转到前一页，数据也是前一页的数据
+                this.$http.post(api.comments.delete, JSON.stringify(ids)).then(result => {
+                    if (result.body.code == 200) {
+                        this._notify(result.body.msg, 'success')
                         if ((this.pageConf.totalPage - 1) / this.pageConf.pageSize === (this.pageConf.pageCode - 1)) {
                             this.pageConf.pageCode = this.pageConf.pageCode - 1;
                         }
                     } else {
-                        //删除失败
-                        this.$message({
-                            type: 'warning',
-                            message: result.body.data,
-                            duration: 6000
-                        });
+                        this._notify(result.body.msg, 'error');
                     }
                     this.reloadList();
                 });
             }).catch(() => {
-                this.$message({
-                    type: 'info',
-                    message: '已取消删除',
-                    duration: 6000
-                });
+                this._notify('已取消删除', 'info');
             });
         },
 
@@ -124,18 +105,26 @@ var vm = new Vue({
             this.sureDelete(ids);
         },
 
-        init() {
-            //已登录用户名
-            this.$http.get(api.info).then(result => {
-                this.token.name = result.body.data.name;
-            });
+        /**
+         * 监听窗口改变UI样式（区别PC和Phone）
+         */
+        changeDiv() {
+            let isMobile = this.isMobile();
+            if (isMobile) {
+                //手机访问
+                this.sidebarFlag = ' hideSidebar mobile ';
+                this.sidebarStatus = false;
+                this.mobileStatus = true;
+            } else {
+                this.sidebarFlag = ' openSidebar';
+                this.sidebarStatus = true;
+                this.mobileStatus = false;
+            }
         },
-
         isMobile() {
-            const rect = body.getBoundingClientRect();
+            let rect = body.getBoundingClientRect();
             return rect.width - RATIO < WIDTH
         },
-
         handleSidebar() {
             if (this.sidebarStatus) {
                 this.sidebarFlag = ' hideSidebar ';
@@ -145,7 +134,7 @@ var vm = new Vue({
                 this.sidebarFlag = ' openSidebar ';
                 this.sidebarStatus = true;
             }
-            const isMobile = this.isMobile();
+            let isMobile = this.isMobile();
             if (isMobile) {
                 this.sidebarFlag += ' mobile ';
                 this.mobileStatus = true;
@@ -156,20 +145,5 @@ var vm = new Vue({
             this.sidebarStatus = false;
             this.sidebarFlag = ' hideSidebar mobile '
         }
-
     },
-    // 生命周期函数
-    created() {
-        this.search(this.pageConf.pageCode, this.pageConf.pageSize);
-        this.init();
-        const isMobile = this.isMobile();
-        if (isMobile) {
-            //手机访问
-            this.sidebarFlag = ' hideSidebar mobile ';
-            this.sidebarStatus = false;
-            this.mobileStatus = true;
-        }
-
-    },
-
 });

@@ -1,11 +1,10 @@
 package cn.tycoding.admin.controller;
 
-import cn.tycoding.admin.dto.Result;
-import cn.tycoding.admin.dto.StatusCode;
+import cn.tycoding.admin.dto.QueryPage;
+import cn.tycoding.admin.dto.ResponseCode;
 import cn.tycoding.admin.entity.Links;
-import cn.tycoding.admin.enums.ResultEnums;
+import cn.tycoding.admin.exception.GlobalException;
 import cn.tycoding.admin.service.LinksService;
-import cn.tycoding.admin.utils.CheckValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,78 +15,61 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @SuppressWarnings("all")
 @RequestMapping("/links")
-public class LinksController {
+public class LinksController extends BaseController {
 
     @Autowired
     private LinksService linksService;
 
-    @RequestMapping(value = "/findAllCount", method = RequestMethod.GET)
-    public Result findAllCount() {
-        return new Result(StatusCode.SUCCESS, linksService.findAllCount());
+    @GetMapping(value = "/findAllCount")
+    public ResponseCode findAllCount() {
+        return ResponseCode.success(linksService.findAllCount());
     }
 
-    @RequestMapping(value = "/findAll", method = RequestMethod.GET)
-    public Result findAll() {
-        return new Result(StatusCode.SUCCESS, linksService.findAllCount());
+    @GetMapping(value = "/findAll")
+    public ResponseCode findAll() {
+        return ResponseCode.success(linksService.findAllCount());
     }
 
-    @RequestMapping(value = "/findByPage", method = RequestMethod.POST)
-    public Result findByPage(Links links,
-                             @RequestParam(value = "pageCode", required = false) Integer pageCode,
-                             @RequestParam(value = "pageSize", required = false) Integer pageSize) {
-        if (CheckValue.checkPage(pageCode, pageSize)) {
-            return new Result(StatusCode.SUCCESS, linksService.findByPage(links, pageCode, pageSize));
+    @PostMapping(value = "/findByPage")
+    public ResponseCode findByPage(QueryPage queryPage, Links links) {
+        return ResponseCode.success(super.selectByPageNumSize(queryPage, () -> linksService.findByPage(links)));
+    }
+
+    @GetMapping(value = "/findById")
+    public ResponseCode findById(@RequestParam("id") Long id) {
+        return ResponseCode.success(linksService.findById(id));
+    }
+
+    @PostMapping(value = "/save")
+    public ResponseCode save(@RequestBody Links links) {
+        try {
+            linksService.save(links);
+            return ResponseCode.success();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new GlobalException(e.getMessage());
         }
-        return new Result(StatusCode.PARAMETER_ERROR, ResultEnums.PARAMETER_ERROR);
     }
 
-    @RequestMapping(value = "/findById", method = RequestMethod.GET)
-    public Result findById(@RequestParam("id") Long id) {
-        if (CheckValue.checkId(id)) {
-            return new Result(StatusCode.SUCCESS, linksService.findById(id));
+    @PutMapping(value = "/update")
+    public ResponseCode update(@RequestBody Links links) {
+        try {
+            linksService.update(links);
+            return ResponseCode.success();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new GlobalException(e.getMessage());
         }
-        return new Result(StatusCode.PARAMETER_ERROR, ResultEnums.PARAMETER_ERROR);
     }
 
-    @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public Result save(@RequestBody Links links) {
-        if (CheckValue.checkObj(links)) {
-            try {
-                linksService.save(links);
-                return new Result(StatusCode.SUCCESS, ResultEnums.SUCCESS);
-            } catch (Exception e) {
-                e.printStackTrace();
-                return new Result(StatusCode.ERROR, e.getMessage());
-            }
+    @PostMapping(value = "/delete")
+    public ResponseCode delete(@RequestBody Long... ids) {
+        try {
+            linksService.delete(ids);
+            return ResponseCode.success();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new GlobalException(e.getMessage());
         }
-        return new Result(StatusCode.PARAMETER_ERROR, ResultEnums.PARAMETER_ERROR);
-    }
-
-    @RequestMapping(value = "/update", method = RequestMethod.PUT)
-    public Result update(@RequestBody Links links) {
-        if (CheckValue.checkObj(links)) {
-            try {
-                linksService.update(links);
-                return new Result(StatusCode.SUCCESS, ResultEnums.SUCCESS);
-            } catch (Exception e) {
-                e.printStackTrace();
-                return new Result(StatusCode.ERROR, e.getMessage());
-            }
-        }
-        return new Result(StatusCode.PARAMETER_ERROR, ResultEnums.PARAMETER_ERROR);
-    }
-
-    @RequestMapping(value = "/delete", method = RequestMethod.POST)
-    public Result delete(@RequestBody Long... ids) {
-        if (CheckValue.checkIds(ids)) {
-            try {
-                linksService.delete(ids);
-                return new Result(StatusCode.SUCCESS, ResultEnums.SUCCESS);
-            } catch (Exception e) {
-                e.printStackTrace();
-                return new Result(StatusCode.ERROR, e.getMessage());
-            }
-        }
-        return new Result(StatusCode.PARAMETER_ERROR, ResultEnums.PARAMETER_ERROR);
     }
 }

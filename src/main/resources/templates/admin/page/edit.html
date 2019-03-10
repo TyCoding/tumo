@@ -1,34 +1,20 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="utf-8">
-    <title>编辑文章</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <link rel="icon" th:href="@{/public/admin/favicon.png}" type="image/png">
-    <!--<link rel="stylesheet" th:href="@{/lib/element-ui/lib/theme-chalk/index.css}"/>-->
-    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
-    <link rel="stylesheet" th:href="@{/lib/font/css/font-awesome.min.css}"/>
-    <link rel="stylesheet" th:href="@{/lib/editormd/editormd.min.css}">
-    <link rel="stylesheet" th:href="@{/public/admin/base.css}">
-    <link rel="stylesheet" th:href="@{/admin/css/publish.css}">
-
-    <!--[if lt IE 9]>
-    <script src="//cdn.bootcss.com/html5shiv/r29/html5.min.js"></script>
-    <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-</head>
+<head th:replace="admin/common/head"></head>
+<title>编辑文章</title>
+<link rel="stylesheet" th:href="@{/admin/css/publish.css}">
 <body>
 <!-- vue入口 -->
 <div id="app">
     <!-- 布局容器 -->
     <div :class="'app-wrapper' + sidebarFlag">
         <!-- aside -->
-        <div th:replace="admin/side :: side"></div>
+        <div th:replace="admin/side"></div>
 
         <!-- container -->
         <el-container class="main-container">
             <!-- header -->
-            <div style="background-color: rgb(84, 92, 100);" th:replace="admin/header :: header"></div>
+            <div style="background-color: rgb(84, 92, 100);" th:replace="admin/header"></div>
 
             <!-- main -->
             <el-main class="app-main">
@@ -111,10 +97,7 @@
 </div>
 </body>
 <script type="text/javascript" th:src="@{/plugins/js/jquery.min.js}"></script>
-<!--<script type="text/javascript" th:src="@{/lib/vue/vue.min.js}"></script>-->
-<script src="https://cdn.jsdelivr.net/npm/vue"></script>
-<script type="text/javascript" th:src="@{/lib/element-ui/lib/index.js}"></script>
-<script type="text/javascript" th:src="@{/lib/vue/vue-resource.min.js}"></script>
+<div th:replace="admin/common/js"></div>
 <script type="text/javascript" th:src="@{/lib/editormd/editormd.min.js}"></script>
 <script type="text/javascript" th:src="@{/admin/js/edit.js}"></script>
 <script type="text/javascript" th:inline="javascript">

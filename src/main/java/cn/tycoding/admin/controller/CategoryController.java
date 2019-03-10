@@ -1,13 +1,12 @@
 package cn.tycoding.admin.controller;
 
-import cn.tycoding.admin.dto.Result;
-import cn.tycoding.admin.dto.StatusCode;
+import cn.tycoding.admin.dto.QueryPage;
+import cn.tycoding.admin.dto.ResponseCode;
 import cn.tycoding.admin.entity.Article;
 import cn.tycoding.admin.entity.Category;
-import cn.tycoding.admin.enums.ResultEnums;
+import cn.tycoding.admin.exception.GlobalException;
 import cn.tycoding.admin.service.ArticleService;
 import cn.tycoding.admin.service.CategoryService;
-import cn.tycoding.admin.utils.CheckValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,7 +21,7 @@ import java.util.Map;
 @RestController
 @SuppressWarnings("all")
 @RequestMapping("/category")
-public class CategoryController {
+public class CategoryController extends BaseController {
 
     @Autowired
     private CategoryService categoryService;
@@ -30,9 +29,9 @@ public class CategoryController {
     @Autowired
     private ArticleService articleService;
 
-    @RequestMapping(value = "/findAll", method = RequestMethod.GET)
-    public Result findAll() {
-        return new Result(StatusCode.SUCCESS, categoryService.findAll());
+    @GetMapping(value = "/findAll")
+    public ResponseCode findAll() {
+        return ResponseCode.success(categoryService.findAll());
     }
 
     /**
@@ -41,74 +40,57 @@ public class CategoryController {
      *
      * @return
      */
-    @RequestMapping(value = "/findArticleCountForCategory", method = RequestMethod.GET)
-    public Result findArticleCountForCategory() {
+    @GetMapping(value = "/findArticleCountForCategory")
+    public ResponseCode findArticleCountForCategory() {
         Map<String, Integer> map = new HashMap<String, Integer>();
         List<Category> categoryList = categoryService.findAll();
         for (Category category : categoryList) {
             List<Article> articleList = articleService.findByCategory(category.getName());
             map.put(category.getName(), articleList.size());
         }
-        return new Result(StatusCode.SUCCESS, map);
+        return ResponseCode.success(map);
     }
 
-    @RequestMapping(value = "/findByPage", method = RequestMethod.POST)
-    public Result findByPage(Category category,
-                             @RequestParam(value = "pageCode", required = false) Integer pageCode,
-                             @RequestParam(value = "pageSize", required = false) Integer pageSize) {
-        if (CheckValue.checkPage(pageCode, pageSize)) {
-            return new Result(StatusCode.SUCCESS, categoryService.findByPage(category, pageCode, pageSize));
-        }
-        return new Result(StatusCode.PARAMETER_ERROR, ResultEnums.PARAMETER_ERROR);
+    @PostMapping(value = "/findByPage")
+    public ResponseCode findByPage(QueryPage queryPage, Category category) {
+        return ResponseCode.success(super.selectByPageNumSize(queryPage, () -> categoryService.findByPage(category)));
     }
 
-    @RequestMapping(value = "/findById", method = RequestMethod.GET)
-    public Result findById(@RequestParam("id") Long id) {
-        if (CheckValue.checkId(id)) {
-            return new Result(StatusCode.SUCCESS, categoryService.findById(id));
-        }
-        return new Result(StatusCode.PARAMETER_ERROR, ResultEnums.PARAMETER_ERROR);
+    @GetMapping(value = "/findById")
+    public ResponseCode findById(@RequestParam("id") Long id) {
+        return ResponseCode.success(categoryService.findById(id));
     }
 
-    @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public Result save(@RequestBody Category category) {
-        if (CheckValue.checkObj(category)) {
-            try {
-                categoryService.save(category);
-                return new Result(StatusCode.SUCCESS, ResultEnums.SUCCESS);
-            } catch (Exception e) {
-                e.printStackTrace();
-                return new Result(StatusCode.ERROR, e.getMessage());
-            }
+    @PostMapping(value = "/save")
+    public ResponseCode save(@RequestBody Category category) {
+        try {
+            categoryService.save(category);
+            return ResponseCode.success();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new GlobalException(e.getMessage());
         }
-        return new Result(StatusCode.PARAMETER_ERROR, ResultEnums.PARAMETER_ERROR);
     }
 
-    @RequestMapping(value = "/update", method = RequestMethod.PUT)
-    public Result update(@RequestBody Category category) {
-        if (CheckValue.checkObj(category)) {
-            try {
-                categoryService.update(category);
-                return new Result(StatusCode.SUCCESS, ResultEnums.SUCCESS);
-            } catch (Exception e) {
-                e.printStackTrace();
-                return new Result(StatusCode.ERROR, e.getMessage());
-            }
+    @PutMapping(value = "/update")
+    public ResponseCode update(@RequestBody Category category) {
+        try {
+            categoryService.update(category);
+            return ResponseCode.success();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new GlobalException(e.getMessage());
         }
-        return new Result(StatusCode.PARAMETER_ERROR, ResultEnums.PARAMETER_ERROR);
     }
 
-    @RequestMapping(value = "/delete", method = RequestMethod.POST)
-    public Result delete(@RequestBody Long... ids) {
-        if (CheckValue.checkIds(ids)) {
-            try {
-                categoryService.delete(ids);
-                return new Result(StatusCode.SUCCESS, ResultEnums.SUCCESS);
-            } catch (Exception e) {
-                e.printStackTrace();
-                return new Result(StatusCode.ERROR, e.getMessage());
-            }
+    @PostMapping(value = "/delete")
+    public ResponseCode delete(@RequestBody Long... ids) {
+        try {
+            categoryService.delete(ids);
+            return ResponseCode.success();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new GlobalException(e.getMessage());
         }
-        return new Result(StatusCode.PARAMETER_ERROR, ResultEnums.PARAMETER_ERROR);
     }
 }

@@ -1,95 +1,76 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="utf-8">
-    <title>评论管理</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <link rel="icon" th:href="@{/public/admin/favicon.png}" type="image/png">
-    <link rel="stylesheet" th:href="@{/lib/element-ui/lib/theme-chalk/index.css}"/>
-    <link rel="stylesheet" th:href="@{/lib/font/css/font-awesome.min.css}"/>
-    <link rel="stylesheet" th:href="@{/lib/font/icon/iconfont.css}"/>
-    <link rel="stylesheet" th:href="@{/public/admin/base.css}">
-    <link rel="stylesheet" th:href="@{/admin/css/comments.css}">
-
-    <!--[if lt IE 9]>
-    <script src="//cdn.bootcss.com/html5shiv/r29/html5.min.js"></script>
-    <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-</head>
+<head th:replace="admin/common/head"></head>
+<title>评论管理</title>
+<link rel="stylesheet" th:href="@{/admin/css/comments.css}">
 <body>
 <!-- vue入口 -->
 <div id="app">
     <div :class="'app-wrapper' + sidebarFlag">
         <!-- aside -->
-        <div th:replace="admin/side :: side"></div>
+        <div th:replace="admin/side"></div>
 
         <!-- container -->
         <el-container class="main-container">
             <!-- header -->
-            <div style="background-color: rgb(84, 92, 100);" th:replace="admin/header :: header"></div>
+            <div style="background-color: rgb(84, 92, 100);" th:replace="admin/header"></div>
 
             <!-- main -->
             <el-main class="app-main">
                 <el-card>
-                    <h2>评论管理页</h2>
-                    <div>
-                        <!-- 功能按钮 -->
-                        <div>
-                            <el-row :gutter="20">
-                                <el-col :xs="24" :sm="12" :lg="6" :span="6">
-                                    <el-input placeholder="请输入内容" v-model="searchEntity.author" @keyup.native="search(pageConf.pageCode,pageConf.pageCode)">
-                                        <i slot="prefix" class="el-input__icon el-icon-search"></i>
-                                    </el-input>
-                                </el-col>
-                            </el-row>
-                        </div>
-                        <br/>
-                        <!-- 列表 -->
-                        <el-table ref="comments" :data="comments" border tooltip-effect="dark" style="width: 100%">
-                            <el-table-column prop="id" align="center" sortable label="编号" show-overflow-tooltip width="80"></el-table-column>
-                            <el-table-column align="center" prop="content" label="留言内容" width="180" show-overflow-tooltip></el-table-column>
-                            <el-table-column align="center" prop="articleTitle" label="文章标题" width="180" show-overflow-tooltip></el-table-column>
-                            <el-table-column align="center" prop="author" show-overflow-tooltip label="留言人" width="100"></el-table-column>
-                            <el-table-column align="center" prop="authorId" show-overflow-tooltip label="给谁留言" width="100"></el-table-column>
-                            <el-table-column align="center" prop="time" show-overflow-tooltip label="留言时间" width="170"></el-table-column>
-                            <el-table-column align="center" prop="email" show-overflow-tooltip label="留言人邮箱" width="150"></el-table-column>
-                            <el-table-column align="center" prop="url" label="留言人URL" show-overflow-tooltip width="150"></el-table-column>
-                            <el-table-column align="center" prop="state" sortable label="状态" width="100">
-                                <template slot-scope="scope">
-                                    <el-tag>{{scope.row.state}}</el-tag>
-                                </template>
-                            </el-table-column>
-                            <el-table-column label="操作" align="center">
-                                <template slot-scope="scope">
-                                    <el-button icon="el-icon-delete" size="mini" type="danger" @click="handleDelete(scope.row.id)">删除</el-button>
-                                    <a :href="'/article/' + scope.row.id" target="_blank">
-                                        <el-button size="mini" icon="el-icon-edit" type="warning">查看</el-button>
-                                    </a>
-                                </template>
-                            </el-table-column>
-                        </el-table>
-                        <br/>
-                        <!-- 分页 -->
-                        <div class="pagination">
-                            <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange"
-                                    :current-page="pageConf.pageCode"
-                                    :page-sizes="pageConf.pageOption"
-                                    :page-size="pageConf.pageSize"
-                                    layout="total, sizes, prev, pager, next, jumper"
-                                    :total="pageConf.totalPage">
-                            </el-pagination>
-                        </div>
-                        <br/>
+                    <h3>评论管理页</h3>
+                    <!-- 功能按钮 -->
+                    <el-row :gutter="20">
+                        <el-col :xs="12" :sm="12" :lg="6" :span="6" style="display: flex">
+                            <el-input placeholder="请输入留言人姓名查询" size="small" v-model="searchEntity.author" @keyup.native="search(pageConf.pageCode, pageConf.pageSize)">
+                                <i slot="prefix" class="el-input__icon el-icon-search"></i>
+                            </el-input>
+                            <el-button @click="search(pageConf.pageCode, pageConf.pageSize)" plain size="small" style="margin-left:12px;" icon="el-icon-search"></el-button>
+                        </el-col>
+                    </el-row>
+                    <br/>
+                    <!-- 列表 -->
+                    <el-table ref="comments" :data="comments" border tooltip-effect="dark" style="width: 100%">
+                        <el-table-column prop="id" align="center" sortable label="编号" show-overflow-tooltip width="80"></el-table-column>
+                        <el-table-column align="center" prop="content" label="留言内容" width="180" show-overflow-tooltip></el-table-column>
+                        <el-table-column align="center" prop="articleTitle" label="文章标题" width="180" show-overflow-tooltip></el-table-column>
+                        <el-table-column align="center" prop="author" show-overflow-tooltip label="留言人" width="100"></el-table-column>
+                        <el-table-column align="center" prop="authorId" show-overflow-tooltip label="给谁留言" width="100"></el-table-column>
+                        <el-table-column align="center" prop="time" show-overflow-tooltip label="留言时间" width="170"></el-table-column>
+                        <el-table-column align="center" prop="email" show-overflow-tooltip label="留言人邮箱" width="150"></el-table-column>
+                        <el-table-column align="center" prop="url" label="留言人URL" show-overflow-tooltip width="150"></el-table-column>
+                        <el-table-column align="center" prop="state" sortable label="状态" width="100">
+                            <template slot-scope="scope">
+                                <el-tag>{{scope.row.state}}</el-tag>
+                            </template>
+                        </el-table-column>
+                        <el-table-column label="操作" align="center">
+                            <template slot-scope="scope">
+                                <el-button icon="el-icon-delete" size="mini" type="danger" @click="handleDelete(scope.row.id)">删除</el-button>
+                                <a :href="'/article/' + scope.row.id" target="_blank">
+                                    <el-button size="mini" icon="el-icon-edit" type="warning">查看</el-button>
+                                </a>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                    <br/>
+                    <!-- 分页 -->
+                    <div class="pagination">
+                        <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange"
+                                       :current-page="pageConf.pageCode"
+                                       :page-sizes="pageConf.pageOption"
+                                       :page-size="pageConf.pageSize"
+                                       layout="total, sizes, prev, pager, next, jumper"
+                                       :total="pageConf.totalPage">
+                        </el-pagination>
                     </div>
+                    <br/>
                 </el-card>
             </el-main>
         </el-container>
     </div>
 </div>
 </body>
-<!--<script type="text/javascript" th:src="@{/lib/vue/vue.min.js}"></script>-->
-<script src="https://cdn.jsdelivr.net/npm/vue"></script>
-<script type="text/javascript" th:src="@{/lib/element-ui/lib/index.js}"></script>
-<script type="text/javascript" th:src="@{/lib/vue/vue-resource.min.js}"></script>
+<div th:replace="admin/common/js"></div>
 <script type="text/javascript" th:src="@{/admin/js/comments.js}"></script>
 </html>

@@ -1,15 +1,11 @@
 package cn.tycoding.admin.service.impl;
 
-import cn.tycoding.admin.dto.PageBean;
 import cn.tycoding.admin.entity.Category;
-import cn.tycoding.admin.enums.ResultEnums;
-import cn.tycoding.admin.exception.ResultException;
+import cn.tycoding.admin.exception.GlobalException;
 import cn.tycoding.admin.mapper.CategoryMapper;
 import cn.tycoding.admin.service.ArticleCategoryService;
 import cn.tycoding.admin.service.ArticleService;
 import cn.tycoding.admin.service.CategoryService;
-import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,7 +18,6 @@ import java.util.List;
  */
 @Service
 @SuppressWarnings("all")
-@Transactional
 public class CategoryServiceImpl implements CategoryService {
 
     @Autowired
@@ -45,18 +40,21 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public PageBean findByPage(Category category, int pageCode, int pageSize) {
-        PageHelper.startPage(pageCode, pageSize);
-        Page page = categoryMapper.findByPage(category);
-        return new PageBean(page.getTotal(), page.getResult());
+    public List<Category> findByPage(Category category) {
+        return categoryMapper.findByPage(category);
     }
 
     @Override
-    public Category findById(long id) {
-        return categoryMapper.findById(id);
+    public Category findById(Long id) {
+        if (!id.equals(null) && id != 0) {
+            return categoryMapper.findById(id);
+        } else {
+            throw new GlobalException("参数错误");
+        }
     }
 
     @Override
+    @Transactional
     public void save(Category category) {
         try {
             if (!exists(category)) {
@@ -64,21 +62,16 @@ public class CategoryServiceImpl implements CategoryService {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            throw new ResultException(ResultEnums.INNER_ERROR);
+            throw new GlobalException(e.getMessage());
         }
     }
 
-    /**
-     * 判断添加的标签是否已存在
-     *
-     * @param category
-     * @return
-     */
     private boolean exists(Category category) {
         return categoryMapper.exists(category.getName());
     }
 
     @Override
+    @Transactional
     public void update(Category category) {
         try {
             if (category.getId() != 0) {
@@ -86,36 +79,42 @@ public class CategoryServiceImpl implements CategoryService {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            throw new ResultException(ResultEnums.INNER_ERROR);
+            throw new GlobalException(e.getMessage());
         }
     }
 
-    /**
-     * 删除分类
-     *
-     * @param ids
-     */
     @Override
+    @Transactional
     public void delete(Long... ids) {
-        try {
-            for (long id : ids) {
-                categoryMapper.delete(id);
+        if (ids.length > 0 && !ids.equals(null)) {
+            try {
+                for (long id : ids) {
+                    categoryMapper.delete(id);
 
-                //删除与该分类与文章关联的信息
-                articleCategoryService.deleteByCategoryId(id);
+                    //删除与该分类与文章关联的信息
+                    articleCategoryService.deleteByCategoryId(id);
+                }
+            } catch (Exception e) {
+                throw new GlobalException(e.getMessage());
             }
-        } catch (Exception e) {
-            throw new ResultException(ResultEnums.INNER_ERROR);
         }
     }
 
     @Override
     public Category findByName(String name) {
-        return categoryMapper.findByName(name);
+        if (!name.isEmpty()) {
+            return categoryMapper.findByName(name);
+        } else {
+            throw new GlobalException("参数错误");
+        }
     }
 
     @Override
-    public List<Category> findByArticleId(long id) {
-        return categoryMapper.findCategoryByArticleId(id);
+    public List<Category> findByArticleId(Long id) {
+        if (!id.equals(null) && id != 0) {
+            return categoryMapper.findCategoryByArticleId(id);
+        } else {
+            throw new GlobalException("参数错误");
+        }
     }
 }

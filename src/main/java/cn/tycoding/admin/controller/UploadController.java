@@ -1,7 +1,7 @@
 package cn.tycoding.admin.controller;
 
-import cn.tycoding.admin.dto.Result;
-import cn.tycoding.admin.dto.StatusCode;
+import cn.tycoding.admin.dto.ResponseCode;
+import cn.tycoding.admin.exception.GlobalException;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -11,7 +11,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -33,10 +32,10 @@ public class UploadController {
      * @return
      */
     @RequestMapping("/upload")
-    public Result upload(@RequestParam("file") MultipartFile file, HttpServletRequest request) throws FileNotFoundException {
+    public ResponseCode upload(@RequestParam("file") MultipartFile file, HttpServletRequest request) throws FileNotFoundException {
         //获取文件在服务器的储存位置
         File path = new File(ResourceUtils.getURL("classpath:").getPath());
-        File filePath = new File(path.getAbsolutePath(),"static/upload/");
+        File filePath = new File(path.getAbsolutePath(), "static/upload/");
         System.out.println("文件的保存路径：" + filePath.getAbsolutePath());
         if (!filePath.exists() && !filePath.isDirectory()) {
             System.out.println("目录不存在，创建目录:" + filePath);
@@ -72,12 +71,10 @@ public class UploadController {
             Map map = new HashMap<>();
             map.put("name", fileName);
             map.put("url", "/upload/" + fileName);
-
-            return new Result(StatusCode.SUCCESS, map);
-        } catch (IOException e) {
-            System.out.println("上传失败");
+            return ResponseCode.success(map);
+        } catch (Exception e) {
             e.printStackTrace();
-            return new Result(StatusCode.ERROR, "上传失败");
+            throw new GlobalException("上传失败");
         }
     }
 }

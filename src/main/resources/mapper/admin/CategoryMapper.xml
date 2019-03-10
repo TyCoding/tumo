@@ -4,25 +4,6 @@
 
 <mapper namespace="cn.tycoding.admin.mapper.CategoryMapper">
 
-    <!-- 查询所有 -->
-    <select id="findAll" resultType="Category">
-        SELECT * FROM tb_category
-    </select>
-
-    <!-- 条件查询 -->
-    <select id="findByPage" parameterType="Category" resultType="Category">
-        SELECT * FROM tb_category
-        <!--WHERE 1=1-->
-        <!--<if test="author != null">-->
-        <!--AND author LIKE CONCAT('%', #{author}, '%')-->
-        <!--</if>-->
-    </select>
-
-    <!-- 根据ID查询 -->
-    <select id="findById" parameterType="Long" resultType="Category">
-        SELECT * FROM tb_category WHERE id = #{id}
-    </select>
-
     <!-- 保存 -->
     <insert id="save" parameterType="Category">
         INSERT  INTO
@@ -34,11 +15,6 @@
         )
     </insert>
 
-    <!-- 查询是否存在 -->
-    <select id="exists" resultType="Boolean">
-        SELECT COUNT(1) FROM tb_category WHERE name = #{name}
-    </select>
-
     <!-- 更新 -->
     <update id="update" parameterType="Category">
         UPDATE ignore tb_category
@@ -49,16 +25,6 @@
         </set>
         WHERE id = #{id}
     </update>
-
-    <!-- 删除 -->
-    <delete id="delete" parameterType="Long">
-        DELETE FROM tb_category WHERE id = #{id}
-    </delete>
-
-    <!-- 根据name查询 -->
-    <select id="findByName" resultType="Category">
-        SELECT * FROM tb_category WHERE name = #{name}
-    </select>
 
     <!-- 根据文章id查询其关联分类表中的数据 -->
     <select id="findCategoryByArticleId" parameterType="long" resultType="Category">

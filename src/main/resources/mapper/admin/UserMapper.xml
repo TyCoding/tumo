@@ -4,20 +4,6 @@
 
 <mapper namespace="cn.tycoding.admin.mapper.UserMapper">
 
-    <!-- 条件查询 -->
-    <select id="findByPage" parameterType="User" resultType="User">
-        SELECT * FROM tb_user
-        <!--WHERE 1=1-->
-        <!--<if test="author != null">-->
-        <!--AND author LIKE CONCAT('%', #{author}, '%')-->
-        <!--</if>-->
-    </select>
-
-    <!-- 根据ID查询 -->
-    <select id="findById" parameterType="Long" resultType="User">
-        SELECT * FROM tb_user WHERE id = #{id}
-    </select>
-
     <!-- 保存 -->
     <insert id="save" parameterType="User">
         INSERT INTO
@@ -64,14 +50,4 @@
         </set>
         WHERE id = #{id}
     </update>
-
-    <!-- 删除 -->
-    <delete id="delete" parameterType="Long">
-        DELETE FROM tb_user WHERE id = #{id}
-    </delete>
-
-    <!-- 根据用户名查询 -->
-    <select id="findByName" resultType="User">
-        SELECT * FROM tb_user WHERE username = #{username}
-    </select>
 </mapper>

@@ -4,30 +4,6 @@
 
 <mapper namespace="cn.tycoding.admin.mapper.LinksMapper">
 
-    <!-- 查询总数量 -->
-    <select id="findAllCount" resultType="Long">
-        SELECT COUNT(*) FROM tb_links
-    </select>
-
-    <!-- 查询所有 -->
-    <select id="findAll" resultType="Links">
-        SELECT * FROM tb_links
-    </select>
-
-    <!-- 条件查询 -->
-    <select id="findByPage" parameterType="Links" resultType="Links">
-        SELECT * FROM tb_links
-        <!--WHERE 1=1-->
-        <!--<if test="author != null">-->
-        <!--AND author LIKE CONCAT('%', #{author}, '%')-->
-        <!--</if>-->
-    </select>
-
-    <!-- 根据ID查询 -->
-    <select id="findById" parameterType="Long" resultType="Links">
-        SELECT * FROM tb_links WHERE id = #{id}
-    </select>
-
     <!-- 保存 -->
     <insert id="save" parameterType="Links">
         INSERT  INTO
@@ -54,10 +30,5 @@
         </set>
         WHERE id = #{id}
     </update>
-
-    <!-- 删除 -->
-    <delete id="delete" parameterType="Long">
-        DELETE FROM tb_links WHERE id = #{id}
-    </delete>
 
 </mapper>

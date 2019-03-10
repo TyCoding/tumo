@@ -1,34 +1,20 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="utf-8">
-    <title>后台首页</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <link rel="icon" th:href="@{/public/admin/favicon.png}" type="image/png">
-    <link rel="stylesheet" th:href="@{/lib/element-ui/lib/theme-chalk/index.css}"/>
-    <link rel="stylesheet" th:href="@{/lib/font/css/font-awesome.min.css}"/>
-    <link rel="stylesheet" th:href="@{/lib/font/icon/iconfont.css}"/>
-    <link rel="stylesheet" th:href="@{/public/admin/base.css}">
-    <link rel="stylesheet" th:href="@{/admin/css/index.css}">
-
-    <!--[if lt IE 9]>
-    <script src="//cdn.bootcss.com/html5shiv/r29/html5.min.js"></script>
-    <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-
-</head>
+<head th:replace="admin/common/head"></head>
+<link rel="stylesheet" th:href="@{/admin/css/index.css}">
+<title>后台首页</title>
 <body>
 <!-- vue入口 -->
 <div id="app">
     <div :class="'app-wrapper' + sidebarFlag">
 
         <!-- aside -->
-        <div th:replace="admin/side :: side"></div>
+        <div th:replace="admin/side"></div>
 
         <!-- container -->
         <el-container class="main-container">
             <!-- header -->
-            <div style="background-color: rgb(84, 92, 100);" th:replace="admin/header :: header"></div>
+            <div style="background-color: rgb(84, 92, 100);" th:replace="admin/header"></div>
 
             <!-- main -->
             <el-main class="app-main">
@@ -89,36 +75,48 @@
                 <br/>
                 <blockquote>博客数据</blockquote>
                 <div class="lists">
-                    <el-row :gutter="40">
-                        <el-col :xs="24" :sm="8" :lg="8" style="padding:20px 20px">
-                            <div>
-                                <h3>最新文章</h3>
-                                <div class="articles">
-                                    <div v-for="item in article">
-                                        <a v-if="item.title != ''" :href="'/article/' + item.id" target="_blank"
-                                           v-text="item.title"></a>
-                                    </div>
+                    <el-row :gutter="100">
+                        <el-col :xs="24" :sm="8" :lg="8" style="padding:20px 60px">
+                            <h3>最新文章</h3>
+                            <div class="articles">
+                                <div v-for="item in article">
+                                    <a v-if="item.title != ''" :href="'/article/' + item.id" target="_blank"
+                                       v-text="item.title"></a>
                                 </div>
                             </div>
                         </el-col>
-                        <el-col :xs="24" :sm="8" :lg="8" style="padding:20px 20px">
-                            <div>
-                                <h3>最新评论</h3>
-                                <div class="comments">
-                                    <div v-for="item in comments">
-                                        <p><span v-text="item.author"></span>&nbsp;&nbsp;于&nbsp;<span
-                                                v-text="item.time"></span>&nbsp;:</p>
-                                        <a v-if="item.articleId != 0" :href="'/article/' + item.articleId"
-                                           target="_blank" v-text="item.content"></a>
-                                        <span v-else v-text="item.content"></span>
-                                    </div>
+                        <el-col :xs="24" :sm="8" :lg="8" style="padding:20px 60px">
+                            <h3>最新评论</h3>
+                            <div class="comments">
+                                <div v-for="item in comments">
+                                    <p><span v-text="item.author"></span>&nbsp;&nbsp;于&nbsp;<span
+                                            v-text="item.time"></span>&nbsp;:</p>
+                                    <a v-if="item.articleId != 0" :href="'/article/' + item.articleId"
+                                       target="_blank" v-text="item.content"></a>
+                                    <span v-else v-text="item.content"></span>
                                 </div>
                             </div>
                         </el-col>
-                        <el-col :span="8">
-                            <div>
-                                <!--<h2>系统日志</h2>-->
-                            </div>
+                        <el-col :xs="24" :sm="8" :lg="8" style="padding:20px 60px">
+                            <h3>博客信息</h3>
+                            <el-card>
+                                <b>作者：</b>[[${username}]]TyCoding
+                                <br/>
+                                <b>简介：</b>Tumo Blog 一个轻量型博客系统。
+                                <br/>
+                                <b>项目地址：</b><a href="https://github.com/TyCoding/tumo" target="_blank" style="color: #3222d4;">https://github.com/TyCoding/tumo</a>
+                                <br/>
+                                <br/>
+                                <br/>
+                                <span>Java</span>
+                                <el-progress :percentage="40"></el-progress>
+                                <br/>
+                                <span>Spring</span>
+                                <el-progress :percentage="10" color="#8e71c7"></el-progress>
+                                <br/>
+                                <span>Vue</span>
+                                <el-progress :percentage="60"></el-progress>
+                            </el-card>
                         </el-col>
                     </el-row>
                 </div>
@@ -128,9 +126,6 @@
 </div>
 
 </body>
-<script type="text/javascript" th:src="@{/lib/vue/vue.min.js}"></script>
-<script type="text/javascript" th:src="@{/lib/element-ui/lib/index.js}"></script>
-<!--<script src="https://cdn.jsdelivr.net/npm/vue"></script>-->
-<script type="text/javascript" th:src="@{/lib/vue/vue-resource.min.js}"></script>
+<div th:replace="admin/common/js"></div>
 <script type="text/javascript" th:src="@{/admin/js/index.js}"></script>
 </html>

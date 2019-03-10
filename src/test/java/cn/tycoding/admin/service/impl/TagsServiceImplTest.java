@@ -1,6 +1,5 @@
 package cn.tycoding.admin.service.impl;
 
-import cn.tycoding.admin.dto.PageBean;
 import cn.tycoding.admin.entity.Tags;
 import cn.tycoding.admin.service.TagsService;
 import org.junit.Test;
@@ -26,14 +25,8 @@ public class TagsServiceImplTest {
     private TagsService tagsService;
 
     @Test
-    public void findByPage() {
-        PageBean page = tagsService.findByPage(new Tags(), 1, 3);
-        logger.info("page={}", page.getRows());
-    }
-
-    @Test
     public void findById() {
-        Tags tags = tagsService.findById(1l);
+        Tags tags = tagsService.findById(1L);
         logger.info("tags={}", tags);
     }
 

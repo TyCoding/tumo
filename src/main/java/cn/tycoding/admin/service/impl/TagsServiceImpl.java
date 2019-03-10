@@ -1,14 +1,10 @@
 package cn.tycoding.admin.service.impl;
 
-import cn.tycoding.admin.dto.PageBean;
 import cn.tycoding.admin.entity.Tags;
-import cn.tycoding.admin.enums.ResultEnums;
-import cn.tycoding.admin.exception.ResultException;
+import cn.tycoding.admin.exception.GlobalException;
 import cn.tycoding.admin.mapper.TagsMapper;
 import cn.tycoding.admin.service.ArticleTagsService;
 import cn.tycoding.admin.service.TagsService;
-import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,25 +37,29 @@ public class TagsServiceImpl implements TagsService {
     }
 
     @Override
-    public PageBean findByPage(Tags tags, int pageCode, int pageSize) {
-        PageHelper.startPage(pageCode, pageSize);
-        Page page = tagsMapper.findByPage(tags);
-        return new PageBean(page.getTotal(), page.getResult());
+    public List<Tags> findByPage(Tags tags) {
+        return tagsMapper.findByPage(tags);
     }
 
     @Override
-    public Tags findById(long id) {
-        return tagsMapper.findById(id);
+    public Tags findById(Long id) {
+        if (!id.equals(null) && id != 0) {
+            return tagsMapper.findById(id);
+        } else {
+            throw new GlobalException("参数错误");
+        }
     }
 
     @Override
+    @Transactional
     public void save(Tags tags) {
         try {
             if (!exists(tags)) {
                 tagsMapper.save(tags);
             }
         } catch (Exception e) {
-            throw new ResultException(ResultEnums.INNER_ERROR);
+            e.printStackTrace();
+            throw new GlobalException(e.getMessage());
         }
     }
 
@@ -68,48 +68,55 @@ public class TagsServiceImpl implements TagsService {
     }
 
     @Override
+    @Transactional
     public void update(Tags tags) {
         try {
             if (tags.getId() != 0) {
                 tagsMapper.update(tags);
             } else {
-                throw new ResultException(ResultEnums.ERROR);
+                throw new GlobalException("参数错误");
             }
         } catch (Exception e) {
-            throw new ResultException(ResultEnums.INNER_ERROR);
+            e.printStackTrace();
+            throw new GlobalException(e.getMessage());
         }
     }
 
     @Override
+    @Transactional
     public void delete(Long... ids) {
-        try {
-            if (ids != null && ids.length > 0) {
+        if (ids != null && ids.length > 0) {
+            try {
                 for (long id : ids) {
                     tagsMapper.delete(id);
 
                     //删除该标签与文章有关联的关联信息
                     articleTagsService.deleteByTagsId(id);
                 }
-            } else {
-                throw new ResultException(ResultEnums.ERROR);
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw new GlobalException(e.getMessage());
             }
-        } catch (Exception e) {
-            throw new ResultException(ResultEnums.INNER_ERROR);
+        } else {
+            throw new GlobalException("参数错误");
         }
     }
 
     @Override
     public Tags findByName(String name) {
-        return tagsMapper.findByName(name);
+        if (!name.isEmpty()) {
+            return tagsMapper.findByName(name);
+        } else {
+            throw new GlobalException("参数错误");
+        }
     }
 
     @Override
-    public List<Tags> findByArticleId(long id) {
-        return tagsMapper.findByArticleId(id);
+    public List<Tags> findByArticleId(Long id) {
+        if (!id.equals(null) && id != 0) {
+            return tagsMapper.findByArticleId(id);
+        } else {
+            throw new GlobalException("参数错误");
+        }
     }
-
-    /*@Override
-    public List<Tags> findByArticleTagsId(long articleId, long tagsId) {
-        return tagsMapper.findByArticleTagsId(articleId, tagsId);
-    }*/
 }

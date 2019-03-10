@@ -1,8 +1,5 @@
 package cn.tycoding.admin.service;
 
-import cn.tycoding.admin.dto.PageBean;
-import org.apache.shiro.authz.annotation.RequiresRoles;
-
 import java.util.List;
 
 /**
@@ -28,12 +25,10 @@ public interface BaseService<T> {
     /**
      * 分页查询
      *
-     * @param t        查询条件
-     * @param pageCode 当前页
-     * @param pageSize 每页的记录数
+     * @param t 查询条件
      * @return
      */
-    PageBean findByPage(T t, int pageCode, int pageSize);
+    List<T> findByPage(T t);
 
     /**
      * 根据ID查询
@@ -41,7 +36,7 @@ public interface BaseService<T> {
      * @param id
      * @return
      */
-    T findById(long id);
+    T findById(Long id);
 
     /**
      * 保存

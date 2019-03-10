@@ -1,5 +1,7 @@
 package cn.tycoding.admin.entity;
 
+import lombok.Data;
+
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
@@ -7,6 +9,7 @@ import java.io.Serializable;
  * @auther TyCoding
  * @date 2018/10/17
  */
+@Data
 public class Tags implements Serializable {
 
     private long id; //编号
@@ -19,26 +22,4 @@ public class Tags implements Serializable {
     public Tags(String name) {
         this.name = name;
     }
-
-    public Tags(long id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
 }

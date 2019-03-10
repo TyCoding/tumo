@@ -1,9 +1,7 @@
 package cn.tycoding.admin.service.impl;
 
-import cn.tycoding.admin.dto.PageBean;
 import cn.tycoding.admin.entity.ArticleCategory;
-import cn.tycoding.admin.enums.ResultEnums;
-import cn.tycoding.admin.exception.ResultException;
+import cn.tycoding.admin.exception.GlobalException;
 import cn.tycoding.admin.mapper.ArticleCategoryMapper;
 import cn.tycoding.admin.service.ArticleCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +16,6 @@ import java.util.List;
  */
 @Service
 @SuppressWarnings("all")
-@Transactional
 public class ArticleCategoryServiceImpl implements ArticleCategoryService {
 
     @Autowired
@@ -35,16 +32,17 @@ public class ArticleCategoryServiceImpl implements ArticleCategoryService {
     }
 
     @Override
-    public PageBean findByPage(ArticleCategory articleCategory, int pageCode, int pageSize) {
+    public List<ArticleCategory> findByPage(ArticleCategory articleCategory) {
         return null;
     }
 
     @Override
-    public ArticleCategory findById(long id) {
+    public ArticleCategory findById(Long id) {
         return null;
     }
 
     @Override
+    @Transactional
     public void save(ArticleCategory articleCategory) {
         try {
             if (!exists(articleCategory)) {
@@ -52,7 +50,7 @@ public class ArticleCategoryServiceImpl implements ArticleCategoryService {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            throw new ResultException(ResultEnums.INNER_ERROR);
+            throw new GlobalException(e.getMessage());
         }
     }
 
@@ -69,26 +67,36 @@ public class ArticleCategoryServiceImpl implements ArticleCategoryService {
     }
 
     @Override
-    public void deleteByArticleId(long id) {
+    @Transactional
+    public void deleteByArticleId(Long id) {
         try {
-            if (exists(new ArticleCategory(id, 0))) {
-                articleCategoryMapper.deleteByArticleId(id);
+            if (!id.equals(null) && id != 0) {
+                if (exists(new ArticleCategory(id, 0))) {
+                    articleCategoryMapper.deleteByArticleId(id);
+                }
+            } else {
+                throw new GlobalException("参数错误");
             }
         } catch (Exception e) {
             e.printStackTrace();
-            throw new ResultException(ResultEnums.INNER_ERROR);
+            throw new GlobalException(e.getMessage());
         }
     }
 
     @Override
-    public void deleteByCategoryId(long id) {
+    @Transactional
+    public void deleteByCategoryId(Long id) {
         try {
-            if (exists(new ArticleCategory(0, id))) {
-                articleCategoryMapper.deleteByCategoryId(id);
+            if (!id.equals(null) && id != 0) {
+                if (exists(new ArticleCategory(0, id))) {
+                    articleCategoryMapper.deleteByCategoryId(id);
+                }
+            } else {
+                throw new GlobalException("参数错误");
             }
         } catch (Exception e) {
             e.printStackTrace();
-            throw new ResultException(ResultEnums.INNER_ERROR);
+            throw new GlobalException(e.getMessage());
         }
     }
 }
