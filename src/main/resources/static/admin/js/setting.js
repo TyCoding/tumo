@@ -1,28 +1,31 @@
-//设置全局表单提交格式
-Vue.http.options.emulateJSON = true;
-
-const {body} = document;
-const WIDTH = 1024;
-const RATIO = 3;
-
-// Vue实例
 var vm = new Vue({
     el: '#app',
-    data() {
-        return {
-            user: {
-                id: '',
-                username: '',
-                password: '',
-                email: ''
-            },
+    data: {
+        user: {
+            id: '',
+            username: '',
+            password: '',
+            email: ''
+        },
 
-            defaultActive: '10',
-            token: {name: ''},
-            mobileStatus: false, //是否是移动端
-            sidebarStatus: true, //侧边栏状态，true：打开，false：关闭
-            sidebarFlag: ' openSidebar ', //侧边栏标志
+        defaultActive: '10',
+        token: {name: ''},
+        mobileStatus: false, //是否是移动端
+        sidebarStatus: true, //侧边栏状态，true：打开，false：关闭
+        sidebarFlag: ' openSidebar ', //侧边栏标志
+    },
+    created() {
+        window.onload = function() {
+            app.changeDiv();
         }
+        window.onresize = function() {
+            app.changeDiv();
+        }
+        this.search(this.pageConf.pageCode, this.pageConf.pageSize);
+        this.init();
+    },
+    mounted() {
+        this.$refs.loader.style.display = 'none';
     },
     methods: {
         init() {
@@ -32,11 +35,26 @@ var vm = new Vue({
             });
         },
 
+        /**
+         * 监听窗口改变UI样式（区别PC和Phone）
+         */
+        changeDiv() {
+            let isMobile = this.isMobile();
+            if (isMobile) {
+                //手机访问
+                this.sidebarFlag = ' hideSidebar mobile ';
+                this.sidebarStatus = false;
+                this.mobileStatus = true;
+            } else {
+                this.sidebarFlag = ' openSidebar';
+                this.sidebarStatus = true;
+                this.mobileStatus = false;
+            }
+        },
         isMobile() {
-            const rect = body.getBoundingClientRect();
+            let rect = body.getBoundingClientRect();
             return rect.width - RATIO < WIDTH
         },
-
         handleSidebar() {
             if (this.sidebarStatus) {
                 this.sidebarFlag = ' hideSidebar ';
@@ -46,7 +64,7 @@ var vm = new Vue({
                 this.sidebarFlag = ' openSidebar ';
                 this.sidebarStatus = true;
             }
-            const isMobile = this.isMobile();
+            let isMobile = this.isMobile();
             if (isMobile) {
                 this.sidebarFlag += ' mobile ';
                 this.mobileStatus = true;
@@ -56,18 +74,6 @@ var vm = new Vue({
         drawerClick() {
             this.sidebarStatus = false;
             this.sidebarFlag = ' hideSidebar mobile '
-        }
-
-    },
-    // 生命周期函数
-    created() {
-        this.init();
-        const isMobile = this.isMobile();
-        if (isMobile) {
-            //手机访问
-            this.sidebarFlag = ' hideSidebar mobile ';
-            this.sidebarStatus = false;
-            this.mobileStatus = true;
         }
     },
 });

@@ -12,6 +12,15 @@ const api = {
         allArticle: '/article/findAll',
         allComments: '/comments/findAll'
     },
+    edit: {
+        findById(id) {
+            return '/article/findById?id=' + id
+        },
+        save: '/article/save',
+        update: '/article/update',
+        allCategory: '/category/findAll',
+        info: '/admin/info'
+    },
     publish: {
         save: '/article/save',
         allCategory: '/category/findAll',

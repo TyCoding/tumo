@@ -43,19 +43,4 @@ public class PasswordHelperTest {
         passwordHelper.encryptPassword(user);
         System.out.println(user.getPassword()); // c0daa18ce0c74153ce060325cb4d1a04
     }
-
-    @Test
-    public void login(){
-        User user = new User();
-        user.setId(1);
-        user.setUsername("tycoding");
-        user.setPassword("123456");
-//        Subject subject = SecurityUtils.getSubject();
-
-        SecurityManager securityManager = new DefaultSecurityManager();
-        SecurityUtils.setSecurityManager(securityManager);
-        UsernamePasswordToken token = new UsernamePasswordToken(user.getUsername(),user.getPassword());
-        char[] password = token.getPassword();
-        System.out.println(password);
-    }
 }

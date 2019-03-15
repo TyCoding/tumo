@@ -1,57 +1,49 @@
-//设置全局表单提交格式
-Vue.http.options.emulateJSON = true;
-
-const {body} = document;
-const WIDTH = 1024;
-const RATIO = 3;
-
-const api = {
-    findById(id) {
-        return '/article/findById?id=' + id
-    },
-    save: '/article/save',
-    update: '/article/update',
-    allCategory: '/category/findAll',
-    info: '/admin/info'
-};
-
-//Vue实例
 new Vue({
     el: '#app',
-    data() {
-        return {
-            article: {
-                title: '',
-                titlePic: '',
-                category: '',
-                tags: '',
-                author: '',
-                content: '',
-                contentMd: '',
-                origin: '',
-            },
-            category: [{
-                id: '',
-                name: '',
-            }],
+    data: {
+        article: {
+            title: '',
+            titlePic: '',
+            category: '',
+            tags: '',
+            author: '',
+            content: '',
+            contentMd: '',
+            origin: '',
+        },
+        category: [{
+            id: '',
+            name: '',
+        }],
 
-            defaultActive: '3',
+        defaultActive: '3',
 
-            //tags
-            dynamicTags: [],
-            inputVisible: false,
+        //tags
+        dynamicTags: [],
+        inputVisible: false,
 
-            //=========select分类选择==========
-            options: [{
-                value: '',
-                label: ''
-            }],
-            token: {name: ''},
-
-            mobileStatus: false, //是否是移动端
-            sidebarStatus: true, //侧边栏状态，true：打开，false：关闭
-            sidebarFlag: ' openSidebar ', //侧边栏标志
+        //=========select分类选择==========
+        options: [{
+            value: '',
+            label: ''
+        }],
+        token: {name: ''},
+        mobileStatus: false, //是否是移动端
+        sidebarStatus: true, //侧边栏状态，true：打开，false：关闭
+        sidebarFlag: ' openSidebar ', //侧边栏标志
+    },
+    created() {
+        window.onload = function() {
+            app.changeDiv();
         }
+        window.onresize = function() {
+            app.changeDiv();
+        }
+        this.search(this.pageConf.pageCode, this.pageConf.pageSize);
+    },
+    mounted() {
+        this.init(this.getUrlParam());
+        this.$refs.loader.style.display = 'none';
     },
     methods: {
 
@@ -61,9 +53,9 @@ new Vue({
             this.article.contentMd = window.markdownContent.getMarkdown(); //给contentMd赋值
             this.article.tags = JSON.stringify(this.dynamicTags); //给tags字段赋值
 
-            this.$http.put(api.update, JSON.stringify(this.article)).then(result => {
+            this.$http.put(api.edit.update, JSON.stringify(this.article)).then(result => {
                 window.location.href = '/admin/article';
-                if (result.body.code == 20000) {
+                if (result.body.code == 200) {
                     this.$message({
                         showClose: true,
                         message: result.body.data,
@@ -106,13 +98,13 @@ new Vue({
 
         init(id) {
             //从url中获取参数查询文章数据
-            this.$http.get(api.findById(id)).then(result => {
+            this.$http.get(api.edit.findById(id)).then(result => {
                 this.article = result.body.data;
                 this.dynamicTags = eval(result.body.data.tags);
             });
 
             //得到所有的分类列表
-            this.$http.get(api.allCategory).then(result => {
+            this.$http.get(api.edit.allCategory).then(result => {
                 result.body.data.forEach(row => {
                     if (row.name != null) {
                         this.options.push({value: row.name.toString(), label: row.name});
@@ -121,7 +113,7 @@ new Vue({
             });
 
             //已登录用户名
-            this.$http.get(api.info).then(result => {
+            this.$http.get(api.edit.info).then(result => {
                 this.token.name = result.body.data.name;
             });
         },
@@ -150,12 +142,26 @@ new Vue({
             }
             return hash;
         },
-
+        /**
+         * 监听窗口改变UI样式（区别PC和Phone）
+         */
+        changeDiv() {
+            let isMobile = this.isMobile();
+            if (isMobile) {
+                //手机访问
+                this.sidebarFlag = ' hideSidebar mobile ';
+                this.sidebarStatus = false;
+                this.mobileStatus = true;
+            } else {
+                this.sidebarFlag = ' openSidebar';
+                this.sidebarStatus = true;
+                this.mobileStatus = false;
+            }
+        },
         isMobile() {
-            const rect = body.getBoundingClientRect();
+            let rect = body.getBoundingClientRect();
             return rect.width - RATIO < WIDTH
         },
-
         handleSidebar() {
             if (this.sidebarStatus) {
                 this.sidebarFlag = ' hideSidebar ';
@@ -165,7 +171,7 @@ new Vue({
                 this.sidebarFlag = ' openSidebar ';
                 this.sidebarStatus = true;
             }
-            const isMobile = this.isMobile();
+            let isMobile = this.isMobile();
             if (isMobile) {
                 this.sidebarFlag += ' mobile ';
                 this.mobileStatus = true;
@@ -175,17 +181,6 @@ new Vue({
         drawerClick() {
             this.sidebarStatus = false;
             this.sidebarFlag = ' hideSidebar mobile '
-        }
-    },
-    created() {
-        this.init(this.getUrlParam());
-
-        const isMobile = this.isMobile();
-        if (isMobile) {
-            //手机访问
-            this.sidebarFlag = ' hideSidebar mobile ';
-            this.sidebarStatus = false;
-            this.mobileStatus = true;
         }
     },
 });
