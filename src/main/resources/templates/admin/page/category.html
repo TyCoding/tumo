@@ -8,12 +8,12 @@
 <div id="app">
     <div :class="'app-wrapper' + sidebarFlag">
         <!-- aside -->
-        <div th:replace="admin/side"></div>
+        <div th:replace="admin/common/side"></div>
 
         <!-- container -->
         <el-container class="main-container">
             <!-- header -->
-            <div style="background-color: rgb(84, 92, 100);" th:replace="admin/header"></div>
+            <div style="background-color: rgb(84, 92, 100);" th:replace="admin/common/header"></div>
             <!-- main -->
             <el-main class="app-main">
                 <el-card>

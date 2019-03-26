@@ -4,6 +4,7 @@ import cn.tycoding.admin.entity.Links;
 import cn.tycoding.admin.exception.GlobalException;
 import cn.tycoding.admin.mapper.LinksMapper;
 import cn.tycoding.admin.service.LinksService;
+import cn.tycoding.common.service.impl.BaseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,30 +17,30 @@ import java.util.List;
  */
 @Service
 @SuppressWarnings("all")
-public class LinksServiceImpl implements LinksService {
+public class LinksServiceImpl extends BaseServiceImpl<Links> implements LinksService {
 
     @Autowired
-    private LinksMapper linksMapper;
+    private LinksMapper linkMapper;
 
     @Override
     public Long findAllCount() {
-        return linksMapper.findAllCount();
+        return Long.valueOf(linkMapper.selectCount(new Links()));
     }
 
     @Override
     public List<Links> findAll() {
-        return linksMapper.findAll();
+        return linkMapper.selectAll();
     }
 
     @Override
-    public List<Links> findByPage(Links links) {
-        return linksMapper.findByPage(links);
+    public List<Links> findByPage(Links link) {
+        return linkMapper.select(link);
     }
 
     @Override
     public Links findById(Long id) {
         if (!id.equals(null) && id != 0) {
-            return linksMapper.findById(id);
+            return linkMapper.selectByPrimaryKey(id);
         } else {
             throw new GlobalException("参数错误");
         }
@@ -47,9 +48,9 @@ public class LinksServiceImpl implements LinksService {
 
     @Override
     @Transactional
-    public void save(Links links) {
+    public void save(Links link) {
         try {
-            linksMapper.save(links);
+            linkMapper.insert(link);
         } catch (Exception e) {
             e.printStackTrace();
             throw new GlobalException(e.getMessage());
@@ -58,10 +59,10 @@ public class LinksServiceImpl implements LinksService {
 
     @Override
     @Transactional
-    public void update(Links links) {
-        if (links.getId() != 0) {
+    public void update(Links link) {
+        if (link.getId() != 0) {
             try {
-                linksMapper.update(links);
+                this.updateNotNull(link);
             } catch (Exception e) {
                 e.printStackTrace();
                 throw new GlobalException(e.getMessage());
@@ -71,12 +72,10 @@ public class LinksServiceImpl implements LinksService {
 
     @Override
     @Transactional
-    public void delete(Long... ids) {
-        if (!ids.equals(null) && ids.length > 0) {
+    public void delete(List<Long> ids) {
+        if (!ids.isEmpty()) {
             try {
-                for (long id : ids) {
-                    linksMapper.delete(id);
-                }
+                this.batchDelete(ids, "id", Links.class);
             } catch (Exception e) {
                 e.printStackTrace();
                 throw new GlobalException(e.getMessage());

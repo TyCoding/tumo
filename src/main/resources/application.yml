@@ -62,3 +62,9 @@ logging:
   level:
     cn.tycoding.admin.mapper: DEBUG
 
+# 七牛云
+qiniu:
+  access_key: ACCESS_KEY
+  secret_key: SECRET_KEY
+  bucket_name: BUCKETNAME
+  url: http://xxx/

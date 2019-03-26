@@ -4,41 +4,56 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
 /**
- * @auther TyCoding
+ * 文章信息实体
+ *
+ * @author TyCoding
  * @date 2018/10/16
  */
 @Data
+@Table(name = "tb_article")
 public class Article implements Serializable {
 
-    private long id; //编号
+    @Id
+    private Long id;
     @NotNull
-    private String title; //标题
-    private String titlePic; //封面图片
-    private String category; //分类
-    private String tags; //标签
-    private String author; //作者
-    private String content; //内容
-    private String contentMd; //留言内容-Markdown格式
-    private String origin; //来源
-    private String state; //状态
-    private long eyeCount; //浏览量
+    private String title;
+    private String cover;
+    private String author;
+    private String content;
+    @Column(name = "content_md")
+    private String contentMd;
+    private String category;
+    private String origin;
+    private String state;
+    private Long views;
+    private Long type;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private Date publishTime; //发布时间
+    @Column(name = "publish_time")
+    private Date publishTime;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private Date editTime; //最后编辑时间
+    @Column(name = "edit_time")
+    private Date editTime;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private Date createTime; //创建时间
+    @Column(name = "create_time")
+    private Date createTime;
+
+    @Transient
+    private String tags;
 
     public Article() {
     }
@@ -47,7 +62,7 @@ public class Article implements Serializable {
         this.category = category;
     }
 
-    public Article(long id, String category) {
+    public Article(Long id, String category) {
         this.id = id;
         this.category = category;
     }

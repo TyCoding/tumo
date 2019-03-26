@@ -9,12 +9,12 @@
 <div id="app">
     <div :class="'app-wrapper' + sidebarFlag">
         <!-- aside -->
-        <div th:replace="admin/side"></div>
+        <div th:replace="admin/common/side"></div>
 
         <!-- container -->
         <el-container class="main-container">
             <!-- header -->
-            <div style="background-color: rgb(84, 92, 100);" th:replace="admin/header"></div>
+            <div style="background-color: rgb(84, 92, 100);" th:replace="admin/common/header"></div>
 
             <!-- main -->
             <el-main class="app-main">
@@ -22,19 +22,24 @@
                     <h3>发布文章</h3>
                     <div style="margin-bottom: 6px;">
                         <el-row :gutter="100">
-                            <el-col :xs="24" :sm="24" :lg="12" :span="12">
+                            <el-col :xs="24" :sm="12" :lg="8" :span="8">
                                 <el-input v-model="article.title" placeholder="请输入文章标题">
                                     <template slot="prepend">文章标题</template>
                                 </el-input>
                             </el-col>
-                            <el-col :xs="24" :sm="24" :lg="12" :span="12">
-                                <el-input v-model="article.author" placeholder="请输入文章作者">
-                                    <template slot="prepend">文章作者</template>
+                            <el-col :xs="24" :sm="12" :lg="8" :span="8">
+                                <el-input v-model="article.origin" placeholder="请输入文章来源，默认来自本系统">
+                                    <template slot="prepend">文章来源</template>
+                                    <span v-text="article.origin"></span>
                                 </el-input>
+                            </el-col>
+                            <el-col :xs="24" :sm="12" :lg="8" :span="8" style="padding-top:10px;">
+                                <el-radio v-model="article.type" label="0">原创</el-radio>
+                                <el-radio v-model="article.type" label="1">转载</el-radio>
                             </el-col>
                         </el-row>
                         <el-row :gutter="100">
-                            <el-col :xs="24" :sm="12" :lg="6" :span="4" class="category" style="padding-top:10px;">
+                            <el-col :xs="24" :sm="12" :lg="8" :span="8" class="category" style="padding-top:10px;">
                                 <el-tooltip class="item" effect="dark" content="下拉框中没有？可直接键入" placement="top-start">
                                     <el-select v-model="article.category" allow-create filterable
                                                placeholder="请选择文章分类">
@@ -47,7 +52,7 @@
                                     </el-select>
                                 </el-tooltip>
                             </el-col>
-                            <el-col :xs="24" :sm="12" :lg="6" :span="8" style="padding-top:10px;">
+                            <el-col :xs="24" :sm="12" :lg="6" :span="12" style="padding-top:10px;">
                                 <div>
                                     <el-tag
                                             :key="tag"
@@ -68,12 +73,6 @@
                                     </el-button>
                                 </div>
                             </el-col>
-                            <el-col :xs="24" :sm="24" :lg="12" :span="12" style="padding-top:10px;">
-                                <el-input v-model="article.origin" placeholder="请输入文章来源，默认来自本系统">
-                                    <template slot="prepend">文章来源</template>
-                                    <span v-text="article.origin"></span>
-                                </el-input>
-                            </el-col>
                         </el-row>
                     </div>
                     <div id="article">
@@ -93,7 +92,7 @@
     </div>
 </div>
 </body>
-<script type="text/javascript" th:src="@{/plugins/js/jquery.min.js}"></script>
+<script type="text/javascript" th:src="@{/lib/editormd/jquery-3.3.1.min.js}"></script>
 <div th:replace="admin/common/js"></div>
 <script type="text/javascript" th:src="@{/lib/editormd/editormd.min.js}"></script>
 <script type="text/javascript" th:src="@{/admin/js/publish.js}"></script>

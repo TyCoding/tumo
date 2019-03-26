@@ -4,22 +4,13 @@
 
 <mapper namespace="cn.tycoding.admin.mapper.CommentsMapper">
 
-    <!-- 条件查询 -->
-    <select id="findByPage" parameterType="Comments" resultType="Comments">
-        SELECT * FROM tb_comments
-        WHERE 1=1
-        <if test="author != null">
-            AND author LIKE CONCAT('%', #{author}, '%')
-        </if>
-    </select>
-
     <!-- 查询所有评论信息列表 -->
     <select id="findCommentsList" resultType="Comments">
         SELECT * FROM tb_comments WHERE 1=1
         <if test="articleId != 0">
             AND article_id = #{articleId}
         </if>
-        AND sort = #{sort}
+        AND type = #{sort}
     </select>
 
     <!-- 查询所有父级文章留言信息 -->
@@ -28,81 +19,7 @@
         <if test="articleId != 0">
             AND article_id = #{articleId}
         </if>
-        AND sort = #{sort}
+        AND type = #{sort}
     </select>
-
-    <!-- 保存 -->
-    <insert id="save" parameterType="Comments">
-        INSERT  INTO
-        tb_comments(
-          p_id,
-          c_id,
-          article_title,
-          article_id,
-          author,
-          author_id,
-          email,
-          content,
-          time,
-          url,
-          sort,
-          state
-        )
-        VALUES(
-          #{pId},
-          #{cId},
-          #{articleTitle},
-          #{articleId},
-          #{author},
-          #{authorId},
-          #{email},
-          #{content},
-          #{time},
-          #{url},
-          #{sort},
-          #{state}
-        )
-    </insert>
-
-    <!-- 更新 -->
-    <update id="update" parameterType="Comments">
-        UPDATE ignore tb_comments
-        <set>
-            <if test="pId != null">
-                p_id = #{pId},
-            </if>
-            <if test="cId != null">
-                c_id = #{cId},
-            </if>
-            <if test="articleTitle != null">
-                article_title = #{articleTitle},
-            </if>
-            <if test="articleId != null and articleId != 0">
-                article_id = #{articleId},
-            </if>
-            <if test="author != null">
-                author = #{author},
-            </if>
-            <if test="authorId != null">
-                authorId = #{authorId},
-            </if>
-            <if test="email != null">
-                email = #{email},
-            </if>
-            <if test="content != null">
-                content = #{content},
-            </if>
-            <if test="time != null">
-                time = #{time},
-            </if>
-            <if test="url != null">
-                url = #{url},
-            </if>
-            <if test="state != null">
-                state = #{state}
-            </if>
-        </set>
-        WHERE id = #{id}
-    </update>
 
 </mapper>

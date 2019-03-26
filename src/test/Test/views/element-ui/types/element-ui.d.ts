@@ -272,7 +272,7 @@ export class Tabs extends ElTabs {}
 /** Tab Pane Component */
 export class TabPane extends ElTabPane {}
 
-/** Tag Component */
+/** Tags Component */
 export class Tag extends ElTag {}
 
 /** TimePicker Component */

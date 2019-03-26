@@ -4,49 +4,28 @@ import cn.tycoding.admin.entity.ArticleCategory;
 import cn.tycoding.admin.exception.GlobalException;
 import cn.tycoding.admin.mapper.ArticleCategoryMapper;
 import cn.tycoding.admin.service.ArticleCategoryService;
+import cn.tycoding.common.service.impl.BaseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 /**
- * @auther TyCoding
+ * @author TyCoding
  * @date 2018/10/22
  */
 @Service
 @SuppressWarnings("all")
-public class ArticleCategoryServiceImpl implements ArticleCategoryService {
+public class ArticleCategoryServiceImpl extends BaseServiceImpl<ArticleCategory> implements ArticleCategoryService {
 
     @Autowired
     private ArticleCategoryMapper articleCategoryMapper;
-
-    @Override
-    public Long findAllCount() {
-        return null;
-    }
-
-    @Override
-    public List<ArticleCategory> findAll() {
-        return null;
-    }
-
-    @Override
-    public List<ArticleCategory> findByPage(ArticleCategory articleCategory) {
-        return null;
-    }
-
-    @Override
-    public ArticleCategory findById(Long id) {
-        return null;
-    }
 
     @Override
     @Transactional
     public void save(ArticleCategory articleCategory) {
         try {
             if (!exists(articleCategory)) {
-                articleCategoryMapper.save(articleCategory);
+                articleCategoryMapper.insert(articleCategory);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -55,15 +34,7 @@ public class ArticleCategoryServiceImpl implements ArticleCategoryService {
     }
 
     private boolean exists(ArticleCategory articleCategory) {
-        return articleCategoryMapper.exists(articleCategory.getArticleId(), articleCategory.getCategoryId());
-    }
-
-    @Override
-    public void update(ArticleCategory articleCategory) {
-    }
-
-    @Override
-    public void delete(Long... ids) {
+        return articleCategoryMapper.selectCount(articleCategory) > 0 ? true : false;
     }
 
     @Override
@@ -71,8 +42,10 @@ public class ArticleCategoryServiceImpl implements ArticleCategoryService {
     public void deleteByArticleId(Long id) {
         try {
             if (!id.equals(null) && id != 0) {
-                if (exists(new ArticleCategory(id, 0))) {
-                    articleCategoryMapper.deleteByArticleId(id);
+                if (exists(new ArticleCategory(id, 0L))) {
+                    ArticleCategory articleCategory = new ArticleCategory();
+                    articleCategory.setArticleId(id);
+                    articleCategoryMapper.delete(articleCategory);
                 }
             } else {
                 throw new GlobalException("参数错误");
@@ -88,8 +61,10 @@ public class ArticleCategoryServiceImpl implements ArticleCategoryService {
     public void deleteByCategoryId(Long id) {
         try {
             if (!id.equals(null) && id != 0) {
-                if (exists(new ArticleCategory(0, id))) {
-                    articleCategoryMapper.deleteByCategoryId(id);
+                if (exists(new ArticleCategory(0L, id))) {
+                    ArticleCategory articleCategory = new ArticleCategory();
+                    articleCategory.setCategoryId(id);
+                    articleCategoryMapper.delete(articleCategory);
                 }
             } else {
                 throw new GlobalException("参数错误");

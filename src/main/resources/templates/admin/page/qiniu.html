@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="admin/common/head"></head>
+<title>对象储存</title>
+<body>
+<!-- vue入口 -->
+<div id="app">
+    <div :class="'app-wrapper' + sidebarFlag">
+
+        <!-- aside -->
+        <div th:replace="admin/common/side"></div>
+
+        <!-- container -->
+        <el-container class="main-container">
+            <!-- header -->
+            <div style="background-color: rgb(84, 92, 100);" th:replace="admin/common/header"></div>
+
+            <!-- main -->
+            <el-main class="app-main">
+                <el-card>
+                    <!-- 功能按钮 -->
+                    <el-row :gutter="10" type="flex" justify="space-between">
+                        <el-col :xs="24" :sm="12" :lg="6" :span="5" style="display: inline-table;">
+                            <el-input size="small" v-model="searchEntity.name" placeholder="请输入对象名称" @keyup.enter.native="handleFind(searchEntity.name)">
+                                <i slot="prefix" class="el-input__icon el-icon-search"></i>
+                            </el-input>
+                            <el-button @click="handleFind(searchEntity.name)" plain size="small" icon="el-icon-search" style="position: absolute;"></el-button>
+                        </el-col>
+                        <el-col :xs="24" :sm="12" :lg="6" :span="6">
+                            <el-button type="primary" plain size="small" @click="handleSave()" icon="el-icon-plus"></el-button>
+                            <el-button type="primary" plain size="small" @click="search()" icon="el-icon-refresh"></el-button>
+                        </el-col>
+                    </el-row>
+                    <br/>
+                    <el-alert title="由于七牛云官方API不支持分页查询，所以只好查询所有" type="warning" show-icon :closable="false"></el-alert>
+                    <br/>
+                    <!-- 查询结果 -->
+                    <el-table :data="list" size="small" v-loading="loading" element-loading-text="拼命加载中" element-loading-spinner="el-icon-loading" border fit highlight-current-row>
+                        <el-table-column align="center" label="对象KEY" width="270" prop="key"></el-table-column>
+                        <el-table-column align="center" label="对象名称" width="260" prop="name"></el-table-column>
+                        <el-table-column align="center" label="对象类型" width="150" prop="type"></el-table-column>
+                        <el-table-column align="center" label="对象大小(kb)" width="150">
+                            <template slot-scope="scope">
+                                {{scope.row.size / 1000}} kb
+                            </template>
+                        </el-table-column>
+                        <el-table-column align="center" property="url" width="100" label="预览图">
+                            <template slot-scope="scope">
+                                <a :href="scope.row.url" target="_blank" style="color:#409EFF;">
+                                    <img :src="scope.row.url" width="40">
+                                </a>
+                            </template>
+                        </el-table-column>
+                        <el-table-column align="center" label="链接地址" prop="url"></el-table-column>
+                        <el-table-column align="center" label="操作" width="200" class-name="small-padding fixed-width">
+                            <template slot-scope="scope">
+                                <a :href="scope.row.url" target="_blank" style="color:#409EFF;">
+                                    <el-button type="success" size="mini" icon="el-icon-download"></el-button>
+                                </a>
+                                <el-button type="primary" size="mini" @click="handleUpdate(scope.row.name)" icon="el-icon-edit"></el-button>
+                                <el-button type="danger" size="mini" @click="handleDelete(scope.row.name)" style="margin-left: 0px;" icon="el-icon-delete"></el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+
+                </el-card>
+            </el-main>
+        </el-container>
+    </div>
+
+    <!-- 添加对话框 -->
+    <el-dialog :visible.sync="createDialogVisible" title="上传文件" width="30%">
+        <el-upload :before-upload="beforeUpload" :limit="1" :http-request="upload" action="#" list-type="picture">
+            <el-button size="small" type="primary">点击上传</el-button>
+        </el-upload>
+    </el-dialog>
+
+    <!-- 修改对话框 -->
+    <el-dialog :visible.sync="updateDialogVisible" title="修改对象名称">
+        <el-form ref="dataForm" :rules="rules" :model="dataForm" status-icon label-position="left"
+                 label-width="100px" style="width: 400px; margin-left:50px;">
+            <el-form-item label="对象名称" prop="newname">
+                <el-input v-model="dataForm.newname"/>
+            </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click="updateDialogVisible = false">取消</el-button>
+            <el-button type="primary" @click="update()">确定</el-button>
+        </div>
+    </el-dialog>
+</div>
+
+</body>
+<div th:replace="admin/common/js"></div>
+<script type="text/javascript" th:src="@{/admin/js/qiniu.js}"></script>
+</html>

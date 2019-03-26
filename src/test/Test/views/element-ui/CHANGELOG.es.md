@@ -409,7 +409,7 @@
 - Solucionado regresion en 2.0.4 de Popover, Tree, Breadcrumb and Cascader, #8188 #8217 #8283
 - Solucionado Fuga de memoria de la directiva clickoutside, #8168 #8225 (por @badpunman @STLighter)
 - Solucionada la altura en multiple Select cuando se borra su valor, #8317 (por @luciy)
-- Añadido el atributo `collapse-tags` para multiple Select  para reemplazar las tags con una línea de texto, #8190
+- Añadido el atributo `collapse-tag` para multiple Select  para reemplazar las tag con una línea de texto, #8190
 - Solucionado el alto consumo de CPU causado por Table cuando esta oculta, #8351
 - Ahora puede usar el método `doLayout` de Table para actualizar su diseño, #8351
 

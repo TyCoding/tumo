@@ -7,7 +7,7 @@
     <div
       class="el-select__tags"
       v-if="multiple"
-      ref="tags"
+      ref="tag"
       :style="{ 'max-width': inputWidth - 32 + 'px' }">
       <span v-if="collapseTags && selected.length">
         <el-tag
@@ -646,12 +646,12 @@
           if (!this.$refs.reference) return;
           let inputChildNodes = this.$refs.reference.$el.childNodes;
           let input = [].filter.call(inputChildNodes, item => item.tagName === 'INPUT')[0];
-          const tags = this.$refs.tags;
+          const tag = this.$refs.tag;
           const sizeInMap = sizeMap[this.selectSize] || 40;
           input.style.height = this.selected.length === 0
             ? sizeInMap + 'px'
             : Math.max(
-              tags ? (tags.clientHeight + (tags.clientHeight > sizeInMap ? 6 : 0)) : 0,
+              tag ? (tag.clientHeight + (tag.clientHeight > sizeInMap ? 6 : 0)) : 0,
               sizeInMap
             ) + 'px';
           if (this.visible && this.emptyText !== false) {

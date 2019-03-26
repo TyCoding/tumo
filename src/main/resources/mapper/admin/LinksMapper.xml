@@ -4,31 +4,4 @@
 
 <mapper namespace="cn.tycoding.admin.mapper.LinksMapper">
 
-    <!-- 保存 -->
-    <insert id="save" parameterType="Links">
-        INSERT  INTO
-        tb_links(
-          name,
-          url
-        )
-        VALUES(
-          #{name},
-          #{url}
-        )
-    </insert>
-
-    <!-- 更新 -->
-    <update id="update" parameterType="Links">
-        UPDATE ignore tb_links
-        <set>
-            <if test="name != null">
-                name = #{name},
-            </if>
-            <if test="url != null">
-                url = #{url}
-            </if>
-        </set>
-        WHERE id = #{id}
-    </update>
-
 </mapper>

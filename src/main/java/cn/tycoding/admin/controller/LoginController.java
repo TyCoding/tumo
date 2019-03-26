@@ -1,8 +1,17 @@
 package cn.tycoding.admin.controller;
 
 import cn.tycoding.admin.dto.ResponseCode;
+import cn.tycoding.admin.entity.LoginLog;
 import cn.tycoding.admin.exception.GlobalException;
+import cn.tycoding.admin.service.LoginLogService;
 import cn.tycoding.admin.service.UserService;
+import cn.tycoding.admin.utils.AddressUtil;
+import cn.tycoding.admin.utils.HttpContextUtil;
+import cn.tycoding.admin.utils.IPUtil;
+import cn.tycoding.common.controller.BaseController;
+import eu.bitwalker.useragentutils.Browser;
+import eu.bitwalker.useragentutils.OperatingSystem;
+import eu.bitwalker.useragentutils.UserAgent;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,16 +22,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
+
 /**
- * @auther TyCoding
+ * @author TyCoding
  * @date 2018/10/3
  */
 @Controller
 @SuppressWarnings("all")
 public class LoginController extends BaseController {
 
-    @Autowired
-    private UserService userService;
 
     /**
      * 跳转到后台首页
@@ -31,6 +41,7 @@ public class LoginController extends BaseController {
      */
     @GetMapping("/admin")
     public String admin(Model model) {
+        model.addAttribute("user", this.getCurrentUser());
         return "admin/index";
     }
 
@@ -44,12 +55,18 @@ public class LoginController extends BaseController {
         return "admin/login";
     }
 
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private LoginLogService loginLogService;
+
     @ResponseBody
     @RequestMapping("/admin/login")
-    public ResponseCode login( Model model,
-            @RequestParam(value = "username", required = false) String username,
-            @RequestParam(value = "password", required = false) String password,
-            @RequestParam(value = "remember", required = false) String remember) {
+    public ResponseCode login(Model model,
+                              @RequestParam(value = "username", required = false) String username,
+                              @RequestParam(value = "password", required = false) String password,
+                              @RequestParam(value = "remember", required = false) String remember) {
         if (username != null && password != null) {
             Subject subject = getSubject();
             UsernamePasswordToken token = new UsernamePasswordToken(username, password);
@@ -65,6 +82,23 @@ public class LoginController extends BaseController {
             }
             try {
                 subject.login(token);
+
+                //记录登录日志
+                LoginLog log = new LoginLog();
+                //获取HTTP请求
+                HttpServletRequest request = HttpContextUtil.getHttpServletRequest();
+                String ip = IPUtil.getIpAddr(request);
+                log.setIp(ip);
+                log.setUsername(super.getCurrentUser().getUsername());
+                log.setLocation(AddressUtil.getAddress(ip));
+                log.setCreateTime(new Date());
+                String header = request.getHeader("User-Agent");
+                UserAgent userAgent = UserAgent.parseUserAgentString(header);
+                Browser browser = userAgent.getBrowser();
+                OperatingSystem operatingSystem = userAgent.getOperatingSystem();
+                log.setDevice(browser.getName() + " -- " + operatingSystem.getName());
+                loginLogService.saveLog(log);
+
                 model.addAttribute("username", getSubject().getPrincipal());
                 return ResponseCode.success();
             } catch (Exception e) {
@@ -86,6 +120,6 @@ public class LoginController extends BaseController {
     @GetMapping("/admin/info")
     @ResponseBody
     public ResponseCode getInfo() {
-        return ResponseCode.success(userService.findByName((String) getSubject().getPrincipal()));
+        return ResponseCode.success(this.getCurrentUser());
     }
 }

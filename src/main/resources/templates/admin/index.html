@@ -9,12 +9,12 @@
     <div :class="'app-wrapper' + sidebarFlag">
 
         <!-- aside -->
-        <div th:replace="admin/side"></div>
+        <div th:replace="admin/common/side"></div>
 
         <!-- container -->
         <el-container class="main-container">
             <!-- header -->
-            <div style="background-color: rgb(84, 92, 100);" th:replace="admin/header"></div>
+            <div style="background-color: rgb(84, 92, 100);" th:replace="admin/common/header"></div>
 
             <!-- main -->
             <el-main class="app-main">
@@ -37,7 +37,7 @@
                         <el-col :xs="12" :sm="12" :lg="6" style="padding:20px 20px">
                             <el-card role="2">
                                 <span>
-                                    <h1><i class="icon fa fa-comments"></i></h1>
+                                    <h1><i class="icon fa fa-comment"></i></h1>
                                 </span>
                                 <span>
                                     <span class="font">收到了</span>
@@ -49,7 +49,7 @@
                         <el-col :xs="12" :sm="12" :lg="6" style="padding:20px 20px">
                             <el-card role="3">
                                 <span>
-                                    <h1><i class="icon fa fa-tags"></i></h1>
+                                    <h1><i class="icon fa fa-tag"></i></h1>
                                 </span>
                                 <span>
                                     <span class="font">添加了</span>
@@ -89,7 +89,7 @@
                             <h3>最新评论</h3>
                             <div class="comments">
                                 <div v-for="item in comments">
-                                    <p><span v-text="item.author"></span>&nbsp;&nbsp;于&nbsp;<span
+                                    <p><span v-text="item.name"></span>&nbsp;&nbsp;于&nbsp;<span
                                             v-text="item.time"></span>&nbsp;:</p>
                                     <a v-if="item.articleId != 0" :href="'/article/' + item.articleId"
                                        target="_blank" v-text="item.content"></a>
@@ -100,22 +100,19 @@
                         <el-col :xs="24" :sm="8" :lg="8" style="padding:20px 60px">
                             <h3>博客信息</h3>
                             <el-card>
-                                <b>作者：</b>[[${username}]]TyCoding
+                                <b>作者：</b><a href="https://github.com/TyCoding/" target="_blank" style="color: #3222d4;">TyCoding</a>
                                 <br/>
                                 <b>简介：</b>Tumo Blog 一个轻量型博客系统。
                                 <br/>
-                                <b>项目地址：</b><a href="https://github.com/TyCoding/tumo" target="_blank" style="color: #3222d4;">https://github.com/TyCoding/tumo</a>
+                                <b>项目地址：</b><a href="https://github.com/TyCoding/tumo/" target="_blank" style="color: #3222d4;">https://github.com/TyCoding/tumo</a>
                                 <br/>
                                 <br/>
+                                <b>开源作品</b>
                                 <br/>
-                                <span>Java</span>
-                                <el-progress :percentage="40"></el-progress>
+                                <span>权限管理系统：</span><a href="https://github.com/TyCoding/permission/" target="_blank" style="color: #3222d4;">https://github.com/TyCoding/permission/</a>
                                 <br/>
-                                <span>Spring</span>
-                                <el-progress :percentage="10" color="#8e71c7"></el-progress>
+                                <span>Spring Learn：</span><a href="https://github.com/TyCoding/spring-learn" target="_blank" style="color: #3222d4;">https://github.com/TyCoding/spring-learn</a>
                                 <br/>
-                                <span>Vue</span>
-                                <el-progress :percentage="60"></el-progress>
                             </el-card>
                         </el-col>
                     </el-row>

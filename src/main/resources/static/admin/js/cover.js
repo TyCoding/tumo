@@ -1,21 +1,10 @@
 var app = new Vue({
     el: '#app',
     data: {
-        article: [{
-            id: '',
-            title: '',
-            titlePic: '',
-            category: '',
-            author: '',
-            content: '',
-            state: '',
-            publishTime: '',
-            editTime: '',
-            createTime: ''
-        }],
+        article: [],
         editor: {
             id: '',
-            titlePic: '',
+            cover: '',
         },
 
         //分页选项
@@ -84,17 +73,17 @@ var app = new Vue({
             this.editDialog = true;
             this.$http.get(api.cover.findById(id)).then(result => {
                 this.editor.id = result.body.data.id;
-                this.editor.titlePic = result.body.data.titlePic;
+                this.editor.cover = result.body.data.cover;
 
                 this.fileList.forEach(row => {
-                    row.url = result.body.data.titlePic; //将图片的URL地址赋值给file-list展示出来
+                    row.url = result.body.data.cover; //将图片的URL地址赋值给file-list展示出来
                 });
             });
         },
         //编辑
         edit() {
             if (this.fileList.length > 0 && this.fileList[0].url != '') {
-                this.editor.titlePic = this.fileList[0].url;
+                this.editor.cover = this.fileList[0].url;
             } else {
                 this._notify('请选择文章封面', 'warning')
                 return;
@@ -122,7 +111,7 @@ var app = new Vue({
             if (res.code == 200) {
                 this.fileList = [];
                 this.fileList.push(res.data);
-                this.editor.titlePic = res.data.url; //将返回的文件储存路径赋值image字段
+                this.editor.coverv = res.data.url; //将返回的文件储存路径赋值image字段
             }
         },
         //删除文件之前的钩子函数

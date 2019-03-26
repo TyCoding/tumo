@@ -1,15 +1,14 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<!-- 公共的CSS库 -->
-<head th:replace="/site/common/head"></head>
-<title>归档 | Tumo Blog</title>
+<head th:replace="site/common/head"></head>
+<title>TyCoding&#39;s blog</title>
+<body class="bg-grey" gtools_scp_screen_capture_injected="true">
 
-<body class="bg-grey">
-<!-- header -->
-<div th:replace="site/header"></div>
-<!-- main -->
+<div th:replace="site/common/header"></div>
+
 <div class="main-content archive-page clearfix">
-    <div class="categorys-item" th:each="item : ${archives}">
+    <p style="padding-left: 15px;color: #313131">嗯..! 目前共计 [[${list.size()}]] 篇日志。 继续努力~</p>
+    <div class="categorys-item" th:each="item : ${list}">
         <div class="categorys-title" th:text="${item.date}"></div>
         <div class="post-lists">
             <div class="post-lists-body">
@@ -20,20 +19,16 @@
                                 <a th:href="'/article/' + ${entity.id}" th:text="${entity.title}"></a>
                             </div>
                             <div class="item-meta clearfix">
-                                <div class="item-meta-date">发布于 [[${#dates.format(entity.publishTime, 'yyyy-MM-dd')}]]</div>
+                                <div class="item-meta-date">[[${#dates.format(entity.publishTime, 'yyyy-MM-dd')}]]</div>
                             </div>
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
 </div>
 
-<!-- footer -->
-<div th:replace="site/footer"></div>
-<!-- 公共的JS库 -->
-<div th:include="site/common/js"></div>
+<div th:replace="site/common/footer"></div>
 </body>
 </html>

@@ -174,13 +174,13 @@ define method locator-test
   \=
 end method locator-test;
 
-define open generic locator-might-have-links?
-    (locator :: <directory-locator>) => (links? :: <boolean>);
+define open generic locator-might-have-link?
+    (locator :: <directory-locator>) => (link? :: <boolean>);
 
-define method locator-might-have-links?
-    (locator :: <directory-locator>) => (links? :: singleton(#f))
+define method locator-might-have-link?
+    (locator :: <directory-locator>) => (link? :: singleton(#f))
   #f
-end method locator-might-have-links?;
+end method locator-might-have-link?;
 
 define method locator-relative?
     (locator :: <file-locator>) => (relative? :: <boolean>)
@@ -216,7 +216,7 @@ define method simplify-locator
  => (simplified-locator :: <directory-locator>)
   let path = locator.locator-path;
   let relative? = locator.locator-relative?;
-  let resolve-parent? = ~locator.locator-might-have-links?;
+  let resolve-parent? = ~locator.locator-might-have-link?;
   let simplified-path
     = simplify-path(path, 
                     resolve-parent?: resolve-parent?,

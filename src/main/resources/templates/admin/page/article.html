@@ -7,12 +7,12 @@
 <div id="app">
     <div :class="'app-wrapper' + sidebarFlag">
         <!-- aside -->
-        <div th:replace="admin/side"></div>
+        <div th:replace="admin/common/side"></div>
 
         <!-- container -->
         <el-container class="main-container">
             <!-- header -->
-            <div style="background-color: rgb(84, 92, 100);" th:replace="admin/header"></div>
+            <div style="background-color: rgb(84, 92, 100);" th:replace="admin/common/header"></div>
 
             <!-- main -->
             <el-main class="app-main">
@@ -36,11 +36,14 @@
                     <!-- 列表 -->
                     <el-table ref="article" :data="article" border tooltip-effect="dark" style="width: 100%">
                         <el-table-column prop="id" align="center" sortable show-overflow-tooltip label="编号" width="80"></el-table-column>
-                        <el-table-column align="center" prop="title" label="文章标题" width="260" show-overflow-tooltip></el-table-column>
+                        <el-table-column align="center" prop="title" label="文章标题" width="360" show-overflow-tooltip></el-table-column>
                         <el-table-column align="center" prop="author" show-overflow-tooltip label="文章作者" width="120"></el-table-column>
-                        <el-table-column align="center" prop="createTime" label="创建时间" width="170"></el-table-column>
+                        <el-table-column align="center" label="浏览量" width="170">
+                            <template slot-scope="scope">
+                                <el-tag type="success">{{scope.row.views}}</el-tag>
+                            </template>
+                        </el-table-column>
                         <el-table-column align="center" prop="editTime" label="最后编辑时间" width="170"></el-table-column>
-                        <el-table-column align="center" prop="publishTime" label="发布时间" width="170"></el-table-column>
                         <el-table-column align="center" prop="category" show-overflow-tooltip label="文章分类" width="130"></el-table-column>
                         <el-table-column align="center" prop="state" sortable label="状态" width="120">
                             <template slot-scope="scope">

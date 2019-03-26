@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * 封装评论信息的DTO
  *
- * @auther TyCoding
+ * @author TyCoding
  * @date 2018/11/2
  */
 @Data
@@ -19,6 +19,12 @@ import java.util.List;
 @AllArgsConstructor
 public class CommentsDTO implements Serializable {
 
-    private Comments parent; //父级留言信息
-    private List<Comments> childrenList; //所有子级回复、评论列表
+    /**
+     * 父级留言信息
+     */
+    private Comments parent;
+    /**
+     * 所有子级回复、评论列表
+     */
+    private List<Comments> childrenList;
 }

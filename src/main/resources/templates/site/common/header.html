@@ -1,0 +1,24 @@
+<header id="header" class="header bg-white">
+    <div class="navbar-container">
+        <a href="/" class="navbar-logo">
+            [[${setting.siteName}]]
+        </a>
+        <div class="navbar-menu">
+            <a data-th-href="@{/tags/}" class="">标签</a>
+            <a data-th-href="@{/archives/}" class="">归档</a>
+            <a data-th-href="@{/links/}" class="">友链</a>
+            <a href="https://github.com/TyCoding/tumo/" target="_blank">博客源码</a>
+            <a data-th-href="@{/about/}" class="">关于我</a>
+        </div>
+        <div class="navbar-mobile-menu">
+            <span class="icon-menu cross"><span class="middle"></span></span>
+            <ul>
+                <li><a data-th-href="@{/tags/}" class="">标签</a></li>
+                <li><a data-th-href="@{/archives/}" class="">归档</a></li>
+                <li><a data-th-href="@{/links/}" class="">友链</a></li>
+                <a href="https://github.com/TyCoding/tumo/" target="_blank">博客源码</a>
+                <li><a data-th-href="@{/about/}" class="">关于我</a></li>
+            </ul>
+        </div>
+    </div>
+</header>

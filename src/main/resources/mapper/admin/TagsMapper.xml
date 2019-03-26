@@ -4,42 +4,9 @@
 
 <mapper namespace="cn.tycoding.admin.mapper.TagsMapper">
 
-    <!-- 保存 -->
-    <insert id="save" parameterType="Tags">
-        INSERT  INTO
-        tb_tags(
-          name
-        )
-        VALUES(
-          #{name}
-        )
-    </insert>
-
-    <!-- 更新 -->
-    <update id="update" parameterType="Tags">
-        UPDATE ignore tb_tags
-        <set>
-            <if test="name != null">
-                name = #{name}
-            </if>
-        </set>
-        WHERE id = #{id}
-    </update>
-
-    <!--&lt;!&ndash; find by articleId or tagsId &ndash;&gt;
-    <select id="findByArticleTagsId" resultType="Tags">
-        SELECT * FROM tb_article_tags WHERE 1=1
-        <if test="articleId != null and articleId != 0">
-            AND article_id = #{articleId}
-        </if>
-        <if test="tagsId != null and tagsId != 0">
-            AND tags_id = #{tagsId}
-        </if>
-    </select>-->
-
     <select id="findByArticleId" parameterType="long" resultType="Tags">
         SELECT * FROM tb_tags t, tb_article a, tb_article_tags ta
-        WHERE t.id = ta.tags_id AND a.id = ta.article_id AND a.id = #{id}
+        WHERE t.id = ta.tag_id AND a.id = ta.article_id AND a.id = #{id}
     </select>
 
 </mapper>

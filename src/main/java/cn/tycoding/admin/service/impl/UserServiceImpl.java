@@ -1,10 +1,13 @@
 package cn.tycoding.admin.service.impl;
 
-import cn.tycoding.admin.dto.PasswordHelper;
+import cn.tycoding.admin.entity.Setting;
+import cn.tycoding.admin.mapper.SettingMapper;
+import cn.tycoding.admin.utils.PasswordHelper;
 import cn.tycoding.admin.entity.User;
 import cn.tycoding.admin.exception.GlobalException;
 import cn.tycoding.admin.mapper.UserMapper;
 import cn.tycoding.admin.service.UserService;
+import cn.tycoding.common.service.impl.BaseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,7 +20,7 @@ import java.util.List;
  */
 @Service
 @SuppressWarnings("all")
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl extends BaseServiceImpl<User> implements UserService {
 
     @Autowired
     private UserMapper userMapper;
@@ -26,24 +29,8 @@ public class UserServiceImpl implements UserService {
     private PasswordHelper passwordHelper;
 
     @Override
-    public Long findAllCount() {
-        return null;
-    }
-
-    @Override
-    public List<User> findAll() {
-        return null;
-    }
-
-    @Override
-    @Transactional
-    public List<User> findByPage(User user) {
-        return userMapper.findByPage(user);
-    }
-
-    @Override
     public User findById(Long id) {
-        return userMapper.findById(id);
+        return userMapper.selectByPrimaryKey(id);
     }
 
     @Override
@@ -51,7 +38,7 @@ public class UserServiceImpl implements UserService {
     public void save(User user) {
         try {
             passwordHelper.encryptPassword(user); //加密
-            userMapper.save(user);
+            userMapper.insert(user);
         } catch (Exception e) {
             e.printStackTrace();
             throw new GlobalException(e.getMessage());
@@ -66,7 +53,7 @@ public class UserServiceImpl implements UserService {
                 if (user.getPassword() != null && !"".equals(user.getPassword())) {
                     passwordHelper.encryptPassword(user); //加密
                 }
-                userMapper.update(user);
+                this.updateNotNull(user);
             } catch (Exception e) {
                 e.printStackTrace();
                 throw new GlobalException(e.getMessage());
@@ -76,12 +63,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void delete(Long... ids) {
-        if (!ids.equals(null) && ids.length > 0) {
+    public void delete(List<Long> ids) {
+        if (!ids.isEmpty()) {
             try {
-                for (long id : ids) {
-                    userMapper.delete(id);
-                }
+                this.batchDelete(ids, "id", User.class);
             } catch (Exception e) {
                 e.printStackTrace();
                 throw new GlobalException(e.getMessage());
@@ -92,9 +77,25 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findByName(String username) {
         if (!username.isEmpty()) {
-            return userMapper.findByName(username);
+            User user = new User();
+            user.setUsername(username);
+            return userMapper.select(user).get(0);
         } else {
             return new User();
         }
+    }
+
+    @Autowired
+    private SettingMapper settingMapper;
+
+    @Override
+    public Setting findSetting() {
+        return settingMapper.selectAll().get(0);
+    }
+
+    @Override
+    @Transactional
+    public void updateSetting(Setting setting) {
+        settingMapper.updateByPrimaryKeySelective(setting);
     }
 }

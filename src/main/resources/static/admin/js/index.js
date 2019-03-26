@@ -7,7 +7,7 @@ var app = new Vue({
         }],
         comments: [{
             id: '',
-            author: '',
+            name: '',
         }],
 
         defaultActive: '1',

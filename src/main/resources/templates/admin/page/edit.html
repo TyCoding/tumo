@@ -10,12 +10,12 @@
     <!-- 布局容器 -->
     <div :class="'app-wrapper' + sidebarFlag">
         <!-- aside -->
-        <div th:replace="admin/side"></div>
+        <div th:replace="admin/common/side"></div>
 
         <!-- container -->
         <el-container class="main-container">
             <!-- header -->
-            <div style="background-color: rgb(84, 92, 100);" th:replace="admin/header"></div>
+            <div style="background-color: rgb(84, 92, 100);" th:replace="admin/common/header"></div>
 
             <!-- main -->
             <el-main class="app-main">
@@ -97,13 +97,13 @@
     </div>
 </div>
 </body>
-<script type="text/javascript" th:src="@{/plugins/js/jquery.min.js}"></script>
+<script type="text/javascript" th:src="@{/lib/editormd/jquery-3.3.1.min.js}"></script>
 <div th:replace="admin/common/js"></div>
 <script type="text/javascript" th:src="@{/lib/editormd/editormd.min.js}"></script>
 <script type="text/javascript" th:src="@{/admin/js/edit.js}"></script>
 <script type="text/javascript" th:inline="javascript">
     var markdownContent = editormd('article', {
-        htmlDecode : true, // Decode all html tags & attributes
+        htmlDecode : true, // Decode all html tag & attributes
         width: '100%',
         height: 540,
         syncScrolling: "single",

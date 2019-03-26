@@ -1,5 +1,6 @@
 package cn.tycoding.admin.controller;
 
+import cn.tycoding.admin.annotation.Log;
 import cn.tycoding.admin.dto.QueryPage;
 import cn.tycoding.admin.dto.ResponseCode;
 import cn.tycoding.admin.entity.Article;
@@ -7,6 +8,7 @@ import cn.tycoding.admin.entity.Category;
 import cn.tycoding.admin.exception.GlobalException;
 import cn.tycoding.admin.service.ArticleService;
 import cn.tycoding.admin.service.CategoryService;
+import cn.tycoding.common.controller.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @auther TyCoding
+ * @author TyCoding
  * @date 2018/10/18
  */
 @RestController
@@ -62,6 +64,7 @@ public class CategoryController extends BaseController {
     }
 
     @PostMapping(value = "/save")
+    @Log("新增分类")
     public ResponseCode save(@RequestBody Category category) {
         try {
             categoryService.save(category);
@@ -73,6 +76,7 @@ public class CategoryController extends BaseController {
     }
 
     @PutMapping(value = "/update")
+    @Log("更新分类")
     public ResponseCode update(@RequestBody Category category) {
         try {
             categoryService.update(category);
@@ -84,7 +88,8 @@ public class CategoryController extends BaseController {
     }
 
     @PostMapping(value = "/delete")
-    public ResponseCode delete(@RequestBody Long... ids) {
+    @Log("删除分类")
+    public ResponseCode delete(@RequestBody List<Long> ids) {
         try {
             categoryService.delete(ids);
             return ResponseCode.success();

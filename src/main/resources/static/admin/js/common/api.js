@@ -4,6 +4,9 @@ const {body} = document;
 const WIDTH = 1024;
 const RATIO = 3;
 const api = {
+    common: {
+        logout: '/admin/logout'
+    },
     index: {
         articleCount: '/article/findAllCount',
         commentsCount: '/comments/findAllCount',
@@ -19,7 +22,6 @@ const api = {
         save: '/article/save',
         update: '/article/update',
         allCategory: '/category/findAll',
-        info: '/admin/info'
     },
     publish: {
         save: '/article/save',
@@ -30,7 +32,6 @@ const api = {
             return '/article/findByPage?pageSize=' + pageSize + '&pageCode=' + pageCode
         },
         delete: '/article/delete',
-        info: '/admin/info'
     },
     comments: {
         findByPage(pageSize, pageCode) {
@@ -80,10 +81,49 @@ const api = {
         save: '/links/save',
         delete: '/links/delete',
         update: '/links/update',
-        info: '/admin/info'
     },
     user: {
         update: '/user/update',
         info: '/admin/info',
+        localUpload: '/storage/upload',
+        avatar: '/file/avatar.json',
+        getSetting: '/user/getSetting',
+        updateSetting: '/user/updateSetting'
+    },
+    //对象储存
+    storage: {
+        qiniu: {
+            list: '/storage/qiniu/list',
+            domain: '/storage/qiniu',
+            upload: '/storage/qiniu/upload',
+            download() {
+                return '/storgae/qiniu/download?name=' + name;
+            },
+            deleteOne(name) {
+                return '/storage/qiniu/delete?name=' + name;
+            },
+
+            findOne(name) {
+                return '/storage/qiniu/find?name=' + name
+            },
+            updateOne(oldname, newname) {
+                return '/storage/qiniu/update?oldname=' + oldname + '&newname=' + newname;
+            },
+        },
+    },
+    //系统监控
+    monitor: {
+        loginlog: {
+            list(pageCode, pageSize) {
+                return '/loginlog/list?pageCode=' + pageCode + '&pageSize=' + pageSize;
+            },
+            delete: '/loginlog/delete',
+        },
+        log: {
+            list(pageCode, pageSize) {
+                return '/log/list?pageCode=' + pageCode + '&pageSize=' + pageSize;
+            },
+            delete: '/log/delete',
+        },
     },
 };

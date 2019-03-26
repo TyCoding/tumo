@@ -1,5 +1,6 @@
 package cn.tycoding.admin.controller;
 
+import cn.tycoding.admin.annotation.Log;
 import cn.tycoding.admin.dto.QueryPage;
 import cn.tycoding.admin.dto.ResponseCode;
 import cn.tycoding.admin.entity.Article;
@@ -8,6 +9,7 @@ import cn.tycoding.admin.exception.GlobalException;
 import cn.tycoding.admin.service.ArticleService;
 import cn.tycoding.admin.service.ArticleTagsService;
 import cn.tycoding.admin.service.CategoryService;
+import cn.tycoding.common.controller.BaseController;
 import com.alibaba.fastjson.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
@@ -18,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @auther TyCoding
+ * @author TyCoding
  * @date 2018/10/16
  */
 @RestController
@@ -33,7 +35,7 @@ public class ArticleController extends BaseController {
     private CategoryService categoryService;
 
     @Autowired
-    private ArticleTagsService articleTagsService;
+    private ArticleTagsService articleTagService;
 
     @GetMapping(value = "/findAll")
     public ResponseCode findAll() {
@@ -55,8 +57,8 @@ public class ArticleController extends BaseController {
         Article article = articleService.findById(id);
         if (article.getId() != 0) {
             List<String> tags = new ArrayList<>();
-            List<Tags> tagsList = articleTagsService.findByArticleId(article.getId());
-            tagsList.forEach(t -> {
+            List<Tags> tagList = articleTagService.findByArticleId(article.getId());
+            tagList.forEach(t -> {
                 tags.add(t.getName());
             });
             article.setTags(JSON.toJSONString(tags));
@@ -66,11 +68,11 @@ public class ArticleController extends BaseController {
         }
     }
 
-    @GetMapping(value = "/findTags")
+    @GetMapping(value = "/findTag")
     public ResponseCode findTags(@RequestParam("id") Long id) {
         List<String> list = new ArrayList<String>();
-        List<Tags> tagsList = articleTagsService.findByArticleId(id);
-        for (Tags t : tagsList) {
+        List<Tags> tagList = articleTagService.findByArticleId(id);
+        for (Tags t : tagList) {
             list.add(t.getName());
         }
         return ResponseCode.success(list);
@@ -82,6 +84,7 @@ public class ArticleController extends BaseController {
     }
 
     @PostMapping(value = "/save")
+    @Log("新增文章")
     public ResponseCode save(@Validated @RequestBody Article article) {
         try {
             articleService.save(article);
@@ -93,6 +96,7 @@ public class ArticleController extends BaseController {
     }
 
     @PutMapping(value = "/update")
+    @Log("更新文章")
     public ResponseCode update(@RequestBody Article article) {
         try {
             articleService.update(article);
@@ -104,7 +108,8 @@ public class ArticleController extends BaseController {
     }
 
     @PostMapping(value = "/delete")
-    public ResponseCode delete(@RequestBody Long... ids) {
+    @Log("删除文章")
+    public ResponseCode delete(@RequestBody List<Long> ids) {
         try {
             articleService.delete(ids);
             return ResponseCode.success();

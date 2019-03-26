@@ -4,28 +4,6 @@
 
 <mapper namespace="cn.tycoding.admin.mapper.CategoryMapper">
 
-    <!-- 保存 -->
-    <insert id="save" parameterType="Category">
-        INSERT  INTO
-        tb_category(
-          name
-        )
-        VALUES(
-          #{name}
-        )
-    </insert>
-
-    <!-- 更新 -->
-    <update id="update" parameterType="Category">
-        UPDATE ignore tb_category
-        <set>
-            <if test="name != null">
-                name = #{name}
-            </if>
-        </set>
-        WHERE id = #{id}
-    </update>
-
     <!-- 根据文章id查询其关联分类表中的数据 -->
     <select id="findCategoryByArticleId" parameterType="long" resultType="Category">
         SELECT c.name FROM tb_article a, tb_category c, tb_article_category ac

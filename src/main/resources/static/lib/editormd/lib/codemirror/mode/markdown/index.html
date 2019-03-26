@@ -199,7 +199,7 @@ Output:
     &lt;li&gt;Blue&lt;/li&gt;
     &lt;/ol&gt;
 
-If you put blank lines between items, you'll get `&lt;p&gt;` tags for the
+If you put blank lines between items, you'll get `&lt;p&gt;` tag for the
 list item text. You can create multi-paragraph list items by indenting
 the paragraphs by 4 spaces or 1 tab:
 
@@ -221,11 +221,11 @@ Output:
 
 ### Links ###
 
-Markdown supports two styles for creating links: *inline* and
+Markdown supports two styles for creating link: *inline* and
 *reference*. With both styles, you use square brackets to delimit the
 text you want to turn into a link.
 
-Inline-style links use parentheses immediately after the link text.
+Inline-style link use parentheses immediately after the link text.
 For example:
 
     This is an [example link](http://example.com/).
@@ -244,7 +244,7 @@ Output:
     &lt;p&gt;This is an &lt;a href="http://example.com/" title="With a Title"&gt;
     example link&lt;/a&gt;.&lt;/p&gt;
 
-Reference-style links allow you to refer to your links by names, which
+Reference-style link allow you to refer to your link by names, which
 you define elsewhere in your document:
 
     I get 10 times more traffic from [Google][1] than from
@@ -302,7 +302,7 @@ backtick quotes. Any ampersands (`&amp;`) and angle brackets (`&lt;` or
 `&gt;`) will automatically be translated into HTML entities. This makes
 it easy to use Markdown to write about HTML example code:
 
-    I strongly recommend against using any `&lt;blink&gt;` tags.
+    I strongly recommend against using any `&lt;blink&gt;` tag.
 
     I wish SmartyPants used named entities like `&amp;mdash;`
     instead of decimal-encoded entites like `&amp;#8212;`.
@@ -310,7 +310,7 @@ it easy to use Markdown to write about HTML example code:
 Output:
 
     &lt;p&gt;I strongly recommend against using any
-    &lt;code&gt;&amp;lt;blink&amp;gt;&lt;/code&gt; tags.&lt;/p&gt;
+    &lt;code&gt;&amp;lt;blink&amp;gt;&lt;/code&gt; tag.&lt;/p&gt;
     
     &lt;p&gt;I wish SmartyPants used named entities like
     &lt;code&gt;&amp;amp;mdash;&lt;/code&gt; instead of decimal-encoded
@@ -324,7 +324,7 @@ and `&gt;` characters will be escaped automatically.
 Markdown:
 
     If you want your page to validate under XHTML 1.0 Strict,
-    you've got to put paragraph tags in your blockquotes:
+    you've got to put paragraph tag in your blockquotes:
 
         &lt;blockquote&gt;
             &lt;p&gt;For example.&lt;/p&gt;
@@ -333,7 +333,7 @@ Markdown:
 Output:
 
     &lt;p&gt;If you want your page to validate under XHTML 1.0 Strict,
-    you've got to put paragraph tags in your blockquotes:&lt;/p&gt;
+    you've got to put paragraph tag in your blockquotes:&lt;/p&gt;
     
     &lt;pre&gt;&lt;code&gt;&amp;lt;blockquote&amp;gt;
         &amp;lt;p&amp;gt;For example.&amp;lt;/p&amp;gt;

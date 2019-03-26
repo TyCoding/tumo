@@ -1,15 +1,19 @@
 package cn.tycoding.admin.controller;
 
+import cn.tycoding.admin.annotation.Log;
 import cn.tycoding.admin.dto.QueryPage;
 import cn.tycoding.admin.dto.ResponseCode;
 import cn.tycoding.admin.entity.Links;
 import cn.tycoding.admin.exception.GlobalException;
 import cn.tycoding.admin.service.LinksService;
+import cn.tycoding.common.controller.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
- * @auther TyCoding
+ * @author TyCoding
  * @date 2018/10/18
  */
 @RestController
@@ -18,32 +22,33 @@ import org.springframework.web.bind.annotation.*;
 public class LinksController extends BaseController {
 
     @Autowired
-    private LinksService linksService;
+    private LinksService linkService;
 
     @GetMapping(value = "/findAllCount")
     public ResponseCode findAllCount() {
-        return ResponseCode.success(linksService.findAllCount());
+        return ResponseCode.success(linkService.findAllCount());
     }
 
     @GetMapping(value = "/findAll")
     public ResponseCode findAll() {
-        return ResponseCode.success(linksService.findAllCount());
+        return ResponseCode.success(linkService.findAllCount());
     }
 
     @PostMapping(value = "/findByPage")
-    public ResponseCode findByPage(QueryPage queryPage, Links links) {
-        return ResponseCode.success(super.selectByPageNumSize(queryPage, () -> linksService.findByPage(links)));
+    public ResponseCode findByPage(QueryPage queryPage, Links link) {
+        return ResponseCode.success(super.selectByPageNumSize(queryPage, () -> linkService.findByPage(link)));
     }
 
     @GetMapping(value = "/findById")
     public ResponseCode findById(@RequestParam("id") Long id) {
-        return ResponseCode.success(linksService.findById(id));
+        return ResponseCode.success(linkService.findById(id));
     }
 
     @PostMapping(value = "/save")
-    public ResponseCode save(@RequestBody Links links) {
+    @Log("新增友链")
+    public ResponseCode save(@RequestBody Links link) {
         try {
-            linksService.save(links);
+            linkService.save(link);
             return ResponseCode.success();
         } catch (Exception e) {
             e.printStackTrace();
@@ -52,9 +57,10 @@ public class LinksController extends BaseController {
     }
 
     @PutMapping(value = "/update")
-    public ResponseCode update(@RequestBody Links links) {
+    @Log("更新友链")
+    public ResponseCode update(@RequestBody Links link) {
         try {
-            linksService.update(links);
+            linkService.update(link);
             return ResponseCode.success();
         } catch (Exception e) {
             e.printStackTrace();
@@ -63,9 +69,10 @@ public class LinksController extends BaseController {
     }
 
     @PostMapping(value = "/delete")
-    public ResponseCode delete(@RequestBody Long... ids) {
+    @Log("删除友链")
+    public ResponseCode delete(@RequestBody List<Long> ids) {
         try {
-            linksService.delete(ids);
+            linkService.delete(ids);
             return ResponseCode.success();
         } catch (Exception e) {
             e.printStackTrace();

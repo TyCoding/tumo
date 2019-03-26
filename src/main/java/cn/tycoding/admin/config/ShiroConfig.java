@@ -1,6 +1,6 @@
 package cn.tycoding.admin.config;
 
-import cn.tycoding.admin.realm.UserRealm;
+import cn.tycoding.admin.realm.AuthRealm;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.cache.ehcache.EhCacheManager;
@@ -25,7 +25,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * @auther TyCoding
+ * @author TyCoding
  * @date 2018/10/21
  */
 @Configuration
@@ -42,9 +42,9 @@ public class ShiroConfig {
 
     @Bean
     public Realm userRealm(HashedCredentialsMatcher hashedCredentialsMatcher) {
-        UserRealm userRealm = new UserRealm();
-        userRealm.setCredentialsMatcher(hashedCredentialsMatcher);
-        return userRealm;
+        AuthRealm authRealm = new AuthRealm();
+        authRealm.setCredentialsMatcher(hashedCredentialsMatcher);
+        return authRealm;
     }
 
     @Bean
@@ -89,7 +89,7 @@ public class ShiroConfig {
     }
 
     @Bean
-    public DefaultWebSessionManager sessionManager(){
+    public DefaultWebSessionManager sessionManager() {
         DefaultWebSessionManager defaultWebSessionManager = new DefaultWebSessionManager();
         defaultWebSessionManager.setGlobalSessionTimeout(1800000);
         defaultWebSessionManager.setDeleteInvalidSessions(true);
@@ -99,7 +99,7 @@ public class ShiroConfig {
     }
 
     @Bean
-    public LifecycleBeanPostProcessor lifecycleBeanPostProcessor(){
+    public LifecycleBeanPostProcessor lifecycleBeanPostProcessor() {
         return new LifecycleBeanPostProcessor();
     }
 

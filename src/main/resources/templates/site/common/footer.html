@@ -1,0 +1,49 @@
+<footer id="footer" class="footer bg-white">
+    <div class="footer-social">
+        <div class="footer-container clearfix">
+            <div class="social-list">
+                <a class="social" th:each="item : ${setting.siteLinks}" target="blank" th:href="${item.value}">[[${item.key}]]</a>
+            </div>
+        </div>
+    </div>
+    <div class="footer-meta">
+        <div class="footer-container">
+            <div class="meta-item meta-copyright">
+                <div class="meta-copyright-info">
+                    <a href="http://www.tycoding.cn" class="info-logo">[[setting.siteName]]</a>
+                    <div class="info-text">
+                        <p id="chakhsu"></p>
+                        <p>Theme is <a href="https://github.com/cccyb/hexo-theme-pinghsu" target="_blank">Pinghsu</a> by <a href="http://www.tycoding.cn" target="_blank">TyCoding</a></p>
+                        <p>Powered by <a href="https://hexo.io/" target="_blank" rel="nofollow">hexo</a></p>
+                        <p style="margin-top: 10px">站点总字数：186.9k</p>
+                        <p><span id="busuanzi_container_site_pv" style='display:none'>本站总访问量 <span id="busuanzi_value_site_pv"></span> 次</span></p>
+                        <p><span id="busuanzi_container_site_uv" style='display:none'>本站访客数 <span id="busuanzi_value_site_uv"></span> 人次</span></p>
+                        <p style="margin-top: 10px">&copy; 2016 - 2019 <a href="http://www.tycoding.cn">[[setting.siteName]]</a></p>
+                    </div>
+                </div>
+            </div>
+            <div class="meta-item meta-posts">
+                <h3 class="meta-title">最近文章</h3>
+                <li th:each="item : ${newArticle}">
+                    <a th:href="'/article/' + ${item.id}" th:text="${item.title}"></a>
+                </li>
+            </div>
+            <div class="meta-item meta-comments">
+                <h3 class="meta-title">最新评论</h3>
+                <li th:each="item : ${newComment}">
+                    <a th:if="${item.articleId != 0}" th:href="'/article/' + ${item.articleId}" th:text="${item.name} + ':  ' + ${item.content}"></a>
+                    <a th:if="${item.articleId == 0}" th:text="${item.author} + ':  ' + ${item.content}"></a>
+                </li>
+            </div>
+        </div>
+    </div>
+</footer>
+<script src="http://cdn.bootcss.com/headroom/0.9.1/headroom.min.js"></script>
+<script src="http://cdn.bootcss.com/highlight.js/9.10.0/highlight.min.js"></script>
+<script src="http://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js"></script>
+<script src="http://cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script data-th-src="@{/site/js/love.js}"></script>
+<script data-th-src="@{/site/base.js}"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css">
+<script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>

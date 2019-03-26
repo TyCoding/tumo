@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="site/common/head"></head>
+<title>TyCoding&#39;s blog</title>
+<body class="bg-grey" gtools_scp_screen_capture_injected="true">
+
+<div th:replace="site/common/header"></div>
+
+<div class="main-content index-page clearfix ">
+    <div class="main-content page-page">
+        <div class="search-page">
+            <div class="search-title">
+                <h1>所有标签</h1>
+                <h4>目前共计 [[${#lists.size(list)}]] 个标签</h4>
+            </div>
+            <div class="search-tags">
+                <a th:each="item : ${list}" th:href="'/tags/' + ${item.name} + '/'" class="text-white bg-blue"># [[${item.name}]]([[${item.count}]])</a>
+                <div class="search-tag-hr bg-red"></div>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+</div>
+
+<div th:replace="site/common/footer"></div>
+</body>
+</html>

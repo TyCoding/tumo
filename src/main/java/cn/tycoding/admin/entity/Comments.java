@@ -4,33 +4,43 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
 /**
- * @auther TyCoding
+ * @author TyCoding
  * @date 2018/10/17
  */
 @Data
+@Table(name = "tb_comments")
 public class Comments implements Serializable {
 
-    private long id; //编号
-    private long pId; //父级ID，给哪个留言回复
-    private long cId; //子级ID，给哪个留言评论
-    private String articleTitle; //文章标题
-    private long articleId; //文章ID
+    @Id
+    private Long id;
+    @Column(name = "p_id")
+    private Long pId;
+    @Column(name = "c_id")
+    private Long cId;
+    @Column(name = "article_title")
+    private String articleTitle;
+    @Column(name = "article_id")
+    private Long articleId;
     @NotNull
-    private String author; //留言人
-    private String authorId; //给谁回复，即`@`谁
-    private String email; //留言邮箱
-    private String content; //留言内容
-
+    private String name;
+    @Column(name = "c_name")
+    private String cName;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private Date time; //留言日期
-
-    private String url; //链接URL
-    private long sort; //分类：0:默认文章列详情页，1:友链页，2:关于我页
-    private String state; //状态
+    private Date time;
+    private String content;
+    private String email;
+    private String url;
+    private Long type;
+    private String ip;
+    private String device;
+    private String address;
 }

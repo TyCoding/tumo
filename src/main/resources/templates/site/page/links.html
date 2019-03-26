@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="site/common/head"></head>
+<title>友链 - TyCoding&#39;s blog</title>
+<body class="bg-white" gtools_scp_screen_capture_injected="true">
+
+<div th:replace="site/common/header"></div>
+
+<div class="post-header-thumb">
+    <div class="post-header-thumb-op" style="background-image:url(/site/images/thumbs/4.jpg);"></div>
+    <div class="post-header-thumb-cover">
+        <div class="post-header-thumb-container">
+            <div class="post-header-thumb-title">
+                友链
+            </div>
+            <div class="post-header-thumb-meta">
+                <time datetime="1524412800" itemprop="datePublished"><b>[[${#dates.format(new java.util.Date().getTime(), 'yyyy-MM-dd hh:mm:ss')}]]</b></time>
+                in <a href="#">Links</a>
+                with <a href="#vcomments"><b>[[${count}]]</b></a>
+                <div class="post-header-thumb-meta" style="font-size: 13px;">
+                    <span class="post-count">本文字数：<b class="count"></b> 字</span>
+                    <span>|</span>
+                    <span class="post-count">阅读时长 ≈ <b class="time"></b> min</span>
+                </div>
+            </div>
+            <div class="post-tags">
+                <a href="#">Links</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<article class="main-content post-page" itemscope itemtype="http://schema.org/Article">
+    <div id="post-content" class="post-content">
+        <h2>友情链接 😉 </h2>
+        <ul>
+            <li th:each="link : ${list}"><a th:href="${link.url}" target="_blank" th:text="${link.name}"></a></li>
+        </ul>
+        <h2>链接须知</h2>
+        <blockquote>
+            <ul>
+                <li>请确定贵站可以稳定运营</li>
+                <li>原创博客优先，技术类博客优先，设计、视觉类博客优先</li>
+                <li>经常过来访问和评论，眼熟的</li>
+            </ul>
+        </blockquote>
+        <h2>基本信息</h2>
+        <ul>
+            <li>网站名称：Tumo博客</li>
+            <li>网站地址：http://tumo.tycoding.cn</li>
+        </ul>
+        <p>请在当页通过评论来申请友链，其他地方不予回复</p>
+        <p>同时欢迎互换友链，在这个页面留言即可。 ^_^</p>
+    </div>
+    <meting-js th:id="${setting.siteMusic}" server="netease" type="song" auto="" autoplay="flase"></meting-js>
+    <p class="post-info">
+        本文由 <a href="http://www.tycoding.cn">TyCoding</a> 创作，采用 <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="external nofollow">知识共享署名4.0</a> 国际许可协议进行许可<br>本站文章除注明转载/出处外，均为本站原创或翻译，转载前请务必署名<br>最后编辑时间为: [[${#dates.format(new java.util.Date().getTime(), 'yyyy-MM-dd hh:mm:ss')}]]
+    </p>
+</article>
+<div id="post-bottom-bar" class="post-bottom-bar">
+    <div class="bottom-bar-inner">
+        <div class="bottom-bar-items social-share left">
+            <span class="bottom-bar-item">Share : </span>
+            <span class="bottom-bar-item bottom-bar-facebook"><a href="https://www.facebook.com/sharer/sharer.php?u=http://www.tycoding.cn/2018/04/23/INTRO/index.html" target="_blank" title="序/INTRO" rel="nofollow">facebook</a></span>
+            <span class="bottom-bar-item bottom-bar-twitter"><a href="https://twitter.com/intent/tweet?url=http://www.tycoding.cn/2018/04/23/INTRO/&text=序/INTRO" target="_blank" title="序/INTRO" rel="nofollow">Twitter</a></span>
+            <span class="bottom-bar-item bottom-bar-weibo"><a href="http://service.weibo.com/share/share.php?url=&amp;title=序/INTRO" target="_blank" title="序/INTRO" rel="nofollow">Weibo</a></span>
+            <span class="bottom-bar-item bottom-bar-qrcode"><a href="//pan.baidu.com/share/qrcode?w=300&amp;h=300&amp;url=http://www.tycoding.cn/2018/04/23/INTRO/index.html" target="_blank" rel="nofollow">QRcode</a></span>
+        </div>
+        <div class="bottom-bar-items right">
+            <span class="bottom-bar-item"><a href="/2018/04/25/常用的Linux命令/">←</a></span>
+            <span class="bottom-bar-item"><a href="#footer">↓</a></span>
+            <span class="bottom-bar-item"><a href="#">↑</a></span>
+        </div>
+    </div>
+</div>
+
+<input class="type" hidden value="1"/>
+<div th:replace="site/page/common/comments"></div>
+
+<div th:replace="site/common/footer"></div>
+</body>
+</html>

@@ -1,4 +1,4 @@
-new Vue({
+var app = new Vue({
     el: '#app',
     data: {
         article: {
@@ -27,7 +27,6 @@ new Vue({
             value: '',
             label: ''
         }],
-        token: {name: ''},
         mobileStatus: false, //是否是移动端
         sidebarStatus: true, //侧边栏状态，true：打开，false：关闭
         sidebarFlag: ' openSidebar ', //侧边栏标志
@@ -39,7 +38,6 @@ new Vue({
         window.onresize = function() {
             app.changeDiv();
         }
-        this.search(this.pageConf.pageCode, this.pageConf.pageSize);
     },
     mounted() {
         this.init(this.getUrlParam());
@@ -111,11 +109,6 @@ new Vue({
                     }
                 });
             });
-
-            //已登录用户名
-            this.$http.get(api.edit.info).then(result => {
-                this.token.name = result.body.data.name;
-            });
         },
 
         getUrlParam() {
@@ -184,4 +177,3 @@ new Vue({
         }
     },
 });
-

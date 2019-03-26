@@ -5,13 +5,18 @@ import cn.tycoding.admin.entity.*;
 import cn.tycoding.admin.exception.GlobalException;
 import cn.tycoding.admin.mapper.ArticleMapper;
 import cn.tycoding.admin.service.*;
+import cn.tycoding.common.service.impl.BaseServiceImpl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.ibatis.session.RowBounds;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import tk.mybatis.mapper.entity.Example;
 
 import java.util.*;
 
@@ -21,7 +26,7 @@ import java.util.*;
  */
 @Service
 @SuppressWarnings("all")
-public class ArticleServiceImpl implements ArticleService {
+public class ArticleServiceImpl extends BaseServiceImpl<Article> implements ArticleService {
 
     @Autowired
     private ArticleMapper articleMapper;
@@ -30,31 +35,42 @@ public class ArticleServiceImpl implements ArticleService {
     private CategoryService categoryService;
 
     @Autowired
-    private TagsService tagsService;
+    private TagsService tagService;
 
     @Autowired
     private ArticleCategoryService articleCategoryService;
 
     @Autowired
-    private ArticleTagsService articleTagsService;
+    private ArticleTagsService articleTagService;
 
     @Override
     public Long findAllCount() {
-        return articleMapper.findAllCount();
+        return Long.valueOf(articleMapper.selectCount(new Article()));
     }
 
     @Override
     public List<Article> findAll() {
-        return articleMapper.findAll();
+        Example example = new Example(Article.class);
+        example.setOrderByClause("`id` desc");
+        return articleMapper.selectByExampleAndRowBounds(example, new RowBounds(0, 8));
     }
 
     @Override
     public List<Article> findByPage(Article article) {
-        List<Article> articleList = articleMapper.findByPage(article);
-        findInit(articleList);
-        return articleList;
+        Example example = new Example(Article.class);
+        if (!StringUtils.isEmpty(article.getTitle())) {
+            example.createCriteria().andLike("title", "%" + article.getTitle() + "%");
+        }
+        List<Article> list = articleMapper.selectByExample(example);
+        findInit(list);
+        return list;
     }
 
+    /**
+     * 封装文章分类、标签数据
+     *
+     * @param list
+     */
     private void findInit(List<Article> list) {
         if (!list.isEmpty()) {
             list.forEach(article -> {
@@ -62,12 +78,12 @@ public class ArticleServiceImpl implements ArticleService {
                 if (categoryList.size() > 0) {
                     article.setCategory(categoryList.get(0).getName());
                 }
-                List<Tags> tagsList = tagsService.findByArticleId(article.getId());
+                List<Tags> tagList = tagService.findByArticleId(article.getId());
                 List<String> stringList = new ArrayList<>();
-                tagsList.forEach(tags -> {
+                tagList.forEach(tags -> {
                     stringList.add(tags.getName());
                 });
-                article.setTags(JSON.toJSONString(tagsList));
+                article.setTags(JSON.toJSONString(tagList));
             });
         }
     }
@@ -87,7 +103,7 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public Article findById(Long id) {
         if (!id.equals(null) && id != 0) {
-            Article article = articleMapper.findById(id);
+            Article article = articleMapper.selectByPrimaryKey(id);
             List<Article> articleList = new ArrayList<>();
             articleList.add(article);
             findInit(articleList);
@@ -104,8 +120,10 @@ public class ArticleServiceImpl implements ArticleService {
             if (article.getState() == "1") {
                 article.setPublishTime(new Date());
             }
+            article.setAuthor(((User) SecurityUtils.getSubject().getPrincipal()).getUsername());
             article.setEditTime(new Date());
-            articleMapper.save(article);
+            article.setCreateTime(new Date());
+            articleMapper.insert(article);
             article.setId(articleMapper.getLastId());
             updateArticleCategoryTags(article);
         } catch (Exception e) {
@@ -136,12 +154,12 @@ public class ArticleServiceImpl implements ArticleService {
                 List<String> list = (List) JSONArray.parse(article.getTags()); //前端传来的标签是JSON字符串格式的标签名称
                 if (list.size() > 0) {
                     list.forEach(name -> {
-                        tagsService.save(new Tags(name));
-                        Tags tags = tagsService.findByName(name); //因为标签是多个的，需要依次将标签信息保存到标签表中
+                        tagService.save(new Tags(name));
+                        Tags tag = tagService.findByName(name); //因为标签是多个的，需要依次将标签信息保存到标签表中
 
-                        if (tags != null) {
+                        if (tag != null) {
                             //说明该标签插入成功或已存在，建立标签-文章关联信息
-                            articleTagsService.save(new ArticleTags(article.getId(), tags.getId()));
+                            articleTagService.save(new ArticleTags(article.getId(), tag.getId()));
                         }
                     });
                 }
@@ -153,7 +171,7 @@ public class ArticleServiceImpl implements ArticleService {
     @Transactional
     public void update(Article article) {
         try {
-            articleMapper.update(article);
+            this.updateNotNull(article);
             updateArticleCategoryTags(article);
         } catch (Exception e) {
             e.printStackTrace();
@@ -163,16 +181,16 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     @Transactional
-    public void delete(Long... ids) {
-        if (ids.length > 0 && !ids.equals(null)) {
+    public void delete(List<Long> ids) {
+        if (!ids.isEmpty()) {
             try {
-                for (long id : ids) {
-                    articleMapper.delete(id);
+                ids.forEach(id -> {
+                    articleMapper.deleteByPrimaryKey(id);
                     //删除文章-分类表的关联
                     articleCategoryService.deleteByArticleId(id);
                     //删除文章-标签表的关联
-                    articleTagsService.deleteByArticleId(id);
-                }
+                    articleTagService.deleteByArticleId(id);
+                });
             } catch (Exception e) {
                 e.printStackTrace();
                 throw new GlobalException(e.getMessage());
@@ -182,7 +200,9 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public List<Article> findByCategory(String category) {
-        return articleMapper.findByCategory(category);
+        Article article = new Article();
+        article.setCategory(category);
+        return articleMapper.select(article);
     }
 
     @Override
@@ -213,10 +233,10 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     @Transactional
-    public void addEyeCount(Long id) {
+    public void addViews(Long id) {
         if (!id.equals(null) && id != 0) {
             try {
-                articleMapper.addEyeCount(id);
+                articleMapper.addViews(id);
             } catch (Exception e) {
                 e.printStackTrace();
                 throw new GlobalException(e.getMessage());

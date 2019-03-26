@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="admin/common/head"></head>
+<title>登录日志</title>
+<body>
+<!-- vue入口 -->
+<div id="app">
+    <div :class="'app-wrapper' + sidebarFlag">
+
+        <!-- aside -->
+        <div th:replace="admin/common/side"></div>
+
+        <!-- container -->
+        <el-container class="main-container">
+            <!-- header -->
+            <div style="background-color: rgb(84, 92, 100);" th:replace="admin/common/header"></div>
+
+            <!-- main -->
+            <el-main class="app-main">
+                <el-card>
+                    <!-- 功能按钮 -->
+                    <el-row :gutter="10" type="flex" justify="space-between">
+                        <el-col :xs="24" :sm="12" :lg="6" :span="5">
+                            <el-input size="small" v-model="searchEntity.username" placeholder="请输入操作用户查询">
+                                <i slot="prefix" class="el-input__icon el-icon-search"></i>
+                            </el-input>
+                        </el-col>
+                        <el-col :xs="24" :sm="12" :lg="6" :span="5">
+                            <el-input size="small" v-model="searchEntity.location" placeholder="请输入操作地点查询">
+                                <i slot="prefix" class="el-input__icon el-icon-search"></i>
+                            </el-input>
+                        </el-col>
+                        <el-col :xs="24" :sm="12" :lg="6" :span="5">
+                            <el-date-picker size="small" value-format="yyyy-MM-dd HH:mm:ss"
+                                            v-model="searchEntity.timeField"
+                                            type="daterange"
+                                            range-separator="至"
+                                            start-placeholder="开始日期"
+                                            end-placeholder="结束日期">
+                            </el-date-picker>
+                        </el-col>
+                        <el-button @click="search(pageConf.pageCode, pageConf.pageSize)" plain size="small" icon="el-icon-search"></el-button>
+                        <el-col :xs="24" :sm="12" :lg="6" :span="6">
+                            <el-button type="primary" plain size="small" @click="search(pageConf.pageCode, pageConf.pageSize)" icon="el-icon-refresh"></el-button>
+                            <el-button type="primary" plain size="small" @click="handleExcel()" icon="el-icon-printer"></el-button>
+                            <el-button type="primary" plain size="small" @click="handleDelete()" icon="el-icon-delete"></el-button>
+                        </el-col>
+                    </el-row>
+                    <br/>
+                    <!-- 列表 -->
+                    <el-table ref="table" @selection-change="selectChange" :data="list" v-loading="loading" element-loading-text="拼命加载中" element-loading-spinner="el-icon-loading" stripe size="mini" border tooltip-effect="dark" style="width: 100%">
+                        <el-table-column type="selection" width="40" align="center"></el-table-column>
+                        <el-table-column prop="username" label="用户名" width="150" align="center"></el-table-column>
+                        <el-table-column prop="ip" label="IP地址" width="180" align="center"></el-table-column>
+                        <el-table-column prop="location" label="登录地点" width="360" align="center"></el-table-column>
+                        <el-table-column prop="createTime" label="登录时间" width="260" align="center"></el-table-column>
+                        <el-table-column prop="device" label="登录设备" width="380" show-overflow-tooltip align="center"></el-table-column>
+                        <el-table-column label="操作" align="center">
+                            <template slot-scope="scope">
+                                <el-button @click="handleDelete(scope.row.id)" size="mini" icon="el-icon-delete" type="danger"></el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                    <br/>
+                    <!-- 分页 -->
+                    <div class="pagination">
+                        <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange"
+                                       :current-page="pageConf.pageCode"
+                                       :page-sizes="pageConf.pageOption"
+                                       :page-size="pageConf.pageSize"
+                                       layout="total, sizes, prev, pager, next"
+                                       :total="pageConf.totalPage">
+                        </el-pagination>
+                    </div>
+                </el-card>
+                <br/>
+            </el-main>
+        </el-container>
+    </div>
+</div>
+
+</body>
+<div th:replace="admin/common/js"></div>
+<script type="text/javascript" th:src="@{/admin/js/loginlog.js}"></script>
+</html>

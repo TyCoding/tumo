@@ -8,12 +8,12 @@
 <div id="app">
     <div :class="'app-wrapper' + sidebarFlag">
         <!-- aside -->
-        <div th:replace="admin/side"></div>
+        <div th:replace="admin/common/side"></div>
 
         <!-- container -->
         <el-container class="main-container">
             <!-- header -->
-            <div style="background-color: rgb(84, 92, 100);" th:replace="admin/header"></div>
+            <div style="background-color: rgb(84, 92, 100);" th:replace="admin/common/header"></div>
 
             <!-- main -->
             <el-main class="app-main">
@@ -23,7 +23,7 @@
                         <el-col :xs="24" :sm="24" :lg="6" class="card-panel-col" v-for="item in article" :key="item.id">
                             <el-card class="box-card-component" style="margin-left:8px;">
                                 <div slot="header" class="box-card-header">
-                                    <img :src="item.titlePic">
+                                    <img :src="item.cover">
                                 </div>
                                 <div class="footer">
                                     <span>{{item.title}}</span>

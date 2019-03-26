@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="site/common/head"></head>
+<title>TyCoding&#39;s blog</title>
+<body class="bg-grey" gtools_scp_screen_capture_injected="true">
+
+<div th:replace="site/common/header"></div>
+
+<div class="main-content index-page clearfix ">
+    <div class="main-content common-page clearfix">
+        <div class="common-item">
+            <div class="common-title">Tag : [[${tag}]]</div>
+            <div class="post-lists">
+                <div class="post-lists-body">
+                    <div class="post-list-item" th:each="item : ${list}">
+                        <div class="post-list-item-container bg-yellow">
+                            <div class="item-label bg-red">
+                                <div class="item-title"><a th:href="'/article/' + item.id + '/'">[[${item.title}]]</a></div>
+                                <div class="item-meta clearfix">
+                                    <div class="item-meta-ico bg-ico-book" style="background: url(/site/images/bg-ico.png) no-repeat;background-size: 40px auto;"></div>
+                                    <div class="item-meta-date">[[${item.publishTime}]]</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+    </div>
+</div>
+
+<div th:replace="site/common/footer"></div>
+</body>
+</html>

@@ -7,6 +7,7 @@ var app = new Vue({
             category: '',
             tags: '',
             author: '',
+            type: '0',
             content: '',
             contentMd: '',
             origin: 'http://tycoding.cn',
@@ -141,4 +142,3 @@ var app = new Vue({
         }
     },
 });
-

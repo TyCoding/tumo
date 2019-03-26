@@ -1,143 +1,67 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<!-- 公共的CSS库 -->
-<head th:replace="/site/common/head"></head>
-<title>关于 | Tumo Blog</title>
-<body class="bg-grey">
-<!-- header -->
-<div th:replace="site/header"></div>
-<link rel="stylesheet" th:href="@{/site/css/about.css}"/>
+<head th:replace="site/common/head"></head>
+<title>关于 - TyCoding&#39;s blog</title>
+<body class="bg-white" gtools_scp_screen_capture_injected="true">
 
-<!-- main -->
-<div id="main" style="background: #fff">
-    <article role="pge-title-content" class="main-content page-page" itemscope itemtype="http://schema.org/Article">
-        <div class="post-header">
-            <h1 class="post-title" itemprop="name headline">关于</h1>
-            <div class="post-data">
-                <time datetime="2017-09-17" itemprop="datePublished">发布于 2018-11-05</time>
+<div th:replace="site/common/header"></div>
+
+<div class="post-header-thumb">
+    <div class="post-header-thumb-op" style="background-image:url(/site/images/thumbs/3.jpg);"></div>
+    <div class="post-header-thumb-cover">
+        <div class="post-header-thumb-container">
+            <div class="post-header-thumb-title">
+                关于我
             </div>
-        </div>
-        <div id="post-content" class="post-content">
-            <header>
-                <div class="hello"><span>Hi! </span> My name is TyCoding.</div>
-            </header>
-            <label>I’m a Java Developer with an enduring interest in Coding and Write Blog.</label>
-            <br/>
-            <br/>
-            <h1>About</h1>
-            <p style="margin-bottom: 10px;">Hi! 你好，我是TyCoding, 专注Java开发， 喜欢代码艺术， 关注新技术</p>
-            <p>喜欢运动， 音乐</p>
-            <br/>
-            <br/>
-            <h1>Works</h1>
-            <ul>
-                <li><a href="http://study.tycoding.cn/#/">TyCoding Adventure：</a> 这里有丰富的Java学习笔记</li>
-                <li><a href="https://github.com/TyCoding/spring-boot-learn">spring-boot-learn：</a> 这里记录了一些spring-boot常见的框架整合技术</li>
-                <li><a href="https://github.com/TyCoding/tumo">Tumo Blog:</a> 炒鸡漂亮的Java博客系统，基于SpringBoot-2.x实现</li>
-                <li><a href="https://github.com/TyCoding/springboot-seckill">springboot-seckill:</a>基于SpringBoot-2.x的Java高并发Seckill秒杀系统实现</li>
-                <li><a href="https://github.com/TyCoding/spring-boot">spring-boot:</a> SpringBoot-2.x入门开发</li>
-                <li><a href="https://github.com/TyCoding/ssm-redis-solr">ssm-redis-solr:</a>基于SSM、Shiro、Redis、Solr框架简单实现电商项目中搜索功能</li>
-                <li><a href="https://github.com/TyCoding/ssm">ssm:</a> Spring、SpringMVC、Mybatis框架整合开发</li>
-            </ul>
-            <br/>
-            <br/>
-            <h1>Concat</h1>
-            <img src="http://cdn.tycoding.cn/qq.png">
-        </div>
-    </article>
-
-    <!-- 留言信息 -->
-    <div class="comment-container">
-        <div id="comments" ref="comments" class="clearfix">
-            <span class="response"></span>
-            <!-- 表单 -->
-            <form method="post" id="comment-form" class="comment-form" onsubmit="return TumoComment.subComment();">
-                <input hidden="hidden" name="articleId" id="articleId"/>
-                <input hidden="hidden" name="articleTitle" id="articleTitle"/>
-                <input hidden="hidden" name="sort" id="sort" th:value="${sort}"/>
-                <input maxlength="12" name="author" id="author" class="form-control input-control clearfix" placeholder="姓名 (*)" value="" required/>
-                <input type="email" name="email" id="email" class="form-control input-control clearfix" placeholder="邮箱 (*)" value="" required/>
-                <input type="url" name="url" id="url" class="form-control input-control clearfix" placeholder="网址 (http://)" value=""/>
-                <textarea name="content" id="content" class="form-control" placeholder="回复" required minlength="5" maxlength="2000"></textarea>
-                <button class="submit" id="misubmit">提交</button>
-            </form>
-
-            <!-- 列表 -->
-            <ol class="comment-list" th:if="${talkList.total} >= 0">
-                <li th:each="comment : ${talkList.rows}" th:id="'li-comment-' + ${comment.parent.id}"
-                    class="comment-body comment-parent comment-odd">
-                    <div th:id="'comment-' + ${comment.parent.id}">
-                        <div class="comment-view">
-                            <div class="comment-header">
-                                <img class="avatar" src="http://cdn.tycoding.cn/author.png" width="80" height="80">
-                                <span class="comment-author">
-                                    <a th:href="${comment.parent.url}" target="_blank" rel="external nofollow" th:text="${comment.parent.author}"></a>
-                                </span>
-                            </div>
-                            <div class="comment-content">
-                                <span class="comment-author-at"></span>
-                                <p><p th:text="${comment.parent.content}"></p></p>
-                            </div>
-                            <div class="comment-meta">
-                                <time class="comment-time" th:text="${#dates.format(comment.parent.time, 'yyyy-MM-dd')}"></time>
-                                <span class="comment-reply">
-                                <a rel="nofollow" th:onclick="'javascript:TumoComment.reply(\'' + ${comment.parent.author} + '\',\'' + ${comment.parent.id} + '\');'">回复</a>
-                            </span>
-                            </div>
-                        </div>
-                    </div>
-                    <div th:if="${comment.childrenList} != '[]'" class="comment-children">
-                        <ol class="comment-list">
-                            <li th:each="item : ${comment.childrenList}" th:id="'li-comment-' + ${item.id}"
-                                class="comment-body comment-child comment-level-odd comment-odd">
-                                <div th:id="'comment-' + ${item.id}">
-                                    <div class="comment-view">
-                                        <div class="comment-header">
-                                            <img class="avatar" src="http://cdn.tycoding.cn/author.png" width="80" height="80">
-                                            <span class="comment-author comment-by-author">
-                                            <a th:href="${item.url}" target="_blank" rel="external nofollow" th:text="${item.author}"></a>
-                                        </span>
-                                        </div>
-                                        <div class="comment-content">
-                                        <span class="comment-author-at">
-                                            <a th:href="'#comment-' + ${item.cId == 0 ? item.pId : item.cId}" th:text="${item.authorId}"></a>
-                                        </span>
-                                            <p><p th:text="${item.content}"></p></p>
-                                        </div>
-                                        <div class="comment-meta">
-                                            <time class="comment-time" th:text="${#dates.format(item.time, 'yyyy-MM-dd')}"></time>
-                                            <span class="comment-reply">
-                                            <a rel="nofollow" th:onclick="'javascript:TumoComment.reply(\'' + ${item.author} + '\',\'' + ${item.pId} + '\',\'' + ${item.id} + '\');'">回复</a>
-                                        </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                        </ol>
-                    </div>
-                </li>
-            </ol>
-            <div class="lists-navigator clearfix">
-                <ol class="page-navigator" th:if="${talkList.total > 0}">
-                    <li class="prev" th:if="${cp} gt '1'">
-                        <a th:href="'?cp=' + ${cp < 1 ? cp : cp-1} + '#comments'">←</a>
-                    </li>
-                    <li th:each="i : ${#numbers.sequence(1, talkList.total)}">
-                        <a th:style="${i == cp ? 'color: #eb5055;' : ''}" th:href="'?cp=' + ${i} + '#comments'" th:text="${i}"></a>
-                    </li>
-                    <li class="next" th:if="${cp < talkList.total}">
-                        <a th:href="'?cp=' + ${cp < talkList.total ? cp+1 : talkList.total} + '#comments'">→</a>
-                    </li>
-                </ol>
+            <div class="post-header-thumb-meta">
+                <time datetime="1524412800" itemprop="datePublished"><b>[[${#dates.format(new java.util.Date().getTime(), 'yyyy-MM-dd hh:mm:ss')}]]</b></time>
+                in <a href="#">About</a>
+                with <a href="#vcomments"><b>[[${count}]]</b></a>
+                <div class="post-header-thumb-meta" style="font-size: 13px;">
+                    <span class="post-count">本文字数：<b class="count"></b> 字</span>
+                    <span>|</span>
+                    <span class="post-count">阅读时长 ≈ <b class="time"></b> min</span>
+                </div>
+            </div>
+            <div class="post-tags">
+                <a href="#">About Me</a>
             </div>
         </div>
     </div>
 </div>
 
-<!-- footer -->
-<div th:replace="site/footer"></div>
-<!-- 公共的JS库 -->
-<div th:include="site/common/js"></div>
+
+<article class="main-content post-page" itemscope itemtype="http://schema.org/Article">
+    <div id="post-content" class="post-content" itemprop="articleBody" th:utext="${setting.about}"></div>
+    <meting-js th:id="${setting.siteMusic}" server="netease" type="song" auto="" autoplay="flase"></meting-js>
+    <p class="post-info">
+        本文由 <a href="http://www.tycoding.cn">TyCoding</a> 创作，采用 <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="external nofollow">知识共享署名4.0</a> 国际许可协议进行许可<br>本站文章除注明转载/出处外，均为本站原创或翻译，转载前请务必署名<br>最后编辑时间为: [[${#dates.format(new java.util.Date().getTime(), 'yyyy-MM-dd hh:mm:ss')}]]
+    </p>
+</article>
+<div id="post-bottom-bar" class="post-bottom-bar">
+    <div class="bottom-bar-inner">
+        <div class="bottom-bar-items social-share left">
+            <span class="bottom-bar-item">Share : </span>
+            <span class="bottom-bar-item bottom-bar-facebook"><a href="https://www.facebook.com/sharer/sharer.php?u=http://www.tycoding.cn/2018/04/23/INTRO/index.html" target="_blank" title="序/INTRO" rel="nofollow">facebook</a></span>
+            <span class="bottom-bar-item bottom-bar-twitter"><a href="https://twitter.com/intent/tweet?url=http://www.tycoding.cn/2018/04/23/INTRO/&text=序/INTRO" target="_blank" title="序/INTRO" rel="nofollow">Twitter</a></span>
+            <span class="bottom-bar-item bottom-bar-weibo"><a href="http://service.weibo.com/share/share.php?url=&amp;title=序/INTRO" target="_blank" title="序/INTRO" rel="nofollow">Weibo</a></span>
+            <span class="bottom-bar-item bottom-bar-qrcode"><a href="//pan.baidu.com/share/qrcode?w=300&amp;h=300&amp;url=http://www.tycoding.cn/2018/04/23/INTRO/index.html" target="_blank" rel="nofollow">QRcode</a></span>
+        </div>
+        <div class="bottom-bar-items right">
+            <span class="bottom-bar-item"><a href="#footer">↓</a></span>
+            <span class="bottom-bar-item"><a href="#">↑</a></span>
+        </div>
+    </div>
+</div>
+
+<input class="type" hidden value="2"/>
+<div th:replace="site/page/common/comments"></div>
+
+<div id="directory-content" class="directory-content">
+    <div id="directory"></div>
+</div>
+
+<div th:replace="site/common/footer"></div>
+
 </body>
-<script type="text/javascript" th:src="@{/site/js/about.js}"></script>
 </html>

@@ -8,12 +8,12 @@
 <div id="app">
     <div :class="'app-wrapper' + sidebarFlag">
         <!-- aside -->
-        <div th:replace="admin/side"></div>
+        <div th:replace="admin/common/side"></div>
 
         <!-- container -->
         <el-container class="main-container">
             <!-- header -->
-            <div style="background-color: rgb(84, 92, 100);" th:replace="admin/header"></div>
+            <div style="background-color: rgb(84, 92, 100);" th:replace="admin/common/header"></div>
 
             <!-- main -->
             <el-main class="app-main">
@@ -22,7 +22,7 @@
                     <!-- 功能按钮 -->
                     <el-row :gutter="20">
                         <el-col :xs="12" :sm="12" :lg="6" :span="6" style="display: flex">
-                            <el-input placeholder="请输入留言人姓名查询" size="small" v-model="searchEntity.author" @keyup.native="search(pageConf.pageCode, pageConf.pageSize)">
+                            <el-input placeholder="请输入留言人姓名查询" size="small" v-model="searchEntity.name" @keyup.native="search(pageConf.pageCode, pageConf.pageSize)">
                                 <i slot="prefix" class="el-input__icon el-icon-search"></i>
                             </el-input>
                             <el-button @click="search(pageConf.pageCode, pageConf.pageSize)" plain size="small" style="margin-left:12px;" icon="el-icon-search"></el-button>
@@ -31,20 +31,23 @@
                     <br/>
                     <!-- 列表 -->
                     <el-table ref="comments" :data="comments" border tooltip-effect="dark" style="width: 100%">
-                        <el-table-column prop="id" align="center" sortable label="编号" show-overflow-tooltip width="80"></el-table-column>
+                        <el-table-column prop="id" sortable label="编号" show-overflow-tooltip width="80"></el-table-column>
                         <el-table-column align="center" prop="content" label="留言内容" width="180" show-overflow-tooltip></el-table-column>
                         <el-table-column align="center" prop="articleTitle" label="文章标题" width="180" show-overflow-tooltip></el-table-column>
-                        <el-table-column align="center" prop="author" show-overflow-tooltip label="留言人" width="100"></el-table-column>
-                        <el-table-column align="center" prop="authorId" show-overflow-tooltip label="给谁留言" width="100"></el-table-column>
-                        <el-table-column align="center" prop="time" show-overflow-tooltip label="留言时间" width="170"></el-table-column>
-                        <el-table-column align="center" prop="email" show-overflow-tooltip label="留言人邮箱" width="150"></el-table-column>
-                        <el-table-column align="center" prop="url" label="留言人URL" show-overflow-tooltip width="150"></el-table-column>
-                        <el-table-column align="center" prop="state" sortable label="状态" width="100">
+                        <el-table-column align="center" show-overflow-tooltip label="类型" width="100">
                             <template slot-scope="scope">
-                                <el-tag>{{scope.row.state}}</el-tag>
+                                <el-tag>{{scope.row.type == 0 ? 'Article' : scope.row.type == 1 ? 'Link' : 'About'}}</el-tag>
                             </template>
                         </el-table-column>
-                        <el-table-column label="操作" align="center">
+                        <el-table-column align="center" prop="name" show-overflow-tooltip label="留言人" width="100"></el-table-column>
+                        <el-table-column align="center" prop="cName" show-overflow-tooltip label="给谁留言" width="100"></el-table-column>
+                        <el-table-column align="center" prop="time" show-overflow-tooltip label="留言时间" width="170"></el-table-column>
+                        <el-table-column align="center" prop="ip" show-overflow-tooltip label="IP" width="170"></el-table-column>
+                        <el-table-column align="center" prop="device" show-overflow-tooltip label="设备信息" width="170"></el-table-column>
+                        <el-table-column align="center" prop="address" show-overflow-tooltip label="地址" width="170"></el-table-column>
+                        <el-table-column align="center" prop="email" show-overflow-tooltip label="Email" width="150"></el-table-column>
+                        <el-table-column align="center" prop="url" label="Link" show-overflow-tooltip width="150"></el-table-column>
+                        <el-table-column label="操作" align="center" width="200">
                             <template slot-scope="scope">
                                 <el-button icon="el-icon-delete" size="mini" type="danger" @click="handleDelete(scope.row.id)">删除</el-button>
                                 <a :href="'/article/' + scope.row.id" target="_blank">

@@ -2,7 +2,7 @@ import { ElementUIComponent, ElementUIComponentSize } from './component'
 
 export type TagType = 'primary' | 'gray' | 'success' | 'warning' | 'danger'
 
-/** Tag Component */
+/** Tags Component */
 export declare class ElTag extends ElementUIComponent {
   /** Theme */
   type: TagType
@@ -13,12 +13,12 @@ export declare class ElTag extends ElementUIComponent {
   /** Whether the removal animation is disabled */
   disableTransitions: boolean
 
-  /** Whether Tag has a highlighted border */
+  /** Whether Tags has a highlighted border */
   hit: boolean
 
   /** Background color of the tag */
   color: string
 
-  /** Tag size */
+  /** Tags size */
   size: ElementUIComponentSize
 }

@@ -8,12 +8,12 @@
 <div id="app">
     <div :class="'app-wrapper' + sidebarFlag">
         <!-- aside -->
-        <div th:replace="admin/side"></div>
+        <div th:replace="admin/common/side"></div>
 
         <!-- container -->
         <el-container class="main-container">
             <!-- header -->
-            <div style="background-color: rgb(84, 92, 100);" th:replace="admin/header"></div>
+            <div style="background-color: rgb(84, 92, 100);" th:replace="admin/common/header"></div>
 
             <!-- main -->
             <el-main class="app-main">
@@ -41,7 +41,7 @@
                     </el-card>
 
                     <!-- 列表 -->
-                    <el-table ref="links" :data="links" border tooltip-effect="dark" style="width: 100%">
+                    <el-table ref="link" :data="links" border tooltip-effect="dark" style="width: 100%">
                         <el-table-column prop="id" align="center" sortable label="编号" show-overflow-tooltip width="80"></el-table-column>
                         <el-table-column align="center" prop="name" label="友链名称" width="300" show-overflow-tooltip></el-table-column>
                         <el-table-column align="center" prop="url" label="链接地址" width="300" show-overflow-tooltip></el-table-column>

@@ -1,25 +1,21 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<!-- 公共的CSS库 -->
 <head th:replace="site/common/head"></head>
-<title>Tumo Blog</title>
-<body class="bg-grey">
-<!-- header -->
-<div th:replace="site/header"></div>
-<!-- main -->
-<div class="main-content index-page clearfix">
+<title>TyCoding&#39;s blog</title>
+<body class="bg-grey" gtools_scp_screen_capture_injected="true">
+<div th:replace="site/common/header"></div>
+<div class="main-content index-page clearfix ">
     <div class="post-lists">
         <div class="post-lists-body">
-            <div class="post-list-item" th:each="article : ${page.data}">
+            <div class="post-list-item" th:each="article : ${list.data}">
                 <div class="post-list-item-container">
-                    <div class="item-thumb bg-deepgrey"
-                         th:style="'background-image:url(' + ${article.titlePic} + ');'"></div>
-                    <a th:href="'/article/' + ${article.id}">
+                    <div class="item-thumb bg-green" th:style="'background-image:url(' + ${article.cover} + ');'"></div>
+                    <a href="/article/1">
                         <div class="item-desc">
-                            <p th:utext="${#strings.abbreviate(article.content, 80)}"></p>
+                            <p>hello!  I’m TyCoding. this my blog. I decide to write my own blog while ...</p>
                         </div>
                     </a>
-                    <div class="item-slant reverse-slant bg-deepgrey"></div>
+                    <div class="item-slant reverse-slant bg-green"></div>
                     <div class="item-slant"></div>
                     <div class="item-label">
                         <div class="item-title">
@@ -42,18 +38,16 @@
             <li class="prev" th:if="${pageCode} gt '1'">
                 <a th:href="'/page/' + ${pageCode < 1 ? pageCode : pageCode-1}">←</a>
             </li>
-            <li th:each="i : ${#numbers.sequence(1, page.total)}">
+            <li th:each="i : ${#numbers.sequence(1, list.total)}">
                 <a th:style="${i == pageCode ? 'color: #eb5055;' : ''}" th:href="'/page/' + ${i}" th:text="${i}"></a>
             </li>
-            <li class="next" th:if="${pageCode < page.total}">
-                <a th:href="'/page/' + ${pageCode < page.total ? pageCode+1 : page.total}">→</a>
+            <li class="next" th:if="${pageCode < list.total}">
+                <a th:href="'/page/' + ${pageCode < list.total ? pageCode+1 : list.total}">→</a>
             </li>
         </ol>
     </div>
 </div>
-<!-- footer -->
-<div th:replace="site/footer"></div>
-<!-- 公共的JS库 -->
-<div th:replace="site/common/js"></div>
+
+<div th:replace="site/common/footer"></div>
 </body>
 </html>

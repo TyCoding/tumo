@@ -1,15 +1,26 @@
 package cn.tycoding.admin.controller;
 
+import cn.tycoding.admin.annotation.Log;
 import cn.tycoding.admin.dto.QueryPage;
 import cn.tycoding.admin.dto.ResponseCode;
 import cn.tycoding.admin.entity.Comments;
 import cn.tycoding.admin.exception.GlobalException;
 import cn.tycoding.admin.service.CommentsService;
+import cn.tycoding.admin.utils.AddressUtil;
+import cn.tycoding.admin.utils.IPUtil;
+import cn.tycoding.common.controller.BaseController;
+import eu.bitwalker.useragentutils.Browser;
+import eu.bitwalker.useragentutils.OperatingSystem;
+import eu.bitwalker.useragentutils.UserAgent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
+import java.util.List;
+
 /**
- * @auther TyCoding
+ * @author TyCoding
  * @date 2018/10/17
  */
 @RestController
@@ -18,21 +29,21 @@ import org.springframework.web.bind.annotation.*;
 public class CommentsController extends BaseController {
 
     @Autowired
-    private CommentsService commentsService;
+    private CommentsService commentService;
 
     @GetMapping(value = "/findAllCount")
     public ResponseCode findAllCount() {
-        return ResponseCode.success(commentsService.findAllCount());
+        return ResponseCode.success(commentService.findAllCount());
     }
 
     @GetMapping(value = "/findAll")
     public ResponseCode findAll() {
-        return ResponseCode.success(commentsService.findAll());
+        return ResponseCode.success(commentService.findAll());
     }
 
     @PostMapping(value = "/findByPage")
-    public ResponseCode findByPage(QueryPage queryPage, Comments comments) {
-        return ResponseCode.success(super.selectByPageNumSize(queryPage, () -> commentsService.findByPage(comments)));
+    public ResponseCode findByPage(QueryPage queryPage, Comments comment) {
+        return ResponseCode.success(super.selectByPageNumSize(queryPage, () -> commentService.findByPage(comment)));
     }
 
     /**
@@ -43,7 +54,7 @@ public class CommentsController extends BaseController {
      */
     @GetMapping(value = "/findCountByArticleId")
     public ResponseCode findCountByArticleId(@RequestParam("articleId") Long articleId) {
-        return ResponseCode.success(commentsService.findCountByArticle(articleId));
+        return ResponseCode.success(commentService.findCountByArticle(articleId));
     }
 
     /**
@@ -57,18 +68,28 @@ public class CommentsController extends BaseController {
      */
     @GetMapping(value = "/findCommentsList")
     public ResponseCode findCommentsList(QueryPage queryPage, Integer articleId) {
-        return ResponseCode.success(commentsService.findCommentsList(queryPage.getPageCode(), queryPage.getPageSize(), articleId, 0));
+        return ResponseCode.success(commentService.findCommentsList(queryPage.getPageCode(), queryPage.getPageSize(), articleId, 0));
     }
 
     @GetMapping(value = "/findById")
     public ResponseCode findById(@RequestParam("id") Long id) {
-        return ResponseCode.success(commentsService.findById(id));
+        return ResponseCode.success(commentService.findById(id));
     }
 
     @PostMapping(value = "/save")
-    public ResponseCode save(@RequestBody Comments comments) {
+    @Log("新增评论")
+    public ResponseCode save(@RequestBody Comments comment, HttpServletRequest request) {
         try {
-            commentsService.save(comments);
+            String ip = IPUtil.getIpAddr(request);
+            comment.setTime(new Date());
+            comment.setIp(ip);
+            comment.setAddress(AddressUtil.getAddress(ip));
+            String header = request.getHeader("User-Agent");
+            UserAgent userAgent = UserAgent.parseUserAgentString(header);
+            Browser browser = userAgent.getBrowser();
+            OperatingSystem operatingSystem = userAgent.getOperatingSystem();
+            comment.setDevice(browser.getName() + "," + operatingSystem.getName());
+            commentService.save(comment);
             return ResponseCode.success();
         } catch (Exception e) {
             e.printStackTrace();
@@ -77,9 +98,10 @@ public class CommentsController extends BaseController {
     }
 
     @PutMapping(value = "/update")
-    public ResponseCode update(@RequestBody Comments comments) {
+    @Log("更新评论")
+    public ResponseCode update(@RequestBody Comments comment) {
         try {
-            commentsService.update(comments);
+            commentService.update(comment);
             return ResponseCode.success();
         } catch (Exception e) {
             e.printStackTrace();
@@ -88,9 +110,10 @@ public class CommentsController extends BaseController {
     }
 
     @PostMapping(value = "/delete")
-    public ResponseCode delete(@RequestBody Long... ids) {
+    @Log("删除评论")
+    public ResponseCode delete(@RequestBody List<Long> ids) {
         try {
-            commentsService.delete(ids);
+            commentService.delete(ids);
             return ResponseCode.success();
         } catch (Exception e) {
             e.printStackTrace();

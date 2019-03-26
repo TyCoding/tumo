@@ -6,6 +6,7 @@ import cn.tycoding.admin.mapper.CategoryMapper;
 import cn.tycoding.admin.service.ArticleCategoryService;
 import cn.tycoding.admin.service.ArticleService;
 import cn.tycoding.admin.service.CategoryService;
+import cn.tycoding.common.service.impl.BaseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,7 +19,7 @@ import java.util.List;
  */
 @Service
 @SuppressWarnings("all")
-public class CategoryServiceImpl implements CategoryService {
+public class CategoryServiceImpl extends BaseServiceImpl<Category> implements CategoryService {
 
     @Autowired
     private CategoryMapper categoryMapper;
@@ -30,24 +31,19 @@ public class CategoryServiceImpl implements CategoryService {
     private ArticleCategoryService articleCategoryService;
 
     @Override
-    public Long findAllCount() {
-        return null;
-    }
-
-    @Override
     public List<Category> findAll() {
-        return categoryMapper.findAll();
+        return categoryMapper.selectAll();
     }
 
     @Override
     public List<Category> findByPage(Category category) {
-        return categoryMapper.findByPage(category);
+        return categoryMapper.select(category);
     }
 
     @Override
     public Category findById(Long id) {
         if (!id.equals(null) && id != 0) {
-            return categoryMapper.findById(id);
+            return categoryMapper.selectByPrimaryKey(id);
         } else {
             throw new GlobalException("参数错误");
         }
@@ -58,7 +54,7 @@ public class CategoryServiceImpl implements CategoryService {
     public void save(Category category) {
         try {
             if (!exists(category)) {
-                categoryMapper.save(category);
+                categoryMapper.insert(category);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -67,7 +63,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     private boolean exists(Category category) {
-        return categoryMapper.exists(category.getName());
+        return categoryMapper.selectCount(category) > 0 ? true : false;
     }
 
     @Override
@@ -75,7 +71,7 @@ public class CategoryServiceImpl implements CategoryService {
     public void update(Category category) {
         try {
             if (category.getId() != 0) {
-                categoryMapper.update(category);
+                this.updateNotNull(category);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -85,15 +81,14 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     @Transactional
-    public void delete(Long... ids) {
-        if (ids.length > 0 && !ids.equals(null)) {
+    public void delete(List<Long> ids) {
+        if (!ids.isEmpty()) {
             try {
-                for (long id : ids) {
-                    categoryMapper.delete(id);
-
+                ids.forEach(id -> {
+                    categoryMapper.deleteByPrimaryKey(id);
                     //删除与该分类与文章关联的信息
                     articleCategoryService.deleteByCategoryId(id);
-                }
+                });
             } catch (Exception e) {
                 throw new GlobalException(e.getMessage());
             }
@@ -103,7 +98,9 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public Category findByName(String name) {
         if (!name.isEmpty()) {
-            return categoryMapper.findByName(name);
+            Category category = new Category();
+            category.setName(name);
+            return categoryMapper.select(category).get(0);
         } else {
             throw new GlobalException("参数错误");
         }

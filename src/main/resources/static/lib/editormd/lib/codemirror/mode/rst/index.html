@@ -43,7 +43,7 @@ language, this will not take too long.
 .. seealso::
 
    The authoritative `reStructuredText User Documentation
-   &lt;http://docutils.sourceforge.net/rst.html&gt;`_.  The "ref" links in this
+   &lt;http://docutils.sourceforge.net/rst.html&gt;`_.  The "ref" link in this
    document link to the description of the individual constructs in the reST
    reference.
 
@@ -219,12 +219,12 @@ contain multiple lines.  They look like this::
 Hyperlinks
 ----------
 
-External links
+External link
 ^^^^^^^^^^^^^^
 
-Use ```Link text &lt;http://example.com/&gt;`_`` for inline web links.  If the link
+Use ```Link text &lt;http://example.com/&gt;`_`` for inline web link.  If the link
 text should be the web address, you don't need special markup at all, the parser
-finds links and mail addresses in ordinary text.
+finds link and mail addresses in ordinary text.
 
 You can also separate the link and the target definition (:duref:`ref
 &lt;hyperlink-targets&gt;`), like this::
@@ -234,7 +234,7 @@ You can also separate the link and the target definition (:duref:`ref
    .. _a link: http://example.com/
 
 
-Internal links
+Internal link
 ^^^^^^^^^^^^^^
 
 Internal linking is done via a special reST role provided by Sphinx, see the
@@ -273,7 +273,7 @@ Explicit Markup
 
 "Explicit markup" (:duref:`ref &lt;explicit-markup-blocks&gt;`) is used in reST for
 most constructs that need special handling, such as footnotes,
-specially-highlighted paragraphs, comments, and generic directives.
+specially-highlighted paragraphs, comment, and generic directives.
 
 An explicit markup block begins with a line starting with ``..`` followed by
 whitespace and is terminated by the next paragraph at the same level of
@@ -333,7 +333,7 @@ Docutils supports the following directives:
 
 * HTML specifics:
 
-  - :dudir:`meta` (generation of HTML ``&lt;meta&gt;`` tags)
+  - :dudir:`meta` (generation of HTML ``&lt;meta&gt;`` tag)
   - :dudir:`title` (override document title)
 
 * Influencing markup:
@@ -472,12 +472,12 @@ Comments
 --------
 
 Every explicit markup block which isn't a valid markup construct (like the
-footnotes above) is regarded as a comment (:duref:`ref &lt;comments&gt;`).  For
+footnotes above) is regarded as a comment (:duref:`ref &lt;comment&gt;`).  For
 example::
 
    .. This is a comment.
 
-You can indent text after a comment start to form multiline comments::
+You can indent text after a comment start to form multiline comment::
 
    ..
       This whole indented block

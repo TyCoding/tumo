@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * 用于封装Article表按时间归档的DTO
  *
- * @auther TyCoding
+ * @author TyCoding
  * @date 2018/10/28
  */
 @Data

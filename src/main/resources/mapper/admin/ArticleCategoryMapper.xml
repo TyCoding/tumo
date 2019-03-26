@@ -3,28 +3,4 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="cn.tycoding.admin.mapper.ArticleCategoryMapper">
-
-    <!-- 保存 -->
-    <insert id="save" parameterType="ArticleCategory">
-        INSERT  INTO
-        tb_article_category(
-          article_id,
-          category_id
-        )
-        VALUES(
-          #{articleId},
-          #{categoryId}
-        )
-    </insert>
-
-    <!-- 查询是否存在 -->
-    <select id="exists" resultType="Boolean">
-        SELECT COUNT(1) FROM tb_article_category WHERE 1=1
-        <if test="articleId != 0">
-            AND article_id = #{articleId}
-        </if>
-        <if test="categoryId != 0">
-            AND category_id = #{categoryId}
-        </if>
-    </select>
 </mapper>
