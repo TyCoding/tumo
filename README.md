@@ -2,7 +2,7 @@
 
 ![](http://cdn.tycoding.cn/tumo.png)
 
-> 'Tumo'是一个中文单词，Tumo用中文解释为 **道路** 的意思，希望可以通过博客来记录自己学习的历程。
+> 更漂亮的博客系统，更丰富的功能，更愉快的体验！
 
 Tumo Blog是一个基于SpringBoot2开发的博客系统。博客前台UI移植自[@pinghsu](https://github.com/chakhsu/pinghsu)主题，因为原主题是基于PHP的，所以我不能直接使用它，但是非常感谢[@pinghsu](https://github.com/chakhsu/pinghsu)的作者。
 Tumo Blog的后台管理页面基于ElementUI绘制，后台管理通过ajax异步交互，相当于前后端半分离吧。如果你觉得它不错，欢迎 star fork。
@@ -43,7 +43,7 @@ Tumo Blog的后台管理页面基于ElementUI绘制，后台管理通过ajax异�
 
 * 模板引擎：Thymeleaf 3.0.11.RELEASE
 
-* 其他：Druid、PageHelper、
+* 其他：Druid、PageHelper、AOP、
 
 ### 前端
 
@@ -74,9 +74,10 @@ Tumo Blog的后台管理页面基于ElementUI绘制，后台管理通过ajax异�
 * 博客前台、管理后台响应式设计。
 * 支持Markdown格式文章的撰写。
 * 支持文件上传。
-* 支持网易云音乐插件。
-* 项目后端管理页面基于Vue.js和ElementUI设计。
-* 项目基于SpringBoot-2.x框架开发。
+* 支持网易云音乐定制。
+* 项目后端管理页面基于Vue.js和ElementUI设计，避免繁琐的DOM操作。
+* 登录日志记录，IP、地理位置等。
+* 个性化社交设置。
 * 更多功能正在开发中...
 
 # 快速开始
@@ -98,12 +99,19 @@ Tumo Blog是一个基于SpringBoot-2.x框架的博客系统。如果你已经熟
 
 ## 预览图
 
-![](http://cdn.tycoding.cn/tumo-admin.png)
+![](doc/20190327081959.png)
 
-![](http://cdn.tycoding.cn/tumo-article-publish.png)
+![](doc/20190327082016.png)
 
-![](http://cdn.tycoding.cn/tumo-article.png)
+![](doc/20190327082038.png)
 
+![](doc/20190327082146.png)
+
+![](doc/20190327082215.png)
+
+![](doc/20190327082245.png)
+
+![](doc/20190327082309.png)
 
 **响应式：**
 
