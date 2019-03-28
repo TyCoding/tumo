@@ -10,7 +10,7 @@
             <div class="post-list-item" th:each="article : ${list.data}">
                 <div class="post-list-item-container">
                     <div class="item-thumb bg-green" th:style="'background-image:url(' + ${article.cover} + ');'"></div>
-                    <a href="/article/1">
+                    <a th:href="'/article/' + ${article.id}">
                         <div class="item-desc">
                             <p>hello!  I’m TyCoding. this my blog. I decide to write my own blog while ...</p>
                         </div>
