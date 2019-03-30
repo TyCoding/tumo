@@ -43,7 +43,7 @@
                         <span class="vsys">[[${#strings.substringAfter(comment.parent.device, ',')}]]</span></div>
                     <div class="vmeta">
                         <span class="vtime" th:text="${#dates.format(comment.parent.time, 'yyyy-MM-dd')}"></span>
-                        <span th:onclick="'javascript:reply(\'' + ${comment.parent.name} + '\',\'' + ${comment.parent.id} + '\');'" class="vat">回复</span>
+                        <span th:onclick="javascript:reply([[${comment.parent.name}]], [[${comment.parent.id}]]);" class="vat">回复</span>
                     </div>
                     <div class="vcontent">
                         <p th:text="${comment.parent.content}"></p>
@@ -59,7 +59,7 @@
                                 </div>
                                 <div class="vmeta">
                                     <span class="vtime" th:text="${#dates.format(item.time, 'yyyy-MM-dd')}"></span>
-                                    <span class="vat" th:onclick="'javascript:reply(\'' + ${item.name} + '\',\'' + ${item.pId} + '\',\'' + ${item.id} + '\');'">回复</span>
+                                    <span class="vat" th:onclick="'javascript:reply([[${item.name}]], [[${item.pId}]], [[${item.id}]]);">回复</span>
                                 </div>
                                 <div class="vcontent">
                                     <a class="at" th:href="'#li-comment-' + ${item.cId == 0 ? item.pId : item.cId}" th:text="${item.cId}"></a>

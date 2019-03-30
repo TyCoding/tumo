@@ -184,7 +184,7 @@ CREATE TABLE `tb_log` (
   `operation` varchar(20) DEFAULT NULL COMMENT '操作描述',
   `time` bigint(20) DEFAULT NULL COMMENT '耗时(毫秒)',
   `method` varchar(100) DEFAULT NULL COMMENT '操作方法',
-  `params` varchar(255) DEFAULT NULL COMMENT '操作参数',
+  `params` text DEFAULT NULL COMMENT '操作参数',
   `ip` varchar(20) DEFAULT NULL COMMENT 'IP地址',
   `create_time` datetime DEFAULT NULL COMMENT '操作时间',
   `location` varchar(20) DEFAULT NULL COMMENT '操作地点',

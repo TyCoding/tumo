@@ -7,7 +7,7 @@
 <div th:replace="site/common/header"></div>
 
 <div class="post-header-thumb">
-    <div class="post-header-thumb-op" th:style="'background-image:url(' + ${article.cover} + ');'"></div>
+    <div class="post-header-thumb-op" th:if="${article.cover != null}" th:style="'background-image:url(' + ${article.cover} + ');'"></div>
     <div class="post-header-thumb-cover">
         <div class="post-header-thumb-container">
             <div class="post-header-thumb-title">
