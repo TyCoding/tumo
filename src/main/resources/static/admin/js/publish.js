@@ -43,32 +43,38 @@ var app = new Vue({
     },
     methods: {
         //点击存入草稿
-        save() {
-            this.article.content = window.markdownContent.getHTML(); //给content赋值
-            this.article.contentMd = window.markdownContent.getMarkdown(); //给contentMd赋值
-            this.article.tags = JSON.stringify(this.dynamicTags); //给tags字段赋值
-            this.$http.post(api.publish.save, JSON.stringify(this.article)).then(result => {
-                window.location.reload();
-                if (result.body.code == 200) {
-                    this.$message({
-                        showClose: true,
-                        message: result.body.msg,
-                        type: 'success'
+        save(form) {
+            this.$refs[form].validate((valid) => {
+                if (valid) {
+                    this.article.content = window.markdownContent.getHTML(); //给content赋值
+                    this.article.contentMd = window.markdownContent.getMarkdown(); //给contentMd赋值
+                    this.article.tags = JSON.stringify(this.dynamicTags); //给tags字段赋值
+                    this.$http.post(api.publish.save, JSON.stringify(this.article)).then(result => {
+                        window.location.reload();
+                        if (result.body.code == 200) {
+                            this.$message({
+                                showClose: true,
+                                message: result.body.msg,
+                                type: 'success'
+                            });
+                        } else {
+                            this.$message({
+                                showClose: true,
+                                message: result.body.msg,
+                                type: 'error'
+                            });
+                        }
                     });
+                    console.log(this.article);
                 } else {
-                    this.$message({
-                        showClose: true,
-                        message: result.body.msg,
-                        type: 'error'
-                    });
+                    return false;
                 }
-            });
-
+            })
         },
         //点击发布文章
-        publishBtn(state) {
+        publishBtn(form, state) {
             this.article.state = state; //0:存入草稿；1:发布
-            this.save();
+            this.save(form);
         },
 
         handleCloseTag(tag) {

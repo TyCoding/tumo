@@ -49,9 +49,8 @@ public class ShiroConfig {
 
     @Bean
     public SimpleCookie rememberMeCookie() {
-        SimpleCookie simpleCookie = new SimpleCookie("rememberMe");
-        simpleCookie.setMaxAge(2592000);
-        simpleCookie.setHttpOnly(true);
+        SimpleCookie simpleCookie = new SimpleCookie("remember");
+        simpleCookie.setMaxAge(86400);
         return simpleCookie;
     }
 
@@ -131,7 +130,7 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/login", "anon");
         filterChainDefinitionMap.put("/admin/login", "anon");
 
-        filterChainDefinitionMap.put("/admin/**", "authc");
+        filterChainDefinitionMap.put("/admin/**", "user");
 
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
 
