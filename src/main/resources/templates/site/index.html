@@ -33,7 +33,7 @@
             </div>
         </div>
     </div>
-    <div class="lists-navigator clearfix">
+    <div class="lists-navigator clearfix" th:if="${list.total != 0}">
         <ol class="page-navigator">
             <li class="prev" th:if="${pageCode} gt '1'">
                 <a th:href="'/page/' + ${pageCode < 1 ? pageCode : pageCode-1}">←</a>
@@ -45,6 +45,9 @@
                 <a th:href="'/page/' + ${pageCode < list.total ? pageCode+1 : list.total}">→</a>
             </li>
         </ol>
+    </div>
+    <div th:if="${list.total == 0}" class="lists-navigator clearfix" style="min-height: 400px;">
+        还没有发布文章诶！
     </div>
 </div>
 

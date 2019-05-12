@@ -59,8 +59,10 @@ function vsubmit() {
     data.email = document.getElementsByName("mail")[0].value;
     data.url = document.getElementsByName("link")[0].value;
     data.content = document.getElementById("veditor").value;
+    if (data.name == "" || data.email == "" || data.url == "" || data.content == "") {
+        return;
+    }
     Ajax.post('/comments/save', data);
-    console.log(data);
 }
 //回复
 function reply(name, pid, cid) {
