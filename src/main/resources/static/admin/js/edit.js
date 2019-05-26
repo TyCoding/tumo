@@ -32,6 +32,7 @@ var app = new Vue({
         sidebarFlag: ' openSidebar ', //侧边栏标志
     },
     created() {
+        this.initData(this.getUrlParam());
         window.onload = function() {
             app.changeDiv();
         }
@@ -40,7 +41,6 @@ var app = new Vue({
         }
     },
     mounted() {
-        this.init(this.getUrlParam());
         this.$refs.loader.style.display = 'none';
     },
     methods: {
@@ -94,7 +94,7 @@ var app = new Vue({
             this.article.tags = '';
         },
 
-        init(id) {
+        initData(id) {
             //从url中获取参数查询文章数据
             this.$http.get(api.edit.findById(id)).then(result => {
                 this.article = result.body.data;

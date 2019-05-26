@@ -3,7 +3,7 @@
 <head th:replace="admin/common/head"></head>
 <title>编辑文章</title>
 <link rel="stylesheet" th:href="@{/admin/css/publish.css}">
-<link rel="stylesheet" th:href="@{/lib/editormd/editormd.min.css}">
+<link rel="stylesheet" th:href="@{/lib/editormd/css/editormd.min.css}">
 <body>
 <!-- vue入口 -->
 <div id="app">
@@ -80,6 +80,7 @@
                     </div>
                     <div>
                         <div id="article">
+                            <!--<textarea id="article-editor-md" ref="articleEditorMd" name="article-editor-md">{{article.contentMd}}</textarea>-->
                             <textarea id="article-editor-md" ref="articleEditorMd" name="article-editor-md">{{article.contentMd}}</textarea>
                         </div>
                     </div>
@@ -102,21 +103,24 @@
 <script type="text/javascript" th:src="@{/lib/editormd/editormd.min.js}"></script>
 <script type="text/javascript" th:src="@{/admin/js/edit.js}"></script>
 <script type="text/javascript" th:inline="javascript">
-    var markdownContent = editormd('article', {
-        htmlDecode : true, // Decode all html tag & attributes
-        width: '100%',
-        height: 540,
-        syncScrolling: "single",
-        path: '../../../lib/editormd/lib/',
-        saveHTMLToTextarea: true,
-
-        emoji: true,
-        watch: false,
-        codeFold: true,
-
-        toolbarIcons: function () {
-            return ["undo", "redo", "bold", "del", "italic", "quote", "ucwords", "uppercase", "lowercase", "|", "h1", "h2", "h3", "|", "list-ul", "list-ol", "|", "link", "reference-link", "image", "code", "preformatted-text", "table", "datetime", "emoji", "html-entities", "goto-line", "|", "preview", "fullscreen", "", "||", "watch"];
-        },
+    $(function () {
+        // 渲染数据存在大文本，数据获取较慢，所以可能会点还没成功，就初始化了编辑器导致页面无法渲染数据，故使用setTimeout保证数据加载完成在初始化编辑器
+        setTimeout(function () {
+            var markdownContent = editormd('article', {
+                htmlDecode : true, // Decode all html tag & attributes
+                width: '100%',
+                height: 540,
+                syncScrolling: "single",
+                path: '../../../lib/editormd/lib/',
+                saveHTMLToTextarea: true,
+                emoji: true,
+                watch: false,
+                codeFold: true,
+                toolbarIcons: function () {
+                    return ["undo", "redo", "bold", "del", "italic", "quote", "ucwords", "uppercase", "lowercase", "|", "h1", "h2", "h3", "|", "list-ul", "list-ol", "|", "link", "reference-link", "image", "code", "preformatted-text", "table", "datetime", "emoji", "html-entities", "goto-line", "|", "preview", "fullscreen", "", "||", "watch"];
+                },
+            })
+        },1800);
     })
 </script>
 </html>
