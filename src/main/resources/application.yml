@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8084
 
 spring:
   datasource:
@@ -9,10 +9,10 @@ spring:
     druid:
       #监控统计拦截的filters
       filter: stat
-      #mysql驱动 driver-class-name: com.mysql.jdbc.Driver
+      #mysql驱动
       driver-class-name: com.mysql.cj.jdbc.Driver
       #基本属性
-      url: jdbc:mysql://106.13.130.70:3306/myblog?useUnicode=true&characterEncoding=UTF-8
+      url: jdbc:mysql://127.0.0.1:3306/tumo?useUnicode=true&characterEncoding=UTF-8
       username: root
       password: root
       #配置初始化大小/最小/最大
@@ -60,7 +60,7 @@ pagehelper:
 # 打印sql
 logging:
   level:
-    cn.tycoding.admin.mapper: INFO
+    cn.tycoding.admin.mapper: DEBUG
 
 # 七牛云
 qiniu:
