@@ -6,7 +6,7 @@
     <groupId>cn.tycoding</groupId>
     <artifactId>tumo</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
 
     <name>tumo</name>
     <description>tumo</description>
@@ -15,7 +15,7 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.1.3.RELEASE</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <relativePath/>
     </parent>
 
     <properties>
@@ -154,13 +154,6 @@
             <groupId>eu.bitwalker</groupId>
             <artifactId>UserAgentUtils</artifactId>
             <version>1.21</version>
-        </dependency>
-
-        <!-- tomcat，设置provided，在打包的时候不会包含这个jar -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-tomcat</artifactId>
-            <!--<scope>provided</scope>-->
         </dependency>
 
         <dependency>

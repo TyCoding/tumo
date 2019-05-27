@@ -6,7 +6,7 @@
 
 <div th:replace="site/common/header"></div>
 
-<div class="main-content archive-page clearfix">
+<div class="main-content archive-page clearfix" style="min-height: 600px;">
     <p style="padding-left: 15px;color: #313131">嗯..! 目前共计 [[${list.size()}]] 篇日志。 继续努力~</p>
     <div class="categorys-item" th:each="item : ${list}">
         <div class="categorys-title" th:text="${item.date}"></div>
