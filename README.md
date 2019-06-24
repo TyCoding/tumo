@@ -11,6 +11,8 @@ Tumo Blog的后台管理页面基于ElementUI绘制，后台管理通过ajax异�
 
 演示站点: [http://tumo.tycoding.cn](http://tumo.tycoding.cn)
 
+后台入口：[http://tumo.tycoding.cn/login](http://tumo.tycoding.cn/login)
+
 [![License](https://img.shields.io/badge/SpringBoot-v2.0.5.RELEASE-green.svg)](https://github.com/TyCoding/tumo)
 [![License](https://img.shields.io/badge/Vue.js-v2.x-blue.svg)](https://github.com/TyCoding/tumo)
 [![License](https://img.shields.io/badge/Mysql-v5.7.22-blue.svg)](https://github.com/TyCoding/tumo)

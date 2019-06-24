@@ -10,8 +10,8 @@ new Vue({
         return {
             checked: false,
             login: {
-                username: '',
-                password: '',
+                username: 'tycoding',
+                password: '123456',
                 remember: ''
             },
             flag: true,
