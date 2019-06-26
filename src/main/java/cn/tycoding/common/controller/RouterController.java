@@ -133,7 +133,7 @@ public class RouterController {
     @GetMapping(value = "/qiniu")
     public String qiniu(Model model) {
         init(model);
-        return "/admin/page/qiniu";
+        return "admin/page/qiniu";
     }
 
     /**
@@ -145,7 +145,7 @@ public class RouterController {
     @GetMapping(value = "/loginlog")
     public String loginlog(Model model) {
         init(model);
-        return "/admin/page/loginlog";
+        return "admin/page/loginlog";
     }
 
     /**
@@ -157,6 +157,6 @@ public class RouterController {
     @GetMapping(value = "/log")
     public String log(Model model) {
         init(model);
-        return "/admin/page/log";
+        return "admin/page/log";
     }
 }
