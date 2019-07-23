@@ -22,6 +22,17 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
+        <mybatis.version>1.3.2</mybatis.version>
+        <tk-mybatis.version>1.1.7</tk-mybatis.version>
+        <shiro-spring-version>1.3.2</shiro-spring-version>
+        <shiro-ehcache.version>1.4.0</shiro-ehcache.version>
+        <spring-aspects.version>5.0.7.RELEASE</spring-aspects.version>
+        <druid.version>1.1.9</druid.version>
+        <pagehelper.version>1.2.5</pagehelper.version>
+        <fastjson.version>1.2.46</fastjson.version>
+        <commons-lang3.version>3.8.1</commons-lang3.version>
+        <commons-fileupload.version>1.3.3</commons-fileupload.version>
+        <qiniu-sdk.version>1.7.2</qiniu-sdk.version>
     </properties>
 
     <dependencies>
@@ -62,26 +73,26 @@
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>
             <artifactId>mybatis-spring-boot-starter</artifactId>
-            <version>1.3.2</version>
+            <version>${mybatis.version}</version>
         </dependency>
 
         <!-- 通用 mapper -->
         <dependency>
             <groupId>tk.mybatis</groupId>
             <artifactId>mapper-spring-boot-starter</artifactId>
-            <version>1.1.7</version>
+            <version>${tk-mybatis.version}</version>
         </dependency>
 
         <!-- Shiro -->
         <dependency>
             <groupId>org.apache.shiro</groupId>
             <artifactId>shiro-spring</artifactId>
-            <version>1.3.2</version>
+            <version>${shiro-spring-version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.shiro</groupId>
             <artifactId>shiro-ehcache</artifactId>
-            <version>1.4.0</version>
+            <version>${shiro-ehcache.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.apache.shiro</groupId>
@@ -94,7 +105,7 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-aspects</artifactId>
-            <version>5.0.7.RELEASE</version>
+            <version>${spring-aspects.version}</version>
         </dependency>
 
         <!-- MySql -->
@@ -108,33 +119,33 @@
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>druid-spring-boot-starter</artifactId>
-            <version>1.1.9</version>
+            <version>${druid.version}</version>
         </dependency>
 
         <!-- 分页插件 -->
         <dependency>
             <groupId>com.github.pagehelper</groupId>
             <artifactId>pagehelper-spring-boot-starter</artifactId>
-            <version>1.2.5</version>
+            <version>${pagehelper.version}</version>
         </dependency>
 
         <!-- FastJSON -->
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
-            <version>1.2.46</version>
+            <version>${fastjson.version}</version>
         </dependency>
 
         <!-- commons -->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-            <version>3.8.1</version>
+            <version>${commons-lang3.version}</version>
         </dependency>
         <dependency>
             <groupId>commons-fileupload</groupId>
             <artifactId>commons-fileupload</artifactId>
-            <version>1.3.3</version>
+            <version>${commons-fileupload.version}</version>
         </dependency>
 
         <!-- 七牛云 -->
@@ -148,7 +159,7 @@
         <dependency>
             <groupId>org.lionsoul</groupId>
             <artifactId>ip2region</artifactId>
-            <version>1.7.2</version>
+            <version>${qiniu-sdk.version}</version>
         </dependency>
         <dependency>
             <groupId>eu.bitwalker</groupId>
@@ -170,7 +181,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <fork>true</fork>
+                    <mainClass>cn.tycoding.TumoBlogApplication</mainClass>
                 </configuration>
             </plugin>
         </plugins>
