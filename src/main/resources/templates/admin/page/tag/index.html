@@ -1,0 +1,132 @@
+<div class="layui-fluid" lay-title="标签管理">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md24">
+            <div class="layui-card">
+                <div class="layui-card-header" style="padding: 8px 0 8px 17px;height: auto">
+                    <div class="layui-row layui-col-space6">
+                        <div class="layui-col-md12">
+                            <div class="layui-row">
+                                <div class="layui-col-md2">
+                                    <label>名称：</label>
+                                    <input type="text" name="name" autocomplete="off" class="layui-input" style="display: inline-block;width: 75%">
+                                </div>
+                                <div class="layui-col-md1">
+                                    <div data-type="search" class="layui-btn search-btn layui-btn-sm layui-btn-success" style="width: 50%">筛选</div>
+                                    <button data-type="add" class="layui-btn add-btn layui-btn-sm layui-btn-normal" style="width: 50%">添加</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-card-body">
+                    <table class="layui-hide" id="tag-table" lay-filter="tag-table"></table>
+
+                    <script type="text/html" id="tag-table-operate">
+                        <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+                        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+                    </script>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script data-th-inline="none" type="text/javascript">
+    layui.use(['admin', 'element', 'helper', 'table', 'util'],
+        function(admin, element, helper, table) {
+            element.render('progress')
+            table.render({
+                elem: '[lay-filter="tag-table"]',
+                api: 'tagList',
+                where: {},
+                cellMinWidth: 80,
+                cols: [[{
+                    field:'id', width:80, title: 'ID', sort: true, fixed: 'left'},
+                    {field:'name', title: '名称'},
+                    {align:'center', fixed: 'right', toolbar: '#tag-table-operate'}
+                ]],
+                page: true
+            });
+
+            //监听工具条
+            table.on('tool(tag-table)', function(obj){
+                var data = obj.data;
+                if(obj.event === 'del'){
+                    layer.confirm('确定删除此标签？', function(index){
+                        admin.delete(api.tag.base + data.id, {}, (res) => {
+                            layer.msg(res.msg)
+                            table.reload('tag-table', {
+                                page: {curr: 1}
+                            })
+                        })
+                        layer.close(index);
+                    });
+                } else if(obj.event === 'edit'){
+                    layer.open({
+                        type: 2,
+                        title: '编辑标签',
+                        content: page.tag.edit,
+                        area: ['400px', '200px'],
+                        btn: ['确定', '取消'],
+                        success: function(layero, index) {
+                            var app = layero.find('iframe').contents().find('#layer')
+                            app.find('input[name="name"]').val(data.name)
+                        },
+                        yes: function(index, layero){
+                            var app = layero.find('iframe').contents().find("#layer")
+                            var name = app.find('input[name="name"]').val();
+                            if(!name.replace(/\s/g, '')) return;
+                            admin.put(api.tag.base, JSON.stringify({id: data.id, name: name}), (res) => {
+                                layer.msg(res.msg)
+                                table.reload('tag-table', {
+                                    page: {curr: 1}
+                                })
+                            })
+                            layer.close(index);
+                        }
+                    });
+                }
+            });
+
+            var $ = layui.$, active = {
+                add: function(){
+                    layer.open({
+                        type: 2,
+                        title: '添加标签',
+                        content: page.tag.edit,
+                        area: ['400px', '200px'],
+                        btn: ['确定', '取消'],
+                        yes: function(index, layero){
+                            var app = layero.find('iframe').contents().find("#layer")
+                            var name = app.find('input[name="name"]').val();
+                            if(!name.replace(/\s/g, '')) return;
+                            admin.post(api.tag.base, JSON.stringify({name: name}), (res) => {
+                                layer.msg(res.msg)
+                                table.reload('tag-table', {
+                                    page: {curr: 1}
+                                })
+                            })
+                            layer.close(index);
+                        }
+                    });
+                },
+                search: function(){
+                    let data = {
+                        name: $('input[name="name"]').val(),
+                    }
+                    table.reload('tag-table', {
+                        where: data,
+                        page: {curr: 1}
+                    })
+                }
+            }
+            $('.layui-btn.add-btn').on('click', function(){
+                var type = $(this).data('type');
+                active[type] ? active[type].call(this) : '';
+            });
+            $('.layui-btn.search-btn').on('click', function(){
+                var type = $(this).data('type');
+                active[type] ? active[type].call(this) : '';
+            });
+    });
+</script>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.tycoding.system.mapper.ArticleMapper">
+
+    <select id="findArchivesDates" resultType="String">
+        SELECT DISTINCT
+            DATE_FORMAT( publish_time, '%Y-%m' )
+        FROM
+            tb_article
+        ORDER BY
+            DATE_FORMAT( publish_time, '%Y-%m' ) DESC
+    </select>
+
+    <select id="findArchivesByDate" resultType="SysArticle">
+        SELECT
+            id,
+            title,
+            publish_time
+        FROM
+            tb_article
+        WHERE
+            publish_time LIKE CONCAT ('%', #{date}, '%')
+    </select>
+
+</mapper>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.tycoding.system.mapper.ArticleTagMapper">
+
+    <!-- 根据文章ID查询其关联的标签信息 -->
+    <select id="findByArticleId" resultType="SysTag">
+        SELECT t.name
+        FROM tb_article_tag at,
+             tb_tag t
+        WHERE at.article_id = #{articleId}
+          AND t.id = at.tag_id;
+    </select>
+
+    <!-- 根据标签名称查询关联的文章数据 -->
+    <select id="findByTagName" resultType="SysArticle">
+        SELECT a.id, a.sysCategory, a.publish_time, a.title, a.views
+        FROM tb_article a,
+             tb_category c,
+             tb_article_category ac
+        WHERE c.name = #{name}
+          AND c.id = ac.category_id
+          AND a.id = ac.article_id;
+    </select>
+
+</mapper>

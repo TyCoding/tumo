@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.tycoding.system.mapper.CommentMapper">
+
+    <!-- 查询最新的8条评论，为博客前台服务 -->
+    <select id="findAll" resultType="SysComment">
+        SELECT DISTINCT
+            c.content,
+            c.name,
+            c.article_id
+        FROM
+            tb_article a,
+            tb_comment c
+        WHERE
+            c.article_id IN ( SELECT id FROM tb_article )
+            AND a.state = #{state}
+            LIMIT #{queryPage.page}, #{queryPage.limit}
+    </select>
+
+</mapper>

@@ -1,34 +1,59 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="site/common/head"></head>
-<title>TyCoding&#39;s blog</title>
-<body class="bg-grey" gtools_scp_screen_capture_injected="true">
+<head>
+    <meta charset="UTF-8">
+    <title>Archives - Tumo</title>
+    <link rel="shortcut icon" th:href="@{/site/images/favicon.png}">
+    <link rel="stylesheet" data-th-href="@{/site/css/style.min.css}"/>
+</head>
+<body class="bg-grey">
+<header id="header" class="header bg-white">
+    <div class="navbar-container">
+        <a href="/" class="navbar-logo">
+            <img th:src="@{/site/images/logo.png}" alt="Tumo">
+        </a>
+        <div class="navbar-menu">
+            <a class="current" href="/archives">Archives</a>
+            <a href="/links">Links</a>
+            <a href="/about">About</a>
+        </div>
+        <a href="/" class="navbar-search"> <span class="icon-search"></span> </a>
+        <div class="navbar-mobile-menu" onclick="">
+            <span class="icon-menu cross"><span class="middle"></span></span>
+            <ul>
+                <li><a class="current" href="/archives">Archives</a></li>
+                <li><a href="/links">Links</a></li>
+                <li><a href="/about">About</a></li>
+            </ul>
+        </div>
+    </div>
+</header>
 
-<div th:replace="site/common/header"></div>
-
-<div class="main-content archive-page clearfix" style="min-height: 600px;">
-    <p style="padding-left: 15px;color: #313131">嗯..! 目前共计 [[${list.size()}]] 篇日志。 继续努力~</p>
-    <div class="categorys-item" th:each="item : ${list}">
-        <div class="categorys-title" th:text="${item.date}"></div>
-        <div class="post-lists">
-            <div class="post-lists-body">
-                <div class="post-list-item" th:each="entity : ${item.articles}">
-                    <div class="post-list-item-container">
-                        <div class="item-label">
-                            <div class="item-title">
-                                <a th:href="'/article/' + ${entity.id}" th:text="${entity.title}"></a>
-                            </div>
-                            <div class="item-meta clearfix">
-                                <div class="item-meta-date">[[${#dates.format(entity.publishTime, 'yyyy-MM-dd')}]]</div>
+<div class="main-content archive-page clearfix">
+    <div class="categorys-item">
+        <span th:each="c : ${list}">
+            <div class="categorys-title">[[${c.date}]]</div>
+            <div class="post-lists">
+                <div class="post-lists-body">
+                    <div class="post-list-item" th:each="a : ${c.articles}">
+                        <div class="post-list-item-container">
+                            <div class="item-label">
+                                <div class="item-title">
+                                    <a th:href="'/article/' + ${a.id}" th:text="${a.title}"></a>
+                                </div>
+                                <div class="item-meta clearfix">
+                                    <div class="item-meta-date">[[${a.publishTime}]]</div>
+                                </div>
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
-        </div>
+        </span>
     </div>
 </div>
 
-<div th:replace="site/common/footer"></div>
+<div th:replace="site/layout/footer"></div>
 </body>
 </html>

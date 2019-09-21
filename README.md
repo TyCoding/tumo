@@ -2,19 +2,19 @@
 
 ![](http://cdn.tycoding.cn/tumo.png)
 
-> 更漂亮的博客系统，更丰富的功能，更愉快的体验！
+Tumo Blog 是一个非常漂亮的博客系统，基于SpringBoot2.1.3 + LayUI。
 
-Tumo Blog是一个基于SpringBoot2开发的博客系统。博客前台UI移植自[@pinghsu](https://github.com/chakhsu/pinghsu)主题，因为原主题是基于PHP的，所以我不能直接使用它，但是非常感谢[@pinghsu](https://github.com/chakhsu/pinghsu)的作者。
-Tumo Blog的后台管理页面基于ElementUI绘制，后台管理通过ajax异步交互，相当于前后端半分离吧。如果你觉得它不错，欢迎 star fork。
+苦于技术太菜，之前的版本中，采用SpringBoot + Vue留下了许多坑，非常抱歉；
 
-注意：本博客系统仍在不断的维护开发中，欢迎提出合理的建议。当前系统适合正在学习SSM&&SpringBoot框架的同学。陆续，我会发布基于Vue、Angular（node.js）的前后端完全分离的版本，如果你喜欢，请持续关注了(#^.^#)。
+花了几天时间对项目重构，前端采用全新的LayUI，相对于Vue，LayUI更适合前后端不分离的项目。
+
+
 
 演示站点: [http://tumo.tycoding.cn](http://tumo.tycoding.cn)
 
 后台入口：[http://tumo.tycoding.cn/login](http://tumo.tycoding.cn/login)
 
-[![License](https://img.shields.io/badge/SpringBoot-v2.0.5.RELEASE-green.svg)](https://github.com/TyCoding/tumo)
-[![License](https://img.shields.io/badge/Vue.js-v2.x-blue.svg)](https://github.com/TyCoding/tumo)
+[![License](https://img.shields.io/badge/SpringBoot-v2.1.3.RELEASE-green.svg)](https://github.com/TyCoding/tumo)
 [![License](https://img.shields.io/badge/Mysql-v5.7.22-blue.svg)](https://github.com/TyCoding/tumo)
 
 [快速开始](https://github.com/TyCoding/tumo/wiki/%E5%A6%82%E4%BD%95%E9%83%A8%E7%BD%B2Tumo-Blog)
@@ -27,13 +27,17 @@ Tumo Blog的后台管理页面基于ElementUI绘制，后台管理通过ajax异�
 
 如果大家喜欢、或是对大家的学习有所帮助，请点击右上角star、fork 给作者一些鼓励。
 
-### 链接
-
-项目地址：[TyCoding/tumo-vue](https://github.com/TyCoding/tumo-vue)
-预览站点：[tumo-vue.tycoding.cn](http://tumo-vue.tycoding.cn/)
-后台地址：[tumo-vue.tycoding.cn/login](http://tumo-vue.tycoding.cn/login)
-
 ## 技术选型
+
+### 写在前面
+
+请按照以下流程运行项目：
+
+1. 检查自己本地的开发环境是否与我的一致
+2. 创建本地Mysql数据库：`tumo`，并导入项目目录下 `/db/db.sql`
+3. 保证Maven已经完全加载了项目所需的依赖
+4. 运行项目下的：`/src/main/java/cn/tycoding/TumoApplication.java`
+5. 默认用户名和密码：`username: tycoding;   passsword: 123456`
 
 ### 后端
 
@@ -45,13 +49,9 @@ Tumo Blog的后台管理页面基于ElementUI绘制，后台管理通过ajax异�
 
 * 模板引擎：Thymeleaf 3.0.11.RELEASE
 
-* 其他：Druid、PageHelper、AOP、
-
 ### 前端
 
-* 基础框架：ElementUI
-
-* JavaScript框架：Vue.js
+* 基础框架：LayUI
 
 ### 开发环境
 
@@ -63,64 +63,12 @@ Tumo Blog的后台管理页面基于ElementUI绘制，后台管理通过ajax异�
 
 * 数据库： Mysql 5.7.24
 
-## 写在前面
+## 联系我
 
-如上，前端完全依赖Vue.js，这和传统依赖Jquery的前端区别还是蛮大的，使用Vue即要用基于Node.js的前后端分离的开发模式，而本项目中仅仅是在HTML中引入了vue.js，虽然不是完全的前后端分离开发，但项目中我尽量使用Vue.js渲染数据，涉及后端的也仅是用到Thymeleaf的`th:replace`拼接页面。看下图：
+- [Blog@TyCoding's blog](http://www.tycoding.cn)
 
-![](https://tycoding.cn/2019/02/26/spring-boot-thymeleaf-mybatis/3.png)
+- [GitHub@TyCoding](https://github.com/TyCoding)
 
+- [ZhiHu@TyCoding](https://www.zhihu.com/people/tomo-83-82/activities)
 
-# 特点
-
-* 简约的设计，漂亮的界面。
-* 博客前台、管理后台响应式设计。
-* 支持Markdown格式文章的撰写。
-* 支持文件上传。
-* 支持网易云音乐定制。
-* 项目后端管理页面基于Vue.js和ElementUI设计，避免繁琐的DOM操作。
-* 登录日志记录，IP、地理位置等。
-* 个性化社交设置。
-* 更多功能正在开发中...
-
-# 快速开始
-
-Tumo Blog是一个基于SpringBoot-2.x框架的博客系统。如果你已经熟悉SSM框架，部署这个项目将是非常简单的。更多的信息，请看：
-
-- [x]  [1.如何部署Tumo Blog](https://github.com/TyCoding/tumo/wiki/%E5%A6%82%E4%BD%95%E9%83%A8%E7%BD%B2Tumo-Blog)
-
-# 预览
-
-**演示站点:** [tumo.tycoding.cn](http://tumo.tycoding.cn)
-
-**Github:** [tumo](https://github.com/TyCoding/tumo)
-
-**Blog:** [tycoding.cn](http://tycoding.cn)
-
-初始账户：tycoding  密码：123456
-
-
-## 预览图
-
-![](doc/20190327081959.png)
-
-![](doc/20190327082016.png)
-
-![](doc/20190327082038.png)
-
-![](doc/20190327082146.png)
-
-![](doc/20190327082215.png)
-
-![](doc/20190327082245.png)
-
-![](doc/20190327082309.png)
-
-**响应式：**
-
-![](http://cdn.tycoding.cn/tumo-login-phone.png)
-
-![](http://cdn.tycoding.cn/tumo-admin-phone2.png)
-
-![](http://cdn.tycoding.cn/tumo-cover-phone.png)
-
-更多预览请部署后查看
+- QQ Group: 671017003

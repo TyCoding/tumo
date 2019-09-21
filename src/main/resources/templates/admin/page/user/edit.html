@@ -1,0 +1,67 @@
+<style>
+    #user-update {
+        padding: 20px 25px 25px 0;
+    }
+
+    #user-update .layui-treeSelect .ztree li a, .ztree li span {
+        margin: 0 0 2px 3px !important;
+    }
+
+    .hide{
+        display: none;
+    }
+</style>
+<div class="layui-fluid" id="user-update">
+    <script type="text/html" template>
+        <form class="layui-form" action="" lay-filter="user-update-form">
+            <div class="layui-form-item">
+                <label class="layui-form-label febs-form-item-require">用户名：</label>
+                <div class="layui-input-block">
+                    <input type="text" name="username" value="{{ layui.admin.data()['user'].username  }}" minlength="4" maxlength="10" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">密码：</label>
+                <div class="layui-input-block">
+                    <input type="password" name="password" minlength="6" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">介绍：</label>
+                <div class="layui-input-block">
+                    <input type="text" name="introduce" value="{{ layui.admin.data()['user'].introduce  }}" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">备注：</label>
+                <div class="layui-input-block">
+                    <input name="remark" value="{{ layui.admin.data()['user'].remark  }}" maxlength="100" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item hide">
+                <button class="layui-btn" lay-submit="" lay-filter="user-update-form-submit" id="submit"></button>
+            </div>
+        </form>
+    </script>
+</div>
+
+<script data-th-inline="javascript">
+    layui.use(['admin', 'form'], function (admin, form) {
+
+        form.on('submit(user-update-form-submit)', function (data) {
+            if (data.field.password == "") {
+                data.field.password = null
+            }
+            if (data.field.username == "") {
+                layer.msg('请填写用户名')
+                return false;
+            }
+            console.log(data.field)
+            admin.put(api.user.base, JSON.stringify(data.field), (res) => {
+                layer.closeAll()
+                admin.logout()
+            })
+            return false;
+        });
+    });
+</script>

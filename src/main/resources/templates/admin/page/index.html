@@ -1,0 +1,328 @@
+<style>
+    #VIEW-index .welcome-info {
+        border: 1px solid #f1f1f1;
+        margin-bottom: .5rem;
+        padding: .5rem;
+    }
+
+    #VIEW-index .welcome-info-wrapper {
+        padding: .2rem;
+        display: inline-block
+    }
+
+    #VIEW-index .welcome-info-wrapper .user-header {
+        display: inline-block;
+        vertical-align: middle
+    }
+
+    #VIEW-index .welcome-info-wrapper .user-header img {
+        width: 5rem;
+        margin: .5rem 1rem;
+        border-radius: 50%
+    }
+
+    #VIEW-index .welcome-info-wrapper .user-info {
+        display: inline-block;
+        vertical-align: middle
+    }
+
+    #VIEW-index .welcome-info-wrapper .user-info .random-message {
+        font-size: 1rem;
+        margin-bottom: .2rem;
+        max-width: 21rem
+    }
+
+    #VIEW-index .welcome-info-wrapper .user-info, #VIEW-index .welcome-info-wrapper .user-info .user-login-info {
+        color: rgba(0, 0, 0, 0.45);
+    }
+
+    #VIEW-index .login-count-table {
+        width: 100%;
+        margin: 1rem;
+    }
+
+    #VIEW-index .login-count-table .count {
+        padding-top: .8rem;
+        font-size: 1rem;
+        font-weight: 600;
+        color: #1890ff
+    }
+
+    #VIEW-index .project-table {
+        padding: .5rem;
+        border: 1px solid #f1f1f1;
+        width: 100%
+    }
+
+    #VIEW-index .project-table-td {
+        padding: .5rem 0.7rem;
+        border: 1px solid #f1f1f1;
+    }
+
+    #VIEW-index .project-table-td a {
+        color: #42b983;
+        font-size: .9rem;
+        font-weight: 600;
+    }
+
+    #VIEW-index .project-desc {
+        color: rgba(0, 0, 0, 0.45);
+    }
+</style>
+<div class="layui-fluid" id="VIEW-index" lay-title="首页">
+    <div class="layui-col-md12 layui-col-sm12 layui-col-xs12">
+        <div class="layui-card">
+            <div class="layui-card-body layui-anim layui-anim-fadein">
+                <div class="layui-row welcome-info">
+                    <div class="layui-col-md6 layui-col-sm12 layui-col-xs12">
+                        <div class="layui-row welcome-info-wrapper">
+                            <div class="user-header">
+                                <img alt="头像" id="user-avatar" src="">
+                            </div>
+                            <div class="user-info">
+                                <div class="layui-row">
+                                    <div class="random-message">
+                                        <span id="welcome-message"></span>
+                                    </div>
+                                    <div class="user-login-info">
+                                        上次登录时间：<span id="last-login-time">2019-05-23 18:45:12</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-col-md6 layui-col-sm12 layui-col-xs12">
+                        <div class="layui-col-md-offset5">
+                            <table class="login-count-table">
+                                <tr>
+                                    <td>今日IP</td>
+                                    <td>总文章量</td>
+                                    <td>总评论量</td>
+                                </tr>
+                                <tr>
+                                    <td class="count" id="today-ip">
+                                        0
+                                    </td>
+                                    <td class="count" id="article-count">
+                                        0
+                                    </td>
+                                    <td class="count" id="comment-count">
+                                        0
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-lg6">
+            <div class="layui-row layui-col-space15">
+                <div class="layui-col-xs12">
+                    <div class="layui-row layui-col-space15">
+                        <div class="layui-col-xs12">
+                            <div class="layui-card" style="height: 508px;">
+                                <div class="layui-tab layui-tab-brief" lay-filter="index-order">
+                                    <ul class="layui-tab-title">
+                                        <li class="layui-this">最新文章</li>
+                                        <li>最新评论</li>
+                                    </ul>
+                                    <div class="layui-tab-content" style="padding:0;">
+                                        <div class="layui-tab-item layui-show nepadmin-table-full">
+                                            <table lay-filter="article-table"></table>
+                                        </div>
+                                        <div class="layui-tab-item">
+                                            <table lay-filter="comment-table"></table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-lg6">
+            <div class="layui-card">
+                <div class="layui-card-body">
+                    <table class="project-table">
+                        <tr>
+                            <td style="padding: .8rem;">进行中的项目</td>
+                            <td style="padding: .8rem;text-align: right">
+                                <a target="_blank" href="https://github.com/TyCoding?tab=repositories">所有项目</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="project-table-td">
+                                <div class="layui-row">
+                                    <div class="layui-col-md12 layui-col-xs12">
+                                        <div class="layui-row">
+                                            <div class="layui-col-md12">
+                                                <a target="_blank" href="https://github.com/TyCoding/tumo">Tumo</a>
+                                            </div>
+                                            <div class="project-desc">
+                                                Spring Boot 2.1.3 & Shiro 博客系统。
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="project-table-td">
+                                <div class="layui-row">
+                                    <div class="layui-col-md12 layui-col-xs12">
+                                        <div class="layui-row">
+                                            <div class="layui-col-md12">
+                                                <a target="_blank" href="https://github.com/TyCoding/permission">Permission</a>
+                                            </div>
+                                            <div class="project-desc">
+                                                Spring Boot & Shiro 权限管理系统。
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="project-table-td">
+                                <div class="layui-row">
+                                    <div class="layui-col-md12 layui-col-xs12">
+                                        <div class="layui-row">
+                                            <div class="layui-col-md12">
+                                                <a target="_blank" href="https://github.com/TyCoding/cloud-template">Cloud Template</a>
+                                            </div>
+                                            <div class="project-desc">
+                                                SpringCloud Greenwich.SR1 & Spring Boot & Vue 微服务架构模板。
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="project-table-td">
+                                <div class="layui-row">
+                                    <div class="layui-col-md12 layui-col-xs12">
+                                        <div class="layui-row">
+                                            <div class="layui-col-md12">
+                                                <a target="_blank" href="https://github.com/TyCoding/scst">Spring Cloud Security Template</a>
+                                            </div>
+                                            <div class="project-desc">
+                                                SpringCloud Greenwich.SR1 & Spring Security & Vue 微服务权限管理系统。
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="layui-card">
+                <div class="layui-card-header">版本信息</div>
+                <div class="layui-card-body">
+                    <table class="layui-table">
+                        <colgroup>
+                            <col width="100" />
+                            <col />
+                        </colgroup>
+                        <tbody>
+                            <tr>
+                                <td>当前版本</td>
+                                <td>v2.0</td>
+                            </tr>
+                            <tr>
+                                <td>基于框架</td>
+                                <td>
+                                    SpringBoot2.1.3 / Shiro / LayUI
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>博客源码</td>
+                                <td>
+                                    <a href="https://github.com/TyCoding/tumo" target="_blank">https://github.com/TyCoding/tumo</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>联系我</td>
+                                <td>
+                                    Blog：<a href="http://tycoding.cn" target="_blank">http://tycoding.cn</a>
+                                    <br/>
+                                    Github：<a href="https://github.com/TyCoding/" target="_blank">https://github.com/TyCoding/</a>
+                                    <br/>
+                                    QQ Group: 671017003
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script data-th-inline="javascript" type="text/javascript">
+    layui.use(['admin', 'echarts', 'element', 'helper', 'table', 'util'],
+        function(admin, echarts, element, helper, table) {
+            var $ = layui.jquery
+            var $view = $('#VIEW-index')
+            element.render('progress')
+
+            table.render({
+                elem: '[lay-filter="article-table"]',
+                where: {},
+                api: 'articleList',
+                height: 456,
+                cols: [
+                    [
+                        { field: 'title', title: '文章标题', minWidth: 300 },
+                        { field: 'createTime', title: '发表时间', minWidth: 100 }
+                    ]
+                ],
+                page: false
+            })
+
+            table.render({
+                elem: '[lay-filter="comment-table"]',
+                where: {},
+                api: 'commentList',
+                height: 456,
+                cols: [
+                    [
+                        { field: 'content', title: '评论内容', minWidth: 300 },
+                        { field: 'name', title: '评论人', minWidth: 100 },
+                        { field: 'time', title: '评论时间', minWidth: 100 }
+                    ]
+                ],
+                page: false
+            })
+
+            admin.get(api.currentUserInfo, {}, (res) => {
+                handleSuccess(res.data)
+                admin.login(res.data.token,{ user:res.data.user });
+            })
+
+            function handleSuccess(data) {
+                var hour = new Date().getHours();
+                var time = hour < 6 ? '早上好' : (hour <= 11 ? '上午好' : (hour <= 13 ? '中午好' : (hour <= 18 ? '下午好' : '晚上好')));
+                var welcomeArr = [
+                    '喝杯咖啡休息下吧☕',
+                    '要不要和朋友打局LOL',
+                    '今天又写了几个Bug呢',
+                    '今天在群里吹水了吗',
+                    '今天吃了什么好吃的呢',
+                    '今天您微笑了吗😊',
+                    '今天帮助别人了吗',
+                    '准备吃些什么呢',
+                    '周末要不要去看电影？'
+                ];
+                var index = Math.floor((Math.random() * welcomeArr.length));
+                var welcomeMessage = time + '，<a id="febs-index-user">' + data.user.username + '</a>，' + welcomeArr[index];
+                $view.find('#today-ip').text(data.todayIp).end()
+                    .find('#article-count').text(data.articleCount).end()
+                    .find('#comment-count').text(data.commentCount).end()
+                    .find('#last-login-time').text(data.lastLoginTime ? data.lastLoginTime : '第一次访问系统').end()
+                    .find('#welcome-message').html(welcomeMessage).end()
+                    .find('#user-avatar').attr('src', data.user.avatar);
+            }
+        }
+    )
+</script>

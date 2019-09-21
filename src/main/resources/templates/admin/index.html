@@ -1,128 +1,27 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="admin/common/head"></head>
-<link rel="stylesheet" th:href="@{/admin/css/index.css}">
-<title>后台首页</title>
+<head>
+    <meta charset="utf-8">
+    <title>Tumo</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" data-th-href="@{/admin/layui/css/layui.css}" media="all">
+    <link rel="stylesheet" data-th-href="@{/admin/page/css/admin.css}" media="all">
+    <link rel="icon" data-th-href="@{/site/images/favicon.png}" type="image/x-icon" />
+</head>
 <body>
-<!-- vue入口 -->
-<div id="app">
-    <div :class="'app-wrapper' + sidebarFlag">
-
-        <!-- aside -->
-        <div th:replace="admin/common/side"></div>
-
-        <!-- container -->
-        <el-container class="main-container">
-            <!-- header -->
-            <div style="background-color: rgb(84, 92, 100);" th:replace="admin/common/header"></div>
-
-            <!-- main -->
-            <el-main class="app-main">
-                <!-- 卡片 -->
-                <blockquote>仪表盘</blockquote>
-                <div id="cards">
-                    <el-row :gutter="40">
-                        <el-col :xs="12" :sm="12" :lg="6" style="padding:20px 20px">
-                            <el-card role="1">
-                                <span>
-                                    <h1><i class="icon fa fa-pencil-square-o"></i></h1>
-                                </span>
-                                <span>
-                                    <span class="font">发表了</span>
-                                    <span class="num" v-text="article_count"></span>
-                                    <span class="font">篇文章</span>
-                                </span>
-                            </el-card>
-                        </el-col>
-                        <el-col :xs="12" :sm="12" :lg="6" style="padding:20px 20px">
-                            <el-card role="2">
-                                <span>
-                                    <h1><i class="icon fa fa-comment"></i></h1>
-                                </span>
-                                <span>
-                                    <span class="font">收到了</span>
-                                    <span class="num" v-text="comments_count"></span>
-                                    <span class="font">条评论</span>
-                                </span>
-                            </el-card>
-                        </el-col>
-                        <el-col :xs="12" :sm="12" :lg="6" style="padding:20px 20px">
-                            <el-card role="3">
-                                <span>
-                                    <h1><i class="icon fa fa-tag"></i></h1>
-                                </span>
-                                <span>
-                                    <span class="font">添加了</span>
-                                    <span class="num" v-text="tags_count"></span>
-                                    <span class="font">个标签</span>
-                                </span>
-                            </el-card>
-                        </el-col>
-                        <el-col :xs="12" :sm="12" :lg="6" style="padding:20px 20px">
-                            <el-card role="4">
-                                <span>
-                                    <h1><i class="icon fa fa-link"></i></h1>
-                                </span>
-                                <span>
-                                    <span class="font">友链了</span>
-                                    <span class="num" v-text="links_count"></span>
-                                    <span class="font">个好友</span>
-                                </span>
-                            </el-card>
-                        </el-col>
-                    </el-row>
-                </div>
-                <br/>
-                <blockquote>博客数据</blockquote>
-                <div class="lists">
-                    <el-row :gutter="100">
-                        <el-col :xs="24" :sm="8" :lg="8" style="padding:20px 60px">
-                            <h3>最新文章</h3>
-                            <div class="articles">
-                                <div v-for="item in article">
-                                    <a v-if="item.title != ''" :href="'/article/' + item.id" target="_blank"
-                                       v-text="item.title"></a>
-                                </div>
-                            </div>
-                        </el-col>
-                        <el-col :xs="24" :sm="8" :lg="8" style="padding:20px 60px">
-                            <h3>最新评论</h3>
-                            <div class="comments">
-                                <div v-for="item in comments">
-                                    <p><span v-text="item.name"></span>&nbsp;&nbsp;于&nbsp;<span
-                                            v-text="item.time"></span>&nbsp;:</p>
-                                    <a v-if="item.articleId != 0" :href="'/article/' + item.articleId"
-                                       target="_blank" v-text="item.content"></a>
-                                    <span v-else v-text="item.content"></span>
-                                </div>
-                            </div>
-                        </el-col>
-                        <el-col :xs="24" :sm="8" :lg="8" style="padding:20px 60px">
-                            <h3>博客信息</h3>
-                            <el-card>
-                                <b>作者：</b><a href="https://github.com/TyCoding/" target="_blank" style="color: #3222d4;">TyCoding</a>
-                                <br/>
-                                <b>简介：</b>Tumo Blog 一个轻量型博客系统。
-                                <br/>
-                                <b>项目地址：</b><a href="https://github.com/TyCoding/tumo/" target="_blank" style="color: #3222d4;">https://github.com/TyCoding/tumo</a>
-                                <br/>
-                                <br/>
-                                <b>开源作品</b>
-                                <br/>
-                                <span>权限管理系统：</span><a href="https://github.com/TyCoding/permission/" target="_blank" style="color: #3222d4;">https://github.com/TyCoding/permission/</a>
-                                <br/>
-                                <span>Spring Learn：</span><a href="https://github.com/TyCoding/spring-learn" target="_blank" style="color: #3222d4;">https://github.com/TyCoding/spring-learn</a>
-                                <br/>
-                            </el-card>
-                        </el-col>
-                    </el-row>
-                </div>
-            </el-main>
-        </el-container>
-    </div>
-</div>
-
+<div id="app"></div>
+<script data-th-src="@{/admin/js/api.js}"></script>
+<script data-th-src="@{/admin/layui/layui.js}"></script>
+<script data-th-inline="javascript" type="text/javascript">
+    layui.config({
+        //指定 admin 项目路径
+        base: './admin/page/',
+        version: Date.parse(new Date()),
+        debug: true
+    }).use('index');
+</script>
 </body>
-<div th:replace="admin/common/js"></div>
-<script type="text/javascript" th:src="@{/admin/js/index.js}"></script>
 </html>

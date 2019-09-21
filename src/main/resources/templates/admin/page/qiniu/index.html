@@ -1,0 +1,78 @@
+<div class="layui-fluid" lay-title="七牛云对象储存">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header" style="padding: 8px 0 8px 17px;height: auto">
+                    <div class="layui-row layui-col-space6">
+                        <div class="layui-col-md12">
+                            <div class="layui-row">
+                                <div class="layui-col-md1">
+                                    <button data-type="add" class="layui-btn add-btn layui-btn-sm layui-btn-normal" style="width: 50%">添加</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-card-body">
+                    <table class="layui-hide" id="qiniu-table" lay-filter="qiniu-table"></table>
+
+                    <script type="text/html" id="qiniu-table-operate">
+                        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+                    </script>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script data-th-inline="none" type="text/javascript">
+    layui.use(['admin', 'element', 'helper', 'table', 'util'],
+        function(admin, element, helper, table) {
+            element.render('progress')
+            table.render({
+                elem: '#qiniu-table',
+                api: 'qiniuList',
+                where: {},
+                cellMinWidth: 80,
+                cols: [[
+                    {field:'key', title: 'Key'},
+                    {field:'name', title: '名称'},
+                    {field:'type', title: '类型'},
+                    {field:'size', title: '大小'},
+                    {field:'url', title: '外链地址'},
+                    {align:'center', fixed: 'right', toolbar: '#qiniu-table-operate'}
+                ]],
+                page: false
+            });
+            //监听工具条
+            table.on('tool(qiniu-table)', function(obj){
+                var data = obj.data;
+                if(obj.event === 'del'){
+                    layer.confirm('确定删除此评论？', function(index){
+                        admin.delete(api.qiniu.base + data.id, {}, (res) => {
+                            layer.msg(res.msg)
+                            table.reload('qiniu-table', {
+                                page: {curr: 1}
+                            })
+                        })
+                        layer.close(index);
+                    });
+                }
+            });
+            var $ = layui.$, active = {
+                search: function(){
+                    let data = {
+                        name: $('input[name="name"]').val(),
+                        url: $('input[name="url"]').val()
+                    }
+                    table.reload('qiniu-table', {
+                        where: data,
+                        page: {curr: 1}
+                    })
+                }
+            }
+            $('.layui-btn.search-btn').on('click', function(){
+                var type = $(this).data('type');
+                active[type] ? active[type].call(this) : '';
+            });
+        });
+</script>

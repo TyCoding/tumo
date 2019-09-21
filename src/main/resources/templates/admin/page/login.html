@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Tumo</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" data-th-href="@{/admin/layui/css/layui.css}" media="all">
+    <link rel="stylesheet" data-th-href="@{/admin/page/css/admin.css}" media="all">
+    <link rel="icon" data-th-href="@{/site/images/favicon.png}" type="image/x-icon" />
+    <style>
+        #VIEW-login{
+            height: 100%;
+            background:#252834;
+            padding-top:1px;
+            margin-top:-1px;
+        }
+        #VIEW-login .layui-logo{
+            user-select: none;
+            overflow: hidden;
+            position: static;
+            font-size: 30px;
+            color:#d6e0f6;
+            width: 100%;
+            padding:0;
+            line-height: 120px;
+            height: 120px;
+            color:#3491ff;
+            font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;
+            transition: height .8s cubic-bezier(0.075, 0.82, 0.165, 1);
+        }
+        #VIEW-login .layui-logo span{
+            font-weight: normal;
+            color:#fff;
+            border-bottom: 1px solid #3491ff;
+        }
+        #VIEW-login .layui-logo span b{
+            color:#3491ff;
+        }
+
+
+        #VIEW-login .login-wrap{
+            position: relative;
+            top:50%;
+            margin-top:-290px;
+            height: 540px;
+        }
+
+        #VIEW-login .layui-form{
+            overflow: hidden;
+            background: #fff;
+            padding:40px;
+            padding-bottom:20px;
+            border-radius: 0px;
+            box-shadow: 0 0 30px #000;
+            position: relative;
+        }
+        #VIEW-login .layui-form-item{
+            position: relative;
+        }
+        #VIEW-login .layui-input{
+            text-indent:26px;
+        }
+        #VIEW-login .houseimg img{
+            display: inline-block;
+            margin-top:5%;
+        }
+
+        #VIEW-login .login-type-tab{
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        #VIEW-login .login-type-tab li{
+            display: inline-block;
+            padding-right: 20px;
+            font-size: 16px;
+            line-height: 30px;
+            color:#bbb;
+            cursor: pointer;
+            transition: color .5s ease;
+        }
+        #VIEW-login .login-type-tab li.active{
+            color:#333;
+        }
+        #VIEW-login .layui-form-item .label-icon{
+            position: absolute;
+            top:0;
+            left:0;
+            width: 38px;
+            line-height: 38px;
+            text-align: center;
+            color: #d2d2d2!important;
+        }
+
+    </style>
+</head>
+<body>
+<div id="VIEW-login" lay-title="登录">
+    <div class="login-wrap">
+        <div class="layui-container">
+            <div class="layui-row">
+                <div class="layui-col-xs12 layui-col-lg4 layui-col-lg-offset4 nepadmin-tc">
+                    <div class="layui-logo"><span><b>Tumo</b> Blog</span></div>
+                </div>
+                <div class="layui-col-xs12 layui-col-lg4 layui-col-lg-offset4">
+                    <div class="layui-form" lay-filter="login-form">
+                        <ul class="login-type-tab">
+                            <li login-type="password" class="active">密码登录</li>
+                        </ul>
+                        <div class="normal-login-form">
+                            <div class="layui-form-item">
+                                <label class="layui-icon label-icon layui-icon-username"></label>
+                                <input type="text" name="username" value="tycoding" lay-verType="tips" placeholder="用户名" maxlength="11" autocomplete="off" class="layui-input">
+                            </div>
+                            <div class="layui-form-item password-block">
+                                <label class="layui-icon label-icon layui-icon-password"></label>
+                                <input type="password" name="password" value="123456" lay-verify="password" lay-verType="tips" placeholder="密码" autocomplete="off" class="layui-input">
+                            </div>
+                            <!--<div class="layui-form-item">
+                                <input type="checkbox" name="remember" title="记住我" lay-skin="primary" checked>
+                            </div>-->
+                            <div class="layui-form-item">
+                                <button class="layui-btn layui-btn-normal layui-btn-fluid" lay-submit lay-filter="login-submit">
+                                    <i style="display: none" class="layui-icon layui-icon-loading layui-icon layui-anim layui-anim-rotate layui-anim-loop"></i>
+                                    立即登录
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script data-th-src="@{/admin/js/api.js}"></script>
+<script data-th-src="@{/admin/layui/layui.js}"></script>
+<script data-th-inline="javascript" type="text/javascript">
+    layui.extend().use(['form'],function(form){
+        var $ = layui.jquery;
+        form.render();
+
+        //提交登录表单
+        form.on('submit(login-submit)',function(data){
+            var loading = $(this).find('.layui-icon');
+            if(loading.is(":visible")) return;
+            loading.show();
+            $.ajax({
+                url: api.login,
+                method: 'post',
+                data: data.field,
+                success: (res) => {
+                    window.location.href = page.index
+                }
+            })
+        })
+
+    })
+</script>
+</body>
+</html>

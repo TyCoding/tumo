@@ -1,0 +1,193 @@
+<style>
+    #upload{
+        height: 200px;
+        width: 200px;
+    }
+    #upload img{
+        position: absolute;
+        width: 200px;
+        height: 200px;
+    }
+    .layui-upload-list{
+        margin: 0 !important
+    }
+    .layui-upload-drag{
+        position: absolute;
+        padding: 71px;
+        border: none;
+    }
+</style>
+<link rel="stylesheet" data-th-href="@{/admin/lib/editormd/css/editormd.min.css}" media="all">
+<link rel="stylesheet" data-th-href="@{/admin/lib/formSelect/formSelect.css}" media="all">
+<div class="layui-fluid" lay-title="文章编辑">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card layui-form" lay-filter="component-form-element">
+                <div class="layui-card-header">文章撰写</div>
+                <div class="layui-card-body layui-row layui-col-space10">
+                    <form class="layui-form">
+                        <input name="id" data-th-value="${p.id}" style="display: none"/>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">文章标题</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="title" data-th-value="${p.title}" required  lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-inline" style="width: 22%;">
+                                <label class="layui-form-label">文章分类</label>
+                                <div class="layui-input-inline" style="width: 66%;">
+                                    <select name="category" id="categorys" lay-verify="required">
+                                        <option value="">请选择</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="layui-inline" style="width: 70%">
+                                <label class="layui-form-label">文章标签</label>
+                                <div class="layui-input-inline" style="width: 56%;">
+                                    <select name="tags" id="tags" lay-verify="required" xm-select="tags" xm-select-search="">
+                                        <option value="">请选择</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">文章内容</label>
+                            <div class="layui-input-block">
+                                <div id="content-md">
+                                    <textarea name="content" style="display:none;">[[${p.contentMd}]]</textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">文章封面</label>
+                            <div class="layui-input-block">
+                                <div class="layui-upload" id="upload">
+                                    <div class="layui-upload-list">
+                                        <div class="layui-upload-drag">
+                                            <i class="layui-icon"></i>
+                                            <p>点击上传</p>
+                                        </div>
+                                        <img class="layui-upload-img" data-th-src="${p.cover}" id="cover">
+                                        <p id="demoText"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <button type="button" class="layui-btn layui-btn-warm" lay-submit lay-filter="draft">存入草稿</button>
+                                <button type="button" class="layui-btn" lay-submit lay-filter="release">发布文章</button>
+                                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script data-th-src="@{/admin/lib/editormd/jquery.min.js}"></script>
+<script data-th-src="@{/admin/lib/editormd/editormd.min.js}"></script>
+<script data-th-src="@{/admin/lib/formSelect/formSelect.min.js}"></script>
+<script data-th-inline="javascript">
+    var p = [[${p}]]
+</script>
+<script data-th-inline="none" type="text/javascript">
+    layui.use(['admin', 'element', 'form', 'upload'], function(admin, element, form, upload) {
+        var contentMd;
+        $(function () {
+            contentMd = editormd("content-md", {
+                width: "100%",
+                height: 640,
+                syncScrolling: "single",
+                saveHTMLToTextarea : true,
+                htmlDecode : "style,script,iframe|on*",
+                path: "/admin/lib/editormd/lib/"
+            });
+        });
+
+        //渲染tag Select列表
+        var formSelects = layui.formSelects
+        formSelects.config('tags', {
+            keyName: 'name',
+            keyVal: 'id',
+            beforeSuccess: function(id, url, searchVal, result){
+                return result.data;
+            },
+            success: function(id, url, searchVal, result){
+                console.log(result.data)
+                let ids = []
+                if (p.tags != null && p.tags.length > 0) {
+                    p.tags.forEach(t => {
+                        ids.push(t.id)
+                    })
+                    formSelects.value('tags', ids);
+                }
+            }
+        }).data('tags', 'server', {
+            url: api.tag.allList
+        });
+
+        //渲染Select列表
+        admin.get(api.category.allList, {}, (res) => {
+            let list = res.data;
+            let select = document.getElementById('categorys');
+            if (list != null || list.size() > 0) {
+                list.forEach(c => {
+                    let option = document.createElement("option");
+                    option.setAttribute("value", c.id)
+                    option.innerText = c.name
+                    select.appendChild(option)
+                })
+            }
+            $('#categorys').val(p.category)
+            form.render('select')
+        })
+
+        //文件上传
+        var uploadInst = upload.render({
+            elem: '#upload',
+            url: api.qiniu.upload,
+            done: function(res){
+                if (res.code == 200) {
+                    layer.msg('上传成功');
+                }
+                if (res.code == 500) {
+                    return layer.msg(res.msg);
+                }
+                $('#cover').attr('src', res.data.url)
+            }
+        });
+
+        //监听提交
+        form.on('submit(draft)', function(form){
+            let data = form.field;
+            data.content = contentMd.getHTML()
+            data.contentMd = contentMd.getMarkdown()
+            data.cover = $('#cover')[0].src
+            data.state = "0"
+            data.tags = layui.formSelects.value('tags');
+            admin.put(api.article.base, JSON.stringify(data), (res) => {
+                layer.msg(res.msg)
+                // window.location.reload()
+                admin.navigate(page.article.list);
+            })
+            return false;
+        });
+        form.on('submit(release)', function(form){
+            let data = form.field;
+            data.content = contentMd.getHTML()
+            data.contentMd = contentMd.getMarkdown()
+            data.cover = $('#cover')[0].src
+            data.tags = layui.formSelects.value('tags');
+            data.state = "1"
+            admin.put(api.article.base, JSON.stringify(data), (res) => {
+                layer.msg(res.msg)
+                // window.location.reload()
+                admin.navigate(page.article.list);
+            })
+            return false;
+        });
+    });
+</script>

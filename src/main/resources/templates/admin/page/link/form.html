@@ -1,0 +1,15 @@
+<link rel="stylesheet" data-th-href="@{/admin/lib/layui/layui/css/layui.css}" media="all">
+<form class="layui-form" lay-filter="layer" id="layer" style="padding-top: 30px; text-align: center;">
+    <div class="layui-form-item">
+        <label class="layui-form-label">友链名称</label>
+        <div class="layui-input-block">
+            <input type="text" name="name" required  lay-verify="required" placeholder="请输入友链名称" autocomplete="off" style="width: 80%" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">友链地址</label>
+        <div class="layui-input-block">
+            <input type="text" name="url" required  lay-verify="required" placeholder="请输入友链地址" autocomplete="off" style="width: 80%" class="layui-input">
+        </div>
+    </div>
+</form>

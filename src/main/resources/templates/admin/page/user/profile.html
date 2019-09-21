@@ -1,0 +1,158 @@
+<style>
+    #app-user-profile #user-profile, #app-user-profile .user-profile-card {
+        display: inline-block;
+    }
+
+    #app-user-profile #user-img, #app-user-profile #user-info {
+        display: inline-block;
+        float: left;
+    }
+
+    #app-user-profile #user-img img {
+        width: 7rem;
+        margin: 1rem;
+        border-radius: 50%;
+        cursor: pointer;
+    }
+
+    #app-user-profile #user-info {
+        margin: .95rem 0 .95rem 1.2rem;
+    }
+
+    #app-user-profile #user-info div {
+        margin: 3px 0;
+        max-width: 22rem;
+    }
+
+    #app-user-profile #options-wrapper {
+        text-align: center;
+        margin-top: .5rem;
+    }
+
+    #app-user-profile #update-user-info {
+        cursor: pointer;
+        margin-left: -1rem;
+    }
+
+    #app-user-profile #options-wrapper a {
+        padding: 4px 6px;
+        color: rgba(0, 0, 0, 0.65);
+        border: 1px solid #d9d9d9;
+        border-radius: 2px;
+    }
+
+    #app-user-profile #options-wrapper a:hover {
+        color: #40a9ff;
+        border-color: #40a9ff;
+    }
+
+    #app-user-profile .layui-form-item {
+        margin-bottom: 0;
+    }
+</style>
+<div class="layui-fluid layui-anim febs-anim" id="app-user-profile" lay-title="个人中心">
+    <div class="layui-row layui-col-space8 febs-container">
+        <div class="layui-col-md12 layui-col-sm12 layui-col-xs12">
+            <div class="layui-card">
+                <div class="layui-card-header">个人信息</div>
+                <div class="layui-card-body user-profile-card">
+                    <div id="user-profile">
+                        <script type="text/html" template>
+                            <div id="user-img">
+                                <img alt="头像" title="点我更换头像" src="{{ layui.admin.data()['user'].avatar  }}">
+                                <div id="options-wrapper">
+                                    <div id="update-user-info">
+                                        <a>
+                                            <span class="layui-icon layui-icon-setting"></span>
+                                            编辑资料
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="user-info">
+                                <div><span class="layui-icon layui-icon-user"></span> 账号：
+                                    {{ layui.admin.data()['user'].username  }}
+                                </div>
+                                <div><span class="layui-icon layui-icon-chart"></span> 介绍：
+                                    {{ layui.admin.data()['user'].introduce  }}
+                                </div>
+                                <div><span class="layui-icon layui-icon-release"></span> 备注：
+                                    {{ layui.admin.data()['user'].remark  }}
+                                </div>
+                            </div>
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-md12 layui-col-sm12 layui-col-xs12">
+            <div class="layui-card">
+                <div class="layui-card-header">登录日志</div>
+                <div class="layui-card-body">
+                    <table class="layui-hide" id="log-table" lay-filter="log-table"></table>
+                    <script type="text/html" id="log-table-operate">
+                        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+                    </script>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script data-th-inline="none" type="text/javascript">
+    layui.use(['admin', 'form', 'table'], function(admin, form, table) {
+        var $ = layui.jquery
+        var $view = $('#app')
+
+        form.render();
+
+        $view.on('click', '#update-user-info', function () {
+            admin.modal.view('个人信息修改', page.user.edit, {
+                area: $(window).width() <= 750 ? '90%' : '50%',
+                btn: ['确定'],
+                yes: function () {
+                    $('#user-update').find('#submit').trigger('click');
+                }
+            });
+        });
+
+        $view.on('click', '#user-profile img', function () {
+            admin.modal.view('点击更换', page.user.avatar, {
+                area: $(window).width() <= 750 ? '90%' : '650px',
+                offset: '100px'
+            });
+        });
+
+        table.render({
+            elem: '#log-table',
+            api: 'loginlogList',
+            where: {},
+            cellMinWidth: 80,
+            cols: [[
+                {field:'id', width:80, title: 'ID', sort: true, fixed: 'left'},
+                {field:'username', title: '账户'},
+                {field:'ip', title: 'IP地址'},
+                {field:'createTime', title: '登录时间'},
+                {field:'location', title: '登录地点'},
+                {field:'device', title: '登录设备'},
+                {align:'center', fixed: 'right', toolbar: '#log-table-operate'}
+            ]],
+            page: true
+        });
+
+        //监听工具条
+        table.on('tool(log-table)', function(obj){
+            var data = obj.data;
+            if(obj.event === 'del'){
+                layer.confirm('确定删除此记录？', function(index){
+                    admin.delete(api.loginlog.base + data.id, {}, (res) => {
+                        layer.msg(res.msg)
+                        table.reload('log-table', {
+                            page: {curr: 1}
+                        })
+                    })
+                    layer.close(index);
+                });
+            }
+        });
+    })
+</script>

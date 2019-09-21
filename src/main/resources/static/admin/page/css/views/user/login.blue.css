@@ -1,0 +1,113 @@
+#VIEW-login{
+    height: 100%;
+    background:#2096ff url(../../../images/login-bg.png?123) center;
+    background-size:auto 100%;
+}
+#VIEW-login .nepadmin-header{
+    background: #f9f9f9;
+    height: 0px;
+    width: 100%;
+}
+#VIEW-login .nepadmin-wrap{
+    padding-top:120px;
+}
+
+#VIEW-login .layui-form{
+    background: #fff;
+    padding:40px;
+    padding-bottom:20px;
+    border-radius: 5px;
+    box-shadow: 0 0 30px #2988e3;
+    position: relative;
+}
+#VIEW-login .layui-form-item{
+    position: relative;
+}
+#VIEW-login .verify-block{
+    display: none;
+}
+#VIEW-login .layui-input{
+    text-indent:26px;
+}
+#VIEW-login .codeimg{
+    margin-left: 10px;
+    cursor: pointer;
+}
+#VIEW-login .sendsms{
+    position: absolute;
+    top:4px;
+    right: 4px;
+    width: 100px;
+    border:none;
+}
+#VIEW-login .sendsms.layui-btn-disabled{
+    background: #f4f4f4;
+    color:#bbb;
+}
+#VIEW-login .houseimg{
+    text-align: center;
+}
+#VIEW-login .houseimg img{
+    display: inline-block;
+    margin-top:5%;
+}
+
+#VIEW-login .login-type-tab{
+    margin-bottom: 20px;
+    overflow: hidden;
+}
+#VIEW-login .login-type-tab li{
+    display: inline-block;
+    padding-right: 20px;
+    font-size: 16px;
+    line-height: 30px;
+    color:#bbb;
+    cursor: pointer;
+    transition: color .5s ease;
+}
+#VIEW-login .login-type-tab li.active{
+    color:#333;
+}
+#VIEW-login .login-type-tab li .qrcode-icon{
+    font-size: 24px;
+}
+#VIEW-login .phonecode-block{
+    display: none;
+}
+#VIEW-login .qrcode-block{
+    text-align: center;
+    display: none;
+}
+
+#VIEW-login .qrcode-block .qrcode{
+    border:1px solid #eee;
+    display: inline-block;
+    padding:15px;
+    margin:30px 0;
+    width: 158px;
+    height: 158px;
+}
+
+#VIEW-login .qrcode-block .qrcode .layui-icon{
+    line-height: 158px;
+    font-size: 44px;
+    color:#e6e6e6;
+}
+#VIEW-login .qrcode-block .p1{
+    font-size: 16px;
+}
+#VIEW-login .qrcode-block .p2{
+    font-size: 14px;
+    color:#999;
+    margin-top:10px;
+    margin-bottom: 20px;
+}
+#VIEW-login .layui-form-item .label-icon{
+    position: absolute;
+    top:0;
+    left:0;
+    width: 38px;
+    line-height: 38px;
+    text-align: center;
+    color: #d2d2d2!important;
+}

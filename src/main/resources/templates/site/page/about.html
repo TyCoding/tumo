@@ -1,67 +1,147 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="site/common/head"></head>
-<title>关于 - TyCoding&#39;s blog</title>
-<body class="bg-white" gtools_scp_screen_capture_injected="true">
-
-<div th:replace="site/common/header"></div>
-
-<div class="post-header-thumb">
-    <div class="post-header-thumb-op" style="background-image:url(/site/images/thumbs/3.jpg);"></div>
-    <div class="post-header-thumb-cover">
-        <div class="post-header-thumb-container">
-            <div class="post-header-thumb-title">
-                关于我
-            </div>
-            <div class="post-header-thumb-meta">
-                <time datetime="1524412800" itemprop="datePublished"><b>[[${#dates.format(new java.util.Date().getTime(), 'yyyy-MM-dd hh:mm:ss')}]]</b></time>
-                in <a href="#">About</a>
-                with <a href="#vcomments"><b>[[${count}]]</b></a>
-                <div class="post-header-thumb-meta" style="font-size: 13px;">
-                    <span class="post-count">本文字数：<b class="count"></b> 字</span>
-                    <span>|</span>
-                    <span class="post-count">阅读时长 ≈ <b class="time"></b> min</span>
-                </div>
-            </div>
-            <div class="post-tags">
-                <a href="#">About Me</a>
-            </div>
+<head>
+    <meta charset="UTF-8">
+    <title>Links - Tumo</title>
+    <link rel="shortcut icon" th:href="@{/site/images/favicon.png}">
+    <link rel="stylesheet" data-th-href="@{/site/css/style.min.css}"/>
+</head>
+<body>
+<header id="header" class="header bg-white">
+    <div class="navbar-container">
+        <a href="/" class="navbar-logo">
+            <img th:src="@{/site/images/logo.png}" alt="Tumo">
+        </a>
+        <div class="navbar-menu">
+            <a href="/archives">Archives</a>
+            <a href="/links">Links</a>
+            <a class="current" href="/about">About</a>
+        </div>
+        <div class="navbar-mobile-menu" onclick="">
+            <span class="icon-menu cross"><span class="middle"></span></span>
+            <ul>
+                <li><a href="/archives">Archives</a></li>
+                <li><a href="/links">Links</a></li>
+                <li><a class="current" href="/about">About</a></li>
+            </ul>
         </div>
     </div>
-</div>
+</header>
 
-
-<article class="main-content post-page" itemscope itemtype="http://schema.org/Article">
-    <div id="post-content" class="post-content" itemprop="articleBody" th:utext="${setting.about}"></div>
-    <meting-js th:id="${setting.siteMusic}" server="netease" type="song" auto="" autoplay="flase"></meting-js>
-    <p class="post-info">
-        本文由 <a href="http://www.tycoding.cn">TyCoding</a> 创作，采用 <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="external nofollow">知识共享署名4.0</a> 国际许可协议进行许可<br>本站文章除注明转载/出处外，均为本站原创或翻译，转载前请务必署名<br>最后编辑时间为: [[${#dates.format(new java.util.Date().getTime(), 'yyyy-MM-dd hh:mm:ss')}]]
-    </p>
+<article class="main-content page-page">
+    <div class="post-header"><h1 class="post-title" itemprop="name headline"> About </h1>
+        <div class="post-data">
+            <time datetime="2016-01-28T14:07:00+08:00" itemprop="datePublished">Published on Jan 28, 2018</time>
+        </div>
+    </div>
+    <div id="post-content" class="post-content"><h3>Hello</h3>
+        <p>我是 TyCoding ，Java后端练习生</p>
+        <p><a href="https://github.com/TyCoding/tumo" target="_blank">Tumo</a> 博客项目起初是自己的一个练习Demo</p>
+        <p>后来，逐渐学习了新技术（SpringBoot、Vue、Node...），便想着能将新技术运用到这个项目中</p>
+        <p>但苦于技术太菜，在项目中埋下了很多坑，很对不起大家。</p>
+        <P>这次花了几天时间重构项目，采用全新的LayUI绘制，相比Vue，LayUI更适合这种前后端不分离的项目</P>
+        <h3>关于我</h3>
+        <p>在读大学僧一枚</p>
+        <p>马不停蹄赶来的路上...</p>
+        <p>如果你想跟我做朋友的话，必须欢迎，你可以通过博客页底的社交链接联系到我···</p>
+        <ul>
+            <li><p><a href="https://tycoding.cn/" target="_blank">Blog</a></p></li>
+            <li><p><a href="https://github.com/TyCoding" target="_blank">Github</a></p></li>
+            <li><p><a href="https://www.zhihu.com/people/tomo-83-82/activities" target="_blank">zhihu</a></p></li>
+            <li><p>QQ Group: 671017003</p></li>
+        </ul>
 </article>
-<div id="post-bottom-bar" class="post-bottom-bar">
-    <div class="bottom-bar-inner">
-        <div class="bottom-bar-items social-share left">
-            <span class="bottom-bar-item">Share : </span>
-            <span class="bottom-bar-item bottom-bar-facebook"><a href="https://www.facebook.com/sharer/sharer.php?u=http://www.tycoding.cn/2018/04/23/INTRO/index.html" target="_blank" title="序/INTRO" rel="nofollow">facebook</a></span>
-            <span class="bottom-bar-item bottom-bar-twitter"><a href="https://twitter.com/intent/tweet?url=http://www.tycoding.cn/2018/04/23/INTRO/&text=序/INTRO" target="_blank" title="序/INTRO" rel="nofollow">Twitter</a></span>
-            <span class="bottom-bar-item bottom-bar-weibo"><a href="http://service.weibo.com/share/share.php?url=&amp;title=序/INTRO" target="_blank" title="序/INTRO" rel="nofollow">Weibo</a></span>
-            <span class="bottom-bar-item bottom-bar-qrcode"><a href="//pan.baidu.com/share/qrcode?w=300&amp;h=300&amp;url=http://www.tycoding.cn/2018/04/23/INTRO/index.html" target="_blank" rel="nofollow">QRcode</a></span>
-        </div>
-        <div class="bottom-bar-items right">
-            <span class="bottom-bar-item"><a href="#footer">↓</a></span>
-            <span class="bottom-bar-item"><a href="#">↑</a></span>
+
+<div id="respond-post-334" class="comment-container">
+    <div id="comments" class="clearfix">
+        <span class="response">Responses
+            <a id="cancel-comment-reply-link"
+               href="https://www.linpx.com/p/mat-analysis-of-indicators-for-heap-dump.html#respond-post-334"
+               rel="nofollow" style="display:none"
+               onclick="return TypechoComment.cancelReply();"> / Cancel Reply</a>
+        </span>
+        <form method="post" action="#" id="comment-form" class="comment-form" role="form">
+            <input name="sort" value="2" style="display: none;">
+            <input name="pid" id="pId" value="" style="display: none;">
+            <input name="cname" id="cName" value="" style="display: none;">
+            <input type="text" name="name" maxlength="12" id="author" class="form-control input-control clearfix" placeholder="Name (*)" value="" required="">
+            <input type="email" name="email" id="mail" class="form-control input-control clearfix" placeholder="Email (*)" value="" required="">
+            <input type="url" name="url" id="url" class="form-control input-control clearfix" placeholder="Site (http://)" value="">
+            <textarea name="content" id="textarea" class="form-control" placeholder="Your comment here. Be cool. " required=""></textarea>
+            <button type="submit" class="submit" id="submit">SUBMIT</button>
+        </form>
+        <ol class="comment-list">
+            <li th:each="parent : ${comments.rows}" th:id="'li-comment-' + ${parent.id}" class="comment-body comment-parent comment-even">
+                <div th:id="'comment-' + ${parent.id}">
+                    <div class="comment-view" onclick="">
+                        <div class="comment-header">
+                            <img class="avatar" th:src="@{/site/images/user.png}" width="80" height="80">
+                            <span class="comment-author">
+                                <a th:href="${parent.url}" target="_blank" rel="external nofollow">[[${parent.name}]]</a>
+                                <span>[[${parent.device}]]</span>
+                            </span>
+                        </div>
+                        <div class="comment-content">
+                            <span class="comment-author-at"></span>
+                            <p>[[${parent.content}]]</p>
+                            <p></p>
+                        </div>
+                        <div class="comment-meta">
+                            <time class="comment-time">[[${parent.time}]]</time>
+                            <span class="comment-reply">
+                                 <a href="#comments" rel="nofollow" th:onclick="reply([[${parent.id}]], [[${parent.name}]]);">Reply</a>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div th:if="!${#lists.isEmpty(parent.children)}" class="comment-children">
+                    <ol class="comment-list">
+                        <li th:each="child : ${parent.children}" th:id="'li-comment-' + ${child.id}" class="comment-body comment-child comment-level-odd comment-odd">
+                            <div th:id="'comment-' + ${child.id}">
+                                <div class="comment-view" onclick="">
+                                    <div class="comment-header">
+                                        <img class="avatar" th:src="@{/site/images/user.png}" width="80" height="80">
+                                        <span class="comment-author">
+                                            <a th:href="${child.url}" target="_blank" rel="external nofollow">[[${child.name}]]</a>
+                                            <span>[[${child.device}]]</span>
+                                        </span>
+                                    </div>
+                                    <div class="comment-content">
+                                        <span class="comment-author-at"><a th:href="'#comment-' + ${child.pId}">@[[${child.target}]]</a></span>
+                                        <p>[[${child.content}]]</p>
+                                        <p></p>
+                                    </div>
+                                    <div class="comment-meta">
+                                        <time class="comment-time">[[${child.time}]]</time>
+                                        <span class="comment-reply">
+                                            <a href="#comments" rel="nofollow" th:onclick="reply([[${parent.id}]], [[${child.name}]]);">Reply</a>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ol>
+                </div>
+            </li>
+        </ol>
+        <div th:if="${comments.pages} > 0" class="lists-navigator clearfix">
+            <ol class="page-navigator">
+                <li th:if="${comments.current} > 1" class="prev">
+                    <a th:href="'/links?page=' + (${comments.current} - 1) + '#comments'">←</a>
+                </li>
+                <li th:each="i : ${#numbers.sequence(1, comments.pages)}" th:class="${comments.current} == ${i} ? 'current' : ''">
+                    <a th:href="'/links?page=' + ${i} + '#comments'">[[${i}]]</a>
+                </li>
+                <li th:if="${comments.current} < ${comments.pages}" class="next">
+                    <a th:href="'/links?page=' + (${comments.current} + 1) + '#comments'">→</a>
+                </li>
+            </ol>
         </div>
     </div>
 </div>
 
-<input class="type" hidden value="2"/>
-<div th:replace="site/page/common/comments"></div>
-
-<div id="directory-content" class="directory-content">
-    <div id="directory"></div>
-</div>
-
-<div th:replace="site/common/footer"></div>
-
+<div th:replace="site/layout/footer"></div>
+<script th:src="@{/admin/lib/editormd/jquery.min.js}"></script>
+<script th:src="@{/site/js/about.js}"></script>
 </body>
 </html>

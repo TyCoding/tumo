@@ -1,0 +1,61 @@
+{
+  "code": 200,
+  "msg": "ok",
+  "data": [
+    {
+      "title": "Dashboard",
+      "icon": "layui-icon-home",
+      "href": "/"
+    },
+    {
+      "title": "文章管理",
+      "icon": "layui-icon-unorderedlist",
+      "childs": [
+        {
+          "title": "发布文章",
+          "href": "/article/add"
+        },
+        {
+          "title": "文章列表",
+          "href": "/article"
+        }
+      ]
+    },
+    {
+      "title": "博客管理",
+      "icon": "layui-icon-container",
+      "childs": [
+        {
+          "title": "标签管理",
+          "href": "/tag"
+        },
+        {
+          "title": "分类管理",
+          "href": "/category"
+        },
+        {
+          "title": "友链管理",
+          "href": "/link"
+        },
+        {
+          "title": "评论管理",
+          "href": "/comment"
+        }
+      ]
+    },
+    {
+      "title": "系统管理",
+      "icon": "layui-icon-file-exception",
+      "childs": [
+        {
+          "title": "操作日志",
+          "href": "/log"
+        },
+        {
+          "title": "对象储存",
+          "href": "/qiniu"
+        }
+      ]
+    }
+  ]
+}

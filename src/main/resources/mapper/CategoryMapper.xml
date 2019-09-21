@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.tycoding.system.mapper.CategoryMapper">
+
+    <!-- 根据文章id查询其关联分类表中的数据 -->
+    <select id="findCategoryByArticleId" parameterType="long" resultType="SysCategory">
+        SELECT
+            c.name
+        FROM
+            tb_article a,
+            tb_category c,
+            tb_article_category ac
+        WHERE
+            a.id = ac.article_id
+            AND c.id = ac.category_id
+            AND a.id = #{id}
+    </select>
+
+</mapper>

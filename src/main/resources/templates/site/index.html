@@ -1,56 +1,75 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="site/common/head"></head>
-<title>TyCoding&#39;s blog</title>
-<body class="bg-grey" gtools_scp_screen_capture_injected="true">
-<div th:replace="site/common/header"></div>
+<head>
+    <meta charset="UTF-8">
+    <title>Tumo</title>
+    <link rel="shortcut icon" th:href="@{/site/images/favicon.png}">
+    <link rel="stylesheet" data-th-href="@{/site/css/style.min.css}"/>
+</head>
+<body class="bg-grey">
+<header id="header" class="header bg-white">
+    <div class="navbar-container">
+        <a href="/" class="navbar-logo">
+            <img th:src="@{/site/images/logo.png}" alt="Tumo">
+        </a>
+        <div class="navbar-menu">
+            <a href="/archives">Archives</a>
+            <a href="/links">Links</a>
+            <a href="/about">About</a>
+        </div>
+        <div class="navbar-mobile-menu" onclick="">
+            <span class="icon-menu cross"><span class="middle"></span></span>
+            <ul>
+                <li><a href="/archives">Archives</a></li>
+                <li><a href="/links">Links</a></li>
+                <li><a href="/about">About</a></li>
+            </ul>
+        </div>
+    </div>
+</header>
+
 <div class="main-content index-page clearfix ">
     <div class="post-lists">
         <div class="post-lists-body">
-            <div class="post-list-item" th:each="article : ${list.data}">
+            <div class="post-list-item" th:each="row : ${list.rows}">
                 <div class="post-list-item-container">
-                    <div class="item-thumb bg-green" th:if="${article.cover != null}" th:style="'background-image:url(' + ${article.cover} + ');'"></div>
-                    <a th:href="'/article/' + ${article.id}">
+                    <div class="item-thumb bg-deepgrey"
+                         th:style="'background-image:url(' + ${row.cover} + ');'"></div>
+                    <a th:href="'/article/' + ${row.id}">
                         <div class="item-desc">
-                            <p>[[${article.title}]]</p>
+                            <p th:text="${row.content}"></p>
                         </div>
                     </a>
-                    <div class="item-slant reverse-slant bg-green"></div>
+                    <div class="item-slant reverse-slant bg-deepgrey"></div>
                     <div class="item-slant"></div>
                     <div class="item-label">
                         <div class="item-title">
-                            <a th:href="'/article/' + ${article.id}" th:text="${article.title}"></a>
+                            <a th:href="'/article/' + ${row.id}" th:text="${row.title}"></a>
                         </div>
                         <div class="item-meta clearfix">
-                            <div class="item-meta-ico bg-ico-note"
-                                 style="background: url(/public/bg-ico.png) no-repeat;background-size: 40px auto;"></div>
-                            <div class="item-meta-cat">
-                                <a th:href="'/category/' + ${article.category}" th:text="${article.category}"></a>
-                            </div>
+                            <div class="item-meta-ico bg-ico-book" style="background: url(/site/images/bg-ico.png) no-repeat;background-size: 40px auto;"></div>
+                            <div class="item-meta-cat"><a href="https://www.linpx.com/c/tutorials/">[[${row.category}]]</a></div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="lists-navigator clearfix" th:if="${list.total != 0}">
+    <div class="lists-navigator clearfix">
         <ol class="page-navigator">
-            <li class="prev" th:if="${pageCode} gt '1'">
-                <a th:href="'/page/' + ${pageCode < 1 ? pageCode : pageCode-1}">←</a>
+            <li th:if="${list.current} > 1" class="prev">
+                <a th:href="'/page/' + (${list.current} - 1)">←</a>
             </li>
-            <li th:each="i : ${#numbers.sequence(1, list.total)}">
-                <a th:style="${i == pageCode ? 'color: #eb5055;' : ''}" th:href="'/page/' + ${i}" th:text="${i}"></a>
+            <li th:each="i : ${#numbers.sequence(1, list.pages)}" th:class="${list.current} == ${i} ? 'current' : ''">
+                <a th:href="'/page/' + ${i}">[[${i}]]</a>
             </li>
-            <li class="next" th:if="${pageCode < list.total}">
-                <a th:href="'/page/' + ${pageCode < list.total ? pageCode+1 : list.total}">→</a>
+            <li th:if="${list.current} < ${list.pages}" class="next">
+                <a th:href="'/page/' + (${list.current} + 1)">→</a>
             </li>
         </ol>
     </div>
-    <div th:if="${list.total == 0}" class="lists-navigator clearfix" style="min-height: 400px;">
-        还没有发布文章诶！
-    </div>
 </div>
 
-<div th:replace="site/common/footer"></div>
+<div th:replace="site/layout/footer"></div>
 </body>
 </html>

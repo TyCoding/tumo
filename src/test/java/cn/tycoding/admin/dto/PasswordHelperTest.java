@@ -1,7 +1,7 @@
 package cn.tycoding.admin.dto;
 
-import cn.tycoding.admin.entity.User;
-import cn.tycoding.admin.utils.PasswordHelper;
+import cn.tycoding.system.entity.SysUser;
+import cn.tycoding.common.utils.PasswordHelper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,12 +22,12 @@ public class PasswordHelperTest {
 
     @Test
     public void encryptPassword() {
-        User user = new User();
-        user.setId(1L);
-        user.setUsername("tycoding");
-        user.setPassword("123456");
-        user.setSalt("536a51359841754df6bbab57d24d2128");
-        passwordHelper.encryptPassword(user);
-        System.out.println(user.getPassword()); // c0daa18ce0c74153ce060325cb4d1a04
+        SysUser sysUser = new SysUser();
+        sysUser.setId(1L);
+        sysUser.setUsername("tycoding");
+        sysUser.setPassword("123456");
+        sysUser.setSalt("536a51359841754df6bbab57d24d2128");
+        passwordHelper.encryptPassword(sysUser);
+        System.out.println(sysUser.getPassword()); // c0daa18ce0c74153ce060325cb4d1a04
     }
 }

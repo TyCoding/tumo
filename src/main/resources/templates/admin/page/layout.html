@@ -1,0 +1,118 @@
+<div class="layui-layout layui-layout-admin" id="app">
+    <div class="layui-header" id="app-header">
+        <script
+                type="text/html"
+                template
+                lay-done="layui.element.render('nav','tumo-header')"
+        >
+            <ul class="layui-nav layui-layout-left" lay-filter="tumo-header">
+                <li class="layui-nav-item" lay-unselect>
+                    <a tumo-event="flexible" title="侧边伸缩">
+                        <i class="layui-icon layui-icon-shrink-right"></i>
+                    </a>
+                </li>
+            </ul>
+            <ul class="layui-nav layui-layout-right" lay-filter="tumo-header">
+
+                <li class="layui-nav-item layui-hide-xs" lay-unselect>
+                    <a tumo-event="fullscreen" title="切换全屏">
+                        <i class="layui-icon layui-icon-screen-full"></i>
+                    </a>
+                </li>
+               <!-- <li class="layui-nav-item" lay-unselect>
+                    <a lay-href="app/message/" tumo-event="message" title="消息提醒">
+                        <i class="layui-icon layui-icon-notice"></i>
+                        <span class="layui-badge-dot message-dot"></span>
+                    </a>
+                </li>-->
+                <li class="layui-nav-item" lay-unselect>
+                    <a class="layui-hide-xs">
+                        <img style="width: 1.9rem;margin-right:.5rem;border-radius: 50%"
+                             src="{{ layui.admin.data()['user'].avatar  }}" title="头像">
+                        {{ layui.admin.data()['user'].username  }}
+                        <i class="layui-icon layui-icon-triangle-d"></i>
+                    </a>
+                    <a class="layui-hide-sm layui-show-xs-inline-block">
+                        <i class="layui-icon layui-icon-username"></i>
+                    </a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="javascript:void(0);" id="user-profile">个人信息</a></dd>
+                        <hr/>
+                        <dd><a target="_blank" href="https://github.com/TyCoding/tumo">项目地址</a></dd>
+                        <hr/>
+                        <dd><a href="javascript:void(0);" tumo-event="logout">退出登录</a></dd>
+                    </dl>
+                </li>
+            </ul>
+        </script>
+    </div>
+
+    <div class="nepadmin-tabs-hidden">
+        <script type="text/html" id="TPL-app-tabsmenu" template>
+            {{# if(layui.conf.viewTabs == true){ }}
+            <div class="nepadmin-tabs-wrap">
+          <span class="nepadmin-tabs-btn nepadmin-tabs-action nepadmin-tabs-prev" data-type="prev">
+              <i class="layui-icon layui-icon-left"></i>
+          </span>
+                <span class="nepadmin-tabs-btn nepadmin-tabs-action nepadmin-tabs-next" data-type="next">
+              <i class="layui-icon layui-icon-right"></i>
+          </span>
+                <span class="nepadmin-tabs-btn nepadmin-tabs-action nepadmin-tabs-down" data-type="down">
+              <i class="layui-icon layui-icon-close"></i>
+          </span>
+                <ul class="nepadmin-tabs-menu">
+                    {{# layui.each(layui.view.tab.data,function(i,item){ }}<li data-type="page" class="nepadmin-tabs-btn" lay-url="{{item.fileurl}}"><i class="nepadmin-tabs-ball"></i>{{ item.title }}<b class="layui-icon layui-icon-close nepadmin-tabs-close"></b></li>{{# }) }}
+                </ul>
+            </div>
+            {{# } }}
+        </script>
+    </div>
+
+    <!-- 侧边菜单 -->
+    <div class="layui-side" id="app-sidebar">
+        <div class="layui-side-scroll">
+            <div class="layui-logo"><span>Tu<b>mo</b> <b>Bl</b>og</span></div>
+            <script
+                    type="text/html"
+                    template
+                    lay-api="getMenu"
+                    lay-done="layui.element.render('nav','tumo-sidebar');layui.admin.sidebarFocus()"
+            >
+                <ul class="layui-nav layui-nav-tree" lay-filter="tumo-sidebar" >
+                    {{#
+                    function __createSlidebar(data,index){
+                    if(!data || data.length == 0) return '';
+                    var html = '<dl class="layui-nav-child">';
+                    layui.each(data,function(i,child){
+                    html += '<dd><a style="padding-left:'+(index == 0 ? 50 : 50 + index * 20)+'px" target="'+(child.target||'')+'" lay-href="'+ (child.href||'') +'">' + child.title + '</a>';
+                        if(child.childs) html += __createSlidebar(child.childs,index+1);
+                        html += '</dd>';
+                    });
+                    html = html +'</dl>';
+                    return html;
+                    }
+                    layui.each(d,function(i,child){
+                    }}
+                    <li class="layui-nav-item">
+                        <a lay-href="{{child.href||''}}" target="{{child.target||''}}" title="{{child.title}}"><i class="layui-icon {{child.icon}}"></i>{{child.title}} {{# if(child.notice){ }}<span class="layui-badge">{{ child.notice }}</span>{{# } }}</a>
+                        {{ __createSlidebar(child.childs,0) }}
+                    </li>
+                    {{# }) }}
+                </ul>
+            </script>
+        </div>
+    </div>
+
+    <!-- 主体内容 -->
+    <div class="layui-body" id="app-body"></div>
+</div>
+<script data-th-inline="none" type="text/javascript">
+    layui.use(['admin', 'element'], function(admin, element) {
+        var $ = layui.jquery
+        var $view = $('#app')
+
+        $view.on('click', '#user-profile', function () {
+            admin.navigate(page.user.profile);
+        });
+    })
+</script>
