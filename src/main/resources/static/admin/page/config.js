@@ -63,6 +63,9 @@ layui.define(function(exports) {
       //是否显示加载条
       loading: true,
       parseData: function (res) {
+        if (res.code == 500) {
+          return false
+        }
         return {
           "code": res.code,
           "msg": res.msg,

@@ -154,7 +154,7 @@
                     layer.msg('上传成功');
                 }
                 if (res.code == 500) {
-                    return layer.msg(res.msg);
+                    return admin.modal.error(res.msg);
                 }
                 $('#cover').attr('src', res.data.url)
             }

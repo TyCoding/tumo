@@ -51,7 +51,7 @@
                 {field:'author', width:100, title: '作者'},
                 {field:'category', width:100, title: '分类'},
                 {field:'createTime', width:180, title: '创建时间'},
-                {field:'editTime', width:180, title: '发布时间'},
+                {field:'publishTime', width:180, title: '发布时间'},
                 {field:'state', width:100, title: '状态', templet: function(d) {
                     if (d.state == "1") {
                         return '<div><span class="layui-badge layui-bg-green">已发布</span></div>'
@@ -109,6 +109,9 @@
                     where: data,
                     page: {curr: 1}
                 })
+            },
+            add: function () {
+                admin.navigate(page.article.add)
             }
         }
         $('.layui-btn.add-btn').on('click', function(){

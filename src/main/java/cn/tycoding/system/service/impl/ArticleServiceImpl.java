@@ -110,6 +110,9 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, SysArticle> i
         if (sysArticle.getState() == null) {
             sysArticle.setState(CommonConstant.DEFAULT_DRAFT_STATUS);
         }
+        if (sysArticle.getPublishTime() == null && sysArticle.getState() == "1") {
+            sysArticle.setPublishTime(new Date());
+        }
         sysArticle.setAuthor(((SysUser) SecurityUtils.getSubject().getPrincipal()).getUsername());
         sysArticle.setEditTime(new Date());
         sysArticle.setCreateTime(new Date());
@@ -142,6 +145,9 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, SysArticle> i
     @Override
     @Transactional
     public void update(SysArticle sysArticle) {
+        if (sysArticle.getPublishTime() == null && sysArticle.getState().equals("1")) {
+            sysArticle.setPublishTime(new Date());
+        }
         articleMapper.updateById(sysArticle);
         updateArticleCategoryTags(sysArticle);
     }

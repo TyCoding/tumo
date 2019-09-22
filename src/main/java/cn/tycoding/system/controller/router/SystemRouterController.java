@@ -63,9 +63,6 @@ public class SystemRouterController {
     public String articleEdit(Model model, @PathVariable String id) {
         SysArticle article = articleService.getById(id);
         article.setTags(tagService.findByArticleId(article.getId()));
-        if (article.getCategory() != null) {
-            article.setCategory(categoryService.findByName(article.getCategory()).getName());
-        }
         model.addAttribute("p", article);
         return "/admin/page/article/edit";
     }
@@ -118,6 +115,11 @@ public class SystemRouterController {
     @RequestMapping("/admin/page/qiniu")
     public String qiniu() {
         return "/admin/page/qiniu/index";
+    }
+
+    @RequestMapping("/admin/page/qiniu/add")
+    public String qiniuAdd() {
+        return "/admin/page/qiniu/add";
     }
 
     @RequestMapping("/admin/page/user/profile")

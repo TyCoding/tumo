@@ -38,16 +38,24 @@
                     {field:'name', title: '名称'},
                     {field:'type', title: '类型'},
                     {field:'size', title: '大小'},
-                    {field:'url', title: '外链地址'},
+                    {field:'url', width:100, title: '外链地址', templet: function(d) {
+                        return '<div><a href="{{d.url}}" target="_blank">{{d.url}}</a> </div>'
+                    }},
                     {align:'center', fixed: 'right', toolbar: '#qiniu-table-operate'}
                 ]],
+                done: function(res, curr, count){
+                    if (res.code == 500) {
+                        admin.modal.error(res.msg);
+                        return false;
+                    }
+                },
                 page: false
             });
             //监听工具条
             table.on('tool(qiniu-table)', function(obj){
                 var data = obj.data;
                 if(obj.event === 'del'){
-                    layer.confirm('确定删除此评论？', function(index){
+                    layer.confirm('确定删除此文件？', function(index){
                         admin.delete(api.qiniu.base + data.id, {}, (res) => {
                             layer.msg(res.msg)
                             table.reload('qiniu-table', {
@@ -59,18 +67,18 @@
                 }
             });
             var $ = layui.$, active = {
-                search: function(){
-                    let data = {
-                        name: $('input[name="name"]').val(),
-                        url: $('input[name="url"]').val()
-                    }
-                    table.reload('qiniu-table', {
-                        where: data,
-                        page: {curr: 1}
-                    })
+                add: function(){
+                    admin.modal.view('多文件上传', page.qiniu.add, {
+                        area: $(window).width() <= 750 ? '90%' : '50%',
+                        cancel: function(index, layero){
+                            table.reload('qiniu-table', {
+                                page: {curr: 1}
+                            })
+                        }
+                    });
                 }
             }
-            $('.layui-btn.search-btn').on('click', function(){
+            $('.layui-btn.add-btn').on('click', function(){
                 var type = $(this).data('type');
                 active[type] ? active[type].call(this) : '';
             });

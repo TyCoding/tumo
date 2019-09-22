@@ -45,7 +45,8 @@ let page = {
     },
     article: {
         list: '/article',
-        edit: '/article/edit/'
+        edit: '/article/edit/',
+        add: '/article/add/'
     },
     tag: {
         edit: '/admin/page/tag/edit'
@@ -56,4 +57,7 @@ let page = {
     link: {
         edit: '/admin/page/link/edit'
     },
+    qiniu: {
+        add: '/qiniu/add'
+    }
 }

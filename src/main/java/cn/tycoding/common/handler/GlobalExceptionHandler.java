@@ -1,5 +1,6 @@
 package cn.tycoding.common.handler;
 
+import cn.tycoding.common.constants.CommonConstant;
 import cn.tycoding.common.exception.GlobalException;
 import cn.tycoding.common.utils.R;
 import lombok.extern.slf4j.Slf4j;
@@ -7,8 +8,6 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * 全局异常处理器
@@ -28,8 +27,8 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(value = GlobalException.class)
-    public R globalExceptionHandle(GlobalException e, HttpServletResponse response) {
+    public R globalExceptionHandle(GlobalException e) {
         e.printStackTrace();
-        return new R<>(response.getStatus(), e.getMsg());
+        return new R<>(CommonConstant.ERROR, e.getMsg());
     }
 }

@@ -106,6 +106,8 @@
         //渲染tag Select列表
         var formSelects = layui.formSelects
         formSelects.config('tags', {
+            keyName: 'name',
+            keyVal: 'id',
             beforeSuccess: function(id, url, searchVal, result){
                 return result.data;
             }
@@ -137,7 +139,7 @@
                     layer.msg('上传成功');
                 }
                 if (res.code == 500) {
-                    return layer.msg(res.msg);
+                    return admin.modal.error(res.msg);
                 }
                 $('#cover').attr('src', res.data.url)
             }

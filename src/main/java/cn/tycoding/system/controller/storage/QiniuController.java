@@ -15,6 +15,7 @@ import com.qiniu.storage.UploadManager;
 import com.qiniu.storage.model.FileInfo;
 import com.qiniu.util.Auth;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -54,6 +55,12 @@ public class QiniuController {
     @Autowired
     private TumoProperties properties;
 
+    private void check(QiniuProperties qiniu) {
+        if (StringUtils.isBlank(qiniu.getAk()) || StringUtils.isBlank(qiniu.getSk()) || StringUtils.isBlank(qiniu.getBn()) || StringUtils.isBlank(qiniu.getUrl())) {
+            throw new GlobalException("请先完善七牛云服务配置，再进行操作");
+        }
+    }
+
     /**
      * 获取七牛云个人储存空间域名地址
      *
@@ -73,6 +80,7 @@ public class QiniuController {
     @GetMapping(value = "/list")
     public R list() {
         QiniuProperties qiniu = properties.getQiniu();
+        this.check(qiniu);
         try {
             //构造一个带指定Zone对象的配置类
             Configuration cfg = new Configuration(Zone.zone0());
@@ -119,6 +127,7 @@ public class QiniuController {
     @RequestMapping("/upload")
     public R upload(@RequestParam("file") MultipartFile file, HttpServletRequest request) {
         QiniuProperties qiniu = properties.getQiniu();
+        this.check(qiniu);
         if (!file.isEmpty()) {
             //上传文件路径
             String FilePath = "";
@@ -181,6 +190,7 @@ public class QiniuController {
     @RequestMapping(value = "/download")
     public ResponseEntity<byte[]> download(@RequestParam("name") String name, HttpServletResponse response) {
         QiniuProperties qiniu = properties.getQiniu();
+        this.check(qiniu);
         try {
             String encodedFileName = URLEncoder.encode(name, "utf-8"); //获取文件名，防止乱码
             String fileUrl = String.format("%s%s", qiniu.getUrl(), encodedFileName); //拼接得到文件的连接地址
@@ -224,6 +234,7 @@ public class QiniuController {
     @RequestMapping("/delete")
     public R delete(@RequestParam("name") String name) {
         QiniuProperties qiniu = properties.getQiniu();
+        this.check(qiniu);
         //构造一个带指定Zone对象的配置类
         Configuration cfg = new Configuration(Zone.zone0());
         Auth auth = Auth.create(qiniu.getAk(), qiniu.getSk());
@@ -247,6 +258,7 @@ public class QiniuController {
     @GetMapping("/update")
     public R update(@RequestParam("oldname") String oldname, @RequestParam("newname") String newname) {
         QiniuProperties qiniu = properties.getQiniu();
+        this.check(qiniu);
         //构造一个带指定Zone对象的配置类
         Configuration cfg = new Configuration(Zone.zone0());
         Auth auth = Auth.create(qiniu.getAk(), qiniu.getSk());
@@ -269,6 +281,7 @@ public class QiniuController {
     @GetMapping("/find")
     public R find(@RequestParam("name") String name) {
         QiniuProperties qiniu = properties.getQiniu();
+        this.check(qiniu);
         //构造一个带指定Zone对象的配置类
         Configuration cfg = new Configuration(Zone.zone0());
         Auth auth = Auth.create(qiniu.getAk(), qiniu.getSk());

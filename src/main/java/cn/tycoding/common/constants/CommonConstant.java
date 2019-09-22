@@ -11,12 +11,12 @@ public interface CommonConstant {
     /**
      * 成功标记
      */
-    Integer SUCCESS = 200;
+    int SUCCESS = 200;
 
     /**
      * 错误标记
      */
-    Integer ERROR = 500;
+    int ERROR = 500;
 
     /**
      * UTF-8编码
