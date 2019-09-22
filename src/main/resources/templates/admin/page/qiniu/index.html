@@ -36,12 +36,12 @@
                 cols: [[
                     {field:'key', title: 'Key'},
                     {field:'name', title: '名称'},
-                    {field:'type', title: '类型'},
-                    {field:'size', title: '大小'},
-                    {field:'url', width:100, title: '外链地址', templet: function(d) {
-                        return '<div><a href="{{d.url}}" target="_blank">{{d.url}}</a> </div>'
+                    {field:'type', width: 100, title: '类型'},
+                    {field:'size', width: 100, title: '大小'},
+                    {field:'url', width: 400, title: '外链地址', templet: function(d) {
+                        return '<div><a href="' + d.url + '" target="_blank">' + d.url +'</a> </div>'
                     }},
-                    {align:'center', fixed: 'right', toolbar: '#qiniu-table-operate'}
+                    {align:'center', width: 100, fixed: 'right', toolbar: '#qiniu-table-operate'}
                 ]],
                 done: function(res, curr, count){
                     if (res.code == 500) {
