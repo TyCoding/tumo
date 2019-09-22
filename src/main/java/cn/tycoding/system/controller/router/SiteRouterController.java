@@ -8,9 +8,7 @@ import cn.tycoding.system.entity.SysArticle;
 import cn.tycoding.system.entity.SysComment;
 import cn.tycoding.system.entity.SysLink;
 import cn.tycoding.system.entity.dto.ArchivesWithArticle;
-import cn.tycoding.system.service.ArticleService;
-import cn.tycoding.system.service.CommentService;
-import cn.tycoding.system.service.LinkService;
+import cn.tycoding.system.service.*;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -41,6 +39,12 @@ public class SiteRouterController extends BaseController {
 
     @Autowired
     private CommentService commentService;
+
+    @Autowired
+    private TagService tagService;
+
+    @Autowired
+    private CategoryService categoryService;
 
     @Autowired
     private LinkService linkService;
