@@ -20,4 +20,6 @@ public class TumoProperties {
     private QiniuProperties qiniu = new QiniuProperties();
 
     private ShiroProperties shiro = new ShiroProperties();
+
+    private SwaggerProperties swagger = new SwaggerProperties();
 }

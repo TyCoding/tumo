@@ -51,7 +51,7 @@ public class SiteRouterController extends BaseController {
 
     @GetMapping("/error/500")
     public String error() {
-        return "/error/500";
+        return "error/500";
     }
 
     /**
@@ -96,6 +96,10 @@ public class SiteRouterController extends BaseController {
                 }
                 a.setContent(content);
                 a.setContentMd(null);
+
+                if (StringUtils.isNotBlank(a.getCategory())) {
+                    a.setCategory(categoryService.getById(a.getCategory()).getName());
+                }
             });
             Map<String, Object> data = super.getData(list);
             data.put("current", list.getCurrent());
@@ -108,7 +112,7 @@ public class SiteRouterController extends BaseController {
             e.printStackTrace();
             return "redirect:/error/500";
         }
-        return "/site/index";
+        return "site/index";
     }
 
     /**
@@ -146,7 +150,7 @@ public class SiteRouterController extends BaseController {
             e.printStackTrace();
             return "redirect:/error/500";
         }
-        return "/site/page/article";
+        return "site/page/article";
     }
 
     /**
@@ -166,7 +170,7 @@ public class SiteRouterController extends BaseController {
             e.printStackTrace();
             return "redirect:/error/500";
         }
-        return "/site/page/archives";
+        return "site/page/archives";
     }
 
     /**
@@ -194,7 +198,7 @@ public class SiteRouterController extends BaseController {
             e.printStackTrace();
             return "redirect:/error/500";
         }
-        return "/site/page/links";
+        return "site/page/links";
     }
 
     /**
@@ -219,6 +223,6 @@ public class SiteRouterController extends BaseController {
             e.printStackTrace();
             return "redirect:/error/500";
         }
-        return "/site/page/about";
+        return "site/page/about";
     }
 }

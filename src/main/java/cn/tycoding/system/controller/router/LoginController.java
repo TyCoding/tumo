@@ -10,6 +10,7 @@ import cn.tycoding.system.service.LoginLogService;
 import eu.bitwalker.useragentutils.Browser;
 import eu.bitwalker.useragentutils.OperatingSystem;
 import eu.bitwalker.useragentutils.UserAgent;
+import io.swagger.annotations.Api;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,7 @@ import java.util.Map;
  * @date 2018/10/3
  */
 @RestController
+@Api(value = "LoginController", tags = {"登录接口"})
 public class LoginController extends BaseController {
 
     @Autowired

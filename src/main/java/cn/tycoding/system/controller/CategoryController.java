@@ -1,15 +1,16 @@
 package cn.tycoding.system.controller;
 
 import cn.tycoding.common.annotation.Log;
+import cn.tycoding.common.controller.BaseController;
+import cn.tycoding.common.exception.GlobalException;
 import cn.tycoding.common.utils.QueryPage;
 import cn.tycoding.common.utils.R;
 import cn.tycoding.system.entity.SysArticle;
 import cn.tycoding.system.entity.SysCategory;
-import cn.tycoding.common.exception.GlobalException;
 import cn.tycoding.system.service.ArticleService;
 import cn.tycoding.system.service.CategoryService;
-import cn.tycoding.common.controller.BaseController;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +24,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/api/category")
+@Api(value = "CategoryController", tags = {"分类管理接口"})
 public class CategoryController extends BaseController {
 
     @Autowired

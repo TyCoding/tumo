@@ -7,6 +7,7 @@ import cn.tycoding.common.utils.QueryPage;
 import cn.tycoding.common.utils.R;
 import cn.tycoding.system.entity.SysTag;
 import cn.tycoding.system.service.TagService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/api/tag")
+@Api(value = "TagController", tags = {"标签管理接口"})
 public class TagController extends BaseController {
 
     @Autowired

@@ -11,6 +11,7 @@ import cn.tycoding.system.entity.dto.ArchivesWithArticle;
 import cn.tycoding.system.service.ArticleService;
 import cn.tycoding.system.service.ArticleTagService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,6 +25,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/api/article")
+@Api(value = "ArticleController", tags = {"文章管理接口"})
 public class ArticleController extends BaseController {
 
     @Autowired

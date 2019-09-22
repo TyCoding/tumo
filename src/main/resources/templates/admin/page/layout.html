@@ -79,6 +79,9 @@
                     lay-done="layui.element.render('nav','tumo-sidebar');layui.admin.sidebarFocus()"
             >
                 <ul class="layui-nav layui-nav-tree" lay-filter="tumo-sidebar" >
+                    <li class="layui-nav-item">
+                        <a href="/swagger-ui.html" target="_blank" title="Api"><i class="layui-icon layui-icon-read"></i>Api</a>
+                    </li>
                     {{#
                     function __createSlidebar(data,index){
                     if(!data || data.length == 0) return '';
@@ -99,6 +102,7 @@
                     </li>
                     {{# }) }}
                 </ul>
+
             </script>
         </div>
     </div>

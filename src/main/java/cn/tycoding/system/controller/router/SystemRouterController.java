@@ -31,32 +31,32 @@ public class SystemRouterController {
 
     @GetMapping("/system")
     public String admin() {
-        return "/admin/index";
+        return "admin/index";
     }
 
     @GetMapping("/login")
     public String login() {
-        return "/admin/page/login";
+        return "admin/page/login";
     }
 
     @GetMapping("/admin/page/layout")
     public String layout() {
-        return "/admin/page/layout";
+        return "admin/page/layout";
     }
 
     @GetMapping("/admin/page/index")
     public String index() {
-        return "/admin/page/index";
+        return "admin/page/index";
     }
 
     @RequestMapping("/admin/page/article")
     public String article() {
-        return "/admin/page/article/index";
+        return "admin/page/article/index";
     }
 
     @RequestMapping("/admin/page/article/add")
     public String articleAdd() {
-        return "/admin/page/article/form";
+        return "admin/page/article/form";
     }
 
     @RequestMapping("/admin/page/article/edit/{id}")
@@ -64,76 +64,81 @@ public class SystemRouterController {
         SysArticle article = articleService.getById(id);
         article.setTags(tagService.findByArticleId(article.getId()));
         model.addAttribute("p", article);
-        return "/admin/page/article/edit";
+        return "admin/page/article/edit";
     }
 
     @RequestMapping("/admin/page/tag")
     public String tag() {
-        return "/admin/page/tag/index";
+        return "admin/page/tag/index";
     }
 
     @RequestMapping("/admin/page/tag/edit")
     public String tagEdit() {
-        return "/admin/page/tag/form";
+        return "admin/page/tag/form";
     }
 
     @RequestMapping("/admin/page/category")
     public String category() {
-        return "/admin/page/category/index";
+        return "admin/page/category/index";
     }
 
     @RequestMapping("/admin/page/category/edit")
     public String categoryEdit() {
-        return "/admin/page/category/form";
+        return "admin/page/category/form";
     }
 
     @RequestMapping("/admin/page/link")
     public String link() {
-        return "/admin/page/link/index";
+        return "admin/page/link/index";
     }
 
     @RequestMapping("/admin/page/link/edit")
     public String linkEdit() {
-        return "/admin/page/link/form";
+        return "admin/page/link/form";
     }
 
     @RequestMapping("/admin/page/comment")
     public String comment() {
-        return "/admin/page/comment/index";
+        return "admin/page/comment/index";
     }
 
     @RequestMapping("/admin/page/log")
     public String log() {
-        return "/admin/page/log/index";
+        return "admin/page/log/index";
     }
 
     @RequestMapping("/admin/page/loginlog")
     public String loginlog() {
-        return "/admin/page/loginlog/index";
+        return "admin/page/loginlog/index";
     }
 
     @RequestMapping("/admin/page/qiniu")
     public String qiniu() {
-        return "/admin/page/qiniu/index";
+        return "admin/page/qiniu/index";
     }
 
     @RequestMapping("/admin/page/qiniu/add")
     public String qiniuAdd() {
-        return "/admin/page/qiniu/add";
+        return "admin/page/qiniu/add";
     }
 
     @RequestMapping("/admin/page/user/profile")
     public String profile() {
-        return "/admin/page/user/profile";
+        return "admin/page/user/profile";
     }
 
     @RequestMapping("/admin/page/user/avatar")
     public String avatar() {
-        return "/admin/page/user/avatar";
+        return "admin/page/user/avatar";
     }
 
     @RequestMapping("/admin/page/user/edit")
     public String userEdit() {
-        return "/admin/page/user/edit";
+        return "admin/page/user/edit";
+    }
+
+    @RequestMapping("/admin/page/swagger")
+    public String swagger() {
+        return "swagger-ui.html";
     }
 }

@@ -12,6 +12,7 @@ import cn.tycoding.system.service.CommentService;
 import eu.bitwalker.useragentutils.Browser;
 import eu.bitwalker.useragentutils.OperatingSystem;
 import eu.bitwalker.useragentutils.UserAgent;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,6 +25,7 @@ import java.util.Date;
  */
 @RestController
 @RequestMapping("/api/comment")
+@Api(value = "CommentController", tags = {"评论管理接口"})
 public class CommentController extends BaseController {
 
     @Autowired
@@ -34,24 +36,12 @@ public class CommentController extends BaseController {
         return new R<>(super.getData(commentService.list(comment, queryPage)));
     }
 
-    /**
-     * 根据ArticleID查询其下的评论数量
-     *
-     * @param id
-     * @return
-     */
-    @GetMapping("/count/{id}")
-    public R findCountByArticleId(@PathVariable Long id) {
-        return new R<>(commentService.findCountByArticle(id));
-    }
-
     @GetMapping("/{id}")
     public R findById(@PathVariable Long id) {
         return new R<>(commentService.getById(id));
     }
 
     @PostMapping
-    @Log("新增评论")
     public R save(@RequestBody SysComment comment, HttpServletRequest request) {
         try {
             String ip = IPUtil.getIpAddr(request);

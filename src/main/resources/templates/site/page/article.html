@@ -39,8 +39,8 @@
         </div>
     </div>
     <div id="post-content" class="post-content" itemprop="articleBody">
-        <p class="post-tags" th:if="${p.tags} != null" th:each="tag : ${p.tags}">
-            <a href="#">[[${tag.name}]]</a>
+        <p class="post-tags" th:if="${p.tags} != null">
+            <a th:each="tag : ${p.tags}" href="#">[[${tag.name}]]</a>
         </p>
 
         <p th:utext="${p.content}"></p>

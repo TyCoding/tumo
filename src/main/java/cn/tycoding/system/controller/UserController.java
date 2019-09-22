@@ -10,6 +10,7 @@ import cn.tycoding.system.service.ArticleService;
 import cn.tycoding.system.service.CommentService;
 import cn.tycoding.system.service.LoginLogService;
 import cn.tycoding.system.service.UserService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +24,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/api/user")
+@Api(value = "UserController", tags = {"用户管理接口"})
 public class UserController extends BaseController {
 
     @Autowired

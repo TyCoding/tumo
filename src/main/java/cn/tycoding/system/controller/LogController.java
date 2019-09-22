@@ -7,6 +7,7 @@ import cn.tycoding.common.utils.QueryPage;
 import cn.tycoding.common.utils.R;
 import cn.tycoding.system.entity.SysLog;
 import cn.tycoding.system.service.LogService;
+import io.swagger.annotations.Api;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/api/log")
+@Api(value = "LogController", tags = {"日志管理接口"})
 public class LogController extends BaseController {
 
     @Autowired

@@ -8,6 +8,7 @@ import cn.tycoding.common.utils.R;
 import cn.tycoding.system.entity.SysLink;
 import cn.tycoding.system.service.LinkService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/api/link")
+@Api(value = "LinkController", tags = {"友链管理接口"})
 public class LinkController extends BaseController {
 
     @Autowired
