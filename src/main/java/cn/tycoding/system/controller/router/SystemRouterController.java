@@ -63,7 +63,9 @@ public class SystemRouterController {
     public String articleEdit(Model model, @PathVariable String id) {
         SysArticle article = articleService.getById(id);
         article.setTags(tagService.findByArticleId(article.getId()));
-        article.setCategory(categoryService.findByName(article.getCategory()).getName());
+        if (article.getCategory() != null) {
+            article.setCategory(categoryService.findByName(article.getCategory()).getName());
+        }
         model.addAttribute("p", article);
         return "/admin/page/article/edit";
     }

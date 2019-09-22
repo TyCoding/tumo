@@ -7,6 +7,6 @@ spring:
     url: jdbc:mysql://127.0.0.1:3306/tumo?characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Asia/Shanghai
 
 # 打印sql
-logging:
-  level:
-    cn.tycoding.system.mapper: DEBUG
+#logging:
+#  level:
+#    cn.tycoding.system.mapper: DEBUG
