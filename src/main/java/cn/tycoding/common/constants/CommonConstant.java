@@ -32,4 +32,9 @@ public interface CommonConstant {
      * 文章未发布状态标识：1
      */
     String DEFAULT_DRAFT_STATUS = "0";
+
+    /**
+     * User-Agent
+     */
+    String USER_AGENT = "User-Agent";
 }

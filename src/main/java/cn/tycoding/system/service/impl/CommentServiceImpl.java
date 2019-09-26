@@ -44,6 +44,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, SysComment> i
         LambdaQueryWrapper<SysComment> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.orderByDesc(SysComment::getId);
         queryWrapper.like(StringUtils.isNotBlank(comment.getName()), SysComment::getName, comment.getName());
+        queryWrapper.like(StringUtils.isNotBlank(comment.getUrl()), SysComment::getUrl, comment.getUrl());
         return commentMapper.selectPage(page, queryWrapper);
     }
 

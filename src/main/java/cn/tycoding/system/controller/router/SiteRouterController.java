@@ -5,6 +5,7 @@ import cn.tycoding.common.constants.SiteConstant;
 import cn.tycoding.common.controller.BaseController;
 import cn.tycoding.common.utils.QueryPage;
 import cn.tycoding.system.entity.SysArticle;
+import cn.tycoding.system.entity.SysCategory;
 import cn.tycoding.system.entity.SysComment;
 import cn.tycoding.system.entity.SysLink;
 import cn.tycoding.system.entity.dto.ArchivesWithArticle;
@@ -39,9 +40,6 @@ public class SiteRouterController extends BaseController {
 
     @Autowired
     private CommentService commentService;
-
-    @Autowired
-    private TagService tagService;
 
     @Autowired
     private CategoryService categoryService;
@@ -98,7 +96,12 @@ public class SiteRouterController extends BaseController {
                 a.setContentMd(null);
 
                 if (StringUtils.isNotBlank(a.getCategory())) {
-                    a.setCategory(categoryService.getById(a.getCategory()).getName());
+                    SysCategory category = categoryService.getById(a.getCategory());
+                    if (category != null) {
+                        a.setCategory(category.getName());
+                    } else {
+                        a.setCategory(null);
+                    }
                 }
             });
             Map<String, Object> data = super.getData(list);

@@ -1,5 +1,6 @@
 package cn.tycoding.system.controller.router;
 
+import cn.tycoding.common.constants.CommonConstant;
 import cn.tycoding.common.controller.BaseController;
 import cn.tycoding.common.utils.AddressUtil;
 import cn.tycoding.common.utils.HttpContextUtil;
@@ -59,7 +60,7 @@ public class LoginController extends BaseController {
             log.setUsername(super.getCurrentUser().getUsername());
             log.setLocation(AddressUtil.getAddress(ip));
             log.setCreateTime(new Date());
-            String header = request.getHeader("SysUser-Agent");
+            String header = request.getHeader(CommonConstant.USER_AGENT);
             UserAgent userAgent = UserAgent.parseUserAgentString(header);
             Browser browser = userAgent.getBrowser();
             OperatingSystem operatingSystem = userAgent.getOperatingSystem();

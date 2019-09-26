@@ -1,11 +1,11 @@
-package cn.tycoding.system.controller.storage;
+package cn.tycoding.system.controller;
 
 import cn.tycoding.common.constants.enums.CommonEnum;
 import cn.tycoding.common.exception.GlobalException;
 import cn.tycoding.common.properties.QiniuProperties;
 import cn.tycoding.common.properties.TumoProperties;
 import cn.tycoding.common.utils.R;
-import cn.tycoding.system.controller.storage.entity.Storage;
+import cn.tycoding.system.entity.QiNiuEntity;
 import com.qiniu.common.QiniuException;
 import com.qiniu.common.Zone;
 import com.qiniu.http.Response;
@@ -50,7 +50,7 @@ import java.util.*;
 @Slf4j
 @RestController
 @RequestMapping("/api/storage/qiniu")
-public class QiniuController {
+public class QiNiuController {
 
     @Autowired
     private TumoProperties properties;
@@ -95,13 +95,13 @@ public class QiniuController {
             String delimiter = "";
             //列举空间文件列表
             BucketManager.FileListIterator fileListIterator = bucketManager.createFileListIterator(qiniu.getBn(), prefix, limit, delimiter);
-            List<Storage> list = new ArrayList<>();
+            List<QiNiuEntity> list = new ArrayList<>();
             while (fileListIterator.hasNext()) {
                 //处理获取的file list结果
                 FileInfo[] items = fileListIterator.next();
                 for (FileInfo item : items) {
-                    Storage storage = new Storage(item.hash, item.key, item.mimeType, item.fsize, qiniu.getUrl() + item.key);
-                    list.add(storage);
+                    QiNiuEntity qiNiuEntity = new QiNiuEntity(item.hash, item.key, item.mimeType, item.fsize, qiniu.getUrl().trim() + item.key);
+                    list.add(qiNiuEntity);
                 }
             }
             Map map = new HashMap();
@@ -288,9 +288,9 @@ public class QiniuController {
         BucketManager bucketManager = new BucketManager(auth, cfg);
         try {
             FileInfo fileInfo = bucketManager.stat(qiniu.getBn(), name);
-            Storage storage = new Storage(fileInfo.hash, name, fileInfo.mimeType, fileInfo.fsize, qiniu.getUrl() + name);
-            List<Storage> list = new ArrayList<>();
-            list.add(storage);
+            QiNiuEntity qiNiuEntity = new QiNiuEntity(fileInfo.hash, name, fileInfo.mimeType, fileInfo.fsize, qiniu.getUrl() + name);
+            List<QiNiuEntity> list = new ArrayList<>();
+            list.add(qiNiuEntity);
             return new R<>(list);
         } catch (QiniuException e) {
             e.printStackTrace();

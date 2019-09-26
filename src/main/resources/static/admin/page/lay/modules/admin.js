@@ -294,7 +294,7 @@ layui
       layer.closeAll()
       self.initView(self.route)
     })
-    
+
     $(document).on('click', '[lay-href]', function(e) {
       var href = $(this).attr('lay-href')
       var target = $(this).attr('target')
@@ -488,6 +488,7 @@ layui
         });
       } else if (r.code === 403) {
         self.modal.warn('对不起，您暂无该操作权限');
+        window.location.reload()
       } else {
         self.modal.error(r.msg ? r.msg : '操作失败');
       }
