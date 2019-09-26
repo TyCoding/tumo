@@ -7,7 +7,6 @@ import cn.tycoding.common.utils.QueryPage;
 import cn.tycoding.common.utils.R;
 import cn.tycoding.system.entity.SysLink;
 import cn.tycoding.system.service.LinkService;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -23,16 +22,6 @@ public class LinkController extends BaseController {
 
     @Autowired
     private LinkService linkService;
-
-    /**
-     * 查询最新的8条友链
-     *
-     * @return
-     */
-    @GetMapping("/new")
-    public R findAll() {
-        return new R<>(linkService.list(new QueryWrapper<>()));
-    }
 
     @GetMapping("/list")
     public R list(SysLink link, QueryPage queryPage) {
