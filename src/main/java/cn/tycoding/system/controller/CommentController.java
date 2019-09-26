@@ -1,6 +1,7 @@
 package cn.tycoding.system.controller;
 
 import cn.tycoding.common.annotation.Log;
+import cn.tycoding.common.constants.CommonConstant;
 import cn.tycoding.common.controller.BaseController;
 import cn.tycoding.common.exception.GlobalException;
 import cn.tycoding.common.utils.AddressUtil;
@@ -48,7 +49,7 @@ public class CommentController extends BaseController {
             comment.setTime(new Date());
             comment.setIp(ip);
             comment.setAddress(AddressUtil.getAddress(ip));
-            String header = request.getHeader("SysUser-Agent");
+            String header = request.getHeader(CommonConstant.USER_AGENT);
             UserAgent userAgent = UserAgent.parseUserAgentString(header);
             Browser browser = userAgent.getBrowser();
             OperatingSystem operatingSystem = userAgent.getOperatingSystem();
