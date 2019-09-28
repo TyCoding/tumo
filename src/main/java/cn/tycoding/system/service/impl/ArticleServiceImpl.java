@@ -131,7 +131,9 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, SysArticle> i
             if (sysArticle.getCategory() != null) {
                 articleCategoryService.deleteByArticleId(sysArticle.getId());
                 SysCategory sysCategory = categoryService.getById(sysArticle.getCategory());
-                articleCategoryService.add(new ArticleCategory(sysArticle.getId(), sysCategory.getId()));
+                if (sysCategory != null) {
+                    articleCategoryService.add(new ArticleCategory(sysArticle.getId(), sysCategory.getId()));
+                }
             }
             if (sysArticle.getTags() != null && sysArticle.getTags().size() > 0) {
                 articleTagService.deleteByArticleId(sysArticle.getId());
