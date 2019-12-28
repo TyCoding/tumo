@@ -72,3 +72,6 @@ Tumo Blog 是一个非常漂亮的博客系统，基于SpringBoot2.1.3 + LayUI�
 - [ZhiHu@TyCoding](https://www.zhihu.com/people/tomo-83-82/activities)
 
 - QQ Group: 671017003
+
+- QQGroup2：490303233
+
