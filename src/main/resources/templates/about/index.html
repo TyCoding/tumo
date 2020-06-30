@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Tumo Blog | About</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="shortcut icon" type="image/x-icon" href="/img/favicon.ico?v=5.1.1">
+
+    <link href="/css/tumo.min.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+<div class="container sidebar-position-left page-home">
+    <div th:replace="layout/header"></div>
+
+    <main id="app" class="main">
+        <div class="main-inner">
+            <div th:replace="about/components/container"></div>
+
+            <div th:replace="layout/aside"></div>
+        </div>
+    </main>
+
+    <div th:replace="layout/footer"></div>
+
+</div>
+<script src="/js/tumo.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,91 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-block">
+                <el-tabs tab-position="left">
+                    <el-tab-pane label="基本设置">
+                        <h4 class="tab-header">基本设置</h4>
+                        <div class="tab-view">
+                            <div class="tab-left">
+                                <el-form :model="form" :rules="rulesBase" ref="ruleBase" size="small">
+                                    <el-form-item label="登录账户" prop="username">
+                                        <el-input v-model="form.username"></el-input>
+                                    </el-form-item>
+                                    <el-form-item label="邮箱" prop="email">
+                                        <el-input v-model="form.email"></el-input>
+                                    </el-form-item>
+                                    <el-form-item label="描述" prop="des">
+                                        <el-input type="textarea" v-model="form.des"></el-input>
+                                    </el-form-item>
+                                </el-form>
+                                <el-button type="primary" size="mini" @click="handleUpdate('ruleBase')">更新基本信息</el-button>
+                            </div>
+                            <div class="tab-right">
+                                <p><label>头像</label></p>
+                                <el-avatar :size="100" fit="fill" :src="form.avatar"></el-avatar>
+                                <div>
+                                    <el-button @click="handleAvatar" plain size="mini" icon="el-icon-upload2">更换头像</el-button>
+                                </div>
+                            </div>
+                        </div>
+                    </el-tab-pane>
+                    <el-tab-pane label="修改密码">
+                        <h4 class="tab-header">修改密码</h4>
+                        <div class="tab-view">
+                            <div class="tab-left">
+                                <el-form :model="passForm" :rules="rulesPass" ref="rulePass" size="small">
+                                    <el-form-item label="新密码" prop="password">
+                                        <el-input type="password" v-model="passForm.password"></el-input>
+                                    </el-form-item>
+                                    <el-form-item label="再次确认" prop="rePass">
+                                        <el-input type="password" v-model="passForm.rePass"></el-input>
+                                    </el-form-item>
+                                </el-form>
+                                <el-button type="primary" size="mini" @click="handleUpdatePass('rulePass')">更新密码</el-button>
+                            </div>
+                            <div class="tab-right">
+                            </div>
+                        </div>
+                    </el-tab-pane>
+                    <el-tab-pane label="登录日志">
+                        <h4 class="tab-header">登录日志</h4>
+                        <div class="tab-view" style="display: block;">
+                            <el-form size="mini" :inline="true">
+                                <el-form-item>
+                                    <el-input v-model="query.location" placeholder="请输入登录地点查询" style="width: 300px"></el-input>
+                                </el-form-item>
+                                <el-form-item style="padding: 0;margin: 0">
+                                    <el-button @click="fetchData" type="success" icon="el-icon-search"></el-button>
+                                </el-form-item>
+                            </el-form>
+                            <div class="table-responsive">
+                                <el-table
+                                        :data="list"
+                                        tooltip-effect="dark"
+                                        style="width: 100%"
+                                        size="mini">
+                                    <el-table-column prop="username" label="登录账户" width="110"></el-table-column>
+                                    <el-table-column prop="ip" label="登录IP" width="120"></el-table-column>
+                                    <el-table-column prop="location" label="登录地点"></el-table-column>
+                                    <el-table-column prop="device" label="登录设备"></el-table-column>
+                                    <el-table-column prop="createTime" label="登录时间" width="150"></el-table-column>
+                                    <el-table-column label="操作" width="50">
+                                        <template slot-scope="scope">
+                                            <el-button @click="handleDel(scope.row.id)" type="text" icon="el-icon-delete"></el-button>
+                                        </template>
+                                    </el-table-column>
+                                </el-table>
+                                <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange"
+                                               :current-page="pageConf.page"
+                                               :page-size="pageConf.limit"
+                                               layout="total, prev, pager, next"
+                                               :total="pageConf.total">
+                                </el-pagination>
+                            </div>
+                        </div>
+                    </el-tab-pane>
+                </el-tabs>
+            </div>
+        </div>
+    </div>
+</div>

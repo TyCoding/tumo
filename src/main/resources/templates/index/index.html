@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Tumo Blog</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="shortcut icon" type="image/x-icon" href="/img/favicon.ico?v=5.1.1">
+
+    <link href="/css/tumo.min.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="/js/vue/element-ui/lib/theme-chalk/index.css">
+</head>
+
+<body>
+<div class="container sidebar-position-left page-home">
+    <div th:replace="layout/header"></div>
+
+    <main id="app" class="main">
+        <div class="main-inner">
+            <div th:replace="index/components/container"></div>
+
+            <div th:replace="layout/aside"></div>
+        </div>
+    </main>
+
+    <div th:replace="layout/footer"></div>
+
+</div>
+<script src="/js/tumo.min.js"></script>
+<script src="/js/vue/vue.min.js"></script>
+<script src="/js/vue/vue-resource.min.js"></script>
+<script src="/js/vue/element-ui/lib/index.js"></script>
+<script th:inline="javascript">
+    new Vue({
+        el: '#app',
+        data: {
+            list: [],
+            pageConf: {
+                page: 1,
+                limit: 8,
+                total: 12,
+            },
+        },
+        created() {
+            this.fetchData()
+        },
+        methods: {
+            fetchData() {
+                this.$http.post(
+                    '/article/list?page=' + this.pageConf.page + '&limit=' + this.pageConf.limit,
+                    JSON.stringify({})
+                ).then(res => {
+                    if (res.body.code == 200) {
+                        this.list = res.body.data.rows
+                        this.pageConf.total = res.body.data.total
+                    } else {
+                        this.$message.error(res.body.msg)
+                    }
+                })
+            },
+
+            handleSizeChange(val) {
+                this.pageConf.limit = val
+                this.fetchData()
+            },
+            handleCurrentChange(val) {
+                this.pageConf.page = val;
+                this.fetchData()
+            },
+        },
+    })
+</script>
+</body>
+</html>

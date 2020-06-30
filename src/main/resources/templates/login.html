@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>登录</title>
+    <link rel="shortcut icon" type="image/x-icon" href="/img/favicon.ico?v=5.1.1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Vendor styles -->
+    <link rel="stylesheet" href="/js/bower_components/animate.css/animate.min.css">
+
+    <!-- App styles -->
+    <link rel="stylesheet" href="/css/app.min.css">
+    <link rel="stylesheet" href="/js/vue/element-ui/lib/theme-chalk/index.css">
+</head>
+
+<body data-ma-theme="green">
+<div class="page-loader">
+    <div class="page-loader__spinner">
+        <svg viewBox="25 25 50 50">
+            <circle cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/>
+        </svg>
+    </div>
+</div>
+<div class="login" id="app">
+
+    <!-- Login -->
+    <div class="login__block active" id="l-login">
+        <h2 style="padding: 20px 0">Tumo Login</h2>
+        <div class="login__block__body">
+            <div class="form-group form-group--float">
+                <input v-model="username" type="text" class="form-control" placeholder="用户名">
+                <i class="form-group__bar"></i>
+            </div>
+
+            <div class="form-group form-group--float">
+                <input v-model="password" type="password" class="form-control" placeholder="密码">
+                <i class="form-group__bar"></i>
+            </div>
+            <button @click="handleLogin" type="button" class="btn btn-danger btn-block">登录</button>
+            <br/>
+            <a href="/register">还没有账户？去注册</a>
+            <br/>
+            <br/>
+            <p>版权所有 ©TyCoding 2018-2020.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Javascript -->
+<!-- Vendors -->
+<script src="/js/bower_components/jquery/dist/jquery.min.js"></script>
+<script src="/js/bower_components/tether/dist/js/tether.min.js"></script>
+<script src="/js/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="/js/bower_components/Waves/dist/waves.min.js"></script>
+
+<!-- App functions and actions -->
+<script src="/js/app.min.js"></script>
+<script src="/js/vue/vue.min.js"></script>
+<script src="/js/vue/vue-resource.min.js"></script>
+<script src="/js/vue/element-ui/lib/index.js"></script>
+<script th:inline="javascript">
+    new Vue({
+        el: '#app',
+        data: {
+            username: 'tycoding',
+            password: 'tycoding',
+        },
+        methods: {
+            handleLogin() {
+                if (this.username === '' || this.password === '') {
+                    this.$message.error('请输入用户名或密码')
+                    return;
+                }
+                $(".page-loader").fadeIn()
+                let _$ = $
+                this.$http.post(
+                    '/login?username=' + this.username + '&password=' + this.password,
+                ).then(res => {
+                    if (res.body.code == 200) {
+                        window.location.href = '/tumo'
+                    } else {
+                        _$(".page-loader").fadeOut()
+                        this.$message.error(res.body.msg)
+                    }
+                }).catch(() => {
+                    _$(".page-loader").fadeOut()
+                    this.$message.error('请求连接失败，请稍后重试')
+                })
+            }
+        },
+    })
+</script>
+</body>
+</html>

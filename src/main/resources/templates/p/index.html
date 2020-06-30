@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Tumo Blog</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="shortcut icon" type="image/x-icon" href="/img/favicon.ico?v=5.1.1">
+
+    <link href="/css/tumo.min.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="/js/vue/element-ui/lib/theme-chalk/index.css">
+    <style type="text/css">.comments .comments-content{border-color:#b2b2b5;border:1px solid #f0f0f0;border-radius:4px;margin-bottom:10px;overflow:hidden;position:relative;padding:10px}.el-input__inner{border:0;border-bottom:1px dashed #dedede}.el-textarea{padding:10px 0}.el-textarea__inner{border:0}.comments-count{padding:5px;font-weight:600;font-size:1.25em}.comments{margin:0;margin-top:60px}.comments-list{width:100%;font-family:Lato,"PingFang SC","Microsoft YaHei",sans-serif}.comments-list-item{padding-top:1.25em;position:relative;display:block;overflow:hidden;padding-bottom:.5em;border-bottom:1px dashed #f5f5f5}.comments-item-img{width:3.125em;height:3.125em;float:left;border-radius:50%;margin-right:.7525em;border:1px solid #f5f5f5;padding:.125em}.comments-list-item-view{overflow:hidden;padding-bottom:.5em;border-bottom:1px dashed #f5f5f5}.comments-item-head{line-height:1.5;margin-top:0}.comments-item-name{position:relative;font-size:.875em;font-weight:500;margin-right:.875em;cursor:pointer;text-decoration:none;display:inline-block}.comments-item-device{color:#929298;display:inline-block;padding:.2em .5em;font-size:.75em;border-radius:.2em;margin-right:.3em}.comments-item-time{font-size:.75em;margin-right:.875em;color:#929298}.comments-item-content{word-wrap:break-word;word-break:break-all;font-size:.875em;line-height:2;position:relative;margin-bottom:.75em;padding-top:.625em;color:#b2b2b5}</style>
+</head>
+
+<body>
+<div class="container sidebar-position-left page-home">
+    <div th:replace="layout/header"></div>
+
+    <main id="app" class="main">
+        <div class="main-inner">
+            <div th:replace="p/components/container"></div>
+
+            <div th:replace="layout/aside"></div>
+        </div>
+    </main>
+
+    <div th:replace="layout/footer"></div>
+
+</div>
+<script src="/js/tumo.min.js"></script>
+<script src="/js/vue/vue.min.js"></script>
+<script src="/js/vue/vue-resource.min.js"></script>
+<script src="/js/vue/element-ui/lib/index.js"></script>
+<script th:inline="javascript">
+    new Vue({
+        el: '#app',
+        data: {
+            form: {},
+            list: [],
+            rulesForm: {
+                nickname: [
+                    {required: true, message: '请输入昵称', trigger: 'blur'},
+                ],
+                email: [
+                    {required: true, message: '请输入邮箱', trigger: 'blur'}
+                ],
+                content: [
+                    {required: true, message: '请输入评论内容', trigger: 'blur'}
+                ],
+            }
+        },
+        created() {
+            this.fetchData()
+        },
+        methods: {
+            fetchData() {
+                this.$http.get(
+                    '/comment/findByArticle/' + [[${p.id}]]
+                ).then(res => {
+                    if (res.body.code == 200) {
+                        this.list = res.body.data
+                    } else {
+                        this.$message.error(res.body.msg)
+                    }
+                })
+            },
+
+            handleSubmit(formName) {
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        this.form.articleId = [[${p.id}]]
+                        this.$http.post(
+                            '/comment/',
+                            JSON.stringify(this.form)
+                        ).then(res => {
+                            if (res.body.code == 200) {
+                                this.$message.success('评论已发表~')
+                                this.fetchData()
+                                this.form = {}
+                            } else {
+                                this.$message.error(res.body.msg)
+                            }
+                        })
+                    } else {
+                        console.log('error submit!!');
+                        return false;
+                    }
+                });
+            },
+
+            handleSizeChange(val) {
+                this.pageConf.limit = val
+                this.fetchData()
+            },
+            handleCurrentChange(val) {
+                this.pageConf.page = val;
+                this.fetchData()
+            },
+        },
+    })
+</script>
+</body>
+</html>

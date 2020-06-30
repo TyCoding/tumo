@@ -1,0 +1,12 @@
+<el-dialog title="上传" :visible.sync="dialogVisible" width="40%" :before-close="handleClose" :close-on-press-escape="false" :close-on-click-modal="false">
+    <el-upload
+            v-else
+            action="/qiniu/upload"
+            :on-success="uploadSuccess"
+            :file-list="fileList">
+        <el-button size="small" type="primary">点击上传</el-button>
+    </el-upload>
+    <span slot="footer" class="dialog-footer">
+        <el-button @click="handleClose">取 消</el-button>
+    </span>
+</el-dialog>

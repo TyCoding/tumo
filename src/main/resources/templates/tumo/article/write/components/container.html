@@ -1,0 +1,57 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">发布文章</h2>
+            </div>
+            <div class="card-block">
+                <el-form ref="form" :model="form" :rules="rulesForm" label-width="80px">
+                    <el-form-item label="文章标题" prop="title">
+                        <el-input v-model="form.title" placeholder="请输入文章标题"></el-input>
+                    </el-form-item>
+                    <div class="row">
+                        <div class="col-md-5">
+                            <el-form-item label="文章分类" prop="category">
+                                <el-select v-model="form.category" value-key="id" placeholder="请选择文章分类" style="width: 100%">
+                                    <el-option
+                                            v-for="item in categoryList"
+                                            :key="item.id"
+                                            :label="item.name"
+                                            :value="item">
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                        </div>
+                        <div class="col-md-7">
+                            <el-form-item label="文章标签" prop="tags">
+                                <el-select v-model="form.tags" value-key="id" multiple placeholder="请选择文章标签" style="width: 100%">
+                                    <el-option
+                                            v-for="item in tagList"
+                                            :key="item.id"
+                                            :label="item.name"
+                                            :value="item">
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                        </div>
+                    </div>
+                    <el-form-item label="文章描述">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div id="article-des-container"></div>
+                            </div>
+                        </div>
+                    </el-form-item>
+                    <el-form-item label="文章内容">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div id="article-container"></div>
+                            </div>
+                        </div>
+                    </el-form-item>
+                </el-form>
+                <el-button type="primary" @click="handleSubmit('form')">发布文章</el-button>
+            </div>
+        </div>
+    </div>
+</div>

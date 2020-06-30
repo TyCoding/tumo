@@ -1,0 +1,96 @@
+<div class="row quick-stats">
+    <div class="col-sm-6 col-md-3">
+        <div class="quick-stats__item bg-light-blue">
+            <div class="quick-stats__info">
+                <h2>[[${articleCount}]]</h2>
+                <small>文章数量</small>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-6 col-md-3">
+        <div class="quick-stats__item bg-teal">
+            <div class="quick-stats__info">
+                <h2>[[${tagCount}]]</h2>
+                <small>标签数量</small>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-6 col-md-3">
+        <div class="quick-stats__item bg-purple">
+            <div class="quick-stats__info">
+                <h2>[[${commentCount}]]</h2>
+                <small>留言数量</small>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-6 col-md-3">
+        <div class="quick-stats__item bg-red">
+            <div class="quick-stats__info">
+                <h2>[[${userCount}]]</h2>
+                <small>用户数量</small>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">用户增长量</h2>
+            </div>
+            <div class="card-block">
+                <div id="user-chart"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">评论增长量</h2>
+            </div>
+            <div class="card-block">
+                <div id="comment-chart"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">网友留言</h2>
+            </div>
+            <div class="card-block">
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead class="thead-default">
+                        <tr>
+                            <th>昵称</th>
+                            <th>邮箱</th>
+                            <th>留言内容</th>
+                            <th>时间</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr v-for="item in list">
+                            <td>{{item.nickname}}</td>
+                            <td>{{item.email}}</td>
+                            <td>{{item.content}}</td>
+                            <td>{{item.createTime}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange"
+                                   :current-page="pageConf.page"
+                                   :page-size="pageConf.limit"
+                                   layout="total, prev, pager, next"
+                                   :total="pageConf.total">
+                    </el-pagination>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

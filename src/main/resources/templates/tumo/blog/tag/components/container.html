@@ -1,0 +1,50 @@
+<div class="card">
+    <div class="card-header">
+        <h2 class="card-title">标签管理</h2>
+    </div>
+    <div class="card-block">
+        <div class="row">
+            <div class="col-md-4">
+                <el-card shadow="never">
+                    <el-form size="mini" :inline="true">
+                        <el-form-item>
+                            <el-input v-model="query.name" placeholder="请输入标签名称查询"></el-input>
+                        </el-form-item>
+                        <el-form-item style="padding: 0;margin: 0">
+                            <el-button @click="fetchData" type="success" icon="el-icon-search"></el-button>
+                            <el-button @click="handleAdd" type="primary" icon="el-icon-plus"></el-button>
+                        </el-form-item>
+                    </el-form>
+                    <el-tree
+                            :data="list"
+                            highlight-current
+                            ref="tree"
+                            node-key="id"
+                            @node-click="handleNodeChange">
+                      <span class="custom-tree-node" slot-scope="{ node, data }">
+                        <span>{{ data.name }}</span>
+                        <span>
+                          <el-button type="text" size="mini" @click="() => handleEdit(node, data)" icon="el-icon-edit"></el-button>
+                          <el-button type="text" size="mini" @click="() => handleDel(node, data)" icon="el-icon-delete"></el-button>
+                        </span>
+                      </span>
+                    </el-tree>
+                </el-card>
+            </div>
+            <div class="col-md-8">
+                <el-card shadow="never">
+                    <el-table
+                            :data="articleList"
+                            tooltip-effect="dark"
+                            style="width: 100%"
+                            size="mini">
+                        <el-table-column prop="id" label="ID" width="55"></el-table-column>
+                        <el-table-column prop="author" label="作者" width="120"></el-table-column>
+                        <el-table-column prop="title" label="标题"></el-table-column>
+                        <el-table-column prop="createTime" label="时间" width="150"></el-table-column>
+                    </el-table>
+                </el-card>
+            </div>
+        </div>
+    </div>
+</div>

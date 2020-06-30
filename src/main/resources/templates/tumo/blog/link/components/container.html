@@ -1,0 +1,47 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">友链管理</h2>
+            </div>
+            <div class="card-block">
+                <el-form size="mini" :inline="true">
+                    <el-form-item>
+                        <el-input v-model="query.name" placeholder="请输入友链名称查询" style="width: 300px"></el-input>
+                    </el-form-item>
+                    <el-form-item style="padding: 0;margin: 0">
+                        <el-button @click="fetchData" type="success" icon="el-icon-search"></el-button>
+                        <el-button @click="handleAdd" type="primary" icon="el-icon-plus"></el-button>
+                    </el-form-item>
+                </el-form>
+                <div class="table-responsive">
+                    <el-table
+                            :data="list"
+                            tooltip-effect="dark"
+                            style="width: 100%"
+                            size="mini">
+                        <el-table-column prop="id" label="ID" width="55"></el-table-column>
+                        <el-table-column prop="name" label="名称"></el-table-column>
+                        <el-table-column label="URL">
+                            <template slot-scope="scope">
+                                <a :href="scope.row.url" target="_blank">{{ scope.row.url }}</a>
+                            </template>
+                        </el-table-column>
+                        <el-table-column label="操作" width="100">
+                            <template slot-scope="scope">
+                                <el-button @click="handleEdit(scope.row.id)" type="text" icon="el-icon-edit"></el-button>
+                                <el-button @click="handleDel(scope.row.id)" type="text" icon="el-icon-delete"></el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                    <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange"
+                                   :current-page="pageConf.page"
+                                   :page-size="pageConf.limit"
+                                   layout="total, prev, pager, next"
+                                   :total="pageConf.total">
+                    </el-pagination>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

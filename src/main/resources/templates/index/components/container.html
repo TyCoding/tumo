@@ -1,0 +1,45 @@
+<div class="content-wrap">
+    <div id="content" class="content">
+        <section id="posts" class="posts-expand">
+            <div v-for="item in list">
+                <article class="post post-type-normal">
+                    <header class="post-header">
+                        <h1 class="post-title">
+                            <a class="post-title-link" :href="'/p/' + item.id">{{item.title}}</a>
+                        </h1>
+                        <div class="post-meta">
+                            <span class="post-time">
+                                <span class="post-meta-item-icon">
+                                    <i class="fa fa-calendar-o"></i>
+                                </span>
+                                <span class="post-meta-item-text">Posted on</span>
+                                <time>{{item.createTime}}</time>
+                            </span>
+                        </div>
+                    </header>
+
+                    <div class="post-body">
+                        <div v-html="item.des"></div>
+                        <div class="post-button text-center">
+                            <a class="btn animsition-link" :href="'/p/' + item.id">
+                                READ MORE »
+                            </a>
+                        </div>
+                    </div>
+                    <footer class="post-footer">
+                        <div class="post-eof"></div>
+                    </footer>
+                </article>
+                <hr>
+            </div>
+        </section>
+        <nav class="pagination">
+            <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange"
+                           :current-page="pageConf.page"
+                           :page-size="pageConf.limit"
+                           layout="total, prev, pager, next"
+                           :total="pageConf.total">
+            </el-pagination>
+        </nav>
+    </div>
+</div>

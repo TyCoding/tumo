@@ -1,0 +1,12 @@
+<el-dialog title="更换头像" :visible.sync="dialogVisible" width="43%" :before-close="handleClose" :close-on-press-escape="false" :close-on-click-modal="false">
+    <div>
+        <div v-for="i in fileList" class="avatar-img" @click="handleClick(i)">
+            <img :src="i">
+            <label :style="avatar == i ? '':'display:none'" class="avatar-img-label"><i class="el-icon-upload-success el-icon-check"></i></label>
+        </div>
+    </div>
+    <span slot="footer" class="dialog-footer">
+        <el-button @click="handleClose">取 消</el-button>
+        <el-button @click="changeAvatar" type="primary">确 定</el-button>
+    </span>
+</el-dialog>

@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>友链管理</title>
+    <link rel="shortcut icon" type="image/x-icon" href="/img/favicon.ico?v=5.1.1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Vendor styles -->
+    <link rel="stylesheet" href="/js/bower_components/material-design-iconic-font/dist/css/material-design-iconic-font.min.css">
+    <link rel="stylesheet" href="/js/bower_components/animate.css/animate.min.css">
+    <link rel="stylesheet" href="/js/bower_components/jquery.scrollbar/jquery.scrollbar.css">
+
+    <!-- App styles -->
+    <link rel="stylesheet" href="/css/app.min.css">
+    <link rel="stylesheet" href="/js/vue/element-ui/lib/theme-chalk/index.css">
+</head>
+
+<body data-ma-theme="green">
+<main class="main">
+    <div class="page-loader">
+        <div class="page-loader__spinner">
+            <svg viewBox="25 25 50 50">
+                <circle cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/>
+            </svg>
+        </div>
+    </div>
+
+    <header class="header">
+        <div class="navigation-trigger hidden-xl-up" data-ma-action="aside-open" data-ma-target=".sidebar">
+            <div class="navigation-trigger__inner">
+                <i class="navigation-trigger__line"></i>
+                <i class="navigation-trigger__line"></i>
+                <i class="navigation-trigger__line"></i>
+            </div>
+        </div>
+
+        <div class="header__logo hidden-sm-down">
+            <h1><a href="/tumo">Tumo Blog v3.0</a></h1>
+        </div>
+
+        <ul class="top-nav">
+            <li class="dropdown hidden-xs-down">
+                <a href="" data-toggle="dropdown"><i class="zmdi zmdi-more-vert"></i></a>
+
+                <div class="dropdown-menu dropdown-menu-right">
+                    <div class="dropdown-item theme-switch">
+                        Theme Switch
+                        <div class="btn-group btn-group--colors mt-2" data-toggle="buttons">
+                            <label class="btn bg-green active waves-effect"><input type="radio" value="green" autocomplete="off" checked=""></label>
+                            <label class="btn bg-blue waves-effect"><input type="radio" value="blue" autocomplete="off"></label>
+                            <label class="btn bg-red waves-effect"><input type="radio" value="red" autocomplete="off"></label>
+                            <label class="btn bg-orange waves-effect"><input type="radio" value="orange" autocomplete="off"></label>
+                            <label class="btn bg-teal waves-effect"><input type="radio" value="teal" autocomplete="off"></label>
+                            <br>
+                            <label class="btn bg-cyan waves-effect"><input type="radio" value="cyan" autocomplete="off"></label>
+                            <label class="btn bg-blue-grey waves-effect"><input type="radio" value="blue-grey" autocomplete="off"></label>
+                            <label class="btn bg-purple waves-effect"><input type="radio" value="purple" autocomplete="off"></label>
+                            <label class="btn bg-indigo waves-effect"><input type="radio" value="indigo" autocomplete="off"></label>
+                            <label class="btn bg-lime waves-effect"><input type="radio" value="lime" autocomplete="off"></label>
+                        </div>
+                    </div>
+                    <a href="" class="dropdown-item">Fullscreen</a>
+                    <a href="" class="dropdown-item">Clear Local Storage</a>
+                </div>
+            </li>
+        </ul>
+    </header>
+
+    <aside class="sidebar">
+        <div class="scrollbar-inner">
+            <div class="user">
+                <div class="user__info" data-toggle="dropdown">
+                    <img class="user__img" th:src="${user.avatar}" alt="">
+                    <div>
+                        <div class="user__name">[[${user.username}]]</div>
+                        <div class="user__email">[[${user.email}]]</div>
+                    </div>
+                </div>
+
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="/tumo/profile">账户设置</a>
+                    <a class="dropdown-item" href="/logout">注销</a>
+                </div>
+            </div>
+
+            <ul class="navigation">
+                <li><a href="/tumo"><i class="zmdi zmdi-home"></i> 主页</a></li>
+
+                <li class="navigation__sub">
+                    <a href=""><i class="zmdi zmdi-book"></i>文章管理</a>
+
+                    <ul>
+                        <li><a href="/tumo/article/write">发布文章</a></li>
+                        <li><a href="/tumo/article/list">文章列表</a></li>
+                    </ul>
+                </li>
+
+                <li class="navigation__sub navigation__sub--active navigation__sub--toggled">
+                    <a href=""><i class="zmdi zmdi-view-week"></i>博客管理</a>
+
+                    <ul>
+                        <li><a href="/tumo/blog/tag">标签管理</a></li>
+                        <li><a href="/tumo/blog/category">分类管理</a></li>
+                        <li class="navigation__active"><a href="/tumo/blog/link">友链管理</a></li>
+                        <li><a href="/tumo/blog/comment">评论管理</a></li>
+                    </ul>
+                </li>
+
+                <li class="navigation__sub">
+                    <a href=""><i class="zmdi zmdi-settings"></i>系统管理</a>
+
+                    <ul>
+                        <li><a href="/tumo/setting/log">操作日志</a></li>
+                        <li><a href="/tumo/setting/qiniu">七牛云</a></li>
+                        <li><a href="/tumo/setting/swagger">Swagger</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </aside>
+
+    <section class="content" id="app">
+
+        <div th:replace="tumo/blog/link/components/container"></div>
+        <div th:replace="tumo/blog/link/components/form"></div>
+
+        <footer class="footer hidden-xs-down">
+            <p>© Tumo Blog. All rights reserved.</p>
+            <ul class="nav footer__nav">
+                <a class="nav-link" href="https://github.com/TyCoding/tumo" target="_blank">Tumo</a>
+                <a class="nav-link" href="https://tycoding.cn/" target="_blank">Blog</a>
+                <a class="nav-link" href="https://github.com/TyCoding" target="_blank">Github</a>
+            </ul>
+        </footer>
+    </section>
+</main>
+
+<!-- Javascript -->
+<!-- Vendors -->
+<script src="/js/bower_components/jquery/dist/jquery.min.js"></script>
+<script src="/js/bower_components/tether/dist/js/tether.min.js"></script>
+<script src="/js/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="/js/bower_components/Waves/dist/waves.min.js"></script>
+<script src="/js/bower_components/jquery.scrollbar/jquery.scrollbar.min.js"></script>
+<script src="/js/bower_components/jquery.scrollbar/jquery-scrollLock.min.js"></script>
+<script src="/js/bower_components/Waves/dist/waves.min.js"></script>
+
+<!-- App functions and actions -->
+<script src="/js/app.min.js"></script>
+<script src="/js/vue/vue.min.js"></script>
+<script src="/js/vue/vue-resource.min.js"></script>
+<script src="/js/vue/element-ui/lib/index.js"></script>
+<script th:inline="javascript">
+    new Vue({
+        el: '#app',
+        data: {
+            list: [],
+            pageConf: {
+                page: 1,
+                limit: 8,
+                total: 12,
+            },
+            form: {},
+            dialogVisible: false,
+            query: {},
+        },
+        created() {
+            this.fetchData()
+        },
+        methods: {
+            handleClose() {
+                this.dialogVisible = false
+                this.form = {}
+            },
+            fetchData() {
+                this.$http.post(
+                    '/link/list?page=' + this.pageConf.page + '&limit=' + this.pageConf.limit,
+                    JSON.stringify(this.query)
+                ).then(res => {
+                    if (res.body.code == 200) {
+                        this.list = res.body.data.rows
+                        this.pageConf.total = res.body.data.total
+                    } else {
+                        this.$message.error(res.body.msg)
+                    }
+                })
+            },
+
+            handleAdd() {
+                this.dialogVisible = true
+            },
+            handleSubmit(formName) {
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        if (this.form.id == undefined) {
+                            this.$http.post(
+                                '/link/',
+                                JSON.stringify(this.form)
+                            ).then(res => {
+                                if (res.body.code == 200) {
+                                    this.$message.success('添加成功')
+                                    this.fetchData();
+                                    this.handleClose()
+                                } else {
+                                    this.$message.error(res.body.msg)
+                                }
+                            })
+                        } else {
+                            this.$http.put(
+                                '/link/',
+                                JSON.stringify(this.form)
+                            ).then(res => {
+                                if (res.body.code == 200) {
+                                    this.$message.success('修改成功')
+                                    this.fetchData()
+                                    this.handleClose()
+                                } else {
+                                    this.$message.error(res.body.msg)
+                                }
+                            })
+                        }
+                    } else {
+                        console.log('error submit!!');
+                        return false;
+                    }
+                });
+            },
+
+            handleEdit(id) {
+                this.$http.get(
+                    '/link/' + id,
+                ).then(res => {
+                    if (res.body.code == 200) {
+                        this.form = res.body.data
+                        this.dialogVisible = true
+                    } else {
+                        this.$message.error(res.body.msg)
+                    }
+                })
+            },
+            handleDel(id) {
+                this.$confirm('你确定永久删除此数据？, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    this.$http.delete(
+                        '/link/' + id
+                    ).then(res => {
+                        if (res.body.code == 200) {
+                            this.fetchData();
+                            this.$message.success('删除成功')
+                        } else {
+                            this.$message.error(res.body.msg)
+                        }
+                    })
+                }).catch(() => {
+                    this.$message.info('已取消删除')
+                });
+            },
+
+            handleSizeChange(val) {
+                this.pageConf.limit = val
+                this.fetchData()
+            },
+            handleCurrentChange(val) {
+                this.pageConf.page = val;
+                this.fetchData()
+            },
+        },
+    })
+</script>
+</body>
+</html>
