@@ -1,0 +1,47 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">操作日志</h2>
+            </div>
+            <div class="card-block">
+                <el-form size="mini" :inline="true">
+                    <el-form-item>
+                        <el-input v-model="query.username" placeholder="请输入操作用户查询" style="width: 300px"></el-input>
+                    </el-form-item>
+                    <el-form-item style="padding: 0;margin: 0">
+                        <el-button @click="fetchData" type="success" icon="el-icon-search"></el-button>
+                    </el-form-item>
+                </el-form>
+                <div class="table-responsive">
+                    <el-table ref="table" :data="list" size="mini" tooltip-effect="dark" style="width: 100%">
+                        <el-table-column prop="username" label="操作用户" width="150" align="center"></el-table-column>
+                        <el-table-column prop="operation" label="操作描述" width="180" align="center"></el-table-column>
+                        <el-table-column prop="time" label="耗时(毫秒)" width="140" align="center">
+                            <template slot-scope="scope">
+                                <el-tag>{{scope.row.time}} ms</el-tag>
+                            </template>
+                        </el-table-column>
+                        <el-table-column prop="method" label="操作方法" show-overflow-tooltip align="center"></el-table-column>
+                        <el-table-column prop="params" label="操作参数" width="180" show-overflow-tooltip align="center"></el-table-column>
+                        <el-table-column prop="ip" label="IP地址" width="160" align="center"></el-table-column>
+                        <el-table-column prop="location" label="操作地点" width="200" align="center"></el-table-column>
+                        <el-table-column prop="createTime" label="操作时间" width="160" align="center"></el-table-column>
+                        <el-table-column label="操作" align="center" width="80">
+                            <template slot-scope="scope">
+                                <el-button @click="handleDel(scope.row.id)" size="mini" icon="el-icon-delete" type="text"></el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                    <br/>
+                    <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange"
+                                   :current-page="pageConf.page"
+                                   :page-size="pageConf.limit"
+                                   layout="total, prev, pager, next"
+                                   :total="pageConf.total">
+                    </el-pagination>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,45 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">评论管理</h2>
+            </div>
+            <div class="card-block">
+                <el-form size="mini" :inline="true">
+                    <el-form-item>
+                        <el-input v-model="query.content" placeholder="请输入评论内容查询" style="width: 300px"></el-input>
+                    </el-form-item>
+                    <el-form-item style="padding: 0;margin: 0">
+                        <el-button @click="fetchData" type="success" icon="el-icon-search"></el-button>
+                    </el-form-item>
+                </el-form>
+                <div class="table-responsive">
+                    <el-table
+                            :data="list"
+                            tooltip-effect="dark"
+                            style="width: 100%"
+                            size="mini">
+                        <el-table-column prop="id" label="ID" width="55"></el-table-column>
+                        <el-table-column prop="nickname" label="昵称" width="150"></el-table-column>
+                        <el-table-column prop="content" label="内容"></el-table-column>
+                        <el-table-column prop="email" label="邮箱" width="150"></el-table-column>
+                        <el-table-column prop="ip" label="IP" width="150"></el-table-column>
+                        <el-table-column prop="device" label="设备" width="150"></el-table-column>
+                        <el-table-column prop="address" label="地址" width="150"></el-table-column>
+                        <el-table-column label="操作" width="50">
+                            <template slot-scope="scope">
+                                <el-button @click="handleDel(scope.row.id)" type="text" icon="el-icon-delete"></el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                    <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange"
+                                   :current-page="pageConf.page"
+                                   :page-size="pageConf.limit"
+                                   layout="total, prev, pager, next"
+                                   :total="pageConf.total">
+                    </el-pagination>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
