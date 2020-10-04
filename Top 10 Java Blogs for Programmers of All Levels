@@ -1,0 +1,111 @@
+Top 10 Java Blogs for Programmers of All Levels
+BEN PUTANOOCTOBER 14, 2017DEVELOPER TIPS, TRICKS & RESOURCES
+
+The world of information technology is an ever-changing landscape. Simply thinking back to the infrastructure and functions of a webpage 5, 10, 15 years ago can make any programmer cringe. Staying current on industry strategies and best practices is essential for developers of all levels.
+
+Blogs can provide great insight and perspective from industry peers and colleagues. All over the world, Java professionals are posting daily about new findings or new feature functions. Unfortunately, blogs can also provide some not so great insight and perspective. With such an overabundance of voices trying to earn your attention, it can be difficult to find the good, from the bad and the ugly.
+
+Luckily, we are here to help. We’ve searched high and low and found some of the most credible, unique, and just plain awesome communities and experts talking about all things Java. Whether you’re a 15-year Java artisan or interested in entering the world of programming for the first time, we have a resource for you.
+
+New call-to-action
+Top 10 Java Blogs
+Vlad Mihalcea
+Vlad Mihalcea is a world-class Java expert and a highly respected mentor of the craft. Dating back to 2014, Vlad has been a dedicated blogger and teacher, and currently reaches about 75k visitors a month. Most recently, Vlad has been taking a look at Hibernate and identifying new tips, tricks, and best practices. With a wide variety of articles, there is information available for developers of any level.
+
+Vlad’s blogs have been such a success, he was able to cultivate existing articles and create new content to write the book High-Performance Java Persistence. In the book, Vlad looks into Java data access performance tuning, and discusses connection management, batch updates, fetch sizes and the most common Java data access frameworks.
+
+Vlad’s blog is a must stop for anyone interested in continual Java learning, new weekly published articles, and a soon-to-be released video training course.
+
+Where to Start:
+
+14 High Performance Java Persistence Tips
+
+Adam Bien
+Adam Bien is potentially the most informative man on the planet when it comes to Java, and thankfully for all of us, he likes to talk about it. Adam has been working with Java since JDK 1.0 in 1995. Since then, Adam has written 1669 (and counting) blog articles with literally thousands of daily readers. Adam discusses JavaFX, Java EE (and more) nowadays, and has several books available as well. Adam also consistently puts on web events and workshops, all of which are incredibly interactive and user-friendly.
+
+Most of his blog posts include videos to follow along, which makes his teachings even more useful. Adam admits he’s not a professional writer nor speaker, which actually makes his work feel even more authentic and real.
+
+Where to Start:
+
+Configuring WildFly/JBoss via CLI
+
+InfoQ
+In contrast to other blogs on this list, InfoQ is a central hub of everything a developer could hope to find. InfoQ acts as a communal site for news, updates, articles and how-to guides. This is reflected in the InfoQ mantra: facilitating the spread of knowledge and innovation in professional software design. Hundreds of writers and contributors provide content to the site, which gives the readers a wide variety of information and perspectives. The main focus of InfoQ includes:
+
+Development (including Java, JavaScript, Scala, and more)
+Architecture & Design
+Data Science
+Culture & Methods (including diversity, leadership, and testing)
+DevOps
+Whether you are just starting out in Java, a seasoned veteran, or anything in between, InfoQ is a fantastic source to learn and engage with fellow industry members and advocates.
+
+Where to start:
+
+The JHipster Mini Book 4.0
+
+Javarevisited
+If you are looking for specific Java how-to’s and step-by-step Java guides, Javarevisited is exactly what you want. Run by a man named Javin Paul with 7 years industry experience, Javarevisited is a blog focusing on Java programming language, FIX protocol and Tibco RV. Javarevisited is a fantastic resource for both beginners and experienced programmers.
+
+One of Javin’s more popular blog series stem from reader interviews. Readers are encouraged to conduct interviews with Javin, picking his brain about all things Java. Javin then takes his personal favorite questions, and turns them into deep, expansive articles. Javarevisited has hundreds of Java articles available with fresh content coming out multiple times a week.
+
+Where to Start:
+
+10 Tips to Improve Programming Skills
+
+Baeldung
+Baeldung is a fantastic source for anyone interested in the latest programming news, updates and advice. Baeldung focuses specifically on Java, Persistence, REST API’s, Jackson and HttpClient information, providing learning courses, how-to guides, and articles from multiple writers. One of the biggest benefits to Baeldung is the high volume of quality information being posted. Often multiple articles are posted every day.
+
+Baeldung’s newsletter, The Java Weekly, is an absolute most read resource. It focuses on a number of categories and provides links to articles and news updates, both from Baeldung’s site and other sources. For example, the most recent newsletter focuses on Spring and Java, Technical tips, Musings, and a few entertaining comics for the nerd in all of us.
+
+Where to Start:
+
+The Java Weekly, Issue 196
+
+Miles to Go
+Arun Gupta is the man behind the legendary blog Miles to Go, and may quite possibly be the most interesting man in the tech world. Arun is a jack of all trades, whose resume includes, but is not limited to: Java Champion, JavaOne rock star, Minecraft Modder, avid runner, and best-selling author. Oh yeah, and he also works as a Principle Open Source Technologist at Amazon Web Services.
+
+On his blog, Arun touches on anything and everything pertaining to a programmer. Some of his most popular topics include Java, Java EE, AWS, WildFly, and Couchbase. While the frequency of posts on Miles to Go tend to be a bit more sporadic than other Java blogs mentioned, the quality of work is as high as it gets. Arun is an incredibly knowledgeable man and explains his material in a clear, concise, and easy-to-follow manner.
+
+Miles to Go is a blog you come to for the programming knowledge and end up staying for Arun’s marathon times (which, by the way, is up to 20+ marathons).
+
+Where to Start:
+
+Analyze Donald Trump’s Tweets with Couchbase and N1QL
+
+jOOQ
+jOOQ Blog focuses exclusively on Java, SQL and jOOQ which allows the writer to be highly specialized in these specific topics and programs. Consisting mostly of step-by-step guides and how-to’s, programmers of all levels can benefit massively from the huge library of information available. The sidebar allows readers to easily navigate to different categories, such as SQL Tricks and Tips, Thoughts on Programming, Java and Other Languages, and jOOQ. The frequency of posts on jOOQ Blog is also more on the sporadic side of the spectrum, but with such a vast library of information as is, this should be no problem at all.
+
+Where to Start:
+
+Java and Other Languages Navigation
+
+Thoughts on Java
+Industry expert and influencer Thorben Janssen is the mastermind behind Thoughts on Java, which is much more than a simple blog. Thorben has been working in the field for 15 years and specializes in all things related to Hibernate. Thoughts on Java is a source for all Java skill levels thanks to the highly specific blogs and guides, YouTube videos, workshops, and online courses. Quick, easy-to-read Hibernate tips are available for common developments tasks. The videos, which are narrated by Thorben himself, dive deeper in Hibernate concepts and features.
+
+Plus, signing up as a Thoughts on Java member provides you with Java cheat sheets, downloadable ebooks and printable Hibernate tips. Thorben recently guest blogged on the Stackify blog, taking a look at the nine best practices to handle exceptions.
+
+Where to Start:
+
+Thoughts on Java Report September 2017
+
+A Java Geek
+More experienced programmers will greatly benefit from Nicolas Frankel’s blog, A Java Geek. Nicolas provides a refreshing, unique perspective on most things related to programming, but tends to focus specifically on Java, Java EE and Spring technologies. A Java Geek also dives into Software quality, build processes, and Rich internet applications.
+
+Blog posts tend to be less explanation-based, and more perspective and opinion pieces about the craft of programming. While the site is a bit tougher to navigate, anyone experienced in the industry will certainly appreciate what Nicolas has to offer.
+
+Where to Start:
+
+A Java Geek homepage
+
+JavaWorld
+JavaWorld is exactly what you would expect it to be based on its name: the ultimate Java hub. JavaWorld is the leading independent resource for enterprise Java developers, architects and managers who want to stay up-to-date and learn more about Java-related technologies. JavaWorld is a community for like-minded programmers, exploring everything from learning Java basics, to open source Java, all the way to programming career news and opportunities.
+
+Because of the wide range of information, Javaworld is an ideal starting point for those new to programming. The Java 101 blog series was designed with Java beginners in mind, and tackles topics related to Java programming, syntax, API’s, and packages. If you aren’t sure what those programs and tools are exactly, JavaWorld is the place for you. For more experienced programmers, JavaWorld posts articles regarding recent updates, such as Java EE 8 and other new tools that would provide valuable insight and opinions from industry experts.
+
+Where to Start:
+
+JavaWorld: Java 101
+
+As updates and features come and go, we see further proof of the need for constant communication between industry peers to stay current with Java, Jave EE, SQL and other tools we use daily. It’s one thing to talk to the developer in the office next to you, but that doesn’t quite compare to interacting with a best-selling author from Germany, or a marathon-running Minecraft modder from California. Hopefully these resources were helpful to you and one or two made it onto your bookmarks bar.
+
+At Stackify, we are dedicated to helping developers grow, learn, and perfect their programming skills. Check out our Java resources to find tips, tricks, and guides to help you become a better Java developer. In fact, we even offer a free tool for Java developers that helps them write better code. Check out Stackify Prefix, our dynamic code profiler.
