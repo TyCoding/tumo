@@ -26,8 +26,6 @@
 
 ## 文档
 
-> 如果有需要提供该项目技术支持的小伙伴加QQ：2783903379 进该项目的交流群（不免费，门槛：10元）。
-
 手摸手教你SpringBoot项目实战。
 
 项目开发、使用文档请移步：[http://docs.tumo.tycoding.cn](http://docs.tumo.tycoding.cn) 
