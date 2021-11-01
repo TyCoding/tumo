@@ -35,43 +35,43 @@
 
 | 程序员涂陌                                                  |
 | ----------------------------------------------------------- |
-| ![qrcode_for_gh](http://cdn.tycoding.cn/20200610184737.jpg) |
+| ![qrcode_for_gh](http://tycoding.cn/imgs/20200610184737.jpg) |
 
 ## 请喝果汁
 
 | Alipay                                                     | WechatPay                                                  |
 | ---------------------------------------------------------- | ---------------------------------------------------------- |
-| ![alipay_258px](http://cdn.tycoding.cn/20200610132929.png) | ![wechat_258px](http://cdn.tycoding.cn/20200610132940.png) |
+| ![alipay_258px](http://tycoding.cn/imgs/20200610132929.png) | ![wechat_258px](http://tycoding.cn/imgs/20200610132940.png) |
 
 ## 预览
 
-![截屏2020-06-30 上午10.15.37](http://cdn.tycoding.cn/20200630101539.png)
+![截屏2020-06-30 上午10.15.37](http://tycoding.cn/imgs/20200630101539.png)
 
-![截屏2020-06-30 上午10.15.53](http://cdn.tycoding.cn/20200630101555.png)
+![截屏2020-06-30 上午10.15.53](http://tycoding.cn/imgs/20200630101555.png)
 
-![截屏2020-06-30 上午10.16.22](http://cdn.tycoding.cn/20200630101625.png)
+![截屏2020-06-30 上午10.16.22](http://tycoding.cn/imgs/20200630101625.png)
 
-![截屏2020-06-30 上午10.16.36](http://cdn.tycoding.cn/20200630101638.png)
+![截屏2020-06-30 上午10.16.36](http://tycoding.cn/imgs/20200630101638.png)
 
-![截屏2020-06-30 上午10.16.53](http://cdn.tycoding.cn/20200630101655.png)
+![截屏2020-06-30 上午10.16.53](http://tycoding.cn/imgs/20200630101655.png)
 
-![截屏2020-06-30 上午10.17.53](http://cdn.tycoding.cn/20200630101800.png)
+![截屏2020-06-30 上午10.17.53](http://tycoding.cn/imgs/20200630101800.png)
 
-![截屏2020-06-30 上午10.18.11](http://cdn.tycoding.cn/20200630101813.png)
+![截屏2020-06-30 上午10.18.11](http://tycoding.cn/imgs/20200630101813.png)
 
-![截屏2020-06-30 上午10.18.23](http://cdn.tycoding.cn/20200630101825.png)
+![截屏2020-06-30 上午10.18.23](http://tycoding.cn/imgs/20200630101825.png)
 
-![截屏2020-06-30 上午10.18.38](http://cdn.tycoding.cn/20200630101840.png)
+![截屏2020-06-30 上午10.18.38](http://tycoding.cn/imgs/20200630101840.png)
 
-![截屏2020-06-30 上午10.18.50](http://cdn.tycoding.cn/20200630101852.png)
+![截屏2020-06-30 上午10.18.50](http://tycoding.cn/imgs/20200630101852.png)
 
-![截屏2020-06-30 上午10.19.31](http://cdn.tycoding.cn/20200630101934.png)
+![截屏2020-06-30 上午10.19.31](http://tycoding.cn/imgs/20200630101934.png)
 
-![截屏2020-06-30 上午10.19.46](http://cdn.tycoding.cn/20200630101948.png)
+![截屏2020-06-30 上午10.19.46](http://tycoding.cn/imgs/20200630101948.png)
 
-![截屏2020-06-30 上午10.19.58](http://cdn.tycoding.cn/20200630102000.png)
+![截屏2020-06-30 上午10.19.58](http://tycoding.cn/imgs/20200630102000.png)
 
-![截屏2020-06-30 上午10.20.43](http://cdn.tycoding.cn/20200630102045.png)
+![截屏2020-06-30 上午10.20.43](http://tycoding.cn/imgs/20200630102045.png)
 
 
 ## 交流
